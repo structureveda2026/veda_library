@@ -153,37 +153,64 @@ export const CATEGORIES_DATA = {
         enName: "Shiva Mantras & Stotras",
         desc: "महामृत्युंजय, शिव तांडव, रुद्राष्टकम एवं पञ्चाक्षर मंत्र।",
         stats: "२५+ स्तोत्र व मंत्र",
-        imageKey: "card-sukta-rudra.jpg"
+        imageKey: "deity-shiva.jpg"
       },
       {
         id: "vishnu",
         slug: "vishnu",
         name: "विष्णु मंत्र एवं स्तोत्र",
         enName: "Vishnu Mantras & Stotras",
-        desc: "विष्णु सहस्रनाम, नारायण कवच, द्वादशाक्षर मंत्र।",
+        desc: "विष्णु सहस्रनाम, नारायण कवच, द्वादशाक्षर मंत्र एवं पुरुष सूक्त।",
         stats: "२०+ स्तोत्र व मंत्र",
-        imageKey: "card-sukta-purusha.jpg"
+        imageKey: "deity-vishnu.jpg"
       },
       {
         id: "devi",
         slug: "devi",
         name: "देवी मंत्र एवं सूक्त",
         enName: "Devi Mantras & Suktas",
-        desc: "श्री सूक्त, दुर्गा सप्तशती, ललिता सहस्रनाम।",
+        desc: "श्री सूक्त, दुर्गा सप्तशती, कनकधारा स्तोत्र, ललिता सहस्रनाम।",
         stats: "३०+ स्तोत्र व मंत्र",
-        imageKey: "card-sukta-vak.jpg"
+        imageKey: "deity-durga.jpg"
       },
       {
         id: "gayatri",
         slug: "gayatri",
         name: "वैदिक शांति व गायत्री मंत्र",
         enName: "Vaidika Shanti & Gayatri",
-        desc: "महाशांति पाठ, गायत्री, पवमान व हिरण्यगर्भ सूक्त।",
+        desc: "महाशांति पाठ, गायत्री महामंत्र, पवमान व हिरण्यगर्भ सूक्त।",
         stats: "१५+ वैदिक सूक्त",
-        imageKey: "card-sukta-gayatri.jpg"
+        imageKey: "deity-saraswati.jpg"
+      },
+      {
+        id: "ganesh",
+        slug: "ganesh",
+        name: "श्री गणेश मंत्र व स्तुति",
+        enName: "Ganesh Mantras & Stutis",
+        desc: "संकटनाशन गणेश स्तोत्र, अथर्वशीर्ष, वक्रतुण्ड महामंत्र।",
+        stats: "१०+ स्तोत्र व मंत्र",
+        imageKey: "deity-ganesh.jpg"
+      },
+      {
+        id: "surya",
+        slug: "surya",
+        name: "सूर्य एवं नवग्रह मंत्र",
+        enName: "Surya & Navagraha Mantras",
+        desc: "आदित्य हृदय स्तोत्र, नवग्रह स्तोत्र एवं शांति विधान।",
+        stats: "१२+ स्तोत्र व मंत्र",
+        imageKey: "deity-navagraha.jpg"
+      },
+      {
+        id: "hanuman",
+        slug: "hanuman",
+        name: "हनुमान चालीसा एवं स्तोत्र",
+        enName: "Hanuman Chalisa & Stotras",
+        desc: "हनुमान चालीसा, बजरंग बाण, संकटमोचन हनुमानाष्टक।",
+        stats: "८+ स्तोत्र व पाठ",
+        imageKey: "card-puja.jpg"
       }
     ],
-    topics: ["गायत्री", "महामृत्युंजय", "शांति", "आरती", "कवच", "सहस्रनाम", "सूक्त", "बीज मंत्र"],
+    topics: ["गायत्री", "महामृत्युंजय", "शांति", "आरती", "कवच", "सहस्रनाम", "सूक्त", "बीज मंत्र", "स्तोत्र"],
     featuredKnowledge: [
       {
         id: "mahamrityunjaya",
@@ -202,6 +229,24 @@ export const CATEGORIES_DATA = {
         desc: "जटाटवीगलज्जलप्रवाहपावितस्थले — रावण कृत परम कल्याणकारी नटराज स्तुति।",
         subjectSlug: "shiva",
         articleSlug: "shiva-tandava"
+      },
+      {
+        id: "vishnu-sahasranama",
+        title: "विष्णु सहस्रनाम स्तोत्र",
+        enTitle: "Vishnu Sahasranama",
+        type: "Stotra • Mahabharata Anushasana Parva",
+        desc: "पितामह भीष्म द्वारा युधिष्ठिर को उपदिष्ट भगवान विष्णु के १,००० दिव्य नाम।",
+        subjectSlug: "vishnu",
+        articleSlug: "vishnu-sahasranama"
+      },
+      {
+        id: "gayatri-mantra",
+        title: "गायत्री महामंत्र",
+        enTitle: "Gayatri Maha Mantra",
+        type: "Mantra • Rigveda 3.62.10",
+        desc: "ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यं भर्गो देवस्य धीमहि — आत्म-जागरण व सद्बुद्धि प्रदायक।",
+        subjectSlug: "gayatri",
+        articleSlug: "gayatri-maha-mantra"
       }
     ],
     faqs: [

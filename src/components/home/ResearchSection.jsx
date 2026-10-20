@@ -2,8 +2,11 @@ import React from "react";
 import { ArrowRight } from "lucide-react";
 import { RESEARCH_MODULES } from "../../data/libraryHomeData.js";
 import IconHelper from "../common/IconHelper.jsx";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 export default function ResearchSection({ onNavigateKnowledge }) {
+  const { isHindi } = useLanguage();
+
   return (
     <section id="research" className="py-12 sm:py-16 bg-[#fffdf8] border-y border-amber-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,13 +14,15 @@ export default function ResearchSection({ onNavigateKnowledge }) {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-2">
           <div>
             <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800">
-              SCHOLARLY INQUIRY
+              {isHindi ? "शास्त्रीय शोध एवं संदर्भ" : "SCHOLARLY INQUIRY"}
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-0.5">
-              Research & References
+              {isHindi ? "अनुसंधान एवं संदर्भ" : "Research & References"}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-0.5">
-              स्रोत, भाष्य, टीका, संस्करण और अन्य संदर्भों के माध्यम से ज्ञान को अधिक गहराई से explore करें।
+            <p className={`text-xs sm:text-sm text-stone-600 mt-0.5 ${isHindi ? "font-devanagari" : ""}`}>
+              {isHindi
+                ? "स्रोत, भाष्य, टीका, संस्करण और अन्य संदर्भों के माध्यम से ज्ञान को अधिक गहराई से explore करें।"
+                : "Explore knowledge in depth through manuscripts, commentaries, critical editions, and scholarly references."}
             </p>
           </div>
 
@@ -26,7 +31,7 @@ export default function ResearchSection({ onNavigateKnowledge }) {
             onClick={onNavigateKnowledge}
             className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-amber-800 hover:text-amber-950 group self-start sm:self-auto cursor-pointer"
           >
-            <span>Explore Research</span>
+            <span>{isHindi ? "अनुसंधान देखें" : "Explore Research"}</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -50,7 +55,7 @@ export default function ResearchSection({ onNavigateKnowledge }) {
                   {mod.desc}
                 </p>
                 <span className="inline-block mt-2 text-[11px] font-semibold text-amber-700 group-hover:text-amber-900">
-                  Browse Archive →
+                  {isHindi ? "संग्रह देखें →" : "Browse Archive →"}
                 </span>
               </div>
             </div>

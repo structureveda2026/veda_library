@@ -2,11 +2,12 @@
 
 @layer base {
   :root {
-    --veda-primary: #ffb357;
-    --veda-background: #fff2d5;
-    --veda-surface: #fffaf0;
-    --veda-text: #171717;
-    --veda-muted: #6f665b;
+    --veda-primary: #ea580c;
+    --veda-accent-gold: #d97706;
+    --veda-background: #fbf9f5;
+    --veda-surface: #ffffff;
+    --veda-text: #1e293b;
+    --veda-muted: #64748b;
   }
 
   html {
@@ -15,8 +16,8 @@
   }
 
   body {
-    background-color: #fffaf0;
-    color: #171717;
+    background-color: #fbf9f5;
+    color: #1e293b;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -51,7 +52,7 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #fdf8ee;
+  background: #fbf9f5;
 }
 ::-webkit-scrollbar-thumb {
   background: #e2d2b5;
@@ -61,15 +62,40 @@
   background: #c9b18b;
 }
 
+/* Mandala slow rotation animation */
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 90s linear infinite;
+}
+
+/* Hub card hover accent glow effect */
+.hub-card {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hub-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(234, 88, 12, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
 /* Glassmorphism helpers */
 .glass-gold {
-  background: rgba(30, 20, 12, 0.65);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(251, 191, 36, 0.2);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(231, 213, 184, 0.8);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }

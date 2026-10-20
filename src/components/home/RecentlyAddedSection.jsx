@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight, CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import { RECENTLY_ADDED } from "../../data/libraryHomeData.js";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 // Card thumbnails
 import yagyaFireImg from "../../assets/images/library/cards/card-yagya-fire.jpg";
@@ -14,6 +15,8 @@ const THUMBNAILS = {
 };
 
 export default function RecentlyAddedSection({ onSelectArticle }) {
+  const { isHindi } = useLanguage();
+
   return (
     <section id="recent" className="py-12 sm:py-16 bg-[#fffaf0] border-b border-amber-200/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,10 +24,12 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
-              Recently Added
+              {isHindi ? "हाल ही में जोड़े गए" : "Recently Added"}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500 font-devanagari mt-0.5">
-              Veda Library में हाल ही में जोड़े गए ज्ञान-सामग्री को explore करें।
+            <p className={`text-xs sm:text-sm text-stone-500 mt-0.5 ${isHindi ? "font-devanagari" : ""}`}>
+              {isHindi
+                ? "Veda Library में हाल ही में जोड़े गए ज्ञान-सामग्री को explore करें।"
+                : "Explore recently added authentic texts, rituals, and mantras in Veda Library."}
             </p>
           </div>
 
@@ -33,7 +38,7 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
             onClick={() => onSelectArticle && onSelectArticle("rudrabhisheka")}
             className="inline-flex items-center gap-1 text-sm font-semibold text-amber-800 hover:text-amber-950 group cursor-pointer"
           >
-            <span>View All</span>
+            <span>{isHindi ? "समस्त देखें" : "View All"}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -103,7 +108,7 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
                   {/* Read More CTA — per document requirement */}
                   <div className="mt-3 pt-2.5 border-t border-stone-100">
                     <span className="text-xs font-bold text-amber-700 group-hover:text-amber-900 flex items-center gap-1 transition-colors">
-                      Read More <ArrowRight className="w-3 h-3" />
+                      {isHindi ? "अधिक पढ़ें" : "Read More"} <ArrowRight className="w-3 h-3" />
                     </span>
                   </div>
                 </div>

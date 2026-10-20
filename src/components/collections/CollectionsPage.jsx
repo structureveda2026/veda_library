@@ -103,17 +103,18 @@ export default function CollectionsPage({ onSelectArticle }) {
   // =========================================================================
   if (currentCollection) {
     return (
-      <div className="bg-[#fffaf0] min-h-screen">
+      <div className="bg-[#FBF9F5] min-h-screen">
         {/* Deep Dive Header Banner */}
-        <div className="relative bg-gradient-to-r from-[#190e07] via-[#2a170c] to-[#140b05] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b-2 border-amber-600/70 overflow-hidden shadow-lg">
+        <div className="relative bg-[#1A0E05] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b-2 border-amber-600/70 overflow-hidden shadow-lg">
           <div className="absolute inset-0 z-0">
             <img
               src={currentCollection.image}
               alt={currentCollection.title}
-              className="w-full h-full object-cover object-center opacity-30 mix-blend-luminosity scale-105"
+              className="w-full h-full object-cover object-center opacity-80 scale-102 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#2a170c]/70 to-black/75" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-black/80" />
+            {/* Luminous warm gradient overlay preserving image visibility */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1a0e05]/60 to-black/40" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/20 via-transparent to-black/60" />
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto">
@@ -418,18 +419,18 @@ export default function CollectionsPage({ onSelectArticle }) {
   // VIEW 2: ALL CURATED COLLECTIONS OVERVIEW (http://localhost:5174/library/collections)
   // =========================================================================
   return (
-    <div className="bg-[#fffaf0] min-h-screen">
-      {/* Ultra-Premium Hero Banner */}
-      <div className="relative bg-gradient-to-r from-[#190e07] via-[#2a170c] to-[#140b05] text-white py-14 sm:py-20 px-4 sm:px-6 lg:px-8 border-b-2 border-amber-600/70 overflow-hidden shadow-md">
-        {/* Background Kashi Ganga Aarti Image with Golden Overlay */}
+    <div className="bg-[#FBF9F5] min-h-screen">
+      {/* Royal Bhaktilok-Grade Hero Banner */}
+      <div className="relative bg-[#1A0E05] text-white py-14 sm:py-20 px-4 sm:px-6 lg:px-8 border-b-2 border-amber-600/70 overflow-hidden shadow-md">
+        {/* Background Kashi Ganga Aarti Image with Vivid 80% Visibility */}
         <div className="absolute inset-0 z-0">
           <img
             src={kashiAartiImg}
             alt="Sacred Kashi Traditions and Collections"
-            className="w-full h-full object-cover object-center opacity-30 mix-blend-luminosity scale-102"
+            className="w-full h-full object-cover object-center opacity-80 scale-102 transition-transform duration-700"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#2a170c]/70 to-black/75" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1a0e05]/60 to-black/35" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/25 via-transparent to-black/60" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto">
@@ -525,7 +526,7 @@ export default function CollectionsPage({ onSelectArticle }) {
             <div
               key={col.id}
               onClick={() => navigate(`/library/collections/${col.slug}`)}
-              className="group flex flex-col bg-white rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-xl hover:border-amber-400 transition-all duration-300 overflow-hidden cursor-pointer"
+              className="group flex flex-col bg-white rounded-2xl border border-amber-200/70 shadow-xs hover:shadow-xl hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer"
             >
               {/* 16:9 Thumbnail Image */}
               <div className="relative aspect-16/10 overflow-hidden bg-stone-900">

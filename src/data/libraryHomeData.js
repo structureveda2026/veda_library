@@ -27,25 +27,33 @@ export const TRUST_STRIP_ITEMS = [
   {
     icon: "BookOpen",
     title: "Text-First Archive",
+    hindiTitle: "मूल पाठ संग्रह",
     subtitle: "मूल पाठ एवं प्रामाणिक व्याख्या",
+    enSubtitle: "Canonical text & authentic commentary",
     accent: "#b45309"
   },
   {
     icon: "Layers",
     title: "Structured Knowledge",
+    hindiTitle: "संरचित ज्ञान",
     subtitle: "विषय व शाखा अनुसार व्यवस्थित",
+    enSubtitle: "Organized by discipline & tradition",
     accent: "#047857"
   },
   {
     icon: "FileCheck",
     title: "Source References",
+    hindiTitle: "प्रामाणिक संदर्भ",
     subtitle: "ग्रंथ, अध्याय व श्लोक आधारित",
+    enSubtitle: "Verified by chapter, verse & source",
     accent: "#4338ca"
   },
   {
     icon: "Flame",
     title: "Living Tradition",
+    hindiTitle: "जीवंत परंपरा",
     subtitle: "भारतीय ज्ञान परंपरा का जीवंत संग्रह",
+    enSubtitle: "Living heritage of classical wisdom",
     accent: "#c2410c"
   }
 ];
@@ -57,6 +65,7 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     title: "Veda",
     subtitle: "(4 Samhitas)",
     hindiTitle: "वेद",
+    hindiSubtitle: "(४ संहिताएँ)",
     hindiDesc: "ऋग्वेद, यजुर्वेद, सामवेद और अथर्ववेद",
     icon: "BookOpen",
     iconColor: "text-amber-700",
@@ -69,6 +78,7 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     title: "Vedanga",
     subtitle: "(6 Angas)",
     hindiTitle: "वेदाङ्ग",
+    hindiSubtitle: "(६ वेदाङ्ग)",
     hindiDesc: "शिक्षा, कल्प, व्याकरण, निरुक्त, छंद और वेदाङ्ग ज्योतिष",
     icon: "Compass",
     iconColor: "text-emerald-700",
@@ -81,6 +91,7 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     title: "Upanishad & Darshan",
     subtitle: "(Philosophy)",
     hindiTitle: "उपनिषद एवं दर्शन",
+    hindiSubtitle: "(दार्शनिक चिंतन)",
     hindiDesc: "आत्मा, ब्रह्म, ज्ञान, योग, वेदांत और भारतीय दर्शन",
     icon: "Sparkles",
     iconColor: "text-cyan-700",
@@ -93,6 +104,7 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     title: "Purana & Itihasa",
     subtitle: "(Epics & Puranas)",
     hindiTitle: "पुराण एवं इतिहास",
+    hindiSubtitle: "(महाकाव्य व पुराण)",
     hindiDesc: "पुराण, रामायण, महाभारत और प्रमुख आख्यान",
     icon: "BookOpen",
     iconColor: "text-indigo-700",
@@ -105,6 +117,7 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     title: "Mantra, Sukta & Stotra",
     subtitle: "(Chants & Hymns)",
     hindiTitle: "मंत्र, सूक्त एवं स्तोत्र",
+    hindiSubtitle: "(स्तोत्र व प्रार्थनाएँ)",
     hindiDesc: "मंत्र, सूक्त, स्तोत्र, कवच, सहस्रनाम और प्रार्थनाएँ",
     icon: "Volume2",
     iconColor: "text-purple-700",
@@ -117,6 +130,7 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     title: "Jyotisha",
     subtitle: "(Astrology)",
     hindiTitle: "ज्योतिष",
+    hindiSubtitle: "(वैदिक ज्योतिष)",
     hindiDesc: "ग्रह, राशि, नक्षत्र, कुंडली, दशा, गोचर और मुहूर्त",
     icon: "Sun",
     iconColor: "text-amber-800",
@@ -129,6 +143,7 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     title: "Vastu",
     subtitle: "(Vedic Architecture)",
     hindiTitle: "वास्तु",
+    hindiSubtitle: "(वास्तु परंपरा)",
     hindiDesc: "वास्तु पुरुष, दिशा, गृह, मंदिर और वास्तु परंपरा",
     icon: "Compass",
     iconColor: "text-amber-900",
@@ -141,6 +156,7 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     title: "Shastra",
     subtitle: "(Classical Texts)",
     hindiTitle: "शास्त्र",
+    hindiSubtitle: "(शास्त्रीय ग्रंथ)",
     hindiDesc: "धर्मशास्त्र, योग, आयुर्वेद, नीति, अर्थशास्त्र, आगम आदि",
     icon: "Layers",
     iconColor: "text-teal-700",
@@ -158,6 +174,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Samskara",
     subtitle: "(16 Samskaras)",
     hindiTitle: "संस्कार",
+    hindiSubtitle: "(१६ संस्कार)",
     hindiDesc: "जन्म से मृत्यु तक सोलह वैदिक संस्कार",
     icon: "Flower2",
     iconColor: "text-teal-700",
@@ -170,6 +187,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Puja",
     subtitle: "(Worship & Rituals)",
     hindiTitle: "पूजा",
+    hindiSubtitle: "(पूजन एवं उपासना)",
     hindiDesc: "शास्त्रोक्त पूजन विधि और उपासना पद्धति",
     icon: "Flower",
     iconColor: "text-rose-700",
@@ -182,6 +200,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Yagya",
     subtitle: "(Fire Rituals)",
     hindiTitle: "यज्ञ",
+    hindiSubtitle: "(हवन व वैदिक यज्ञ)",
     hindiDesc: "वैदिक यज्ञ, अग्निहोत्र और हवन परंपरा",
     icon: "Flame",
     iconColor: "text-amber-700",
@@ -194,6 +213,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Devata",
     subtitle: "(Deities)",
     hindiTitle: "देवता",
+    hindiSubtitle: "(देव उपासना परंपरा)",
     hindiDesc: "वैदिक और पौराणिक देवताओं की उपासना पद्धति",
     icon: "Crown",
     iconColor: "text-emerald-800",
@@ -206,6 +226,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Tirtha",
     subtitle: "(Sacred Sites)",
     hindiTitle: "तीर्थ",
+    hindiSubtitle: "(पवित्र तीर्थ क्षेत्र)",
     hindiDesc: "काशी, प्रयाग, हरिद्वार और पवित्र तीर्थ परंपरा",
     icon: "MapPin",
     iconColor: "text-orange-700",
@@ -218,6 +239,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Dharma",
     subtitle: "(Life & Conduct)",
     hindiTitle: "धर्म",
+    hindiSubtitle: "(जीवन मूल्य व सदाचार)",
     hindiDesc: "वैदिक जीवन दर्शन, आचार और धर्मशास्त्र",
     icon: "ShieldCheck",
     iconColor: "text-orange-700",
@@ -230,6 +252,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Sanskrit & Bhasha",
     subtitle: "(Language)",
     hindiTitle: "संस्कृत भाषा",
+    hindiSubtitle: "(व्याकरण व भाषा)",
     hindiDesc: "पाणिनि व्याकरण, धातु, संधि और संस्कृत अध्ययन",
     icon: "BookOpen",
     iconColor: "text-amber-700",
@@ -242,6 +265,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Traditional Knowledge",
     subtitle: "(Ayurveda & More)",
     hindiTitle: "पारंपरिक शास्त्र",
+    hindiSubtitle: "(आयुर्वेद व ज्ञान शाखाएँ)",
     hindiDesc: "आयुर्वेद, ज्योतिष, वास्तु और पारंपरिक विज्ञान",
     icon: "Leaf",
     iconColor: "text-blue-700",
@@ -254,6 +278,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Research & Citations",
     subtitle: "(Critical Editions)",
     hindiTitle: "शोध एवं संदर्भ",
+    hindiSubtitle: "(पाण्डुलिपि व भाष्य)",
     hindiDesc: "पांडुलिपियाँ, भाष्य, टीका और शास्त्रीय शोध सामग्री",
     icon: "Sparkles",
     iconColor: "text-indigo-800",
@@ -266,6 +291,7 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     title: "Mantra",
     subtitle: "(Chants)",
     hindiTitle: "मंत्र",
+    hindiSubtitle: "(वैदिक मंत्र व जप)",
     hindiDesc: "वैदिक और तांत्रिक मंत्र परंपरा",
     icon: "Volume2",
     iconColor: "text-purple-700",
@@ -396,16 +422,16 @@ export const RECENTLY_ADDED = [
 
 // Browse by Source 10 pills (Matching Client Reference Image)
 export const BROWSE_BY_SOURCE = [
-  { id: "rigveda", label: "Rigveda" },
-  { id: "yajurveda", label: "Yajurveda" },
-  { id: "samaveda", label: "Samaveda" },
-  { id: "atharvaveda", label: "Atharvaveda" },
-  { id: "upanishad", label: "Upanishad" },
-  { id: "brahmana", label: "Brahmana" },
-  { id: "aranyaka", label: "Aranyaka" },
-  { id: "sutra", label: "Sutra" },
-  { id: "smriti", label: "Smriti" },
-  { id: "purana", label: "Purana" }
+  { id: "rigveda", label: "Rigveda", hiLabel: "ऋग्वेद" },
+  { id: "yajurveda", label: "Yajurveda", hiLabel: "यजुर्वेद" },
+  { id: "samaveda", label: "Samaveda", hiLabel: "सामवेद" },
+  { id: "atharvaveda", label: "Atharvaveda", hiLabel: "अथर्ववेद" },
+  { id: "upanishad", label: "Upanishad", hiLabel: "उपनिषद" },
+  { id: "brahmana", label: "Brahmana", hiLabel: "ब्राह्मण" },
+  { id: "aranyaka", label: "Aranyaka", hiLabel: "आरण्यक" },
+  { id: "sutra", label: "Sutra", hiLabel: "सूत्र" },
+  { id: "smriti", label: "Smriti", hiLabel: "स्मृति" },
+  { id: "purana", label: "Purana", hiLabel: "पुराण" }
 ];
 
 // Grantha Archive (Section 8 of doc)
@@ -548,30 +574,32 @@ export const FEATURED_MANTRAS = [
 
 // Explore by Topic - 18 chips (Section 10 of doc)
 export const TOPIC_CHIPS = [
-  { name: "धर्म", count: 142 },
-  { name: "कर्म", count: 98 },
-  { name: "आत्मा", count: 76 },
-  { name: "मोक्ष", count: 64 },
-  { name: "योग", count: 112 },
-  { name: "ध्यान", count: 54 },
-  { name: "यज्ञ", count: 88 },
-  { name: "संस्कार", count: 48 },
-  { name: "ग्रह", count: 92 },
-  { name: "नक्षत्र", count: 56 },
-  { name: "राशि", count: 42 },
-  { name: "वास्तु", count: 65 },
-  { name: "मंत्र", count: 180 },
-  { name: "पूजा", count: 94 },
-  { name: "देवता", count: 130 },
-  { name: "तीर्थ", count: 72 },
-  { name: "गुरु", count: 45 },
-  { name: "संस्कृत", count: 85 }
+  { name: "धर्म", enName: "Dharma", count: 142 },
+  { name: "कर्म", enName: "Karma", count: 98 },
+  { name: "आत्मा", enName: "Atman", count: 76 },
+  { name: "मोक्ष", enName: "Moksha", count: 64 },
+  { name: "योग", enName: "Yoga", count: 112 },
+  { name: "ध्यान", enName: "Dhyana (Meditation)", count: 54 },
+  { name: "यज्ञ", enName: "Yagya (Ritual)", count: 88 },
+  { name: "संस्कार", enName: "Samskara", count: 48 },
+  { name: "ग्रह", enName: "Graha (Planets)", count: 92 },
+  { name: "नक्षत्र", enName: "Nakshatra", count: 56 },
+  { name: "राशि", enName: "Rashi (Zodiac)", count: 42 },
+  { name: "वास्तु", enName: "Vastu", count: 65 },
+  { name: "मंत्र", enName: "Mantra", count: 180 },
+  { name: "पूजा", enName: "Puja (Worship)", count: 94 },
+  { name: "देवता", enName: "Devata (Deities)", count: 130 },
+  { name: "तीर्थ", enName: "Tirtha (Pilgrimage)", count: 72 },
+  { name: "गुरु", enName: "Guru", count: 45 },
+  { name: "संस्कृत", enName: "Sanskrit", count: 85 }
 ];
 
 // Sacred Upanishad Quote Card (Matching Client Reference Image)
 export const SACRED_QUOTE = {
   sanskrit: "यतो वाचो निवर्तन्ते अप्राप्य मनसा सह",
   translation: "Where words return, along with the mind, unable to reach.",
+  hindiTranslation: "जहाँ से वाणी मन सहित, उस परब्रह्म को प्राप्त किए बिना लौट आती है।",
+  hinglishTranslation: "Jahan se vani man sahit, us parabrahma ko prapt kiye bina laut aati hai.",
   source: "Taittiriya Upanishad (तैत्तिरीयोपनिषद् २.९.१)"
 };
 

@@ -86,15 +86,17 @@ export default function KnowledgePage({ onNavigateHome }) {
   }, [selectedBranchId, searchQuery]);
 
   return (
-    <div className="bg-[#fffaf0] min-h-screen">
-      {/* 1. Mobile-First Hero Header */}
-      <div className="relative bg-gradient-to-r from-[#1f140c] via-[#2c1b10] to-[#1a1008] text-white py-10 sm:py-14 px-4 sm:px-6 lg:px-8 border-b border-amber-900/40 overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-30 mix-blend-luminosity">
+    <div className="bg-[#FBF9F5] min-h-screen">
+      {/* 1. Mobile-First Hero Header with Vivid Image Visibility */}
+      <div className="relative bg-[#1A0E05] text-white py-10 sm:py-14 px-4 sm:px-6 lg:px-8 border-b-2 border-amber-600/70 overflow-hidden shadow-md">
+        <div className="absolute inset-0 z-0">
           <img
             src={bannerTempleGhat}
             alt="Temple Ghats"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center opacity-80 scale-102 transition-transform duration-700"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1a0e05]/60 to-black/35" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/25 via-transparent to-black/60" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Breadcrumb */}
@@ -214,7 +216,7 @@ export default function KnowledgePage({ onNavigateHome }) {
           <section
             key={branch.id}
             id={branch.id}
-            className="bg-white p-5 sm:p-7 rounded-3xl border border-stone-200/90 shadow-2xs space-y-6"
+            className="bg-white p-5 sm:p-7 rounded-3xl border border-amber-200/60 shadow-xs space-y-6"
           >
             {/* Branch Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-amber-100 gap-2">
@@ -258,7 +260,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                   <div
                     key={card.id}
                     onClick={() => handleCardClick(card.id)}
-                    className="group p-4 sm:p-5 rounded-2xl bg-[#fffdfa] border border-stone-200 hover:border-amber-400/90 shadow-2xs hover:shadow-md transition-all duration-300 flex items-start gap-3.5 cursor-pointer"
+                    className="group p-4 sm:p-5 rounded-2xl bg-white border border-amber-200/70 hover:border-amber-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-start gap-3.5 cursor-pointer"
                   >
                     {/* Pastel Circle Icon Badge */}
                     <div

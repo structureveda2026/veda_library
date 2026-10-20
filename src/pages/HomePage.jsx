@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import HeroSection from "../components/home/HeroSection.jsx";
 import TrustStrip from "../components/home/TrustStrip.jsx";
+import SacredQuoteSection from "../components/home/SacredQuoteSection.jsx";
 import AboutVedaLibrarySection from "../components/home/AboutVedaLibrarySection.jsx";
 import ExploreKnowledgeSection from "../components/home/ExploreKnowledgeSection.jsx";
 import FeaturedKnowledgeSection from "../components/home/FeaturedKnowledgeSection.jsx";
@@ -34,40 +35,43 @@ export default function HomePage({ onOpenSearch }) {
       {/* 02. TRUST / PURPOSE STRIP — separate section immediately below hero */}
       <TrustStrip />
 
-      {/* 03. ABOUT VEDA LIBRARY — एक स्थान पर भारतीय ज्ञान परंपरा */}
+      {/* 03. DAILY SACRED SUBHASHITA / SHLOKA — Trilingual Wisdom */}
+      <SacredQuoteSection />
+
+      {/* 04. ABOUT VEDA LIBRARY — एक स्थान पर भारतीय ज्ञान परंपरा */}
       <AboutVedaLibrarySection
         onNavigateKnowledge={() => navigate("/library/knowledge")}
       />
 
-      {/* 04. EXPLORE BY CATEGORY — 8 primary cards + View All 18 */}
+      {/* 05. EXPLORE BY CATEGORY — 8 primary cards + View All 18 */}
       <ExploreKnowledgeSection
         onSelectCategory={(id) => navigate(`/library/${id}`)}
         onNavigateKnowledge={() => navigate("/library/knowledge")}
       />
 
-      {/* 05. FEATURED KNOWLEDGE — Tabbed: All | Articles | Mantra | Grantha | Topics */}
+      {/* 06. FEATURED KNOWLEDGE — Tabbed: All | Articles | Mantra | Grantha | Topics */}
       <FeaturedKnowledgeSection
         onNavigateKnowledge={() => navigate("/library/knowledge")}
       />
 
-      {/* 06. FEATURED COLLECTIONS — Curated Archives */}
-      <FeaturedCollectionsSection
-        onNavigateCollections={() => navigate("/library/collections")}
-      />
-
-      {/* 07. THE FOUR VEDAS */}
+      {/* 06. THE FOUR VEDAS */}
       <FourVedasSection
         onNavigateKnowledge={(vedaId) => navigate(vedaId ? `/library/veda/${vedaId}` : "/library/veda")}
       />
 
-      {/* 08. GRANTHA ARCHIVE */}
-      <GranthaArchiveSection
+      {/* 07. MANTRA, SUKTA & STOTRA */}
+      <MantraStotraSection
+        onNavigateKnowledge={() => navigate("/library/mantra-stotra")}
+      />
+
+      {/* 08. FEATURED COLLECTIONS — Curated Archives */}
+      <FeaturedCollectionsSection
         onNavigateCollections={() => navigate("/library/collections")}
       />
 
-      {/* 09. MANTRA, SUKTA & STOTRA */}
-      <MantraStotraSection
-        onNavigateKnowledge={() => navigate("/library/mantra-stotra")}
+      {/* 09. GRANTHA ARCHIVE */}
+      <GranthaArchiveSection
+        onNavigateCollections={() => navigate("/library/collections")}
       />
 
       {/* 10. EXPLORE BY TOPIC */}

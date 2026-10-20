@@ -19,6 +19,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import MantraModal from "../components/mantra/MantraModal.jsx";
 import { getMantraById, ALL_VEDIC_MANTRAS } from "../data/vedicMantrasData.js";
 import {
@@ -41,6 +42,8 @@ import bannerSanctum from "../assets/images/library/banners/banner-sanctum.png";
 import bannerFireRitual from "../assets/images/library/banners/banner-fire-ritual.png";
 import bannerKashiGhat from "../assets/images/library/banners/banner-kashi-ghat.png";
 import bannerSacredDetails from "../assets/images/library/banners/banner-sacred-details.png";
+import bannerAltar from "../assets/images/library/banners/banner-altar.png";
+import bannerTempleHero from "../assets/images/library/banners/banner-temple-hero.jpg";
 import rigvedaImg from "../assets/images/library/cards/card-rigveda.jpg";
 import yajurvedaImg from "../assets/images/library/cards/card-yajurveda.jpg";
 import samavedaImg from "../assets/images/library/cards/card-samaveda.jpg";
@@ -214,63 +217,236 @@ const SUBJECT_BANNERS = {
   atharvaveda: bannerAtharvaveda,
   "shukla-yajurveda": bannerYajurveda,
   "krishna-yajurveda": bannerYajurveda,
-  shaiva: bannerYajurveda,
-  shodashopachara: bannerYajurveda,
-  rudrabhisheka: bannerKashiGhat,
+
+  // Deities & Mantra-Stotra subcategories
+  shiva: deityShivaImg,
+  shaiva: deityShivaImg,
+  rudrabhisheka: deityShivaImg,
+  vishnu: deityVishnuImg,
+  devi: deityDurgaImg,
+  durga: deityDurgaImg,
+  lakshmi: deityLakshmiImg,
+  gayatri: deitySaraswatiImg,
+  saraswati: deitySaraswatiImg,
+  ganesh: deityGaneshImg,
+  surya: bannerTempleHero,
+  navagraha: deityNavagrahaImg,
+  graha: deityNavagrahaImg,
+  panchayatana: deityPanchayatanaImg,
+  "33-devas": deity33DevasImg,
+  brahma: deityBrahmaImg,
+  dashavatara: deityDashavataraImg,
+  trimurti: deityTrimurtiImg,
+
+  // Puja & Rituals
+  shodashopachara: bannerFireRitual,
+  agnihotra: bannerFireRitual,
+  samskaras: cardSamskaraImg,
+  upanayana: cardSamskaraImg,
+
+  // Vedangas
+  shiksha: cardPratiImg,
+  vyakarana: cardSamhitaImg,
+  kalpa: cardShrautaImg,
+  chandas: cardPratiImg,
+  jyotisha: cardAstrologyImg,
 
   // All 18 Mahapuranas
-  "vishnu-purana": bannerSanctum,
-  "shrimad-bhagavata": bannerVedasHeritage,
-  "bhagavata-purana": bannerVedasHeritage,
-  "shiva-purana": bannerKashiGhat,
+  "vishnu-purana": deityVishnuImg,
+  "shrimad-bhagavata": deityVishnuImg,
+  "bhagavata-purana": deityVishnuImg,
+  "shiva-purana": deityShivaImg,
   "markandeya-purana": bannerFireRitual,
   "skanda-purana": bannerKashiGhat,
   "garuda-purana": bannerSacredDetails,
-  "brahma-purana": bannerSanctum,
+  "brahma-purana": deityBrahmaImg,
   "padma-purana": bannerVedasHeritage,
   "brahmanda-purana": bannerSacredDetails,
-  "brahmavaivarta-purana": bannerSanctum,
+  "brahmavaivarta-purana": deityVishnuImg,
   "agni-purana": bannerFireRitual,
-  "bhavishya-purana": bannerVedasHeritage,
-  "varaha-purana": bannerSanctum,
-  "vamana-purana": bannerSacredDetails,
-  "kurma-purana": bannerKashiGhat,
-  "matsya-purana": bannerKashiGhat,
-  "linga-purana": bannerKashiGhat,
+  "bhavishya-purana": bannerTempleHero,
+  "varaha-purana": deityDashavataraImg,
+  "vamana-purana": deityDashavataraImg,
+  "kurma-purana": deityDashavataraImg,
+  "matsya-purana": deityDashavataraImg,
+  "linga-purana": deityShivaImg,
   "narada-purana": bannerSacredDetails,
 
   // Itihasa
-  "valmiki-ramayana": bannerSanctum,
-  mahabharata: bannerVedasHeritage,
-  "bhagavad-gita": bannerFireRitual,
+  "valmiki-ramayana": cardRamayanaImg,
+  mahabharata: cardMahabharataImg,
+  "bhagavad-gita": cardGitaImg,
 
   // All 11 Principal Upanishads
-  "isha-upanishad": bannerSanctum,
-  "kena-upanishad": bannerSamaveda,
-  "katha-upanishad": bannerFireRitual,
-  "prashna-upanishad": bannerAtharvaveda,
-  "mundaka-upanishad": bannerSanctum,
-  "mandukya-upanishad": bannerVedasHeritage,
-  "taittiriya-upanishad": bannerYajurveda,
-  "aitareya-upanishad": bannerRigveda,
-  "chandogya-upanishad": bannerSacredDetails,
-  "brihadaranyaka-upanishad": bannerKashiGhat,
-  "shvetashvatara-upanishad": bannerFireRitual,
+  "isha-upanishad": cardUpanishadImg,
+  "kena-upanishad": cardUpanishadImg,
+  "katha-upanishad": cardUpanishadImg,
+  "prashna-upanishad": cardUpanishadImg,
+  "mundaka-upanishad": cardUpanishadImg,
+  "mandukya-upanishad": cardUpanishadImg,
+  "taittiriya-upanishad": cardUpanishadImg,
+  "aitareya-upanishad": cardUpanishadImg,
+  "chandogya-upanishad": cardUpanishadImg,
+  "brihadaranyaka-upanishad": cardUpanishadImg,
+  "shvetashvatara-upanishad": cardUpanishadImg,
   // Other Upanishads
-  "kaushitaki-upanishad": bannerRigveda,
-  "maitrayaniya-upanishad": bannerYajurveda,
-  "kaivalya-upanishad": bannerSanctum,
-  "jabala-upanishad": bannerKashiGhat,
-  "mahanarayana-upanishad": bannerVedasHeritage,
+  "kaushitaki-upanishad": cardUpanishadImg,
+  "maitrayaniya-upanishad": cardUpanishadImg,
+  "kaivalya-upanishad": cardUpanishadImg,
+  "jabala-upanishad": cardUpanishadImg,
+  "mahanarayana-upanishad": cardUpanishadImg,
 
   // Darshana
-  yoga: bannerFireRitual,
-  samkhya: bannerSanctum,
-  nyaya: bannerVedasHeritage,
+  yoga: cardUpanishadImg,
+  samkhya: cardUpanishadImg,
+  nyaya: cardUpanishadImg,
   vaisheshika: bannerSacredDetails,
   mimamsa: bannerFireRitual,
-  vedanta: bannerKashiGhat,
+  vedanta: cardUpanishadImg,
 };
+
+function resolveSubjectBanner(subject = "", category = "", subjectData = null) {
+  const s = (subject || "").toLowerCase();
+  const c = (category || "").toLowerCase();
+  const name = `${subjectData?.name || ""} ${subjectData?.enName || ""} ${subjectData?.eyebrow || ""}`.toLowerCase();
+  const combined = `${s} ${c} ${name}`;
+
+  // 1. Direct key match in SUBJECT_BANNERS
+  if (SUBJECT_BANNERS[s]) {
+    return SUBJECT_BANNERS[s];
+  }
+
+  // 2. Shiva deity detection
+  if (
+    combined.includes("shiva") ||
+    combined.includes("शिव") ||
+    combined.includes("rudra") ||
+    combined.includes("रुद्र") ||
+    combined.includes("linga") ||
+    combined.includes("लिङ्ग") ||
+    combined.includes("mahakaal") ||
+    combined.includes("tryambak") ||
+    combined.includes("shaiva") ||
+    combined.includes("शैव")
+  ) {
+    return deityShivaImg;
+  }
+
+  // 3. Vishnu & avatars
+  if (
+    combined.includes("vishnu") ||
+    combined.includes("विष्णु") ||
+    combined.includes("narayan") ||
+    combined.includes("नारायण") ||
+    combined.includes("bhagavata") ||
+    combined.includes("भागवत") ||
+    combined.includes("purusha") ||
+    combined.includes("पुरुष") ||
+    combined.includes("krishna") ||
+    combined.includes("कृष्ण")
+  ) {
+    return deityVishnuImg;
+  }
+
+  // 4. Devi / Durga / Shakti
+  if (
+    combined.includes("durga") ||
+    combined.includes("दुर्गा") ||
+    combined.includes("devi") ||
+    combined.includes("देवी") ||
+    combined.includes("shakti") ||
+    combined.includes("शक्ति") ||
+    combined.includes("saptashati")
+  ) {
+    return deityDurgaImg;
+  }
+
+  // 5. Lakshmi / Sri Sukta
+  if (
+    combined.includes("lakshmi") ||
+    combined.includes("लक्ष्मी") ||
+    combined.includes("sri sukta") ||
+    combined.includes("kanakadhara")
+  ) {
+    return deityLakshmiImg;
+  }
+
+  // 6. Gayatri & Saraswati
+  if (
+    combined.includes("gayatri") ||
+    combined.includes("गायत्री") ||
+    combined.includes("saraswati") ||
+    combined.includes("सरस्वती") ||
+    combined.includes("vak") ||
+    combined.includes("वाक्")
+  ) {
+    return deitySaraswatiImg;
+  }
+
+  // 7. Ganesha
+  if (
+    combined.includes("ganesh") ||
+    combined.includes("गणेश") ||
+    combined.includes("vinayaka") ||
+    combined.includes("विनायक")
+  ) {
+    return deityGaneshImg;
+  }
+
+  // 8. Surya / Aditya
+  if (
+    combined.includes("surya") ||
+    combined.includes("सूर्य") ||
+    combined.includes("aditya") ||
+    combined.includes("आदित्य") ||
+    combined.includes("bhaskar") ||
+    combined.includes("रवि")
+  ) {
+    return bannerTempleHero;
+  }
+
+  // 9. Navagraha / Astrology
+  if (
+    combined.includes("navagraha") ||
+    combined.includes("नवग्रह") ||
+    combined.includes("graha") ||
+    combined.includes("ज्योतिष") ||
+    combined.includes("jyotisha")
+  ) {
+    return deityNavagrahaImg;
+  }
+
+  // 10. Ramayana & Mahabharata & Gita
+  if (combined.includes("ramayana") || combined.includes("रामायण") || combined.includes("rama")) {
+    return cardRamayanaImg;
+  }
+  if (combined.includes("gita") || combined.includes("गीता")) {
+    return cardGitaImg;
+  }
+  if (combined.includes("mahabharata") || combined.includes("महाभारत")) {
+    return cardMahabharataImg;
+  }
+
+  // 11. Upanishad & Vedanta
+  if (combined.includes("upanishad") || combined.includes("उपनिषद") || combined.includes("vedanta")) {
+    return cardUpanishadImg;
+  }
+
+  // 12. Purana
+  if (combined.includes("purana") || combined.includes("पुराण")) {
+    return cardPuranaImg;
+  }
+
+  // 13. Category Fallbacks
+  if (c === "mantra-stotra") return bannerAltar;
+  if (c === "veda") return bannerVedasHeritage;
+  if (c === "puja" || c === "yagya-sanskar" || c === "samskara") return bannerFireRitual;
+  if (c === "upanishad" || c === "darshana") return cardUpanishadImg;
+  if (c === "jyotisha") return cardAstrologyImg;
+  if (c === "vastu") return cardVastuImg;
+
+  return bannerSanctum;
+}
 
 // SCRIPTURE_READER_LIBRARY is imported from ../data/scriptures/index.js
 
@@ -576,6 +752,45 @@ function formatSlugToTitle(slug = "") {
 }
 
 function generateDynamicSubjectData(category, subject) {
+  // 1. Check if category has explicit subCategories in CATEGORIES_DATA
+  const cat = CATEGORIES_DATA[category];
+  const subCat = cat?.subCategories?.find(
+    (sc) => (sc.slug || sc.id) === subject || (sc.slug || sc.id) === subject.toLowerCase(),
+  );
+
+  if (subCat) {
+    return {
+      categorySlug: category,
+      subjectSlug: subject,
+      name: subCat.name,
+      enName: subCat.enName,
+      eyebrow: `${cat.name || "वेद वांग्मय"} • ${subCat.enName}`,
+      intro: subCat.desc || `${subCat.name} का प्रामाणिक एवं पावन संग्रह।`,
+      overviewText: subCat.desc || `${subCat.name} (${subCat.enName}) सनातन वैदिक ज्ञान परंपरा का एक अत्यंत कल्याणकारी अंग है।`,
+      quickInfo: {
+        type: subCat.stats || "वैदिक मंत्र एवं स्तोत्र",
+        language: "संस्कृत / हिन्दी",
+        chiefPriest: subCat.priest || "प्रामाणिक वैदिक परंपरा",
+        mandalCount: subCat.stats || "अध्याय / सूक्त",
+        suktaCount: "संपूर्ण पाठ उपलब्ध",
+        chiefRishis: "वैदिक ऋषि परंपरा",
+      },
+      structureCards: [
+        { num: "१", title: "मूल पाठ", desc: `${subCat.name} का प्रामाणिक संस्करण` },
+        { num: "२", title: "स्तोत्र व मंत्र", desc: "सस्वर उच्चारण एवं षडङ्ग विधान" },
+        { num: "३", title: "साधना व फलश्रुति", desc: "जप विधि, मुहूर्त एवं कल्याणकारी प्रभाव" },
+      ],
+      availableTexts: [
+        {
+          title: `${subCat.name} — प्रामाणिक पाठ संग्रह`,
+          desc: "सस्वर पाठ, जप विधि एवं अर्थ",
+          slug: "mula-patha",
+        },
+      ],
+      relatedGranthas: [],
+    };
+  }
+
   const known = KNOWN_SUBJECTS_METADATA[subject];
   if (known) {
     return {
@@ -720,8 +935,16 @@ const SUBJECT_KEY_MANTRAS_MAP = {
   "valmiki-ramayana": ["vr-aditya-hridaya"],
   yoga: ["ys-1-1", "ys-1-2"],
   vedanta: ["bs-1-1-1", "up-brihad-1-4-10", "up-chandogya-6-8-7"],
-  rudrabhisheka: ["vs-16-1", "rv-7-59-12"],
-  shaiva: ["vs-16-1", "rv-7-59-12"],
+  // Mantra-Stotra & Deity Subjects
+  shiva: ["m-01", "m-03", "rv-7-59-12", "vs-16-1"],
+  shaiva: ["m-01", "m-03", "vs-16-1", "rv-7-59-12"],
+  rudrabhisheka: ["m-01", "vs-16-1", "rv-7-59-12"],
+  vishnu: ["m-05", "m-07", "rv-10-90-1"],
+  devi: ["m-04", "m-06", "m-08"],
+  gayatri: ["m-02", "rv-3-62-10"],
+  ganesh: ["m-09"],
+  surya: ["m-10", "vr-aditya-hridaya"],
+  hanuman: ["m-11"],
 };
 
 function collectMantraIdsFromNode(node, idSet) {
@@ -733,6 +956,7 @@ function collectMantraIdsFromNode(node, idSet) {
 }
 
 function ScriptureReaderView({ scripture }) {
+  const { isHindi } = useLanguage();
   const [selectedChapterId, setSelectedChapterId] = useState(
     scripture.chapters[0]?.id || "",
   );
@@ -933,7 +1157,7 @@ function ScriptureReaderView({ scripture }) {
                 className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-bold text-stone-700 disabled:opacity-40 hover:bg-stone-50 cursor-pointer disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
-                Previous
+                {isHindi ? "पिछला" : "Previous"}
               </button>
               <button
                 type="button"
@@ -941,14 +1165,14 @@ function ScriptureReaderView({ scripture }) {
                 onClick={() => navigatePage(1)}
                 className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-bold text-stone-700 disabled:opacity-40 hover:bg-stone-50 cursor-pointer disabled:cursor-not-allowed"
               >
-                Next
+                {isHindi ? "अगला" : "Next"}
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
               <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-500">
-                Page {safePage} / {totalPages}
+                {isHindi ? `पृष्ठ ${safePage} / ${totalPages}` : `Page ${safePage} / ${totalPages}`}
               </div>
               <input
                 type="number"
@@ -956,7 +1180,7 @@ function ScriptureReaderView({ scripture }) {
                 max={totalPages}
                 value={jumpTo}
                 onChange={(e) => setJumpTo(e.target.value)}
-                placeholder="Jump to verse"
+                placeholder={isHindi ? "श्लोक या पृष्ठ" : "Jump to verse"}
                 className="w-28 rounded-xl border border-stone-200 bg-white px-2.5 py-2 text-xs focus:border-amber-400 outline-none"
               />
               <button
@@ -964,7 +1188,7 @@ function ScriptureReaderView({ scripture }) {
                 onClick={handleJump}
                 className="rounded-xl bg-amber-600 px-3 py-2 text-xs font-bold text-white hover:bg-amber-700 cursor-pointer"
               >
-                Go
+                {isHindi ? "जाएँ" : "Go"}
               </button>
             </div>
           </div>
@@ -1335,7 +1559,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
           <span>›</span>
           {drillPath.length === 0 ? (
             <span className="text-amber-900 font-bold">
-              {subjectData.name} ({subjectData.enName})
+              {subjectData.name && subjectData.enName && subjectData.name !== subjectData.enName
+                ? `${subjectData.name} (${subjectData.enName})`
+                : subjectData.name || subjectData.enName}
             </span>
           ) : (
             <>
@@ -1378,12 +1604,13 @@ export default function SubjectDetailPage({ onOpenSearch }) {
       <section className="relative overflow-hidden bg-gradient-to-r from-[#170e07] via-[#2c1a0e] to-[#140b05] text-white py-14 sm:py-18 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
         <div className="absolute inset-0 z-0">
           <img
-            src={SUBJECT_BANNERS[subject] || bannerSanctum}
+            src={resolveSubjectBanner(subject, category, subjectData)}
             alt={subjectData.name}
-            className="w-full h-full object-cover object-center opacity-40 scale-102 transition-transform duration-1000"
+            className="w-full h-full object-cover object-center opacity-75 scale-102 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1c1108]/75 to-[#140b05]/60" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-[#140b05]/85" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1c1108]/45 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#140b05]/80 via-transparent to-[#140b05]/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-[#140b05]/60" />
         </div>
         <div className="relative z-10 max-w-5xl mx-auto text-center space-y-3">
           <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-amber-300 bg-amber-500/20 border border-amber-400/40 px-3.5 py-1.5 rounded-full backdrop-blur-md shadow-sm">

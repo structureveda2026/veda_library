@@ -15,6 +15,7 @@ import {
   Feather
 } from "lucide-react";
 import { getMantraById } from "../../data/vedicMantrasData.js";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 // Curated Sacred Mahamantras & Stotras for Home Experience
 const SACRED_HOME_MANTRAS_CONFIG = [
@@ -133,15 +134,22 @@ const SACRED_HOME_MANTRAS_CONFIG = [
   }
 ];
 
-const CATEGORY_TABS = [
-  { id: "all", label: "समस्त महामंत्र", count: 12 },
-  { id: "vedic", label: "वैदिक महामंत्र", count: 4 },
-  { id: "upanishad", label: "उपनिषद महावाक्य", count: 5 },
-  { id: "gita_stotra", label: "गीता एवं स्तोत्र", count: 3 }
+const CATEGORY_TABS_CONFIG = [
+  { id: "all", labelHi: "समस्त महामंत्र", labelEn: "All Mantras", count: 12 },
+  { id: "vedic", labelHi: "वैदिक महामंत्र", labelEn: "Vedic Mantras", count: 4 },
+  { id: "upanishad", labelHi: "उपनिषद महावाक्य", labelEn: "Upanishad Mahavakyas", count: 5 },
+  { id: "gita_stotra", labelHi: "गीता एवं स्तोत्र", labelEn: "Gita & Stotras", count: 3 }
 ];
 
 export default function MantraStotraSection({ onNavigateKnowledge }) {
   const navigate = useNavigate();
+  const { isHindi } = useLanguage();
+
+  const categoryTabs = CATEGORY_TABS_CONFIG.map((tab) => ({
+    id: tab.id,
+    label: isHindi ? tab.labelHi : tab.labelEn,
+    count: tab.count
+  }));
 
   // State Management
   const [activeCategoryTab, setActiveCategoryTab] = useState("all");
@@ -284,23 +292,25 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
             <div className="flex items-center gap-2 mb-1.5">
               <span className="w-2 h-2 rounded-full bg-amber-600 animate-pulse" />
               <span className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-amber-800">
-                DIVINE VIBRATIONS • नित्य स्वाध्याय एवं साधना
+                {isHindi ? "दिव्य ध्वनि • नित्य स्वाध्याय एवं साधना" : "DIVINE VIBRATIONS • DAILY SADHANA"}
               </span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-stone-900 tracking-tight">
-              Mantra, Sukta & Stotra
+              {isHindi ? "मंत्र, सूक्त एवं स्तोत्र" : "Mantra, Sukta & Stotra"}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-700 font-devanagari mt-1 max-w-3xl leading-relaxed">
-              वैदिक महामंत्र, उपनिषद महावाक्य एवं पावन स्तोत्र संग्रह। शुद्ध सस्वर वैदिक पाठ, पदच्छेद, ऋषि-देवता परिचय, उच्चारित ध्वनि एवं प्रामाणिक आध्यात्मिक भावार्थ सहित।
+            <p className={`text-xs sm:text-sm text-stone-700 mt-1 max-w-3xl leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+              {isHindi
+                ? "वैदिक महामंत्र, उपनिषद महावाक्य एवं पावन स्तोत्र संग्रह। शुद्ध सस्वर वैदिक पाठ, पदच्छेद, ऋषि-देवता परिचय, उच्चारित ध्वनि एवं प्रामाणिक आध्यात्मिक भावार्थ सहित।"
+                : "Sacred Vedic Mahamantras, Upanishadic Mahavakyas & divine Stotras with authentic Pada-Patha, Rishi-Devata, audio recitation, and commentary."}
             </p>
           </div>
 
-          {/* Header Controls: Font Size Scaler + IAST Toggle + View Archive Link */}
+          {/* Header Controls: Font Size Scaler + 3-Language Selector + View Archive Link */}
           <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 self-start lg:self-auto">
             {/* Font Sizing Toggle (Devanagari Readability Control) */}
             <div className="flex items-center bg-white/90 border border-amber-300/80 rounded-xl p-1 shadow-2xs">
               <span className="text-[11px] font-medium text-stone-600 px-2 font-devanagari hidden sm:inline">
-                अक्षर आकार:
+                {isHindi ? "अक्षर आकार:" : "Text Size:"}
               </span>
               {fontSizes.map((f, idx) => (
                 <button
@@ -322,10 +332,10 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
             {/* 3-Language Translation Selector (Hindi • English • Hinglish) */}
             <div className="flex items-center p-0.5 rounded-xl border border-amber-300/80 bg-white/90 shadow-2xs text-xs font-semibold">
               {[
-                { id: "all", label: "सभी ३ भाषाएँ" },
+                { id: "all", label: isHindi ? "सभी ३ भाषाएँ" : "All 3 Langs" },
                 { id: "hindi", label: "हिन्दी" },
                 { id: "english", label: "English" },
-                { id: "hinglish", label: "हिंग्लिश" }
+                { id: "hinglish", label: isHindi ? "हिंग्लिश" : "Hinglish" }
               ].map((l) => (
                 <button
                   key={l.id}
@@ -348,7 +358,7 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
               onClick={onNavigateKnowledge || (() => navigate("/library/mantra-stotra"))}
               className="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-amber-800 hover:text-amber-950 px-2.5 py-1.5 transition-colors cursor-pointer group"
             >
-              <span>सम्पूर्ण मंत्र संग्रह</span>
+              <span>{isHindi ? "सम्पूर्ण मंत्र संग्रह" : "Full Mantra Archive"}</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
@@ -356,7 +366,7 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
 
         {/* Category Filtering Tabs */}
         <div className="flex flex-wrap items-center gap-2 mb-8">
-          {CATEGORY_TABS.map((tab) => {
+          {categoryTabs.map((tab) => {
             const isActive = activeCategoryTab === tab.id;
             return (
               <button
@@ -557,7 +567,7 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
 
         {/* View All / Show Less Toggle (Active when "समस्त महामंत्र" selected) */}
         {activeCategoryTab === "all" && (
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"
               onClick={() => setShowAllMantras((prev) => !prev)}
@@ -573,6 +583,16 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
               ) : (
                 <ChevronDown className="w-4 h-4 text-amber-800" />
               )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate("/library/mantra-stotra")}
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-700 to-amber-800 hover:from-amber-800 hover:to-amber-900 text-white font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition-all cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-amber-300" />
+              <span>मंत्र व स्तोत्र साधना केंद्र (Mantra Archive)</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         )}

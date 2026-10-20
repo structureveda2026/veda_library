@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
-const FEATURED_TABS = ["All", "Articles", "Mantra", "Grantha", "Topics"];
+const FEATURED_TABS_CONFIG = [
+  { id: "All", labelHi: "समस्त", labelEn: "All" },
+  { id: "Articles", labelHi: "आलेख", labelEn: "Articles" },
+  { id: "Mantra", labelHi: "मंत्र", labelEn: "Mantra" },
+  { id: "Grantha", labelHi: "ग्रंथ", labelEn: "Grantha" },
+  { id: "Topics", labelHi: "विषय", labelEn: "Topics" },
+];
 
 const FEATURED_ITEMS = [
   {
@@ -68,6 +75,7 @@ const FEATURED_ITEMS = [
 
 export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
   const [activeTab, setActiveTab] = useState("All");
+  const { isHindi } = useLanguage();
 
   const filteredItems =
     activeTab === "All"
@@ -83,32 +91,34 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
             <div className="flex items-center gap-1.5 mb-1">
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800">
-                FEATURED KNOWLEDGE
+                {isHindi ? "विशिष्ट ज्ञान" : "FEATURED KNOWLEDGE"}
               </span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
-              Featured Knowledge
+              {isHindi ? "प्रमुख ज्ञान सामग्री" : "Featured Knowledge"}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-0.5">
-              इस समय Library में पढ़े और explore किए जा रहे प्रमुख विषय।
+            <p className={`text-xs sm:text-sm text-stone-600 mt-0.5 ${isHindi ? "font-devanagari" : ""}`}>
+              {isHindi
+                ? "इस समय Library में पढ़े और explore किए जा रहे प्रमुख विषय।"
+                : "Prominent topics and scriptures currently explored in the library."}
             </p>
           </div>
         </div>
 
         {/* Filter Tabs: All | Articles | Mantra | Grantha | Topics */}
         <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1 no-scrollbar">
-          {FEATURED_TABS.map((tab) => (
+          {FEATURED_TABS_CONFIG.map((tab) => (
             <button
-              key={tab}
+              key={tab.id}
               type="button"
-              onClick={() => setActiveTab(tab)}
+              onClick={() => setActiveTab(tab.id)}
               className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                activeTab === tab
+                activeTab === tab.id
                   ? "bg-amber-700 text-white border-amber-700 shadow-sm"
                   : "bg-white text-stone-600 border-stone-200 hover:border-amber-300 hover:text-amber-800"
               }`}
             >
-              {tab}
+              {isHindi ? tab.labelHi : tab.labelEn}
             </button>
           ))}
         </div>

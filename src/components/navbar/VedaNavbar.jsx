@@ -11,7 +11,9 @@ import {
   FileText,
   Compass,
   ArrowRight,
+  Globe,
 } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 export default function VedaNavbar({
   currentView = "home",
@@ -22,6 +24,7 @@ export default function VedaNavbar({
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { language, setLanguage, isHindi, isEnglish, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,15 +69,15 @@ export default function VedaNavbar({
     setIsMobileMenuOpen(false);
   };
 
-  // Document-specified nav items with Articles / Blogs added
+  // Nav items dynamically updated based on selected language
   const navItems = [
-    { id: "home", label: "Home", path: "/library" },
-    { id: "explore", label: "Explore", path: "/library/knowledge" },
-    { id: "grantha", label: "Grantha", path: "/library/collections" },
-    { id: "mantra-stotra", label: "Mantra & Stotra", path: "/library/mantra-stotra" },
-    { id: "articles", label: "Blogs & Articles", path: "/library/articles" },
-    { id: "topics", label: "Topics", path: "/library/knowledge" },
-    { id: "research", label: "Research", path: "/library/knowledge" },
+    { id: "home", label: isHindi ? "होम" : "Home", path: "/library" },
+    { id: "explore", label: isHindi ? "वेद ज्ञान" : "Explore", path: "/library/knowledge" },
+    { id: "grantha", label: isHindi ? "ग्रंथ संग्रह" : "Grantha", path: "/library/collections" },
+    { id: "mantra-stotra", label: isHindi ? "मंत्र एवं स्तोत्र" : "Mantra & Stotra", path: "/library/mantra-stotra" },
+    { id: "articles", label: isHindi ? "शास्त्रीय आलेख" : "Blogs & Articles", path: "/library/articles" },
+    { id: "topics", label: isHindi ? "प्रमुख विषय" : "Topics", path: "/library/knowledge" },
+    { id: "research", label: isHindi ? "अनुसंधान" : "Research", path: "/library/knowledge" },
   ];
 
   return (
@@ -171,11 +174,32 @@ export default function VedaNavbar({
               </kbd>
             </button>
 
-            {/* Sanskrit / English Language Tag */}
-            <div className="hidden md:flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100/60 border border-amber-200/70 text-[11px] font-bold text-amber-900 select-none">
-              <span className="font-devanagari">संस्कृत</span>
-              <span className="text-amber-400">•</span>
-              <span>EN</span>
+            {/* Interactive Hindi / English Language Switcher */}
+            <div className="flex items-center bg-amber-100/70 p-0.5 rounded-full border border-amber-300/80 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setLanguage("hi")}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                  isHindi
+                    ? "bg-gradient-to-r from-amber-700 to-amber-900 text-white shadow-xs"
+                    : "text-amber-950/70 hover:text-amber-950 hover:bg-white/50"
+                }`}
+                title="हिन्दी भाषा चुनें"
+              >
+                <span className="font-devanagari">हिन्दी</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                  isEnglish
+                    ? "bg-gradient-to-r from-amber-700 to-amber-900 text-white shadow-xs"
+                    : "text-amber-950/70 hover:text-amber-950 hover:bg-white/50"
+                }`}
+                title="Switch to English"
+              >
+                <span>EN</span>
+              </button>
             </div>
 
             {/* Mobile Search Icon */}
@@ -208,6 +232,33 @@ export default function VedaNavbar({
       {/* Mobile Navigation Drawer */}
       {isMobileMenuOpen && (
         <div className="lg:hidden border-t border-amber-200 bg-[#fffdf8]/98 backdrop-blur-xl px-4 py-4 space-y-3 animate-fadeIn shadow-lg">
+          {/* Mobile Language Switcher */}
+          <div className="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 border border-amber-200/90 shadow-2xs">
+            <span className="text-xs font-bold text-stone-700 flex items-center gap-1.5">
+              <Globe className="w-3.5 h-3.5 text-amber-700" />
+              <span>{isHindi ? "भाषा (Language):" : "Language:"}</span>
+            </span>
+            <div className="flex items-center bg-white p-0.5 rounded-lg border border-amber-300">
+              <button
+                type="button"
+                onClick={() => setLanguage("hi")}
+                className={`px-3 py-1 rounded-md text-xs font-bold transition cursor-pointer ${
+                  isHindi ? "bg-amber-800 text-white shadow-2xs" : "text-stone-600 hover:text-stone-900"
+                }`}
+              >
+                हिन्दी
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`px-3 py-1 rounded-md text-xs font-bold transition cursor-pointer ${
+                  isEnglish ? "bg-amber-800 text-white shadow-2xs" : "text-stone-600 hover:text-stone-900"
+                }`}
+              >
+                English
+              </button>
+            </div>
+          </div>
           <button
             type="button"
             onClick={() => {

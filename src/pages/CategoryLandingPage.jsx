@@ -22,6 +22,8 @@ import bannerFireRitual from "../assets/images/library/banners/banner-fire-ritua
 import bannerKashiGhat from "../assets/images/library/banners/banner-kashi-ghat.png";
 import bannerSacredDetails from "../assets/images/library/banners/banner-sacred-details.png";
 import bannerTempleGhat from "../assets/images/library/banners/banner-temple-ghat.jpg";
+import bannerAltar from "../assets/images/library/banners/banner-altar.png";
+import bannerTempleHero from "../assets/images/library/banners/banner-temple-hero.jpg";
 import rigvedaImg from "../assets/images/library/cards/card-rigveda.jpg";
 import yajurvedaImg from "../assets/images/library/cards/card-yajurveda.jpg";
 import samavedaImg from "../assets/images/library/cards/card-samaveda.jpg";
@@ -155,23 +157,26 @@ function resolveCardImage(imageKey, textName = "", badge = "") {
 
 const CATEGORY_BANNERS = {
   veda: bannerVedasHeritage,
-  "mantra-stotra": bannerSanctum,
+  "mantra-stotra": bannerAltar,
+  mantra: bannerAltar,
+  puja: bannerFireRitual,
   "puja-vidhi": bannerFireRitual,
   "yagya-sanskar": bannerFireRitual,
-  jyotisha: bannerSacredDetails,
-  vedanga: bannerSanctum,
-  upanishad: bannerKashiGhat,
-  darshana: bannerSanctum,
+  jyotisha: deityNavagrahaImg,
+  vedanga: bannerSacredDetails,
+  upanishad: cardUpanishadImg,
+  darshana: cardUpanishadImg,
+  purana: cardPuranaImg,
+  itihasa: bannerTempleGhat,
   dharma: bannerTempleGhat,
   samskara: bannerFireRitual,
-  devata: bannerSanctum
+  devata: deityTrimurtiImg,
 };
 
 export default function CategoryLandingPage({ onOpenSearch }) {
   const { category = "veda" } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState("All");
   const [vedaHierarchyPath, setVedaHierarchyPath] = useState(() => {
     const vedaParam = searchParams.get("veda") || searchParams.get("sub");
     if (category === "veda" && vedaParam) {
@@ -185,6 +190,29 @@ export default function CategoryLandingPage({ onOpenSearch }) {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all");
+  const [liveBranches, setLiveBranches] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchCategoryBranches() {
+      if (!category) return;
+      try {
+        const res = await fetch(`http://localhost:5000/api/library/categories/${category}/subcategories`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json?.data && Array.isArray(json.data) && json.data.length > 0 && isMounted) {
+            setLiveBranches(json.data);
+          }
+        }
+      } catch {
+        // Seamless fallback to static CATEGORIES_DATA
+      }
+    }
+    fetchCategoryBranches();
+    return () => {
+      isMounted = false;
+    };
+  }, [category]);
 
   useEffect(() => {
     const vedaParam = searchParams.get("veda") || searchParams.get("sub");
@@ -223,9 +251,11 @@ export default function CategoryLandingPage({ onOpenSearch }) {
   }
 
   const isVedaDrilled = category === "veda" && vedaHierarchyPath.length > 0;
+  const staticSubCategories = catData.subCategories || VEDA_HIERARCHY_TREE.children;
+  const effectiveSubCategories = (liveBranches && liveBranches.length > 0) ? liveBranches : staticSubCategories;
   const rawCards = isVedaDrilled
     ? (currentHierarchyNode?.children || [])
-    : (catData.subCategories || VEDA_HIERARCHY_TREE.children);
+    : effectiveSubCategories;
 
   // Derive unique filter categories from available cards
   const availableTypes = Array.from(
@@ -293,104 +323,122 @@ export default function CategoryLandingPage({ onOpenSearch }) {
   };
 
   return (
-    <div className="bg-[#fffaf0] min-h-screen">
-      {/* 2. Breadcrumb (Matching Page 2 of Spec) */}
-      <div className="bg-white border-b border-amber-200/70 py-3 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs font-medium text-stone-500">
-          <Link to="/" className="hover:text-amber-800 transition-colors flex items-center gap-1">
-            <Home className="w-3.5 h-3.5" />
-            <span>Home</span>
+    <div className="bg-[#FBF9F5] text-[#1E293B] min-h-screen selection:bg-amber-200 selection:text-amber-950">
+      {/* 1. Breadcrumb Bar — Royal & Serene */}
+      <div className="bg-white/95 backdrop-blur-md border-b border-amber-200/70 py-3.5 px-4 sm:px-6 lg:px-8 sticky top-0 z-20 shadow-2xs">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs font-medium text-stone-600 flex-wrap">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg hover:text-amber-900 hover:bg-amber-50/80 transition-colors"
+          >
+            <Home className="w-3.5 h-3.5 text-amber-700" />
+            <span>होम (Home)</span>
           </Link>
-          <span>›</span>
-          <Link to="/library" className="hover:text-amber-800 transition-colors">
-            Veda Library
+          <span className="text-amber-300">›</span>
+          <Link
+            to="/library"
+            className="px-2.5 py-1 rounded-lg hover:text-amber-900 hover:bg-amber-50/80 transition-colors"
+          >
+            वेद लाइब्रेरी (Veda Library)
           </Link>
-          <span>›</span>
-          <span className="text-amber-900 font-bold">{catData.name} ({catData.enName})</span>
+          <span className="text-amber-300">›</span>
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100/90 text-[#78350F] font-bold text-xs border border-amber-300/70 shadow-2xs">
+            {catData.name} ({catData.enName})
+          </span>
           {isVedaDrilled && hierarchyNodesPath.map((node) => (
             <React.Fragment key={node.id}>
-              <span>›</span>
-              <span className="text-stone-700 font-medium">{node.name}</span>
+              <span className="text-amber-300">›</span>
+              <span className="text-stone-800 font-semibold px-2 py-0.5 rounded-md bg-stone-100 border border-stone-200">
+                {node.name}
+              </span>
             </React.Fragment>
           ))}
         </div>
       </div>
 
-      {/* 3. Category Hero (Matching Page 2 Section 3) */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e07] via-[#2c1a0e] to-[#140b05] text-white py-16 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
+      {/* 2. Category Hero Section — Crisp Framing with Vignette & Visible Beauty */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e07] via-[#2c1a0e] to-[#140b05] text-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
         <div className="absolute inset-0 z-0">
           <img
             src={CATEGORY_BANNERS[category] || bannerVedasHeritage}
             alt={catData.name}
-            className="w-full h-full object-cover object-center opacity-40 scale-102 transition-transform duration-1000"
+            className="w-full h-full object-cover object-center opacity-70 scale-102 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1c1108]/75 to-[#140b05]/60" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-[#140b05]/85" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1c1108]/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#140b05]/80 via-transparent to-[#140b05]/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/20 via-transparent to-[#140b05]/75" />
         </div>
-        
+
         <div className="relative z-10 max-w-5xl mx-auto text-center space-y-4">
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-300 bg-amber-500/20 border border-amber-400/40 px-3.5 py-1.5 rounded-full backdrop-blur-md shadow-sm">
+          <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-300 bg-amber-500/20 border border-amber-400/40 px-4 py-1.5 rounded-full backdrop-blur-md shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span>{catData.eyebrow}</span>
           </span>
-          
-          <div className="space-y-1">
+
+          <div className="space-y-1.5">
             <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight drop-shadow-md">
               {catData.name}
             </h1>
-            <p className="font-serif text-lg sm:text-2xl text-amber-200/95 font-medium tracking-wide">
+            <p className="font-serif text-xl sm:text-2xl text-amber-200/95 font-medium tracking-wide">
               {catData.enName}
             </p>
           </div>
-          
-          <p className="text-xs sm:text-base text-amber-100/90 font-devanagari max-w-3xl mx-auto leading-relaxed drop-shadow-xs">
+
+          <p className="text-sm sm:text-base text-amber-100/90 font-devanagari max-w-3xl mx-auto leading-relaxed drop-shadow-xs">
             {catData.description}
           </p>
 
-          {/* Dual CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          {/* Dual Royal CTAs */}
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
             <a
               href="#sub-categories"
-              className="px-7 py-3 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-amber-950/40 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer border border-amber-400/30"
+              className="px-7 py-3 rounded-full bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-amber-950/40 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer border border-amber-400/40"
             >
-              <span>{catData.primaryCta}</span>
+              <span>{catData.primaryCta || "उप-विभाग देखें (Explore Sub-Categories)"}</span>
               <ArrowRight className="w-4 h-4" />
             </a>
             <a
               href="#featured"
-              className="px-7 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold text-xs sm:text-sm backdrop-blur-md transition-all cursor-pointer shadow-md"
+              className="px-7 py-3 rounded-full bg-white/10 hover:bg-white/20 border border-amber-300/40 text-amber-100 font-semibold text-xs sm:text-sm backdrop-blur-md transition-all hover:-translate-y-0.5 cursor-pointer shadow-md flex items-center gap-1.5"
             >
-              <span>{catData.secondaryCta}</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>{catData.secondaryCta || "प्रमुख ज्ञान एवं आलेख (Featured)"}</span>
             </a>
           </div>
         </div>
       </section>
 
-      {/* 4. Category Quick Info Strip (Matching Page 2 Section 4) */}
-      <div className="bg-amber-50/60 border-b border-amber-200/80 py-4 px-4 sm:px-6 lg:px-8">
+      {/* 3. Category Quick Info Strip */}
+      <div className="bg-[#FFFDF9] border-b border-amber-200/70 py-4 px-4 sm:px-6 lg:px-8 shadow-2xs">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 font-serif font-bold text-stone-900">
-            <span className="w-2 h-2 rounded-full bg-amber-600" />
-            <span>{catData.quickStats}</span>
+          <div className="flex items-center gap-2 font-serif font-bold text-[#1E293B]">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-600 ring-4 ring-amber-200/60" />
+            <span className="text-sm">{catData.quickStats}</span>
           </div>
-          <div className="text-stone-600 font-medium text-[11px] sm:text-xs">
-            <strong className="text-stone-800">Explore by:</strong> {catData.exploreBy}
+          <div className="text-stone-600 font-medium text-xs flex items-center gap-1.5">
+            <strong className="text-[#78350F] font-bold">विषयवार अन्वेषण:</strong>
+            <span className="text-stone-700">{catData.exploreBy}</span>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-        {/* 5. Introduction — वेद क्या हैं? (Section 5) */}
-        <section className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200/90 shadow-2xs">
-          <h2 className="font-serif text-2xl font-bold text-stone-900 mb-3">
+        {/* 4. Introduction — वेद क्या हैं? */}
+        <section className="bg-white p-6 sm:p-8 rounded-3xl border border-amber-200/70 shadow-sm hover:shadow-md transition-all">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-900 bg-amber-100/80 border border-amber-200 px-2.5 py-0.5 rounded-full">
+              परिचय • Introduction
+            </span>
+          </div>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#78350F] mb-3">
             {catData.introHeading}
           </h2>
-          <p className="text-sm text-stone-700 font-devanagari leading-relaxed">
+          <p className="text-sm sm:text-base text-[#1E293B] font-devanagari leading-relaxed">
             {catData.introText}
           </p>
         </section>
 
-        {/* 6. Main Sub-Categories / Four Vedas Cards (Section 6) */}
+        {/* 5. Main Sub-Categories / Four Vedas Cards */}
         <section id="sub-categories" className="scroll-mt-24">
           {/* Breadcrumb & Back navigation when drilled into Veda hierarchy */}
           {isVedaDrilled && (
@@ -399,13 +447,13 @@ export default function CategoryLandingPage({ onOpenSearch }) {
                 <button
                   type="button"
                   onClick={() => setVedaHierarchyPath((prev) => prev.slice(0, -1))}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-amber-100/80 text-amber-900 font-bold text-xs border border-amber-300 shadow-2xs transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100/80 text-amber-950 font-bold text-xs border border-amber-300 shadow-2xs transition-all cursor-pointer hover:-translate-y-0.5"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <ArrowLeft className="w-3.5 h-3.5 text-amber-700" />
                   <span>पीछे जाएं (Back)</span>
                 </button>
 
-                <span className="text-stone-300">|</span>
+                <span className="text-amber-300">|</span>
 
                 <button
                   type="button"
@@ -419,16 +467,16 @@ export default function CategoryLandingPage({ onOpenSearch }) {
                   const isLast = index === hierarchyNodesPath.length - 1;
                   return (
                     <React.Fragment key={node.id || index}>
-                      <span className="text-stone-400">›</span>
+                      <span className="text-amber-400">›</span>
                       {isLast ? (
-                        <span className="font-bold text-stone-900 bg-amber-100/90 px-2.5 py-0.5 rounded-md border border-amber-200">
+                        <span className="font-bold text-stone-900 bg-amber-100/90 px-3 py-1 rounded-lg border border-amber-300/80 shadow-2xs">
                           {node.name}
                         </span>
                       ) : (
                         <button
                           type="button"
                           onClick={() => setVedaHierarchyPath(vedaHierarchyPath.slice(0, index + 1))}
-                          className="text-stone-600 hover:text-amber-800 hover:underline cursor-pointer"
+                          className="text-stone-700 hover:text-amber-900 hover:underline cursor-pointer font-medium"
                         >
                           {node.name}
                         </button>
@@ -439,7 +487,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-semibold text-stone-500">
+                <span className="text-[11px] font-semibold text-stone-600 bg-white px-2.5 py-1 rounded-lg border border-amber-200/70">
                   स्तर {vedaHierarchyPath.length + 1} • {displayCards.length} उपलब्ध
                 </span>
                 <button
@@ -455,12 +503,12 @@ export default function CategoryLandingPage({ onOpenSearch }) {
 
           <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#78350F]">
                 {isVedaDrilled
                   ? currentHierarchyNode.name
                   : `${catData.name} के प्रमुख उप-विभाग एवं शाखाएँ`}
               </h2>
-              <p className="text-xs sm:text-sm text-stone-500 font-devanagari mt-1">
+              <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-1">
                 {isVedaDrilled
                   ? `${currentHierarchyNode.enName || ""} — नीचे दिए गए उप-विभागों, शाखाओं व ग्रंथों में से चुनें।`
                   : "अपनी रुचि के अनुसार किसी भी शाखा या विषय से शुरुआत करें।"}
@@ -468,27 +516,27 @@ export default function CategoryLandingPage({ onOpenSearch }) {
             </div>
 
             {/* Quick Result Counter */}
-            <div className="text-xs font-semibold text-stone-500 bg-amber-50/90 border border-amber-200/80 px-3 py-1.5 rounded-xl shrink-0 self-start md:self-auto">
+            <div className="text-xs font-semibold text-stone-700 bg-amber-50/90 border border-amber-200 px-3.5 py-1.5 rounded-xl shrink-0 self-start md:self-auto shadow-2xs">
               <span className="text-amber-900 font-bold">{displayCards.length}</span> / {rawCards.length} उपलब्ध
             </div>
           </div>
 
           {/* Dedicated Search & Filter Bar */}
           {rawCards.length > 1 && (
-            <div className="mb-6 p-3 sm:p-4 rounded-2xl bg-white border border-stone-200/90 shadow-2xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            <div className="mb-6 p-4 rounded-2xl bg-white border border-amber-200/70 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5">
               {/* Filter Pills */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
-                <span className="text-stone-400 mr-1 flex items-center gap-1 text-[11px] font-semibold shrink-0">
+                <span className="text-stone-500 mr-1 flex items-center gap-1 text-xs font-bold shrink-0">
                   <Filter className="w-3.5 h-3.5 text-amber-700" />
                   <span>फ़िल्टर:</span>
                 </span>
                 <button
                   type="button"
                   onClick={() => setFilterType("all")}
-                  className={`px-3 py-1.5 rounded-full text-xs transition-colors cursor-pointer whitespace-nowrap ${
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                     filterType === "all"
-                      ? "bg-amber-700 text-white font-bold shadow-2xs"
-                      : "bg-amber-50/80 text-stone-700 hover:bg-amber-100 border border-amber-200/60"
+                      ? "bg-amber-700 text-white font-bold shadow-xs"
+                      : "bg-amber-50/80 text-stone-700 hover:bg-amber-100 hover:text-amber-900 border border-amber-200/70"
                   }`}
                 >
                   सभी ({rawCards.length})
@@ -498,10 +546,10 @@ export default function CategoryLandingPage({ onOpenSearch }) {
                     key={t}
                     type="button"
                     onClick={() => setFilterType(t)}
-                    className={`px-3 py-1.5 rounded-full text-xs transition-colors cursor-pointer whitespace-nowrap ${
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                       filterType === t
-                        ? "bg-amber-700 text-white font-bold shadow-2xs"
-                        : "bg-amber-50/80 text-stone-700 hover:bg-amber-100 border border-amber-200/60"
+                        ? "bg-amber-700 text-white font-bold shadow-xs"
+                        : "bg-amber-50/80 text-stone-700 hover:bg-amber-100 hover:text-amber-900 border border-amber-200/70"
                     }`}
                   >
                     {t}
@@ -511,19 +559,19 @@ export default function CategoryLandingPage({ onOpenSearch }) {
 
               {/* Search Box */}
               <div className="relative min-w-[220px] sm:min-w-[280px]">
-                <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-amber-700 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="शाखा, ग्रंथ या विषय खोजें..."
-                  className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-[#fffaf0] border border-stone-200 focus:border-amber-400 focus:outline-none placeholder:text-stone-400 font-devanagari"
+                  className="w-full pl-9 pr-8 py-2 rounded-xl text-xs bg-[#FFFDF9] border border-amber-200/80 focus:border-amber-500 focus:bg-white focus:outline-none placeholder:text-stone-400 font-devanagari text-[#1E293B] shadow-2xs transition-all"
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="p-1 text-stone-400 hover:text-stone-700 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                    className="p-1 text-stone-400 hover:text-stone-700 absolute right-2.5 top-1/2 -translate-y-1/2 cursor-pointer"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -534,7 +582,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
 
           {/* Empty State when no results match */}
           {displayCards.length === 0 ? (
-            <div className="p-12 text-center bg-white rounded-3xl border border-stone-200 shadow-2xs space-y-3">
+            <div className="p-12 text-center bg-white rounded-3xl border border-amber-200/70 shadow-sm space-y-3">
               <p className="font-serif text-lg font-bold text-stone-800">
                 चयनित फ़िल्टर अथवा खोज के अनुसार कोई उप-विभाग नहीं मिला।
               </p>
@@ -547,129 +595,132 @@ export default function CategoryLandingPage({ onOpenSearch }) {
                   setFilterType("all");
                   setSearchQuery("");
                 }}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold shadow-xs hover:bg-amber-700 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-700 text-white text-xs font-bold shadow-xs hover:bg-amber-800 cursor-pointer transition-all"
               >
                 फ़िल्टर रीसेट करें (Reset Filter)
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {displayCards.map((sub, idx) => {
-              const imgSrc = resolveCardImage(sub.imageKey, sub.name, sub.badge);
-              const hasChildren = sub.children && sub.children.length > 0;
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {displayCards.map((sub, idx) => {
+                const imgSrc = resolveCardImage(sub.imageKey, sub.name, sub.badge);
+                const hasChildren = sub.children && sub.children.length > 0;
 
-              return (
-                <div
-                  key={sub.id || idx}
-                  onClick={() => handleCardClick(sub)}
-                  className="group flex flex-col bg-white rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-lg hover:border-amber-300 transition-all duration-300 overflow-hidden cursor-pointer"
-                >
-                  <div className="relative aspect-16/9 overflow-hidden bg-stone-900">
-                    <img
-                      src={imgSrc}
-                      alt={sub.name}
-                      className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-                    {sub.priest && (
-                      <span className="absolute bottom-2 left-2.5 text-[10px] font-bold text-white bg-black/50 px-2 py-0.5 rounded backdrop-blur-xs">
-                        {sub.priest}
-                      </span>
-                    )}
-                    {hasChildren && (
-                      <span className="absolute top-2.5 right-2.5 text-[10px] font-bold text-amber-900 bg-amber-100/90 border border-amber-300 px-2 py-0.5 rounded-full shadow-xs backdrop-blur-xs flex items-center gap-1">
-                        <Layers className="w-3 h-3" />
-                        <span>{sub.children.length} शाखाएँ / भाग</span>
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-4 flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="font-serif text-base sm:text-lg font-bold text-stone-900 group-hover:text-amber-800 transition-colors leading-snug">
-                          {sub.name}
-                        </h3>
-                        {sub.enName && (
-                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200 shrink-0 max-w-[120px] truncate text-right">
-                            {sub.enName}
-                          </span>
+                return (
+                  <div
+                    key={sub.id || idx}
+                    onClick={() => handleCardClick(sub)}
+                    className="group flex flex-col bg-white rounded-2xl border border-amber-200/70 shadow-sm hover:shadow-xl hover:border-amber-400 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden cursor-pointer"
+                  >
+                    <div className="relative aspect-16/9 overflow-hidden bg-stone-900">
+                      <img
+                        src={imgSrc}
+                        alt={sub.name}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                      {sub.priest && (
+                        <span className="absolute bottom-2.5 left-2.5 text-[10px] font-bold text-white bg-black/60 border border-white/20 px-2 py-0.5 rounded backdrop-blur-xs">
+                          {sub.priest}
+                        </span>
+                      )}
+                      {hasChildren && (
+                        <span className="absolute top-2.5 right-2.5 text-[10px] font-bold text-amber-950 bg-amber-100/90 border border-amber-300 px-2.5 py-0.5 rounded-full shadow-xs backdrop-blur-xs flex items-center gap-1">
+                          <Layers className="w-3 h-3 text-amber-800" />
+                          <span>{sub.children.length} शाखाएँ / भाग</span>
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="font-serif text-base sm:text-lg font-bold text-[#1E293B] group-hover:text-amber-800 transition-colors leading-snug">
+                            {sub.name}
+                          </h3>
+                          {sub.enName && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200 shrink-0 max-w-[120px] truncate text-right">
+                              {sub.enName}
+                            </span>
+                          )}
+                        </div>
+                        {sub.desc && (
+                          <p className="text-xs text-[#475569] font-devanagari mt-2 line-clamp-2 leading-relaxed">
+                            {sub.desc}
+                          </p>
+                        )}
+                        {sub.stats && (
+                          <p className="text-[10px] text-amber-800/80 mt-2 font-medium">
+                            {sub.stats}
+                          </p>
                         )}
                       </div>
-                      {sub.desc && (
-                        <p className="text-xs text-stone-600 font-devanagari mt-2 line-clamp-2 leading-relaxed">
-                          {sub.desc}
-                        </p>
-                      )}
-                      {sub.stats && (
-                        <p className="text-[10px] text-stone-400 mt-2 font-medium">
-                          {sub.stats}
-                        </p>
-                      )}
-                    </div>
 
-                    <div className="mt-4 pt-2.5 border-t border-stone-100 flex items-center justify-between text-xs font-bold text-amber-700 group-hover:text-amber-900">
-                      <span>
-                        {hasChildren
-                          ? `शाखाएँ एवं ग्रंथ देखें (${sub.children.length})`
-                          : sub.enName
-                          ? `Explore ${sub.enName}`
-                          : "ग्रंथ का विवरण देखें"}
-                      </span>
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                      <div className="mt-4 pt-3 border-t border-amber-100 flex items-center justify-between text-xs font-bold text-amber-800 group-hover:text-amber-950">
+                        <span>
+                          {hasChildren
+                            ? `शाखाएँ एवं ग्रंथ देखें (${sub.children.length})`
+                            : sub.enName
+                            ? `Explore ${sub.enName}`
+                            : "ग्रंथ का विवरण देखें"}
+                        </span>
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 text-amber-700" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
           )}
         </section>
 
-        {/* 7. Category Structure (Section 7) */}
+        {/* 6. Category Structure */}
         {catData.structureHierarchy && (
-          <section className="bg-[#fffdf8] p-6 sm:p-8 rounded-3xl border border-amber-200/90 shadow-2xs">
+          <section className="bg-[#FFFDF9] p-6 sm:p-8 rounded-3xl border border-amber-200/70 shadow-sm">
             <div className="text-center max-w-2xl mx-auto mb-8">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-amber-900 bg-amber-100 border border-amber-200 px-3 py-1 rounded-full">
                 HIERARCHY & STRUCTURE
               </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#78350F] mt-2">
                 {catData.name} की संरचना को समझें
               </h2>
               <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-1">
-                वैदिक सामग्री को उसके मूल संरचनात्मक स्तरों के अनुसार explore करें।
+                वैदिक सामग्री को उसके मूल शास्त्रीय एवं संरचनात्मक स्तरों के अनुसार explore करें।
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
               {catData.structureHierarchy.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-3 rounded-xl bg-white border border-stone-200 text-center shadow-2xs flex flex-col justify-between"
+                  className="p-3.5 rounded-xl bg-white border border-amber-200/70 text-center shadow-2xs hover:border-amber-400 hover:shadow-xs transition-all flex flex-col justify-between"
                 >
-                  <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold flex items-center justify-center mx-auto mb-1">
+                  <span className="w-6 h-6 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold flex items-center justify-center mx-auto mb-1.5 border border-amber-200">
                     {idx + 1}
                   </span>
-                  <p className="text-xs font-serif font-bold text-stone-900">{item.level}</p>
-                  <p className="text-[10px] text-stone-400 mt-0.5">{item.en}</p>
+                  <p className="text-xs font-serif font-bold text-[#1E293B]">{item.level}</p>
+                  <p className="text-[10px] text-stone-500 mt-0.5">{item.en}</p>
                 </div>
               ))}
             </div>
           </section>
         )}
 
-        {/* 8. Explore by Topic (Section 8) */}
+        {/* 7. Explore by Topic */}
         <section className="text-center">
-          <h2 className="font-serif text-2xl font-bold text-stone-900 mb-2">
+          <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-amber-900 bg-amber-100/80 border border-amber-200 px-3 py-1 rounded-full mb-2">
+            <span>विषयवार अन्वेषण</span>
+          </div>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#78350F] mb-2">
             वेदों में विषय खोजें
           </h2>
-          <p className="text-xs sm:text-sm text-stone-600 font-devanagari mb-5">
-            यदि आपको किसी विशेष वेद का नाम नहीं पता, तो अपने विषय से शुरुआत करें।
+          <p className="text-xs sm:text-sm text-stone-600 font-devanagari mb-6">
+            यदि आपको किसी विशेष वेद का नाम नहीं पता, तो अपने रुचि के विषय से शुरुआत करें।
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-3xl mx-auto">
             {catData.topics.map((t) => (
               <span
                 key={t}
-                className="px-3.5 py-1.5 rounded-full bg-white border border-stone-200 text-xs font-semibold text-stone-800 hover:border-amber-400 hover:bg-amber-50 cursor-pointer transition-colors"
+                className="px-4 py-2 rounded-full bg-white border border-amber-200/70 text-xs font-semibold text-[#1E293B] hover:border-amber-400 hover:bg-amber-50 hover:text-amber-900 cursor-pointer transition-all shadow-2xs hover:-translate-y-0.5"
               >
                 #{t}
               </span>
@@ -677,20 +728,23 @@ export default function CategoryLandingPage({ onOpenSearch }) {
           </div>
         </section>
 
-        {/* 9. Featured Knowledge Cards (Section 9) */}
+        {/* 8. Featured Knowledge Cards */}
         <section id="featured">
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h2 className="font-serif text-2xl font-bold text-stone-900">
-                Featured Knowledge
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-900 bg-amber-100/80 border border-amber-200 px-3 py-1 rounded-full">
+                विशेष संग्रह
+              </span>
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#78350F] mt-1.5">
+                Featured Knowledge & Articles
               </h2>
-              <p className="text-xs sm:text-sm text-stone-500 font-devanagari mt-0.5">
-                {catData.name} से जुड़े प्रमुख लेख, मंत्र और विषय।
+              <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-0.5">
+                {catData.name} से जुड़े प्रमुख लेख, मंत्र, सूक्त एवं शास्त्रीय विषय।
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {catData.featuredKnowledge.map((feat) => (
               <div
                 key={feat.id}
@@ -699,40 +753,45 @@ export default function CategoryLandingPage({ onOpenSearch }) {
                     `/library/${category}/${feat.subjectSlug}/${feat.articleSlug}`
                   )
                 }
-                className="p-5 rounded-2xl bg-white border border-stone-200/90 shadow-2xs hover:shadow-md hover:border-amber-400 transition-all cursor-pointer flex flex-col justify-between"
+                className="p-6 rounded-2xl bg-white border border-amber-200/70 shadow-sm hover:shadow-xl hover:border-amber-400 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer flex flex-col justify-between"
               >
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 px-2 py-0.5 rounded bg-amber-50 border border-amber-200">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 px-2.5 py-0.5 rounded-full bg-amber-100/80 border border-amber-200">
                     {feat.type}
                   </span>
-                  <h3 className="font-serif text-xl font-bold text-stone-900 mt-2">
+                  <h3 className="font-serif text-xl font-bold text-[#1E293B] mt-2.5 group-hover:text-amber-800 transition-colors">
                     {feat.title}
                   </h3>
-                  <p className="text-xs text-stone-600 font-devanagari mt-2 leading-relaxed">
+                  <p className="text-xs text-[#475569] font-devanagari mt-2 leading-relaxed">
                     {feat.desc}
                   </p>
                 </div>
-                <div className="mt-4 pt-2.5 border-t border-stone-100 text-xs font-bold text-amber-700 flex items-center justify-between">
+                <div className="mt-5 pt-3 border-t border-amber-100 text-xs font-bold text-amber-800 flex items-center justify-between">
                   <span>Read More</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-700" />
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* 17. Category FAQ (Section 17) */}
+        {/* 9. Category FAQ */}
         {catData.faqs && (
-          <section className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200/90 shadow-2xs">
-            <h2 className="font-serif text-2xl font-bold text-stone-900 mb-6 flex items-center gap-2">
+          <section className="bg-white p-6 sm:p-8 rounded-3xl border border-amber-200/70 shadow-sm">
+            <h2 className="font-serif text-2xl font-bold text-[#78350F] mb-6 flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-amber-600" />
-              <span>Frequently Asked Questions</span>
+              <span>प्रायः पूछे जाने वाले प्रश्न (FAQ)</span>
             </h2>
             <div className="space-y-4">
               {catData.faqs.map((faq, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-amber-50/40 border border-amber-100">
-                  <h3 className="text-sm font-bold text-stone-900 mb-1">{faq.q}</h3>
-                  <p className="text-xs text-stone-600 font-devanagari leading-relaxed">
+                <div key={idx} className="p-4 sm:p-5 rounded-2xl bg-[#FFFDF9] border border-amber-200/60 shadow-2xs">
+                  <h3 className="text-sm font-bold text-[#1E293B] mb-1.5 flex items-start gap-2">
+                    <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-900 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                      Q
+                    </span>
+                    <span>{faq.q}</span>
+                  </h3>
+                  <p className="text-xs sm:text-sm text-stone-600 font-devanagari leading-relaxed pl-7">
                     {faq.a}
                   </p>
                 </div>
@@ -741,26 +800,31 @@ export default function CategoryLandingPage({ onOpenSearch }) {
           </section>
         )}
 
-        {/* 18. Final CTA (Section 18) */}
-        <section className="py-12 rounded-3xl bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 text-white text-center p-6 shadow-md">
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold mb-2">
+        {/* 10. Royal Final CTA */}
+        <section className="py-12 px-6 sm:px-12 rounded-3xl bg-gradient-to-r from-amber-700 via-amber-800 to-[#78350F] text-white text-center shadow-xl border border-amber-500/30">
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-amber-200 bg-black/20 border border-white/20 px-3.5 py-1 rounded-full mb-3 backdrop-blur-xs">
+            <Sparkles className="w-3 h-3 text-amber-300" />
+            <span>सनातन ज्ञान संपदा</span>
+          </span>
+          <h2 className="font-serif text-2xl sm:text-4xl font-bold mb-2">
             Explore {catData.name} ({catData.enName})
           </h2>
-          <p className="text-xs sm:text-sm text-amber-100 max-w-md mx-auto mb-6">
-            किसी वेद, मंत्र, सूक्त, ऋषि, देवता या विषय से अपनी यात्रा शुरू करें।
+          <p className="text-xs sm:text-sm text-amber-100 max-w-md mx-auto mb-6 leading-relaxed">
+            किसी वेद, मंत्र, सूक्त, ऋषि, देवता या विषय से अपनी पावन ज्ञान यात्रा शुरू करें।
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => navigate(`/library/${category}/${catData.subCategories[0]?.slug || ""}`)}
-              className="px-6 py-2.5 rounded-full bg-white text-amber-950 font-bold text-xs shadow-sm hover:bg-amber-50 cursor-pointer"
+              className="px-7 py-3 rounded-full bg-white text-amber-950 font-bold text-xs sm:text-sm shadow-md hover:bg-amber-50 cursor-pointer transition-all hover:-translate-y-0.5"
             >
               Explore Sub-Categories →
             </button>
             <button
               onClick={onOpenSearch}
-              className="px-6 py-2.5 rounded-full bg-black/30 border border-white/30 text-white font-semibold text-xs hover:bg-black/50 cursor-pointer"
+              className="px-7 py-3 rounded-full bg-black/30 border border-amber-300/40 text-amber-100 font-semibold text-xs sm:text-sm hover:bg-black/50 cursor-pointer backdrop-blur-xs transition-all hover:-translate-y-0.5 shadow-md flex items-center gap-1.5"
             >
-              Search Library ⌘K
+              <Search className="w-3.5 h-3.5" />
+              <span>Search Library ⌘K</span>
             </button>
           </div>
         </section>

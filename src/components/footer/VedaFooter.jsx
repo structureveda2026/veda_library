@@ -8,9 +8,11 @@ import {
   CheckCircle2,
   Scroll,
 } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 export default function VedaFooter({ onOpenSearch }) {
   const navigate = useNavigate();
+  const { isHindi } = useLanguage();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -113,7 +115,7 @@ export default function VedaFooter({ onOpenSearch }) {
                 className="mt-3 inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#24150b] border border-amber-600/40 hover:border-amber-400 text-stone-300 hover:text-white transition-all text-xs font-medium cursor-pointer shadow-xs group"
               >
                 <Search className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-                <span>Quick Search Library</span>
+                <span>{isHindi ? "पुस्तकालय में खोजें" : "Quick Search Library"}</span>
                 <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/50 text-amber-300 border border-amber-500/30">
                   ⌘K
                 </kbd>
@@ -125,18 +127,18 @@ export default function VedaFooter({ onOpenSearch }) {
           <div className="lg:col-span-3 space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400 border-b border-amber-900/60 pb-2 flex items-center gap-1.5">
               <BookOpen className="w-3.5 h-3.5 text-amber-500" />
-              <span>Explore (ज्ञान शाखाएँ)</span>
+              <span>{isHindi ? "ज्ञान शाखाएँ" : "Explore"}</span>
             </h3>
             <ul className="space-y-2 text-xs font-medium">
               {[
-                { label: "वेद (The Vedas)", path: "/library/veda" },
-                { label: "वेदाङ्ग (Vedangas)", path: "/library/vedanga" },
-                { label: "उपनिषद एवं दर्शन", path: "/library/upanishad" },
-                { label: "पुराण एवं इतिहास", path: "/library/purana-itihasa" },
-                { label: "मंत्र, सूक्त एवं स्तोत्र", path: "/library/mantra-stotra" },
-                { label: "ज्योतिष (Jyotisha)", path: "/library/jyotisha" },
-                { label: "वास्तु (Vastu Shastra)", path: "/library/vastu" },
-                { label: "शास्त्र (Classical Shastras)", path: "/library/shastra" }
+                { label: isHindi ? "वेद (The Vedas)" : "The Vedas (वेद)", path: "/library/veda" },
+                { label: isHindi ? "वेदाङ्ग (Vedangas)" : "Vedangas (वेदाङ्ग)", path: "/library/vedanga" },
+                { label: isHindi ? "उपनिषद एवं दर्शन" : "Upanishad & Darshan", path: "/library/upanishad" },
+                { label: isHindi ? "पुराण एवं इतिहास" : "Purana & Itihasa", path: "/library/purana-itihasa" },
+                { label: isHindi ? "मंत्र, सूक्त एवं स्तोत्र" : "Mantra, Sukta & Stotra", path: "/library/mantra-stotra" },
+                { label: isHindi ? "ज्योतिष (Jyotisha)" : "Jyotisha (Astrology)", path: "/library/jyotisha" },
+                { label: isHindi ? "वास्तु (Vastu Shastra)" : "Vastu Shastra (वास्तु)", path: "/library/vastu" },
+                { label: isHindi ? "शास्त्र (Classical Shastras)" : "Classical Shastras", path: "/library/shastra" }
               ].map((link, idx) => (
                 <li key={idx}>
                   <Link
@@ -156,18 +158,18 @@ export default function VedaFooter({ onOpenSearch }) {
           <div className="lg:col-span-3 space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400 border-b border-amber-900/60 pb-2 flex items-center gap-1.5">
               <Scroll className="w-3.5 h-3.5 text-amber-500" />
-              <span>Resources (संसाधन)</span>
+              <span>{isHindi ? "संसाधन" : "Resources"}</span>
             </h3>
             <ul className="space-y-2 text-xs font-medium">
               {[
-                { label: "Grantha (ग्रंथ संग्रह)", path: "/library/collections" },
-                { label: "Articles & Blogs (लेख व शोध)", path: "/library/articles" },
-                { label: "Topics (विषय सूची)", path: "/library/knowledge" },
-                { label: "Glossary (शब्दकोश)", path: "/library/knowledge" },
-                { label: "Research (शोध)", path: "/library/knowledge" },
-                { label: "References (संदर्भ)", path: "/library/knowledge" },
-                { label: "Manuscripts & Rare Texts", path: "/library/knowledge" },
-                { label: "Knowledge Connection Graph", path: "/library/knowledge" }
+                { label: isHindi ? "ग्रंथ संग्रह (Grantha)" : "Grantha Archive", path: "/library/collections" },
+                { label: isHindi ? "शास्त्रीय आलेख व शोध" : "Articles & Research", path: "/library/articles" },
+                { label: isHindi ? "विषय सूची (Topics)" : "Canonical Topics", path: "/library/knowledge" },
+                { label: isHindi ? "शास्त्रीय शब्दकोश" : "Vedic Glossary", path: "/library/knowledge" },
+                { label: isHindi ? "अनुसंधान (Research)" : "Research & Manuscripts", path: "/library/knowledge" },
+                { label: isHindi ? "संदर्भ एवं भाष्य" : "Commentaries & Citations", path: "/library/knowledge" },
+                { label: isHindi ? "दुर्लभ पाण्डुलिपियाँ" : "Rare Texts & Archives", path: "/library/knowledge" },
+                { label: isHindi ? "ज्ञान संबंध रेखाचित्र" : "Knowledge Connection Graph", path: "/library/knowledge" }
               ].map((link, idx) => (
                 <li key={idx}>
                   <Link
@@ -187,7 +189,7 @@ export default function VedaFooter({ onOpenSearch }) {
           <div className="lg:col-span-3 space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400 border-b border-amber-900/60 pb-2 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Veda Structure</span>
+              <span>{isHindi ? "वेद संरचना" : "Veda Structure"}</span>
             </h3>
             <ul className="space-y-2 text-xs font-medium text-stone-400">
               {[
@@ -242,10 +244,14 @@ export default function VedaFooter({ onOpenSearch }) {
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-stone-500 gap-4">
           <div className="text-center md:text-left space-y-0.5">
             <p className="text-stone-400 font-medium">
-              © 2026 Veda Library • Veda Structure Project. All Rights Reserved.
+              {isHindi
+                ? "© 2026 वेद लाइब्रेरी • वेद स्ट्रक्चर प्रोजेक्ट। समस्त सर्वाधिकार सुरक्षित।"
+                : "© 2026 Veda Library • Veda Structure Project. All Rights Reserved."}
             </p>
             <p className="text-[11px] text-stone-500">
-              Preserving and digitizing traditional knowledge for practitioners, researchers & humanity worldwide.
+              {isHindi
+                ? "समस्त मानव समाज, शोधकर्ताओं व साधकों हेतु सनातन ज्ञान परंपरा का डिजिटल संरक्षण।"
+                : "Preserving and digitizing traditional knowledge for practitioners, researchers & humanity worldwide."}
             </p>
           </div>
 
@@ -258,7 +264,9 @@ export default function VedaFooter({ onOpenSearch }) {
             onClick={scrollToTop}
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#24150b] hover:bg-amber-950/80 text-amber-300 hover:text-white border border-amber-600/40 hover:border-amber-400 transition-all cursor-pointer shadow-xs group"
           >
-            <span className="font-semibold text-xs">Back to Top</span>
+            <span className="font-semibold text-xs">
+              {isHindi ? "शीर्ष पर जाएं" : "Back to Top"}
+            </span>
             <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
         </div>

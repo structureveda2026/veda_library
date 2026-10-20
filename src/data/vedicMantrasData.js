@@ -6873,14 +6873,39 @@ ALL_VEDIC_MANTRAS.forEach((m) => {
   }
 });
 
+import { MANTRAS_STOTRAS_LIST } from "./mantraStotraData.js";
+
 export function getMantraById(id) {
   if (!id) return null;
   const resolvedId = MANTRA_ALIASES[id] || id;
-  return (
+  const foundVeda =
     VEDIC_MANTRAS[resolvedId] ||
-    ALL_VEDIC_MANTRAS.find((m) => m.id === resolvedId || m.slug === resolvedId) ||
-    null
-  );
+    ALL_VEDIC_MANTRAS.find((m) => m.id === resolvedId || m.slug === resolvedId);
+  if (foundVeda) return foundVeda;
+
+  const foundStotra = MANTRAS_STOTRAS_LIST.find((m) => m.id === resolvedId || m.slug === resolvedId);
+  if (foundStotra) {
+    return {
+      id: foundStotra.id,
+      slug: foundStotra.slug,
+      textName: foundStotra.title.hi,
+      mantraNumber: foundStotra.canonAnga?.chhandas?.hi || "स्तोत्र / महामंत्र",
+      sectionRef: foundStotra.categoryLabel?.hi || "स्तोत्र संग्रह",
+      sanskrit: foundStotra.keyVerse?.sanskrit || "",
+      transliteration: foundStotra.keyVerse?.transliteration || "",
+      hindiTranslation: foundStotra.keyVerse?.meaningHi || foundStotra.excerpt.hi,
+      englishTranslation: foundStotra.keyVerse?.meaningEn || foundStotra.excerpt.en,
+      hinglishTranslation: foundStotra.excerpt.hi,
+      rishi: foundStotra.canonAnga?.rishi?.hi || "",
+      devata: foundStotra.deity?.hi || "",
+      chhanda: foundStotra.canonAnga?.chhandas?.hi || "",
+      svara: "सस्वर शास्त्रीय पाठ",
+      padapatha: [],
+      bhashya: foundStotra.subtitle?.hi || "",
+      sadhanaPhala: foundStotra.benefits?.[0]?.text?.hi || "",
+    };
+  }
+  return null;
 }
 
 export function getMantrasByVeda(vedaId) {

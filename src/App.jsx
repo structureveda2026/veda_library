@@ -12,12 +12,14 @@ import KnowledgePage from "./components/knowledge/KnowledgePage.jsx";
 import CollectionsPage from "./components/collections/CollectionsPage.jsx";
 import ArticleDetailPage from "./components/article/ArticleDetailPage.jsx";
 import MantraReaderPage from "./pages/MantraReaderPage.jsx";
-import BlogListPage from "./pages/BlogListPage.jsx";
+import BlogListPage, { VedaArticlesPage } from "./pages/VedaArticlesPage.jsx";
 import BlogDetailPage from "./pages/BlogDetailPage.jsx";
 import PuranaItihasaPage from "./pages/PuranaItihasaPage.jsx";
 import UpanishadDarshanaPage from "./pages/UpanishadDarshanaPage.jsx";
 import ScriptureChapterIndexPage from "./pages/ScriptureChapterIndexPage.jsx";
 import BhagavataChapterDetailPage from "./pages/BhagavataChapterDetailPage.jsx";
+import MantraStotraHubPage from "./pages/MantraStotraHubPage.jsx";
+import MantraStotraDetailPage from "./pages/MantraStotraDetailPage.jsx";
 
 // Helper component to ensure smooth scrolling to top on route navigation
 function ScrollToTop() {
@@ -80,14 +82,20 @@ function MainLayout() {
           />
 
           {/* Blogs & Articles Hub */}
-          <Route path="/library/articles" element={<BlogListPage />} />
-          <Route path="/library/blogs" element={<BlogListPage />} />
+          <Route path="/library/articles" element={<VedaArticlesPage />} />
+          <Route path="/library/blogs" element={<VedaArticlesPage />} />
           <Route path="/library/articles/:slug" element={<BlogDetailPage />} />
           <Route path="/library/blogs/:slug" element={<BlogDetailPage />} />
-          <Route path="/articles" element={<BlogListPage />} />
-          <Route path="/blogs" element={<BlogListPage />} />
+          <Route path="/articles" element={<VedaArticlesPage />} />
+          <Route path="/blogs" element={<VedaArticlesPage />} />
           <Route path="/articles/:slug" element={<BlogDetailPage />} />
           <Route path="/blogs/:slug" element={<BlogDetailPage />} />
+
+          {/* Dedicated Mantra Archive & Detail Experience */}
+          <Route path="/library/mantra-stotra/all" element={<MantraStotraHubPage />} />
+          <Route path="/library/mantra-stotra/item/:slug" element={<MantraStotraDetailPage />} />
+          <Route path="/mantra-stotra/all" element={<MantraStotraHubPage />} />
+          <Route path="/mantra-stotra/:slug" element={<MantraStotraDetailPage />} />
 
           {/* Knowledge & Collections Hubs */}
           <Route path="/library/knowledge" element={<KnowledgePage />} />
@@ -214,10 +222,14 @@ function MainLayout() {
   );
 }
 
+import { LanguageProvider } from "./context/LanguageContext.jsx";
+
 export default function App() {
   return (
     <BrowserRouter>
-      <MainLayout />
+      <LanguageProvider>
+        <MainLayout />
+      </LanguageProvider>
     </BrowserRouter>
   );
 }

@@ -1,19 +1,24 @@
 import React from "react";
 import { ROADMAP_STAGES } from "../../data/libraryHomeData.js";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 export default function RoadmapSection() {
+  const { isHindi } = useLanguage();
+
   return (
     <section id="roadmap" className="py-12 sm:py-16 bg-[#fffaf0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-8">
           <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-100/70 px-2.5 py-0.5 rounded-full border border-amber-200">
-            FUTURE HORIZON
+            {isHindi ? "विकास योजना" : "FUTURE HORIZON"}
           </span>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1.5">
-            The Library is Growing
+          <h2 className={`font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1.5 ${isHindi ? "font-devanagari" : ""}`}>
+            {isHindi ? "पुस्तकालय का विस्तार" : "The Library is Growing"}
           </h2>
-          <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-1 leading-relaxed max-w-xl mx-auto">
-            Veda Library को चरणबद्ध रूप से विकसित किया जा रहा है। वर्तमान में हमारा focus structured text collection और source-based knowledge organization पर है।
+          <p className={`text-xs sm:text-sm text-stone-600 mt-1 leading-relaxed max-w-xl mx-auto ${isHindi ? "font-devanagari" : ""}`}>
+            {isHindi
+              ? "Veda Library को चरणबद्ध रूप से विकसित किया जा रहा है। वर्तमान में हमारा focus structured text collection और source-based knowledge organization पर है।"
+              : "Veda Library is being expanded in structured phases, currently focusing on authentic textual collections and canonical categorization."}
           </p>
         </div>
 

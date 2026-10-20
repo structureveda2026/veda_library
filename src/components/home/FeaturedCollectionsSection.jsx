@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { FEATURED_COLLECTIONS } from "../../data/libraryHomeData.js";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 // Import banner images for collections
 import sanctumImg from "../../assets/images/library/banners/banner-sanctum.png";
@@ -16,6 +17,8 @@ const COLLECTION_IMAGES = {
 };
 
 export default function FeaturedCollectionsSection({ onNavigateCollections }) {
+  const { isHindi } = useLanguage();
+
   return (
     <section id="featured-collections" className="py-10 sm:py-14 bg-[#fffdf8] border-y border-amber-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,14 +28,16 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
             <div className="flex items-center gap-1.5 mb-1">
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800">
-                CURATED ARCHIVES
+                {isHindi ? "विशिष्ट संग्रह" : "CURATED ARCHIVES"}
               </span>
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
-              Featured Collections
+              {isHindi ? "प्रमुख संग्रह" : "Featured Collections"}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-0.5">
-              इस समय Library में सर्वाधिक पढ़े और explore किए जा रहे प्रमुख संग्रह।
+            <p className={`text-xs sm:text-sm text-stone-600 mt-0.5 ${isHindi ? "font-devanagari" : ""}`}>
+              {isHindi
+                ? "इस समय Library में सर्वाधिक पढ़े और explore किए जा रहे प्रमुख संग्रह।"
+                : "Most explored and studied curated collections in the library."}
             </p>
           </div>
 
@@ -41,7 +46,7 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
             onClick={onNavigateCollections}
             className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-amber-800 hover:text-amber-950 group self-start sm:self-auto cursor-pointer"
           >
-            <span>View All Collections</span>
+            <span>{isHindi ? "समस्त संग्रह देखें" : "View All Collections"}</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -50,6 +55,9 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {FEATURED_COLLECTIONS.map((col) => {
             const imgSrc = COLLECTION_IMAGES[col.imageKey] || sanctumImg;
+            const title = isHindi ? col.hindiTitle : col.title;
+            const subtitle = isHindi ? col.title : col.hindiTitle;
+
             return (
               <div
                 key={col.id}
@@ -72,11 +80,11 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
                 {/* Content Box */}
                 <div className="p-3.5 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-serif text-base font-bold text-stone-900 group-hover:text-amber-800 transition-colors">
-                      {col.title}
+                    <h3 className={`font-serif text-base font-bold text-stone-900 group-hover:text-amber-800 transition-colors ${isHindi ? "font-devanagari" : ""}`}>
+                      {title}
                     </h3>
-                    <p className="text-[11px] font-devanagari text-stone-500 font-medium mt-0.5">
-                      {col.hindiTitle}
+                    <p className={`text-[11px] text-stone-500 font-medium mt-0.5 ${isHindi ? "" : "font-devanagari"}`}>
+                      {subtitle}
                     </p>
                     <p className="text-[11px] text-stone-500 mt-1.5 line-clamp-2 leading-relaxed">
                       {col.description}
@@ -85,10 +93,10 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
 
                   <div className="pt-2.5 mt-2 border-t border-stone-100 flex items-center justify-between">
                     <span className="text-xs font-bold text-amber-700 group-hover:text-amber-900 flex items-center gap-1 transition-colors">
-                      Explore →
+                      {isHindi ? "देखें →" : "Explore →"}
                     </span>
                     <span className="text-[10px] text-stone-400 font-medium">
-                      Verified Source
+                      {isHindi ? "प्रामाणिक स्रोत" : "Verified Source"}
                     </span>
                   </div>
                 </div>
