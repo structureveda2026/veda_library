@@ -12,8 +12,6 @@ An open, authoritative digital sanctuary and interactive research portal dedicat
 - [Getting Started](#getting-started)
 - [Application Routes](#application-routes)
 - [Design System & Accessibility](#design-system--accessibility)
-- [Author](#author)
-- [License](#license)
 
 ---
 
@@ -171,17 +169,3 @@ veda-library/
 - **Dual Script Legibility**: Optimized rendering for both Sanskrit Devanagari glyphs and Latin alphabets.
 - **Responsive Layout**: Fluid breakpoints catering seamlessly from smartphones to ultra-wide displays.
 - **Accessible Contrasts**: WCAG AA conformant text contrasts ensuring high readability across all reading modes.
-
----
-
-## Author
-
-**Deepak Raj**  
-- **GitHub**: [@Deepak8081](https://github.com/Deepak8081)
-- **Email**: deepakraj9454979020@gmail.com
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE) — feel free to use and contribute to this repository.
