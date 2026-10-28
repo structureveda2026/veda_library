@@ -1,33 +1,27 @@
-# 🪔 Veda Library — Digital Vedic Knowledge & Sacred Scripture Platform
-
-[![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-8.2-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.3-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![React Router](https://img.shields.io/badge/React_Router-v7-CA4245?logo=react-router&logoColor=white)](https://reactrouter.com/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+# Veda Library — Digital Vedic Knowledge & Sacred Scripture Platform
 
 An open, authoritative digital sanctuary and interactive research portal dedicated to the preservation, exploration, and modern contextual study of Vedic literature, sacred mantras, philosophical granthas, and Indian cultural heritage.
 
 ---
 
-## 📖 Table of Contents
-- [✨ Key Features](#-key-features)
-- [🏛️ Vedic Domain Architecture](#️-vedic-domain-architecture)
-- [🛠️ Tech Stack & Libraries](#️-tech-stack--libraries)
-- [📂 Project Structure](#-project-structure)
-- [🚀 Getting Started](#-getting-started)
-- [🎯 Application Routes](#-application-routes)
-- [🌟 Design System & Accessibility](#-design-system--accessibility)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+## Table of Contents
+- [Key Features](#key-features)
+- [Vedic Domain Architecture](#vedic-domain-architecture)
+- [Tech Stack & Libraries](#tech-stack--libraries)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Application Routes](#application-routes)
+- [Design System & Accessibility](#design-system--accessibility)
+- [Author](#author)
+- [License](#license)
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 - **Four Vedas Deep Dive**: Comprehensive exploration of Rigveda, Samaveda, Yajurveda, and Atharvaveda, detailing historical contexts, shakas, rishis, and primary themes.
 - **Grantha & Scripture Archive**: Structured hierarchy covering Shruti (Vedas, Brahmanas, Aranyakas, Upanishads) and Smriti (Vedangas, Upavedas, Darshanas, Puranas, Itihasas).
-- **Mantra & Stotra Reader**: Interactive reader with Devanagari script, IAST transliterations, poetic meters (Chhandas), English commentaries, and deity associations.
+- **Mantra & Stotra Reader**: Interactive reader with Devanagari script, poetic meters (Chhandas), English commentaries, and deity associations.
 - **Interactive Multi-Modal Search**: Instant overlay modal enabling keyword discovery across collections, deities, hymns, and authors with fuzzy matching.
 - **Audience Learning Pathways**: Tailored learning journeys for Spiritual Seekers, Academic Scholars, Daily Practitioners, and Independent Researchers.
 - **Sacred Deities & Iconography**: Rich visual and contextual index of Vedic and Puranic deities (Trimurti, Dashavatara, Navagraha, Panchayatana, and Vedic Devas).
@@ -36,7 +30,7 @@ An open, authoritative digital sanctuary and interactive research portal dedicat
 
 ---
 
-## 🏛️ Vedic Domain Architecture
+## Vedic Domain Architecture
 
 ```
                        ┌────────────────────────┐
@@ -59,7 +53,7 @@ An open, authoritative digital sanctuary and interactive research portal dedicat
 
 ---
 
-## 🛠️ Tech Stack & Libraries
+## Tech Stack & Libraries
 
 | Technology | Purpose |
 | :--- | :--- |
@@ -73,7 +67,7 @@ An open, authoritative digital sanctuary and interactive research portal dedicat
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 veda-library/
@@ -123,7 +117,7 @@ veda-library/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - **Node.js**: `v18.0.0` or higher (Node.js 20+ recommended)
@@ -133,8 +127,8 @@ veda-library/
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/Deepak8081/veda-library.git
-   cd veda-library
+   git clone https://github.com/structureveda2026/veda_library.git
+   cd veda_library
    ```
 
 2. **Install project dependencies:**
@@ -156,7 +150,7 @@ veda-library/
 
 ---
 
-## 🎯 Application Routes
+## Application Routes
 
 | Path | View | Description |
 | :--- | :--- | :--- |
@@ -171,7 +165,7 @@ veda-library/
 
 ---
 
-## 🌟 Design System & Accessibility
+## Design System & Accessibility
 
 - **Sacred Aesthetics**: Warm ochre, temple gold, sandalwood accents, and deep parchment tones evoke traditional reverence.
 - **Dual Script Legibility**: Optimized rendering for both Sanskrit Devanagari glyphs and Latin alphabets.
@@ -180,7 +174,7 @@ veda-library/
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Deepak Raj**  
 - **GitHub**: [@Deepak8081](https://github.com/Deepak8081)
@@ -188,6 +182,6 @@ veda-library/
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE) — feel free to use and contribute to this repository.

@@ -197,7 +197,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
     async function fetchCategoryBranches() {
       if (!category) return;
       try {
-        const res = await fetch(`http://localhost:5000/api/library/categories/${category}/subcategories`);
+        const res = await fetch(`https://api.vedastructure.com/api/library/categories/${category}/subcategories`);
         if (res.ok) {
           const json = await res.json();
           if (json?.data && Array.isArray(json.data) && json.data.length > 0 && isMounted) {
