@@ -390,31 +390,37 @@ export const FOUR_VEDAS = [
 export const RECENTLY_ADDED = [
   {
     id: "agnihotra",
-    title: "Agnihotra",
+    title: "Agnihotra (दैनिक अग्निहोत्र विधि)",
     category: "Yagya • Vedic Practice",
     statusBadge: "Source Verified",
     statusType: "verified", // green
     timeAgo: "2 days ago",
+    author: "आचार्य पं. सत्यव्रत",
+    publishedDate: "28 Oct 2026",
     imageKey: "card-yagya-fire.jpg",
     desc: "दैनिक अग्निहोत्र विधि, पंचभूत शुद्धि और सूर्य-अग्नि उपासना का शास्त्रीय विधान।"
   },
   {
     id: "rudrabhisheka",
-    title: "Rudrabhisheka",
+    title: "Rudrabhisheka (श्रीरुद्राभिषेक)",
     category: "Puja • Shaiva Tradition",
     statusBadge: "Under Review",
     statusType: "review", // amber
     timeAgo: "3 days ago",
+    author: "डॉ. आचार्य विद्याधर",
+    publishedDate: "27 Oct 2026",
     imageKey: "card-puja.jpg",
     desc: "यजुर्वेदीय रुद्राध्याय अनुसार भगवान शिव के एकादश रुद्र महाभिषेक का विधि-विधान।"
   },
   {
     id: "gayatri-mantra",
-    title: "Gayatri Mantra",
+    title: "Gayatri Mantra (गायत्री महामंत्र रहस्य)",
     category: "Mantra • Vedic",
     statusBadge: "Approved",
     statusType: "approved", // green
     timeAgo: "5 days ago",
+    author: "महर्षि वेद संस्थान",
+    publishedDate: "25 Oct 2026",
     imageKey: "card-rigveda.jpg",
     desc: "ऋग्वेद ३.६२.१० सवितृ महामंत्र का विशुद्ध पाठ, पदच्छेद, ऋषि-विश्वामित्र व गायत्री छंद।"
   }
@@ -442,7 +448,8 @@ export const GRANTHA_ARCHIVE = [
     author: "महर्षि वेदव्यास",
     summary: "१८ अध्याय, ७०० श्लोक — निष्काम कर्म, ज्ञान एवं भक्ति योग का अमर उपदेश।",
     category: "प्रस्थानत्रयी / महाभारत",
-    imageKey: "card-gita.jpg"
+    imageKey: "card-gita.jpg",
+    route: "/read/bhagavad-gita"
   },
   {
     name: "वाल्मीकि रामायण",
@@ -450,7 +457,8 @@ export const GRANTHA_ARCHIVE = [
     author: "आदिकवि वाल्मीकि",
     summary: "७ काण्ड, २४,००० श्लोक — मर्यादा पुरुषोत्तम भगवान श्री राम का पावन जीवन चरित्र।",
     category: "आदिकाव्य",
-    imageKey: "card-ramayana.jpg"
+    imageKey: "card-ramayana.jpg",
+    route: "/read/valmiki-ramayana"
   },
   {
     name: "महाभारत",
@@ -458,7 +466,8 @@ export const GRANTHA_ARCHIVE = [
     author: "महर्षि वेदव्यास",
     summary: "१८ पर्व, १,००,००० श्लोक — धर्म, अर्थ, काम और मोक्ष का विश्वकोशीय आख्यान।",
     category: "इतिहास",
-    imageKey: "card-mahabharata.jpg"
+    imageKey: "card-mahabharata.jpg",
+    route: "/read/mahabharata"
   },
   {
     name: "प्रमुख उपनिषद",
@@ -466,7 +475,8 @@ export const GRANTHA_ARCHIVE = [
     author: "वैदिक महर्षि परंपरा",
     summary: "ईश, केन, कठ, मुण्डक, माण्डूक्य — आत्मज्ञान व परम ब्रह्म की प्रत्यक्ष अनुभूति।",
     category: "वेदांत / श्रुति",
-    imageKey: "card-upanishad.jpg"
+    imageKey: "card-upanishad.jpg",
+    route: "/upanishads"
   },
   {
     name: "१८ महापुराण",
@@ -474,7 +484,8 @@ export const GRANTHA_ARCHIVE = [
     author: "महर्षि वेदव्यास",
     summary: "विष्णु, भागवत, शिव, स्कन्द — सृष्टि, वंश, मन्वन्तर और तीर्थ महात्म्य।",
     category: "पुराण",
-    imageKey: "card-purana.jpg"
+    imageKey: "card-purana.jpg",
+    route: "/puranas"
   },
   {
     name: "बृहत् पाराशर होरा शास्त्र",
@@ -482,7 +493,8 @@ export const GRANTHA_ARCHIVE = [
     author: "महर्षि पाराशर",
     summary: "ग्रह, राशि, नक्षत्र, योग, दशा व भावों का मूलभूत वैज्ञानिक ज्योतिष शास्त्र।",
     category: "फलित ज्योतिष",
-    imageKey: "card-astrology.jpg"
+    imageKey: "card-astrology.jpg",
+    route: "/category/jyotisha"
   },
   {
     name: "पतंजलि योगसूत्र",
@@ -490,7 +502,8 @@ export const GRANTHA_ARCHIVE = [
     author: "महर्षि पतंजलि",
     summary: "४ पाद, १९६ सूत्र — योगश्चित्तवृत्तिनिरोधः, अष्टांग योग व समाधि मार्ग।",
     category: "योग दर्शन",
-    imageKey: "card-samskara.jpg"
+    imageKey: "card-samskara.jpg",
+    route: "/read/yoga"
   },
   {
     name: "चरक संहिता",
@@ -498,7 +511,8 @@ export const GRANTHA_ARCHIVE = [
     author: "महर्षि चरक",
     summary: "८ स्थान, १२० अध्याय — त्रिदोष सिद्धांत, स्वास्थ्य संरक्षण एवं प्राकृतिक कायचिकित्सा।",
     category: "आयुर्वेद",
-    imageKey: "card-vastu.jpg"
+    imageKey: "card-vastu.jpg",
+    route: "/articles/ayurvedic-dinacharya-daily-rituals-vitality-ojas"
   }
 ];
 

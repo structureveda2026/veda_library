@@ -1,0 +1,12 @@
+# Veda Library (Veda Structure Ecosystem)
+# https://library.vedastructure.com
+
+User-agent: *
+Allow: /
+
+# Disallow internal or non-indexed paths
+Disallow: /admin
+Disallow: /api/
+
+# Canonical XML Sitemap
+Sitemap: https://library.vedastructure.com/sitemap.xml

@@ -77,20 +77,20 @@ export default function KnowledgeConnectionSection() {
   const activeNode = CONNECTION_NODES.find((n) => n.id === selectedNodeId) || CONNECTION_NODES[0];
 
   return (
-    <section id="connections" className="py-12 sm:py-16 bg-[#fffaf0] border-b border-amber-200/50">
+    <section id="connections" className="py-8 sm:py-10 bg-white border-y border-[#E5E5E5]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-100/70 px-3 py-1 rounded-full border border-amber-200 shadow-2xs">
+        <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] px-3 py-1 rounded-full border border-[#FFD21F] shadow-2xs">
           CONNECTED SHASTRA MATRIX
         </span>
-        <h2 className="font-serif text-2xl sm:text-4xl font-bold text-stone-900 mt-2">
+        <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#111111] mt-3">
           Discover the Knowledge Connections
         </h2>
-        <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-2 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-2 max-w-2xl mx-auto leading-relaxed">
           भारतीय ज्ञान परंपरा में एक विषय केवल एक पुस्तक तक सीमित नहीं होता; वह वेद, मंत्र, ऋषि, देवता, छंद और अनुष्ठान से परस्पर जुड़ा होता है। किसी भी नोड पर क्लिक करके उसके अंतर्संबंध देखें:
         </p>
 
         {/* Focal Selection Tabs */}
-        <div className="flex items-center justify-center gap-2 overflow-x-auto py-4 mt-4 no-scrollbar">
+        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto py-4 mt-4 no-scrollbar px-2 sm:px-0">
           {CONNECTION_NODES.map((node) => {
             const isSelected = selectedNodeId === node.id;
             return (
@@ -100,8 +100,8 @@ export default function KnowledgeConnectionSection() {
                 onClick={() => setSelectedNodeId(node.id)}
                 className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer border ${
                   isSelected
-                    ? "bg-amber-700 text-white border-amber-700 shadow-md scale-102"
-                    : "bg-white text-stone-700 border-stone-200 hover:border-amber-300 hover:bg-amber-50"
+                    ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] shadow-xs font-bold scale-102"
+                    : "bg-white text-[#555555] border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
                 }`}
               >
                 <span>{node.label}</span>
@@ -111,17 +111,17 @@ export default function KnowledgeConnectionSection() {
         </div>
 
         {/* Visual Dynamic Graph Box */}
-        <div className="mt-6 p-6 sm:p-8 rounded-3xl bg-white border-2 border-amber-200/90 shadow-lg text-left">
+        <div className="mt-6 p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs hover:border-[#D9A441] transition-colors text-left">
           {/* Top Root Node Banner */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-amber-100 gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-[#E5E5E5] gap-3">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#D9A441] bg-[#FFD21F]/15 border border-[#D9A441]/30 px-2.5 py-0.5 rounded">
                 PRIMARY CORPUS ROOT
               </span>
-              <h3 className="font-serif text-2xl font-bold text-stone-900 mt-1">
+              <h3 className="font-serif text-2xl font-bold text-[#111111] mt-1.5">
                 {activeNode.rootText}
               </h3>
-              <p className="text-xs text-amber-800 font-medium font-devanagari mt-0.5">
+              <p className="text-xs text-[#555555] font-medium font-devanagari mt-0.5">
                 {activeNode.englishLabel}
               </p>
             </div>
@@ -129,7 +129,7 @@ export default function KnowledgeConnectionSection() {
             <button
               type="button"
               onClick={() => navigate(activeNode.targetRoute)}
-              className="self-start sm:self-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
+              className="self-start sm:self-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs shadow-xs transition-all cursor-pointer"
             >
               <span>Read Connected Text</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -139,68 +139,68 @@ export default function KnowledgeConnectionSection() {
           {/* Central Connecting Grid: 4 Pillars */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
             {/* 1. Mantra */}
-            <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 shadow-2xs">
-              <span className="text-[10px] font-bold uppercase text-amber-800 block mb-1">
+            <div className="p-4 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-2xs">
+              <span className="text-[10px] font-bold uppercase text-[#D9A441] block mb-1">
                 मंत्र / ऋचा (Vedic Mantra)
               </span>
-              <p className="font-devanagari text-sm font-bold text-stone-900 leading-snug">
+              <p className="font-devanagari text-sm font-bold text-[#111111] leading-snug">
                 "{activeNode.mantra}"
               </p>
-              <span className="text-[11px] text-stone-500 block mt-2">
+              <span className="text-[11px] text-[#555555] block mt-2">
                 मूल स्वर व पदच्छेद विधान
               </span>
             </div>
 
             {/* 2. Rishi */}
-            <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 shadow-2xs">
-              <span className="text-[10px] font-bold uppercase text-emerald-800 block mb-1">
-                ऋषि (Vedic Seer / Draṣṭā)
+            <div className="p-4 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#FFD21F] shadow-2xs">
+              <span className="text-[10px] font-bold uppercase text-[#555555] block mb-1">
+                ऋषि (Vedic Seer / द्रष्टा)
               </span>
-              <p className="font-devanagari text-sm font-bold text-stone-900 leading-snug">
+              <p className="font-devanagari text-sm font-bold text-[#111111] leading-snug">
                 {activeNode.rishi}
               </p>
-              <span className="text-[11px] text-stone-500 block mt-2">
+              <span className="text-[11px] text-[#555555] block mt-2">
                 मंत्र के द्रष्टा एवं परंपरा
               </span>
             </div>
 
             {/* 3. Devata */}
-            <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 shadow-2xs">
-              <span className="text-[10px] font-bold uppercase text-indigo-800 block mb-1">
+            <div className="p-4 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-2xs">
+              <span className="text-[10px] font-bold uppercase text-[#D9A441] block mb-1">
                 देवता (Presiding Deity)
               </span>
-              <p className="font-devanagari text-sm font-bold text-stone-900 leading-snug">
+              <p className="font-devanagari text-sm font-bold text-[#111111] leading-snug">
                 {activeNode.devata}
               </p>
-              <span className="text-[11px] text-stone-500 block mt-2">
+              <span className="text-[11px] text-[#555555] block mt-2">
                 उपास्य स्वरूप व चैतन्य
               </span>
             </div>
 
             {/* 4. Chandas */}
-            <div className="p-4 rounded-2xl bg-purple-50/70 border border-purple-200/80 shadow-2xs">
-              <span className="text-[10px] font-bold uppercase text-purple-800 block mb-1">
+            <div className="p-4 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#FFD21F] shadow-2xs">
+              <span className="text-[10px] font-bold uppercase text-[#555555] block mb-1">
                 छंद (Vedic Metre / Chhandas)
               </span>
-              <p className="font-devanagari text-sm font-bold text-stone-900 leading-snug">
+              <p className="font-devanagari text-sm font-bold text-[#111111] leading-snug">
                 {activeNode.chandas}
               </p>
-              <span className="text-[11px] text-stone-500 block mt-2">
+              <span className="text-[11px] text-[#555555] block mt-2">
                 स्वर-लय, मात्रा एवं नाद विज्ञान
               </span>
             </div>
           </div>
 
           {/* Bottom Subject & Philosophical Synthesis */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-900 to-[#2b170c] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="p-4 sm:p-5 rounded-xl bg-white border border-[#E5E5E5] text-[#111111] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#D9A441]">
                 UNIVERSAL SUBJECT & ESSENCE • विषय
               </span>
-              <h4 className="font-serif text-lg font-bold text-white mt-0.5">
+              <h4 className="font-serif text-lg font-bold text-[#111111] mt-0.5">
                 {activeNode.subject}
               </h4>
-              <p className="text-xs text-amber-100/85 font-devanagari mt-1 max-w-2xl leading-relaxed">
+              <p className="text-xs text-[#555555] font-devanagari mt-1 max-w-2xl leading-relaxed">
                 {activeNode.insight}
               </p>
             </div>
@@ -208,7 +208,7 @@ export default function KnowledgeConnectionSection() {
             <button
               type="button"
               onClick={() => navigate(activeNode.targetRoute)}
-              className="flex-shrink-0 text-xs font-bold text-amber-300 hover:text-white flex items-center gap-1 cursor-pointer"
+              className="flex-shrink-0 text-xs font-bold text-[#111111] hover:text-[#D9A441] flex items-center gap-1 cursor-pointer transition-colors"
             >
               <span>Explore Chapter</span>
               <ChevronRight className="w-4 h-4" />

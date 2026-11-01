@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import SEO from "../components/common/SEO.jsx";
 import {
   Home,
   BookOpen,
   Sparkles,
   Volume2,
   VolumeX,
+  Play,
+  Pause,
   Copy,
   Check,
+  CheckCircle2,
   Share2,
   ArrowLeft,
   ArrowRight,
@@ -20,6 +24,7 @@ import {
   Compass,
   Printer,
   ChevronRight,
+  Bell
 } from "lucide-react";
 import {
   MANTRAS_STOTRAS_LIST,
@@ -33,6 +38,50 @@ import deityDurgaImg from "../assets/images/library/deities/deity-durga.jpg";
 import deityLakshmiImg from "../assets/images/library/deities/deity-lakshmi.jpg";
 import deitySaraswatiImg from "../assets/images/library/deities/deity-saraswati.jpg";
 import bannerAltar from "../assets/images/library/banners/banner-altar.png";
+
+// Trilingual Hinglish purports for global learners
+const HINGLISH_GUIDES = {
+  "maha-mrityunjaya-mantra": "Hum teeno lokon ke Swami, sugandhit aur sabhi jeevon ko divya poshan dene wale Bhagwan Shiv ki aradhana karte hain. Jis prakar paka hua phal bina kisi kasht ke daali se azaad ho jata hai, usi prakar Prabhu hume mrityu aur sansarik bandhanon se mukt karein, par amritatva (moksha) se kabhi alag na karein.",
+  "gayatri-maha-mantra": "Hum us Param Prakashmay, sarvasreshtha aur paap-nashak Savita Dev (Parabrahma) ke divya tej ka dhyan karte hain. Veh Paramatma hamari buddhi aur antahkaran ko satya aur dharm ke kalyankari marg par prerit karein.",
+  "shiva-tandava-stotram": "Jinki jatayon ke gahan van se pavitra Ganga ji ki tarangein pravahit hoti hain, jinke kantha mein vishal sarp haar ke saman shobhit hain, aur jo damru ki mangalkari dhwani par anandit hokar prachand tandav nritya karte hain, un Devo ke Dev Mahadev hum sabka kalyan karein.",
+  "kanakadhara-stotram": "Jaise bhramarey kamal ke phoolon par anurag-poorvak mandrate hain, theek vaise hi Maa Mahalakshmi ki kripa-drishti Bhagwan Shri Hari par padti hai. Devi Lakshmi ki vahi mangaldmayee kripa hamare jeevan mein aakar samriddhi, shanti aur daridrata ka nash kare.",
+  "purusha-suktam": "Us Anant Virat Purusha ke hazaron sheesh, hazaron aankhein aur hazaron charan hain. Veh samast brahmand ko sabhi dishaon se vyapt karke bhi usse das angul upar virajman hain. Jo kuch bhi atheet mein tha aur jo aane wale kaal mein hoga, sabhi us ekmatra Virat Purusha ka hi divya swaroop hai.",
+  "aditya-hridaya-stotram": "Bhagwan Surya sabhi devataon ke atma hain, jo apne divya prakash se sampoorn jagat ko jeevan, chetana aur urja pradan karte hain. Maharshi Agastya dwara Shri Ram ko pradan kiya gaya yeh divya stotra sabhi shatruon par vijay aur antarik tej ka aashirvaad deta hai."
+};
+
+// Web Audio API Temple Bell Chime
+function playTempleChime(freq = 528, count = 1) {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const now = ctx.currentTime;
+
+    const playTone = (frequency, delay = 0, duration = 1.4) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(frequency, now + delay);
+      gain.gain.setValueAtTime(0.001, now + delay);
+      gain.gain.linearRampToValueAtTime(0.28, now + delay + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + delay);
+      osc.stop(now + delay + duration);
+    };
+
+    if (count >= 108) {
+      playTone(528, 0.0, 1.8);
+      playTone(660, 0.15, 2.0);
+      playTone(792, 0.3, 2.4);
+    } else {
+      playTone(freq, 0, 1.2);
+    }
+  } catch {
+    // AudioContext not supported
+  }
+}
 
 function resolveMantraBanner(mantra) {
   if (!mantra) return bannerAltar;
@@ -55,14 +104,17 @@ export default function MantraStotraDetailPage() {
 
   // UI state
   const [fontSize, setFontSize] = useState("large"); // "normal", "large", "xlarge"
-  const [langMode, setLangMode] = useState("both"); // "both", "hi", "en"
+  const [langMode, setLangMode] = useState("both"); // "both", "hi", "en", "hinglish"
   const [copied, setCopied] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   // Embedded Japa Counter
   const [japaCount, setJapaCount] = useState(0);
+  const [japaTarget, setJapaTarget] = useState(108);
+  const [japaSound, setJapaSound] = useState(true);
   const [malasDone, setMalasDone] = useState(0);
   const [justTapped, setJustTapped] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -72,14 +124,41 @@ export default function MantraStotraDetailPage() {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [slug]);
 
+  // Clean up speech synthesis on unmount or slug change
+  useEffect(() => {
+    return () => {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [slug]);
+
+  // Spacebar trigger for Japa Mala Chanting
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.code === "Space" && e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
+        e.preventDefault();
+        handleJapaTap();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [japaCount, japaTarget, japaSound]);
+
   const handleJapaTap = () => {
     setJustTapped(true);
     setTimeout(() => setJustTapped(false), 200);
 
     const next = japaCount + 1;
-    if (next >= 108) {
+    if (japaSound) {
+      playTempleChime(528, next >= japaTarget ? 108 : 1);
+    }
+
+    if (next >= japaTarget) {
       setJapaCount(0);
       setMalasDone((prev) => prev + 1);
+      setToastMsg(`॥ ${japaTarget} जप संकल्प पूर्ण • ॐ तत्सत् ॥`);
+      setTimeout(() => setToastMsg(""), 3500);
     } else {
       setJapaCount(next);
     }
@@ -87,7 +166,8 @@ export default function MantraStotraDetailPage() {
 
   const handleCopyAll = () => {
     if (!mantra) return;
-    const text = `${mantra.title.hi} (${mantra.title.en})\n\n${mantra.keyVerse.sanskrit}\n\nभावार्थ: ${mantra.keyVerse.meaningHi}\n\nMeaning: ${mantra.keyVerse.meaningEn}\n\nस्रोत: Veda Library`;
+    const hinglish = HINGLISH_GUIDES[mantra.slug] || mantra.keyVerse.meaningHi;
+    const text = `${mantra.title.hi} (${mantra.title.en})\n\n${mantra.keyVerse.sanskrit}\n\nभावार्थ: ${mantra.keyVerse.meaningHi}\n\nEnglish: ${mantra.keyVerse.meaningEn}\n\nHinglish: ${hinglish}\n\nस्रोत: Veda Library`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -105,21 +185,52 @@ export default function MantraStotraDetailPage() {
     }
   };
 
+  // Authentic Web Speech API recitation
   const handleToggleAudio = () => {
-    if (isPlayingAudio) {
-      setIsPlayingAudio(false);
-    } else {
-      setIsPlayingAudio(true);
-      setTimeout(() => setIsPlayingAudio(false), 12000);
+    if (!window.speechSynthesis) {
+      setToastMsg("आपके ब्राउज़र में स्पीच सिंथेसिस उपलब्ध नहीं है।");
+      setTimeout(() => setToastMsg(""), 2500);
+      return;
     }
+
+    if (isPlayingAudio) {
+      window.speechSynthesis.cancel();
+      setIsPlayingAudio(false);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const cleanText = (mantra?.keyVerse?.sanskrit || "")
+      .replace(/[\u0951\u0952\u1CDA]/g, "")
+      .replace(/[।॥०-९0-9||\n]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 0.85;
+    utterance.lang = "hi-IN";
+
+    const voices = window.speechSynthesis.getVoices();
+    const optimalVoice = voices.find(
+      (v) => v.lang.startsWith("hi") || v.lang.startsWith("sa") || v.name.includes("India")
+    );
+    if (optimalVoice) {
+      utterance.voice = optimalVoice;
+    }
+
+    utterance.onstart = () => setIsPlayingAudio(true);
+    utterance.onend = () => setIsPlayingAudio(false);
+    utterance.onerror = () => setIsPlayingAudio(false);
+
+    window.speechSynthesis.speak(utterance);
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#fffaf0] flex items-center justify-center p-8">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
         <div className="text-center space-y-3">
-          <div className="w-12 h-12 border-3 border-amber-600 border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="font-serif text-sm font-bold text-amber-900">
+          <div className="w-12 h-12 border-3 border-[#FFD21F] border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="font-serif text-sm font-bold text-[#111111]">
             पावन मंत्र एवं स्तोत्र लोड हो रहा है...
           </p>
         </div>
@@ -129,18 +240,18 @@ export default function MantraStotraDetailPage() {
 
   if (!mantra) {
     return (
-      <div className="min-h-screen bg-[#fffaf0] flex items-center justify-center p-8">
-        <div className="bg-white rounded-2xl border border-amber-200 p-8 text-center max-w-md space-y-4 shadow-sm">
-          <BookOpen className="w-12 h-12 text-amber-600 mx-auto opacity-60" />
-          <h2 className="font-serif text-xl font-bold text-stone-900">
+      <div className="min-h-screen bg-[#FFFFFF] flex items-center justify-center p-8">
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] p-8 text-center max-w-md space-y-4 shadow-sm">
+          <BookOpen className="w-12 h-12 text-[#D9A441] mx-auto opacity-60" />
+          <h2 className="font-serif text-xl font-bold text-[#111111]">
             मंत्र या स्तोत्र नहीं मिला (Mantra Not Found)
           </h2>
-          <p className="text-xs text-stone-600">
+          <p className="text-xs text-[#555555]">
             संभवतः यह लिंक अमान्य है अथवा इसे किसी अन्य स्थान पर स्थानांतरित किया गया है।
           </p>
           <Link
             to="/library/mantra-stotra"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-700 text-white font-bold text-xs"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs shadow-xs cursor-pointer transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>समस्त मंत्र व स्तोत्र संग्रह देखें</span>
@@ -162,15 +273,74 @@ export default function MantraStotraDetailPage() {
       ? "text-lg sm:text-xl leading-relaxed"
       : "text-base sm:text-lg leading-normal";
 
+  const seoTitle = `${mantra.title.hi} (${mantra.title.en}) — पाठ, अन्वय एवं विधि | Veda Library`;
+  const seoDescription = `${mantra.title.hi} का संपूर्ण शुद्ध पाठ, देवता: ${mantra.deity?.hi || "भगवान"}, अर्थ, विधि, विनियोग एवं फलश्रुति।`;
+  const canonicalUrl = `/stotram/${mantra.slug}`;
+
+  const jsonLdSchema = [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "होम (Home)",
+          item: "https://library.vedastructure.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "मंत्र व स्तोत्र (Mantra & Stotra)",
+          item: "https://library.vedastructure.com/stotram/all",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: mantra.title.hi,
+          item: `https://library.vedastructure.com${canonicalUrl}`,
+        },
+      ],
+    },
+    {
+      "@type": "CreativeWork",
+      name: mantra.title.hi,
+      alternateName: mantra.title.en,
+      description: seoDescription,
+      inLanguage: ["sa", "hi", "en"],
+      genre: "Stotram / Mantra",
+      url: `https://library.vedastructure.com${canonicalUrl}`,
+      about: {
+        "@type": "Thing",
+        name: mantra.deity?.hi || "वैदिक देवता",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "Veda Library",
+        url: "https://library.vedastructure.com/",
+      },
+    },
+    {
+      "@type": "ItemPage",
+      name: seoTitle,
+      url: `https://library.vedastructure.com${canonicalUrl}`,
+    },
+  ];
+
   return (
-    <div className="bg-[#fffaf0] min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-20">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        schema={jsonLdSchema}
+      />
       {/* 1. Sacred Breadcrumb Navigation */}
-      <div className="bg-[#fffdf8] border-b border-amber-200/80 py-4 px-4 sm:px-6 lg:px-8">
+      <div className="bg-white border-b border-[#E5E5E5] py-4 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
-          <nav className="flex items-center gap-2 text-stone-500 font-medium truncate">
+          <nav className="flex items-center gap-2 text-[#555555] font-medium truncate">
             <Link
               to="/library"
-              className="hover:text-amber-800 transition-colors flex items-center gap-1 cursor-pointer flex-shrink-0"
+              className="hover:text-[#D9A441] transition-colors flex items-center gap-1 cursor-pointer flex-shrink-0"
             >
               <Home className="w-3.5 h-3.5" />
               <span>Library</span>
@@ -178,19 +348,19 @@ export default function MantraStotraDetailPage() {
             <span>›</span>
             <Link
               to="/library/mantra-stotra"
-              className="hover:text-amber-800 transition-colors cursor-pointer flex-shrink-0"
+              className="hover:text-[#D9A441] transition-colors cursor-pointer flex-shrink-0"
             >
               Mantra & Stotra
             </Link>
             <span>›</span>
-            <span className="text-amber-900 font-bold truncate">
+            <span className="text-[#111111] font-bold truncate">
               {mantra.title.hi}
             </span>
           </nav>
 
           <Link
             to="/library/mantra-stotra"
-            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 hover:text-amber-950 transition-colors"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#111111] hover:text-[#D9A441] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>संग्रह सूची (Back to Hub)</span>
@@ -200,34 +370,34 @@ export default function MantraStotraDetailPage() {
 
       {/* 2. Hero Title Section */}
       <section className="relative overflow-hidden bg-[#170e07] text-white border-b border-amber-900/60 pt-10 pb-12 px-4 sm:px-6 lg:px-8 shadow-xl">
-        {/* Real Deity / Sacred Altar Banner Image */}
+        {/* Real Deity / Sacred Altar Banner Image with 80-85% Opacity and Luminous Overlay */}
         <div className="absolute inset-0 z-0">
           <img
             src={resolveMantraBanner(mantra)}
             alt={mantra.title.hi}
-            className="w-full h-full object-cover object-center opacity-70 scale-102 transition-transform duration-1000"
+            className="w-full h-full object-cover object-center opacity-80 sm:opacity-85 scale-102 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1c1108]/55 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#140b05]/85 via-transparent to-[#140b05]/85" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1c1108]/60 to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/20 via-transparent to-[#140b05]/80" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto space-y-4">
           {/* Metadata Badges */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 font-bold text-[11px] uppercase tracking-wider backdrop-blur-sm shadow-2xs">
+            <span className="px-3 py-1 rounded-full bg-[#FFD21F] text-[#111111] font-bold text-[11px] uppercase tracking-wider shadow-xs">
               {mantra.categoryLabel?.hi || mantra.category}
             </span>
-            <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-200 font-semibold text-[11px] flex items-center gap-1 backdrop-blur-sm">
-              <Flame className="w-3.5 h-3.5 text-amber-300" />
+            <span className="px-3 py-1 rounded-full bg-[#C62828] text-white font-bold text-[11px] flex items-center gap-1 shadow-xs">
+              <Flame className="w-3.5 h-3.5 text-white" />
               {mantra.deity?.hi}
             </span>
-            <span className="text-amber-300/40">•</span>
-            <span className="text-amber-200/80 text-xs flex items-center gap-1">
-              <Clock className="w-3 h-3 text-amber-400" />
+            <span className="text-white/40">•</span>
+            <span className="text-amber-200/90 text-xs flex items-center gap-1">
+              <Clock className="w-3 h-3 text-[#FFD21F]" />
               {mantra.readTime}
             </span>
-            <span className="text-amber-200/80 text-xs flex items-center gap-1">
-              <Eye className="w-3 h-3 text-amber-400" />
+            <span className="text-amber-200/90 text-xs flex items-center gap-1">
+              <Eye className="w-3 h-3 text-[#FFD21F]" />
               {mantra.viewsCount?.toLocaleString()} साधक
             </span>
           </div>
@@ -246,64 +416,47 @@ export default function MantraStotraDetailPage() {
           </div>
 
           {/* Reading & Control Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-amber-700/50">
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/20">
             {/* Font Size Controls */}
-            <div className="flex items-center gap-2 text-xs text-amber-200/90">
-              <span className="font-semibold text-amber-200">फॉन्ट आकार (Text Size):</span>
-              <div className="inline-flex bg-white border border-amber-200 rounded-xl p-0.5 shadow-2xs">
-                <button
-                  onClick={() => setFontSize("normal")}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
-                    fontSize === "normal" ? "bg-amber-700 text-white" : "text-stone-700 hover:bg-amber-50"
-                  }`}
-                >
-                  अ-
-                </button>
-                <button
-                  onClick={() => setFontSize("large")}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
-                    fontSize === "large" ? "bg-amber-700 text-white" : "text-stone-700 hover:bg-amber-50"
-                  }`}
-                >
-                  अ
-                </button>
-                <button
-                  onClick={() => setFontSize("xlarge")}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
-                    fontSize === "xlarge" ? "bg-amber-700 text-white" : "text-stone-700 hover:bg-amber-50"
-                  }`}
-                >
-                  अ+
-                </button>
+            <div className="flex items-center gap-2 text-xs text-white/90">
+              <span className="font-semibold text-white">फॉन्ट (Text Size):</span>
+              <div className="inline-flex bg-white border border-[#E5E5E5] rounded-xl p-0.5 shadow-2xs">
+                {[
+                  { id: "normal", label: "A-" },
+                  { id: "large", label: "A" },
+                  { id: "xlarge", label: "A+" }
+                ].map((sz) => (
+                  <button
+                    key={sz.id}
+                    onClick={() => setFontSize(sz.id)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                      fontSize === sz.id ? "bg-[#FFD21F] text-[#111111]" : "text-[#555555] hover:bg-stone-50"
+                    }`}
+                  >
+                    {sz.label}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Language Mode Toggle */}
-            <div className="flex items-center gap-1.5 bg-white border border-amber-200 rounded-xl p-0.5 text-xs shadow-2xs">
-              <button
-                onClick={() => setLangMode("both")}
-                className={`px-3 py-1 rounded-lg font-bold transition-colors cursor-pointer ${
-                  langMode === "both" ? "bg-amber-800 text-white" : "text-stone-700 hover:bg-amber-50"
-                }`}
-              >
-                द्विभाषी (Both)
-              </button>
-              <button
-                onClick={() => setLangMode("hi")}
-                className={`px-3 py-1 rounded-lg font-bold transition-colors cursor-pointer ${
-                  langMode === "hi" ? "bg-amber-800 text-white" : "text-stone-700 hover:bg-amber-50"
-                }`}
-              >
-                हिन्दी केवल
-              </button>
-              <button
-                onClick={() => setLangMode("en")}
-                className={`px-3 py-1 rounded-lg font-bold transition-colors cursor-pointer ${
-                  langMode === "en" ? "bg-amber-800 text-white" : "text-stone-700 hover:bg-amber-50"
-                }`}
-              >
-                English Only
-              </button>
+            {/* Language Mode Toggle: 3 Mandatory Languages */}
+            <div className="flex items-center gap-1.5 bg-white border border-[#E5E5E5] rounded-xl p-0.5 text-xs shadow-2xs">
+              {[
+                { id: "both", label: "त्रिविध (All)" },
+                { id: "hi", label: "हिन्दी" },
+                { id: "en", label: "English" },
+                { id: "hinglish", label: "सरल हिंग्लिश" }
+              ].map((opt) => (
+                <button
+                  key={opt.id}
+                  onClick={() => setLangMode(opt.id)}
+                  className={`px-3 py-1 rounded-lg font-bold transition-colors cursor-pointer ${
+                    langMode === opt.id ? "bg-[#FFD21F] text-[#111111]" : "text-[#555555] hover:bg-stone-50"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
             </div>
 
             {/* Quick Actions (Copy, Share, Audio) */}
@@ -312,8 +465,8 @@ export default function MantraStotraDetailPage() {
                 onClick={handleToggleAudio}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                   isPlayingAudio
-                    ? "bg-amber-700 text-white shadow-xs animate-pulse"
-                    : "bg-white border border-amber-200 text-stone-800 hover:bg-amber-50"
+                    ? "bg-[#FFD21F] text-[#111111] shadow-xs animate-pulse"
+                    : "bg-white border border-[#E5E5E5] text-[#111111] hover:bg-stone-50"
                 }`}
               >
                 {isPlayingAudio ? (
@@ -323,7 +476,7 @@ export default function MantraStotraDetailPage() {
                   </>
                 ) : (
                   <>
-                    <Volume2 className="w-3.5 h-3.5 text-amber-700" />
+                    <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
                     <span>सस्वर पाठ</span>
                   </>
                 )}
@@ -331,7 +484,7 @@ export default function MantraStotraDetailPage() {
 
               <button
                 onClick={handleCopyAll}
-                className="px-3 py-1.5 rounded-xl bg-white border border-amber-200 text-xs font-bold text-stone-800 hover:bg-amber-50 transition-colors flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1.5 rounded-xl bg-white border border-[#E5E5E5] text-xs font-bold text-[#111111] hover:bg-stone-50 transition-colors flex items-center gap-1 cursor-pointer"
               >
                 {copied ? (
                   <>
@@ -340,7 +493,7 @@ export default function MantraStotraDetailPage() {
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 text-amber-800" />
+                    <Copy className="w-3.5 h-3.5 text-[#D9A441]" />
                     <span>कॉपी करें</span>
                   </>
                 )}
@@ -348,10 +501,10 @@ export default function MantraStotraDetailPage() {
 
               <button
                 onClick={handleShare}
-                className="p-2 rounded-xl bg-white border border-amber-200 text-stone-700 hover:bg-amber-50 transition-colors cursor-pointer"
+                className="p-2 rounded-xl bg-white border border-[#E5E5E5] text-[#111111] hover:bg-stone-50 transition-colors cursor-pointer"
                 title="Share Mantra"
               >
-                <Share2 className="w-4 h-4 text-amber-800" />
+                <Share2 className="w-4 h-4 text-[#D9A441]" />
               </button>
             </div>
           </div>
@@ -365,95 +518,95 @@ export default function MantraStotraDetailPage() {
           <main className="lg:col-span-8 space-y-8">
             {/* 3.1: 6-Fold Vedic Canon (मन्त्र षडङ्ग विधान) Visual Table */}
             {mantra.canonAnga && (
-              <section className="bg-white rounded-2xl border-2 border-amber-200/90 p-5 sm:p-6 shadow-sm space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-amber-200/70">
+              <section className="bg-white rounded-2xl border border-[#E5E5E5] p-5 sm:p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
                   <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-amber-700 text-white flex items-center justify-center font-bold text-xs">
+                    <span className="w-6 h-6 rounded-full bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold text-xs">
                       ॐ
                     </span>
                     <div>
-                      <h2 className="font-serif font-bold text-stone-900 text-base">
+                      <h2 className="font-serif font-bold text-[#111111] text-base">
                         मंत्र षडङ्ग विधान (6-Fold Vedic Canon)
                       </h2>
-                      <p className="text-[11px] text-stone-500 font-sans">
+                      <p className="text-[11px] text-[#555555] font-sans">
                         किसी भी वैदिक मंत्र की साधना से पूर्व षडंग विनियोग का स्मरण अनिवार्य है
                       </p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111]">
                     षडङ्ग न्यास
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  <div className="bg-gradient-to-br from-[#fffdfa] to-amber-50/70 p-3.5 rounded-xl border border-amber-200/80">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">
+                  <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-2xs">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#D9A441] block">
                       १. ऋषि (Sage / Revealer)
                     </span>
-                    <strong className="font-devanagari text-sm font-bold text-stone-900 block mt-1">
+                    <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
                       {mantra.canonAnga.rishi?.hi}
                     </strong>
-                    <span className="text-[10px] text-stone-500 font-sans">
+                    <span className="text-[10px] text-[#555555] font-sans">
                       {mantra.canonAnga.rishi?.en}
                     </span>
                   </div>
 
-                  <div className="bg-gradient-to-br from-[#fffdfa] to-amber-50/70 p-3.5 rounded-xl border border-amber-200/80">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">
+                  <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#FFD21F] shadow-2xs">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#555555] block">
                       २. छन्द (Metre / Rhythm)
                     </span>
-                    <strong className="font-devanagari text-sm font-bold text-stone-900 block mt-1">
+                    <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
                       {mantra.canonAnga.chhandas?.hi}
                     </strong>
-                    <span className="text-[10px] text-stone-500 font-sans">
+                    <span className="text-[10px] text-[#555555] font-sans">
                       {mantra.canonAnga.chhandas?.en}
                     </span>
                   </div>
 
-                  <div className="bg-gradient-to-br from-[#fffdfa] to-amber-50/70 p-3.5 rounded-xl border border-amber-200/80">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">
+                  <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-2xs">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#D9A441] block">
                       ३. देवता (Presiding Deity)
                     </span>
-                    <strong className="font-devanagari text-sm font-bold text-stone-900 block mt-1">
+                    <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
                       {mantra.canonAnga.devata?.hi}
                     </strong>
-                    <span className="text-[10px] text-stone-500 font-sans">
+                    <span className="text-[10px] text-[#555555] font-sans">
                       {mantra.canonAnga.devata?.en}
                     </span>
                   </div>
 
-                  <div className="bg-gradient-to-br from-[#fffdfa] to-amber-50/70 p-3.5 rounded-xl border border-amber-200/80">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">
+                  <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#FFD21F] shadow-2xs">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#555555] block">
                       ४. बीजम् (Sonic Seed)
                     </span>
-                    <strong className="font-devanagari text-sm font-bold text-stone-900 block mt-1">
+                    <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
                       {mantra.canonAnga.beejam?.hi}
                     </strong>
-                    <span className="text-[10px] text-stone-500 font-sans">
+                    <span className="text-[10px] text-[#555555] font-sans">
                       {mantra.canonAnga.beejam?.en}
                     </span>
                   </div>
 
-                  <div className="bg-gradient-to-br from-[#fffdfa] to-amber-50/70 p-3.5 rounded-xl border border-amber-200/80">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">
+                  <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-2xs">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#D9A441] block">
                       ५. शक्ति (Primal Energy)
                     </span>
-                    <strong className="font-devanagari text-sm font-bold text-stone-900 block mt-1">
+                    <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
                       {mantra.canonAnga.shakti?.hi}
                     </strong>
-                    <span className="text-[10px] text-stone-500 font-sans">
+                    <span className="text-[10px] text-[#555555] font-sans">
                       {mantra.canonAnga.shakti?.en}
                     </span>
                   </div>
 
-                  <div className="bg-gradient-to-br from-[#fffdfa] to-amber-50/70 p-3.5 rounded-xl border border-amber-200/80">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-amber-800 block">
+                  <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#FFD21F] shadow-2xs">
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#555555] block">
                       ६. कीलकम् (Auspicious Pin)
                     </span>
-                    <strong className="font-devanagari text-sm font-bold text-stone-900 block mt-1">
+                    <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
                       {mantra.canonAnga.keelakam?.hi}
                     </strong>
-                    <span className="text-[10px] text-stone-500 font-sans">
+                    <span className="text-[10px] text-[#555555] font-sans">
                       {mantra.canonAnga.keelakam?.en}
                     </span>
                   </div>
@@ -462,158 +615,314 @@ export default function MantraStotraDetailPage() {
             )}
 
             {/* 3.2: Resonant Devanagari Altar Box (मूल श्लोक एवं पाठ) */}
-            <section className="bg-gradient-to-br from-[#fffcf5] via-[#fdf6e9] to-[#faedd0] rounded-3xl border-3 border-amber-300/90 p-6 sm:p-8 shadow-md relative overflow-hidden">
-              <div className="absolute top-2 right-3 text-7xl font-devanagari text-amber-900/5 select-none pointer-events-none">
+            <section className="bg-white rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] border-l-4 border-l-[#D9A441] p-6 sm:p-8 shadow-xs relative overflow-hidden">
+              <div className="absolute top-2 right-3 text-7xl font-devanagari text-black/5 select-none pointer-events-none">
                 ॐ
               </div>
 
               {/* Altar Header */}
-              <div className="text-center pb-6 border-b border-amber-300/60 space-y-1">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-800 text-amber-100 text-[11px] font-bold shadow-2xs">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <div className="flex items-center justify-between pb-4 border-b border-[#E5E5E5]">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFD21F] text-[#111111] text-[11px] font-bold shadow-2xs">
+                  <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
                   <span>॥ ॐ श्री परमात्मने नमः ॥</span>
                 </span>
-                <h3 className="font-devanagari text-sm font-semibold text-amber-900 pt-1">
-                  मूल वैदिक संहिता ऋचा एवं सस्वर उच्चारण
-                </h3>
+                <span className="text-xs font-serif font-bold text-[#D9A441] select-none">
+                  ॥ ॐ ॥
+                </span>
               </div>
 
               {/* Central Sanskrit Verse (Pure Authentic Devanagari) */}
-              <div className="py-8 text-center space-y-4">
-                <p className={`font-devanagari font-black text-amber-950 whitespace-pre-line tracking-wide drop-shadow-xs ${verseFontClass}`}>
-                  {mantra.keyVerse.sanskrit}
-                </p>
+              <div className="py-8 text-center space-y-3">
+                <div className="font-devanagari font-bold text-[#111111] tracking-wide select-text leading-[1.8] font-serif">
+                  {(mantra.keyVerse.sanskrit || "").split("\n").map((line, lIdx) => (
+                    <div key={lIdx} className={`${verseFontClass} my-1.5`}>
+                      {line.split(/([।॥])/).map((seg, sIdx) => {
+                        if (seg === "।" || seg === "॥") {
+                          return (
+                            <span key={sIdx} className="text-[#D9A441] font-bold px-1 select-none">
+                              {seg}
+                            </span>
+                          );
+                        }
+                        return <span key={sIdx}>{seg}</span>;
+                      })}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="text-center text-[#D9A441] text-sm font-serif select-none pt-2 font-bold">
+                  ॥ इति ॥
+                </div>
               </div>
 
-              {/* Philosophical Meanings (Hindi & English) */}
-              <div className="pt-6 border-t border-amber-300/60 space-y-4">
+              {/* Trilingual Purports (Hindi, English, Hinglish) */}
+              <div className="pt-6 border-t border-[#E5E5E5] space-y-4">
                 {(langMode === "both" || langMode === "hi") && (
-                  <div className="space-y-1 bg-white/80 rounded-2xl p-4 border border-amber-200/70">
-                    <h4 className="font-devanagari font-bold text-amber-900 text-xs sm:text-sm flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-700" />
-                      विस्तृत भावार्थ (Hindi Purport):
+                  <div className="space-y-1.5 bg-stone-50 rounded-xl p-4 border border-[#E5E5E5]">
+                    <h4 className="font-devanagari font-bold text-[#111111] text-xs sm:text-sm flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-[#FFD21F]" />
+                      <span>विस्तृत हिन्दी भावार्थ (Hindi Purport):</span>
                     </h4>
-                    <p className="font-devanagari text-xs sm:text-sm text-stone-800 leading-relaxed pt-1">
+                    <p className="font-devanagari text-xs sm:text-sm text-[#111111] leading-relaxed pt-1">
                       {mantra.keyVerse.meaningHi}
                     </p>
                   </div>
                 )}
 
                 {(langMode === "both" || langMode === "en") && (
-                  <div className="space-y-1 bg-white/80 rounded-2xl p-4 border border-amber-200/70">
-                    <h4 className="font-sans font-bold text-stone-900 text-xs sm:text-sm flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-700" />
-                      English Philosophical Translation:
+                  <div className="space-y-1.5 bg-stone-50 rounded-xl p-4 border border-[#E5E5E5]">
+                    <h4 className="font-sans font-bold text-[#111111] text-xs sm:text-sm flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-[#D9A441]" />
+                      <span>English Philosophical Translation:</span>
                     </h4>
-                    <p className="font-sans text-xs sm:text-sm text-stone-700 leading-relaxed pt-1">
+                    <p className="font-sans text-xs sm:text-sm text-[#555555] leading-relaxed pt-1">
                       {mantra.keyVerse.meaningEn}
                     </p>
                   </div>
                 )}
+
+                {(langMode === "both" || langMode === "hinglish") && (
+                  <div className="space-y-1.5 bg-stone-50 rounded-xl p-4 border border-[#E5E5E5]">
+                    <h4 className="font-sans font-bold text-[#111111] text-xs sm:text-sm flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-[#C62828]" />
+                      <span>सरल हिंग्लिश व्याख्या (Youth & Global Learner Guide):</span>
+                    </h4>
+                    <p className="font-sans text-xs sm:text-sm text-[#111111] leading-relaxed pt-1 font-medium">
+                      {HINGLISH_GUIDES[mantra.slug] || mantra.keyVerse.meaningHi}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* 3.25: Comprehensive Source & Bibliographic Reference Card */}
+            <section className="bg-white rounded-2xl border border-[#E5E5E5] p-5 sm:p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-[#D9A441]" />
+                  <h3 className="font-serif font-bold text-[#111111] text-base">
+                    स्रोत, संस्करण एवं संदर्भ विवरण (Source & Bibliographic Reference)
+                  </h3>
+                </div>
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] border border-[#FFD21F]">
+                  प्रामाणिक श्रुति / स्मृति
+                </span>
+              </div>
+
+              <div className="border border-[#E5E5E5] rounded-xl overflow-hidden shadow-2xs bg-white">
+                <table className="w-full text-xs font-devanagari divide-y divide-[#E5E5E5]">
+                  <tbody className="divide-y divide-[#E5E5E5]">
+                    <tr className="bg-[#F9F9F9]">
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555] w-1/3 shrink-0">मूल ग्रंथ / संहिता</td>
+                      <td className="px-3.5 py-2.5 text-[#111111] font-bold">{mantra.title?.hi} ({mantra.title?.en})</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">शाखा / परंपरा</td>
+                      <td className="px-3.5 py-2.5 text-[#111111]">{mantra.categoryLabel?.hi || "सनातन वैदिक परंपरा"}</td>
+                    </tr>
+                    <tr className="bg-[#F9F9F9]">
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">सूक्त / श्लोक संदर्भ</td>
+                      <td className="px-3.5 py-2.5 text-[#111111] font-semibold">{mantra.subtitle?.hi}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">ऋषि (Seer)</td>
+                      <td className="px-3.5 py-2.5 text-[#111111]">{mantra.canonAnga?.rishi?.hi || "वैदिक ऋषि"}</td>
+                    </tr>
+                    <tr className="bg-[#F9F9F9]">
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">देवता (Presiding Deity)</td>
+                      <td className="px-3.5 py-2.5 text-[#C62828] font-bold">{mantra.canonAnga?.devata?.hi || mantra.deity?.hi}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">छन्द (Vedic Metre)</td>
+                      <td className="px-3.5 py-2.5 text-[#D9A441] font-bold">{mantra.canonAnga?.chhandas?.hi || "अनुष्टुप् / त्रिष्टुप्"}</td>
+                    </tr>
+                    <tr className="bg-[#F9F9F9]">
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">समीक्षक एवं संपादन</td>
+                      <td className="px-3.5 py-2.5 text-[#111111] font-semibold flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>Veda Library Editorial Board (विद्वत परिषद द्वारा सत्यापित)</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </section>
 
             {/* 3.3: Interactive 108 Digital Japa Counter on Reading Page */}
-            <section className="bg-gradient-to-r from-amber-900 via-amber-950 to-stone-950 rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-amber-800/80">
+            <section className="bg-white rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] p-6 shadow-xs relative overflow-hidden space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E5E5E5]">
                 <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center font-bold text-amber-300">
+                  <div className="w-8 h-8 rounded-xl bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold text-sm shadow-2xs">
                     ॐ
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-base text-amber-100">
-                      साधना जप काउंटर (Interactive Japa Mala)
+                    <h3 className="font-serif font-bold text-base text-[#111111]">
+                      साधना जप काउंटर (Sacred Japa Mala Counter)
                     </h3>
-                    <p className="text-xs text-amber-300/80 font-sans">
-                      मंत्र पाठ करते हुए यहाँ क्लिक करके १०८ जप की माला पूर्ण करें
+                    <p className="text-xs text-[#555555] font-sans">
+                      मंत्र का श्रद्धापूर्वक पाठ करते हुए यहाँ क्लिक करके जप संकल्प पूर्ण करें
                     </p>
                   </div>
                 </div>
 
-                {japaCount > 0 && (
+                <div className="flex items-center gap-2 self-start sm:self-auto">
                   <button
-                    onClick={() => setJapaCount(0)}
-                    className="self-start sm:self-auto px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-amber-200 flex items-center gap-1 transition-colors cursor-pointer"
+                    type="button"
+                    onClick={() => setJapaSound((p) => !p)}
+                    title={japaSound ? "मंदिर घंटी ध्वनि चालू है" : "ध्वनि म्यूट है"}
+                    className="p-2 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-[#111111] hover:bg-stone-50 transition-colors cursor-pointer"
                   >
-                    <RotateCcw className="w-3 h-3" />
-                    <span>रीसेट</span>
+                    {japaSound ? <Volume2 className="w-4 h-4 text-[#D9A441]" /> : <VolumeX className="w-4 h-4 text-[#555555]" />}
                   </button>
-                )}
-              </div>
-
-              <div className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-6">
-                {/* Count Display */}
-                <div className="flex items-center gap-4">
-                  <div className="text-center sm:text-left">
-                    <span className={`text-4xl sm:text-5xl font-serif font-black text-amber-300 block transition-transform ${justTapped ? "scale-110 text-amber-100" : ""}`}>
-                      {japaCount}
-                    </span>
-                    <span className="text-[11px] font-semibold text-stone-300 uppercase tracking-wider">
-                      / 108 मंत्र जप
-                    </span>
-                  </div>
-
-                  {malasDone > 0 && (
-                    <div className="px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-xs font-bold flex items-center gap-1.5">
-                      <Award className="w-4 h-4 text-amber-300" />
-                      <span>{malasDone} माला पूर्ण!</span>
-                    </div>
+                  {japaCount > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setJapaCount(0)}
+                      title="माला रीसेट करें"
+                      className="px-3 py-1.5 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-xs font-bold text-[#111111] hover:bg-stone-50 flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>रीसेट</span>
+                    </button>
                   )}
                 </div>
-
-                {/* Big Chant Button */}
-                <button
-                  onClick={handleJapaTap}
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-white font-serif font-bold text-sm sm:text-base shadow-lg shadow-amber-600/30 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Sparkles className="w-4 h-4 text-amber-200" />
-                  <span>जप करें (+1 Chant)</span>
-                </button>
               </div>
+
+              {/* Target presets */}
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-xs font-bold text-[#555555]">संकल्प लक्ष्य:</span>
+                  {[11, 21, 54, 108].map((target) => (
+                    <button
+                      key={target}
+                      type="button"
+                      onClick={() => {
+                        setJapaTarget(target);
+                        setJapaCount(0);
+                      }}
+                      className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        japaTarget === target
+                          ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-2xs font-extrabold"
+                          : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441]"
+                      }`}
+                    >
+                      {target} जप
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-3 text-xs font-bold">
+                  {malasDone > 0 && (
+                    <span className="px-3 py-1 rounded-xl bg-stone-50 border border-[#E5E5E5] text-[#111111] flex items-center gap-1">
+                      <Award className="w-3.5 h-3.5 text-[#D9A441]" />
+                      <span>पूर्ण माला: <strong className="text-[#D9A441]">{malasDone}</strong></span>
+                    </span>
+                  )}
+                  <span className="px-3 py-1 rounded-xl bg-stone-50 border border-[#E5E5E5] text-[#111111]">
+                    प्रगति: <strong className="text-[#C62828]">{Math.min(100, Math.round((japaCount / japaTarget) * 100))}%</strong>
+                  </span>
+                </div>
+              </div>
+
+              {/* SVG Ring & Big Bead Tap Area */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 py-2">
+                <div className="relative w-36 h-36 flex items-center justify-center">
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      className="stroke-[#E5E5E5] fill-none"
+                      strokeWidth="7"
+                    />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      className="stroke-[#FFD21F] transition-all duration-300 ease-out fill-none"
+                      strokeWidth="7"
+                      strokeDasharray={2 * Math.PI * 42}
+                      strokeDashoffset={(2 * Math.PI * 42) * (1 - japaCount / japaTarget)}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+
+                  <div className="absolute text-center flex flex-col items-center justify-center">
+                    <span className={`text-3xl font-extrabold font-mono text-[#111111] leading-none transition-transform ${justTapped ? "scale-110" : ""}`}>
+                      {japaCount}
+                    </span>
+                    <span className="text-[10px] font-bold text-[#555555] uppercase mt-0.5">
+                      / {japaTarget}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-center sm:items-start gap-2.5">
+                  <button
+                    type="button"
+                    onClick={handleJapaTap}
+                    className="px-8 py-3.5 rounded-2xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-serif text-base font-bold shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer border border-[#D9A441]"
+                  >
+                    <Sparkles className="w-4 h-4 text-[#C62828]" />
+                    <span>॥ ॐ जपें (+1 Chant) ॥</span>
+                  </button>
+
+                  <p className="text-xs text-[#555555] font-devanagari">
+                    टैप करें अथवा कीबोर्ड का <strong>Spacebar</strong> दबाएँ
+                  </p>
+                </div>
+              </div>
+
+              {/* Toast banner on completion */}
+              {toastMsg && (
+                <div className="p-3.5 rounded-xl bg-[#FFD21F]/15 border border-[#FFD21F] text-center font-serif text-xs sm:text-sm font-bold text-[#111111] animate-bounce">
+                  {toastMsg}
+                </div>
+              )}
             </section>
 
             {/* 3.4: Sadhana Vidhi & Rules (साधना एवं जप विधान) */}
             {mantra.vidhi && (
-              <section className="bg-white rounded-2xl border border-amber-200/90 p-5 sm:p-6 shadow-xs space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-amber-100">
-                  <h3 className="font-serif font-bold text-stone-900 text-base flex items-center gap-2">
-                    <Flame className="w-4 h-4 text-amber-700" />
+              <section className="bg-white rounded-2xl border border-[#E5E5E5] p-5 sm:p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
+                  <h3 className="font-serif font-bold text-[#111111] text-base flex items-center gap-2">
+                    <Flame className="w-4 h-4 text-[#D9A441]" />
                     <span>शास्त्रीय साधना विधान (Sadhana Vidhi & Rules)</span>
                   </h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111]">
                     शास्त्र सम्मत
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-                  <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/60">
-                    <strong className="text-amber-950 font-bold block">१. शुभ मुहूर्त (Auspicious Timing):</strong>
-                    <p className="text-stone-700 font-devanagari mt-0.5">{mantra.vidhi.muhurat?.hi}</p>
-                    <p className="text-stone-500 font-sans text-[11px]">{mantra.vidhi.muhurat?.en}</p>
+                  <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441]">
+                    <strong className="text-[#111111] font-bold block">१. शुभ मुहूर्त (Auspicious Timing):</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.muhurat?.hi}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.muhurat?.en}</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/60">
-                    <strong className="text-amber-950 font-bold block">२. शुभ दिशा (Direction):</strong>
-                    <p className="text-stone-700 font-devanagari mt-0.5">{mantra.vidhi.direction?.hi}</p>
-                    <p className="text-stone-500 font-sans text-[11px]">{mantra.vidhi.direction?.en}</p>
+                  <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#FFD21F]">
+                    <strong className="text-[#111111] font-bold block">२. शुभ दिशा (Direction):</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.direction?.hi}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.direction?.en}</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/60">
-                    <strong className="text-amber-950 font-bold block">३. पवित्र आसन (Sacred Asana):</strong>
-                    <p className="text-stone-700 font-devanagari mt-0.5">{mantra.vidhi.asana?.hi}</p>
-                    <p className="text-stone-500 font-sans text-[11px]">{mantra.vidhi.asana?.en}</p>
+                  <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441]">
+                    <strong className="text-[#111111] font-bold block">३. पवित्र आसन (Sacred Asana):</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.asana?.hi}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.asana?.en}</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/60">
-                    <strong className="text-amber-950 font-bold block">४. जप माला (Chanting Beads):</strong>
-                    <p className="text-stone-700 font-devanagari mt-0.5">{mantra.vidhi.mala?.hi}</p>
-                    <p className="text-stone-500 font-sans text-[11px]">{mantra.vidhi.mala?.en}</p>
+                  <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#FFD21F]">
+                    <strong className="text-[#111111] font-bold block">४. जप माला (Chanting Beads):</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.mala?.hi}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.mala?.en}</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/60 sm:col-span-2">
-                    <strong className="text-amber-950 font-bold block">५. अनुष्ठान जप संख्या (Prescribed Japa Count):</strong>
-                    <p className="text-stone-700 font-devanagari mt-0.5">{mantra.vidhi.sankhya?.hi}</p>
-                    <p className="text-stone-500 font-sans text-[11px]">{mantra.vidhi.sankhya?.en}</p>
+                  <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441] sm:col-span-2">
+                    <strong className="text-[#111111] font-bold block">५. अनुष्ठान जप संख्या (Prescribed Japa Count):</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.sankhya?.hi}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.sankhya?.en}</p>
                   </div>
                 </div>
               </section>
@@ -621,13 +930,13 @@ export default function MantraStotraDetailPage() {
 
             {/* 3.5: 4-Dimensional Falashruti (फलश्रुति एवं कल्याणकारी लाभ) */}
             {mantra.benefits && mantra.benefits.length > 0 && (
-              <section className="bg-white rounded-2xl border border-amber-200/90 p-5 sm:p-6 shadow-xs space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-amber-100">
-                  <h3 className="font-serif font-bold text-stone-900 text-base flex items-center gap-2">
-                    <Award className="w-4 h-4 text-amber-700" />
+              <section className="bg-white rounded-2xl border border-[#E5E5E5] p-5 sm:p-6 shadow-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
+                  <h3 className="font-serif font-bold text-[#111111] text-base flex items-center gap-2">
+                    <Award className="w-4 h-4 text-[#D9A441]" />
                     <span>फलश्रुति एवं आध्यात्मिक लाभ (Spiritual & Karmic Benefits)</span>
                   </h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111]">
                     फलश्रुति
                   </span>
                 </div>
@@ -636,15 +945,15 @@ export default function MantraStotraDetailPage() {
                   {mantra.benefits.map((b, idx) => (
                     <div
                       key={idx}
-                      className="p-3.5 rounded-xl bg-gradient-to-r from-amber-50/80 via-white to-amber-50/40 border border-amber-200/70 space-y-1"
+                      className="p-3.5 rounded-xl bg-stone-50 border border-[#E5E5E5] space-y-1"
                     >
-                      <span className="inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md bg-amber-100 text-amber-950">
+                      <span className="inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md bg-[#FFD21F] text-[#111111]">
                         {b.category?.hi || b.category?.en}
                       </span>
-                      <p className="font-devanagari text-xs sm:text-sm text-stone-800 leading-relaxed font-semibold">
+                      <p className="font-devanagari text-xs sm:text-sm text-[#111111] leading-relaxed font-semibold">
                         {b.text?.hi}
                       </p>
-                      <p className="font-sans text-xs text-stone-600 leading-relaxed">
+                      <p className="font-sans text-xs text-[#555555] leading-relaxed">
                         {b.text?.en}
                       </p>
                     </div>
@@ -655,15 +964,15 @@ export default function MantraStotraDetailPage() {
 
             {/* 3.6: Related Sacred Mantras & Stotras */}
             {relatedMantras.length > 0 && (
-              <section className="space-y-4 pt-4 border-t border-amber-200/60">
+              <section className="space-y-4 pt-4 border-t border-[#E5E5E5]">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-serif font-bold text-stone-900 text-base flex items-center gap-1.5">
-                    <BookOpen className="w-4 h-4 text-amber-700" />
+                  <h3 className="font-serif font-bold text-[#111111] text-base flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-[#D9A441]" />
                     <span>संबंधित मंत्र एवं स्तोत्र (Related Chants)</span>
                   </h3>
                   <Link
                     to="/library/mantra-stotra"
-                    className="text-xs font-bold text-amber-800 hover:text-amber-950 flex items-center gap-1"
+                    className="text-xs font-bold text-[#111111] hover:text-[#D9A441] flex items-center gap-1 transition-colors"
                   >
                     <span>सम्पूर्ण संग्रह</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -675,21 +984,21 @@ export default function MantraStotraDetailPage() {
                     <Link
                       key={rel.id}
                       to={`/library/mantra-stotra/${rel.slug}`}
-                      className="group bg-white rounded-2xl border border-amber-200 p-4 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between"
+                      className="group bg-white rounded-2xl border border-[#E5E5E5] p-4 hover:border-[#D9A441] hover:shadow-md transition-all flex flex-col justify-between"
                     >
                       <div className="space-y-2">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 inline-block">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] inline-block">
                           {rel.deity?.hi}
                         </span>
-                        <h4 className="font-serif text-sm font-bold text-stone-900 group-hover:text-amber-800 line-clamp-2 leading-snug">
+                        <h4 className="font-serif text-sm font-bold text-[#111111] group-hover:text-[#D9A441] line-clamp-2 leading-snug transition-colors">
                           {rel.title.hi}
                         </h4>
-                        <p className="text-[11px] text-stone-500 line-clamp-2">
+                        <p className="text-[11px] text-[#555555] line-clamp-2">
                           {rel.subtitle.hi}
                         </p>
                       </div>
 
-                      <div className="pt-3 border-t border-amber-100 flex items-center justify-between text-[11px] text-amber-900 font-bold mt-3">
+                      <div className="pt-3 border-t border-[#E5E5E5] flex items-center justify-between text-[11px] text-[#111111] group-hover:text-[#D9A441] font-bold mt-3 transition-colors">
                         <span>पाठ करें</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </div>

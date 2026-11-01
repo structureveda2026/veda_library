@@ -31,7 +31,7 @@ function TabsList({ className, ...props }) {
   return (
     <div
       className={cn(
-        "inline-flex items-center justify-center rounded-xl bg-amber-100/60 p-1 text-stone-600 border border-amber-200/50",
+        "inline-flex items-center justify-center rounded-xl bg-[#F5F5F5] p-1 text-[#555555] border border-[#E5E5E5]",
         className
       )}
       {...props}
@@ -50,8 +50,8 @@ function TabsTrigger({ value, className, children, ...props }) {
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap rounded-lg px-3.5 py-1.5 text-xs font-semibold ring-offset-white transition-all focus-visible:outline-none cursor-pointer",
         isSelected
-          ? "bg-white text-amber-950 shadow-xs font-bold"
-          : "text-stone-600 hover:text-stone-900 hover:bg-white/50",
+          ? "bg-[#FFD21F] text-[#111111] shadow-xs font-bold"
+          : "text-[#555555] hover:text-[#111111] hover:bg-white/70",
         className
       )}
       {...props}

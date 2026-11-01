@@ -6,7 +6,7 @@ import React from "react";
  */
 
 // 1. Veda: Sacred open manuscript / palm-leaf grantha
-export function VedaIcon({ className = "w-7 h-7 text-amber-700" }) {
+export function VedaIcon({ className = "w-7 h-7 text-[#D9A441]" }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
@@ -56,7 +56,7 @@ export function DarshanaIcon({ className = "w-7 h-7 text-indigo-700" }) {
 }
 
 // 5. Dharma: Meditating Yogi / Sacred Dhvaja
-export function DharmaIcon({ className = "w-7 h-7 text-orange-700" }) {
+export function DharmaIcon({ className = "w-7 h-7 text-[#D9A441]" }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <circle cx="12" cy="6" r="3" />
@@ -94,7 +94,7 @@ export function PujaIcon({ className = "w-7 h-7 text-rose-700" }) {
 }
 
 // 8. Yagya: Sacred Havan Kund & Fire Altar
-export function YagyaIcon({ className = "w-7 h-7 text-amber-700" }) {
+export function YagyaIcon({ className = "w-7 h-7 text-[#D9A441]" }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <polygon points="4 14 6 21 18 21 20 14 4 14" />
@@ -119,7 +119,7 @@ export function MantraIcon({ className = "w-7 h-7 text-purple-700" }) {
 }
 
 // 10. Jyotisha: 12-Ray Surya / Astrological Chakra
-export function JyotishaIcon({ className = "w-7 h-7 text-amber-800" }) {
+export function JyotishaIcon({ className = "w-7 h-7 text-[#D9A441]" }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <circle cx="12" cy="12" r="4" fill="currentColor" opacity="0.15" />
@@ -188,7 +188,7 @@ export function StotraIcon({ className = "w-7 h-7 text-rose-700" }) {
 }
 
 // 15. Vastu: Architectural Vastu Purusha Mandala Grid
-export function VastuIcon({ className = "w-7 h-7 text-amber-900" }) {
+export function VastuIcon({ className = "w-7 h-7 text-[#D9A441]" }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -202,7 +202,7 @@ export function VastuIcon({ className = "w-7 h-7 text-amber-900" }) {
 }
 
 // 16. Sanskrit: Sacred Devanagari Akshara Stylus
-export function SanskritIcon({ className = "w-7 h-7 text-amber-700" }) {
+export function SanskritIcon({ className = "w-7 h-7 text-[#D9A441]" }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <path d="M4 6h16" strokeWidth="2" />

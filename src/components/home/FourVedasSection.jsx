@@ -14,6 +14,8 @@ const VEDA_CARDS_DATA = [
     id: "rigveda",
     name: "ऋग्वेद",
     enName: "Rigveda",
+    tradition: "हौत्र",
+    enTradition: "Hautra",
     priest: "होता (Hotri)",
     priestRole: "ऋचाओं का सस्वर पाठ व देव-आवाहन",
     enPriestRole: "Invocation of Devas through sacred hymns",
@@ -27,16 +29,16 @@ const VEDA_CARDS_DATA = [
       "शाकल संहिता (१०२८ सूक्त)",
       "ऐतरेय व कौषीतकि ब्राह्मण",
       "ऐतरेय उपनिषद",
-      "आश्वलायन श्रौतसूत्र"
+      "आश्वलायन श्रौतसूत्र",
     ],
     image: rigvedaImg,
-    badgeBg: "bg-amber-100 text-amber-900 border-amber-300",
-    priestPill: "bg-amber-950/85 text-amber-200 border-amber-400/50"
   },
   {
     id: "yajurveda",
     name: "यजुर्वेद",
     enName: "Yajurveda",
+    tradition: "आध्वर्यव",
+    enTradition: "Adhvaryava",
     priest: "अध्वर्यु (Adhvaryu)",
     priestRole: "यज्ञ विधि व आहुति कर्म के मुख्य ऋत्विक",
     enPriestRole: "Master of ritual action & sacred oblations",
@@ -50,16 +52,16 @@ const VEDA_CARDS_DATA = [
       "शुक्ल: वाजसनेयि माध्यन्दिना",
       "शतपथ ब्राह्मण (१०० अध्याय)",
       "ईश व बृहदारण्यक उपनिषद",
-      "कृष्ण: तैत्तिरीय संहिता"
+      "कृष्ण: तैत्तिरीय संहिता",
     ],
     image: yajurvedaImg,
-    badgeBg: "bg-orange-100 text-orange-900 border-orange-300",
-    priestPill: "bg-stone-900/85 text-amber-300 border-amber-400/50"
   },
   {
     id: "samaveda",
     name: "सामवेद",
     enName: "Samaveda",
+    tradition: "औद्गात्र",
+    enTradition: "Audgatra",
     priest: "उद्गाता (Udgatri)",
     priestRole: "साम ऋचाओं के मधुर संगीतकार",
     enPriestRole: "Singer of melodious liturgical chants",
@@ -73,16 +75,16 @@ const VEDA_CARDS_DATA = [
       "कौथुम शाखा (पूर्वार्चिक, उत्तरार्चिक)",
       "राणायनीय व जैमिनीय शाखा",
       "ताण्ड्य महाब्राह्मण (पंचविंश)",
-      "छान्दोग्य उपनिषद ('तत्त्वमसि')"
+      "छान्दोग्य उपनिषद ('तत्त्वमसि')",
     ],
     image: samavedaImg,
-    badgeBg: "bg-sky-100 text-sky-900 border-sky-300",
-    priestPill: "bg-sky-950/85 text-sky-200 border-sky-400/50"
   },
   {
     id: "atharvaveda",
     name: "अथर्ववेद",
     enName: "Atharvaveda",
+    tradition: "ब्राह्म",
+    enTradition: "Brahma",
     priest: "ब्रह्मा (Brahma)",
     priestRole: "सर्वयज्ञ अधीक्षक एवं दोष परिहारक",
     enPriestRole: "Supreme overseer of rites & cosmic balance",
@@ -96,12 +98,10 @@ const VEDA_CARDS_DATA = [
       "शौनक संहिता (पृथ्वी सूक्त १२.१)",
       "पैप्पलाद शाखा (ओडिशा परंपरा)",
       "गोपथ ब्राह्मण (पूर्व व उत्तर)",
-      "मुण्डक ('सत्यमेव जयते') व माण्डूक्य"
+      "मुण्डक ('सत्यमेव जयते') व माण्डूक्य",
     ],
     image: atharvavedaImg,
-    badgeBg: "bg-emerald-100 text-emerald-900 border-emerald-300",
-    priestPill: "bg-emerald-950/85 text-emerald-200 border-emerald-400/50"
-  }
+  },
 ];
 
 export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) {
@@ -119,26 +119,29 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
   };
 
   return (
-    <section id="four-vedas" className="py-12 sm:py-16 bg-[#fffaf0] border-b border-amber-200/50 relative">
+    <section
+      id="four-vedas"
+      className="py-10 sm:py-14 bg-white border-b border-[#E5E5E5] relative"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100/80 border border-amber-300/80 text-amber-900 mb-2.5">
-            <Flame className="w-3.5 h-3.5 text-amber-700 animate-pulse" />
-            <span className="text-[11px] font-bold uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#FFD21F]/40 text-[#111111] mb-2.5 shadow-xs">
+            <Flame className="w-3.5 h-3.5 text-[#C62828]" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111]">
               {isHindi ? "अपौरुषेय श्रुति परंपरा" : "THE CANONICAL SHRUTI"}
             </span>
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-stone-900">
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111111]">
             {isHindi ? "चारों वेदों का अन्वेषण करें" : "Explore the Four Holy Vedas"}
           </h2>
-          <p className="font-serif text-sm sm:text-base text-amber-900 font-semibold mt-1">
+          <p className="font-serif text-sm sm:text-base text-[#D9A441] font-bold mt-1">
             {isHindi
-              ? "वैदिक ज्ञान के चार आधार स्तम्भ • होता, अध्वर्यु, उद्गाता एवं ब्रह्मा के संरक्षण में सुरक्षित अपौरुषेय वाङ्मय"
+              ? "वैदिक ज्ञान के चार आधार स्तम्भ • हौत्र, आध्वर्यव, औद्गात्र एवं ब्राह्म परंपरा में संरक्षित वाङ्मय"
               : "The Four Pillars of Vedic Knowledge Preserved Across Millennia"}
           </p>
           <p
-            className={`text-xs sm:text-sm text-stone-600 mt-2 max-w-xl mx-auto leading-relaxed ${
+            className={`text-xs sm:text-sm text-[#555555] mt-2 max-w-2xl mx-auto leading-relaxed ${
               isHindi ? "font-devanagari" : ""
             }`}
           >
@@ -148,91 +151,100 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
           </p>
         </div>
 
-        {/* 4 Modern Royal Veda Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+        {/* Elegant Bento-Style Layout with 1px border (#E5E5E5) & Golden Accent Hover (#D9A441) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {VEDA_CARDS_DATA.map((veda) => {
             const title = isHindi ? veda.name : veda.enName;
             const subtitleTag = isHindi ? veda.enName : veda.name;
             const shakhaPill = isHindi ? veda.shakhaCount : veda.enShakhaCount;
             const statsText = isHindi ? veda.stats : veda.enStats;
             const description = isHindi ? veda.desc : veda.enDesc;
+            const traditionLabel = isHindi
+              ? `${veda.tradition} • ${veda.priest}`
+              : `${veda.enTradition} • ${veda.priest}`;
 
             return (
               <div
                 key={veda.id}
                 onClick={() => handleSelectVeda(veda.id)}
-                className="group flex flex-col justify-between bg-white rounded-2xl border border-amber-200/80 hover:border-amber-400 shadow-xs hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 hover:-translate-y-1.5 overflow-hidden cursor-pointer relative"
+                className="group flex flex-col justify-between bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden cursor-pointer relative"
               >
                 <div>
-                  {/* Image Frame with Badges */}
-                  <div className="relative aspect-16/10 overflow-hidden bg-stone-950">
+                  {/* Bento Compartment 1: Image Frame with Authentic Priest & Shakha Badges */}
+                  <div className="relative aspect-16/10 overflow-hidden bg-[#111111]">
                     <img
                       src={veda.image}
                       alt={veda.name}
-                      className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-106"
+                      className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/35 to-black/10" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
-                    {/* Priest Badge (होता, अध्वर्यु, उद्गाता, ब्रह्मा) */}
-                    <div className="absolute bottom-2.5 left-2.5 right-auto">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border backdrop-blur-md shadow-sm ${veda.priestPill}`}
-                      >
-                        <Crown className="w-3 h-3 text-amber-300" />
-                        <span className="font-devanagari">{veda.priest}</span>
+                    {/* Shakha Count Badge in Brand Yellow #FFD21F with Deep Black #111111 text */}
+                    <div className="absolute top-2.5 right-2.5">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs font-devanagari">
+                        <Layers className="w-3 h-3 text-[#111111]" />
+                        <span>{shakhaPill}</span>
                       </span>
                     </div>
 
-                    {/* Shakha Count Badge (Top-right) */}
-                    <div className="absolute top-2.5 right-2.5">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black/60 text-amber-200 border border-amber-400/40 backdrop-blur-md shadow-2xs font-devanagari">
-                        <Layers className="w-2.5 h-2.5 text-amber-400" />
-                        <span>{shakhaPill}</span>
+                    {/* Authentic Priest Badge: हौत्र / आध्वर्यव / औद्गात्र / ब्राह्म */}
+                    <div className="absolute bottom-2.5 left-2.5 right-auto">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-[#111111] border border-[#E5E5E5] backdrop-blur-md shadow-xs font-devanagari">
+                        <Crown className="w-3.5 h-3.5 text-[#D9A441]" />
+                        <span>{traditionLabel}</span>
                       </span>
                     </div>
                   </div>
 
-                  {/* Card Content */}
+                  {/* Bento Compartment 2: Title, Liturgy Role & Stats */}
                   <div className="p-4 sm:p-5">
-                    {/* Title & Subtitle */}
+                    {/* Title & English Subtitle Tag */}
                     <div className="flex items-center justify-between gap-2">
                       <h3
-                        className={`text-xl font-bold text-stone-900 group-hover:text-amber-800 transition-colors leading-tight ${
+                        className={`text-xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-tight ${
                           isHindi ? "font-devanagari" : "font-serif"
                         }`}
                       >
                         {title}
                       </h3>
-                      <span className="text-[11px] font-serif font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200 uppercase tracking-wider">
+                      <span className="text-[11px] font-serif font-bold px-2.5 py-0.5 rounded-full bg-white text-[#555555] border border-[#E5E5E5] uppercase tracking-wider">
                         {subtitleTag}
                       </span>
                     </div>
 
-                    {/* Stats pill */}
-                    <div className="mt-2.5 px-2.5 py-1 rounded-lg bg-amber-50/70 border border-amber-200/60 text-[10px] font-semibold text-amber-950 font-devanagari flex items-center gap-1.5">
-                      <BookOpen className="w-3 h-3 text-amber-700 shrink-0" />
+                    {/* Liturgical Role Line */}
+                    <p className="text-xs text-[#D9A441] font-semibold mt-1.5 flex items-center gap-1 font-devanagari">
+                      <Sparkles className="w-3 h-3 text-[#D9A441] shrink-0" />
+                      <span className="truncate">
+                        {isHindi ? veda.priestRole : veda.enPriestRole}
+                      </span>
+                    </p>
+
+                    {/* Bento Compartment: Stats Ribbon */}
+                    <div className="mt-3 px-3 py-1.5 rounded-xl bg-white border border-[#E5E5E5] text-[11px] font-medium text-[#111111] font-devanagari flex items-center gap-2">
+                      <BookOpen className="w-3.5 h-3.5 text-[#D9A441] shrink-0" />
                       <span className="truncate">{statsText}</span>
                     </div>
 
                     {/* Description */}
                     <p
-                      className={`text-[11px] sm:text-xs text-stone-600 mt-2.5 leading-relaxed line-clamp-2 ${
+                      className={`text-xs text-[#555555] mt-2.5 leading-relaxed line-clamp-2 ${
                         isHindi ? "font-devanagari" : ""
                       }`}
                     >
                       {description}
                     </p>
 
-                    {/* Shakha breakdown pills */}
-                    <div className="mt-3">
-                      <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block mb-1">
+                    {/* Bento Compartment 3: Canonical Shakhas & Texts */}
+                    <div className="mt-3.5">
+                      <span className="text-[10px] font-bold text-[#555555] uppercase tracking-wider block mb-1.5 font-devanagari">
                         {isHindi ? "प्रमुख शाखाएँ व संहिता:" : "Key Shakhas & Texts:"}
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {veda.shakhaList.slice(0, 3).map((sh, idx) => (
                           <span
                             key={idx}
-                            className="text-[9px] font-semibold px-2 py-0.5 rounded bg-stone-50 text-stone-700 border border-stone-200/80 font-devanagari group-hover:bg-amber-50 group-hover:text-amber-900 group-hover:border-amber-200 transition-colors truncate max-w-full"
+                            className="text-[10px] font-medium px-2 py-0.5 rounded bg-white text-[#555555] border border-[#E5E5E5] font-devanagari group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors truncate max-w-full"
                           >
                             {sh}
                           </span>
@@ -242,7 +254,7 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                   </div>
                 </div>
 
-                {/* Direct Reading Link Button */}
+                {/* Bento Compartment 4: Explore Button in Brand Yellow #FFD21F */}
                 <div className="p-4 sm:p-5 pt-0">
                   <button
                     type="button"
@@ -250,14 +262,14 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                       e.stopPropagation();
                       handleSelectVeda(veda.id);
                     }}
-                    className="w-full py-2.5 px-3 rounded-xl text-center text-xs font-bold bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-1.5 group/btn cursor-pointer"
+                    className="w-full py-2.5 sm:py-3 px-3 rounded-xl text-center text-xs sm:text-sm font-bold bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 group/btn cursor-pointer active:scale-[0.98]"
                   >
                     <span>
                       {isHindi
                         ? `${veda.name} मूल पाठ व शाखाएँ पढ़ें`
                         : `Read ${veda.enName} & Shakhas`}
                     </span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform" />
                   </button>
                 </div>
               </div>

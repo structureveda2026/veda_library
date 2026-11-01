@@ -1,5 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import SEO from "../components/common/SEO.jsx";
 import HeroSection from "../components/home/HeroSection.jsx";
 import TrustStrip from "../components/home/TrustStrip.jsx";
 import SacredQuoteSection from "../components/home/SacredQuoteSection.jsx";
@@ -22,13 +23,65 @@ import FinalCtaSection from "../components/home/FinalCtaSection.jsx";
 
 export default function HomePage({ onOpenSearch }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/about") {
+      const el = document.getElementById("about");
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+      }
+    }
+  }, [location.pathname]);
+
+  const homeSchema = [
+    {
+      "@type": "WebSite",
+      "name": "Veda Library",
+      "alternateName": "वेद लाइब्रेरी — वैदिक ज्ञान परंपरा",
+      "url": "https://library.vedastructure.com/",
+      "description": "वैदिक एवं भारतीय ज्ञान परंपरा का प्रामाणिक डिजिटल संग्रह। चार वेद, उपनिषद्, पुराण, मंत्र एवं स्तोत्र।",
+      "inLanguage": ["hi", "en", "sa"],
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://library.vedastructure.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Veda Library",
+      "url": "https://library.vedastructure.com/",
+      "logo": "https://library.vedastructure.com/vite.svg",
+      "description": "वैदिक एवं भारतीय ज्ञान परंपरा का प्रामाणिक डिजिटल संग्रह"
+    }
+  ];
 
   return (
     <div className="space-y-0">
+      <SEO
+        title="VEDA LIBRARY — वैदिक एवं भारतीय ज्ञान परंपरा का डिजिटल संग्रह"
+        description="ऋग्वेद, यजुर्वेद, सामवेद, अथर्ववेद, उपनिषद, पुराण, दर्शन एवं वैदिक मंत्र-स्तोत्रों का प्रामाणिक, त्रिभाषी डिजिटल संग्रह। अन्वय, भावार्थ और विशुद्ध शोध।"
+        canonical="/"
+        schema={homeSchema}
+        keywords={[
+          "Veda Library",
+          "वेद",
+          "ऋग्वेद",
+          "यजुर्वेद",
+          "सामवेद",
+          "अथर्ववेद",
+          "उपनिषद",
+          "वैदिक मंत्र",
+          "स्तोत्र",
+          "भारतीय ज्ञान परंपरा"
+        ]}
+      />
+
       {/* 01. HERO SECTION + PROMINENT SEARCH + DUAL CTAs */}
       <HeroSection
         onOpenSearch={onOpenSearch}
-        onNavigateKnowledge={() => navigate("/library/veda")}
+        onNavigateKnowledge={(target) => navigate(typeof target === "string" ? target : "/library/veda")}
         onNavigateCollections={() => navigate("/library/collections")}
       />
 

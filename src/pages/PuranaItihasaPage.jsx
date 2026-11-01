@@ -142,8 +142,6 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
   // Search & Filters
   const [searchQuery, setSearchQuery] = useState("");
   const [gunaFilter, setGunaFilter] = useState("all");
-  const [selectedPuranaModal, setSelectedPuranaModal] = useState(null);
-  const [selectedJewelModal, setSelectedJewelModal] = useState(null);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
@@ -176,32 +174,32 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
   }, [gunaFilter, searchQuery]);
 
   return (
-    <div className="bg-[#FBF9F5] min-h-screen text-[#1E293B] pb-24">
+    <div className="bg-white min-h-screen text-[#111111] pb-24">
       {/* 1. Scholarly Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
-        {/* Sacred Entity-Matched Purana / Itihasa Banner */}
+        {/* Sacred Entity-Matched Purana / Itihasa Banner with 80-85% Opacity and Luminous Overlay */}
         <div className="absolute inset-0 z-0">
           <img
             src={TAB_BANNERS[activeTab] || bannerTempleGhat}
             alt="Vedic Temple Heritage"
-            className="w-full h-full object-cover object-center opacity-40 scale-102 transition-transform duration-1000"
+            className="w-full h-full object-cover object-center opacity-80 sm:opacity-85 scale-102 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#120a04] via-[#1a0e06]/75 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#120a04] via-[#1a0e06]/60 to-transparent" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-600/20 via-transparent to-[#120a04]/80" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs text-amber-300/90 mb-4 font-serif">
-            <Link to="/" className="hover:text-amber-200 transition-colors">
+          <div className="flex items-center gap-2 text-xs text-amber-200/90 mb-4 font-serif">
+            <Link to="/" className="hover:text-[#FFD21F] transition-colors">
               होम
             </Link>
             <span>/</span>
-            <Link to="/library" className="hover:text-amber-200 transition-colors">
+            <Link to="/library" className="hover:text-[#FFD21F] transition-colors">
               वैदिक ज्ञानकोष
             </Link>
             <span>/</span>
-            <span className="text-amber-100 font-semibold">
+            <span className="text-white font-semibold">
               पुराण एवं इतिहास
             </span>
           </div>
@@ -209,8 +207,8 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-between">
             {/* Left 7 Cols: Title & Shloka Banner */}
             <div className="lg:col-span-8 space-y-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 backdrop-blur-xs">
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
                 <span>PURANA & ITIHASA ARCHIVE • पुराण एवं इतिहास सागर</span>
               </span>
 
@@ -226,10 +224,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               </p>
 
               {/* Classical Sanskrit Aphorism Banner with Audio & Copy */}
-              <div className="mt-4 p-4 rounded-2xl bg-white/95 backdrop-blur-md border-2 border-amber-300/90 text-[#1E293B] text-xs sm:text-sm font-devanagari leading-relaxed shadow-lg">
-                <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-amber-200/70">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#78350F]">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+              <div className="mt-4 p-4 rounded-2xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441] text-[#111111] text-xs sm:text-sm font-devanagari leading-relaxed shadow-lg">
+                <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-[#E5E5E5]">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
                     पुराण-इतिहास प्रामाण्य श्लोक
                   </span>
                   <div className="flex items-center gap-1.5">
@@ -238,8 +236,8 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                       title="सस्वर पाठ"
                       className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
                         playingId === "hero-itihasa-quote"
-                          ? "bg-amber-700 text-white shadow-xs animate-pulse"
-                          : "bg-amber-50 hover:bg-amber-100 text-[#78350F] border border-amber-300/70"
+                          ? "bg-[#FFD21F] text-[#111111] shadow-xs animate-pulse font-bold"
+                          : "bg-white hover:bg-stone-50 text-[#111111] border border-[#E5E5E5]"
                       }`}
                     >
                       {playingId === "hero-itihasa-quote" ? (
@@ -249,7 +247,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         </>
                       ) : (
                         <>
-                          <Volume2 className="w-3.5 h-3.5 text-amber-700" />
+                          <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
                           <span>सस्वर पाठ</span>
                         </>
                       )}
@@ -263,21 +261,21 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         )
                       }
                       title="श्लोक कॉपी करें"
-                      className="p-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-[#78350F] border border-amber-300/70 transition-colors cursor-pointer"
+                      className="p-1.5 rounded-lg bg-white hover:bg-stone-50 text-[#111111] border border-[#E5E5E5] transition-colors cursor-pointer"
                     >
                       {copiedId === "hero-itihasa-quote" ? (
                         <Check className="w-3.5 h-3.5 text-emerald-600" />
                       ) : (
-                        <Copy className="w-3.5 h-3.5 text-amber-800" />
+                        <Copy className="w-3.5 h-3.5 text-[#D9A441]" />
                       )}
                     </button>
                   </div>
                 </div>
 
-                <p className="font-serif font-bold text-base sm:text-lg text-[#78350F] leading-snug">
+                <p className="font-serif font-bold text-base sm:text-lg text-[#111111] leading-snug">
                   {ITIHASA_EPISTEMOLOGY.pramanaQuote}
                 </p>
-                <p className="text-stone-600 text-xs mt-1.5 font-sans">
+                <p className="text-[#555555] text-xs mt-1.5 font-sans">
                   — {ITIHASA_EPISTEMOLOGY.pramanaSource}: {ITIHASA_EPISTEMOLOGY.pramanaMeaning}
                 </p>
               </div>
@@ -358,7 +356,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
       </section>
 
       {/* 2. Interactive Navigation Tabs */}
-      <div className="sticky top-16 z-30 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-amber-200/70 px-4 sm:px-6 lg:px-8 py-3 shadow-2xs">
+      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] px-4 sm:px-6 lg:px-8 py-3 shadow-2xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 overflow-x-auto scrollbar-none">
           <div className="flex items-center gap-2">
             {[
@@ -405,14 +403,14 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                 <button
                   key={t.id}
                   onClick={() => handleTabChange(t.id)}
-                  className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                  className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 whitespace-nowrap transition-all duration-200 cursor-pointer border ${
                     isActive
-                      ? "bg-gradient-to-r from-amber-700 to-amber-800 text-white shadow-sm font-bold scale-[1.02]"
-                      : "bg-white text-[#1E293B] hover:text-[#78350F] hover:bg-amber-50/80 border border-amber-200/70 hover:-translate-y-0.5 shadow-2xs"
+                      ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] shadow-xs font-bold scale-[1.02]"
+                      : "bg-white text-[#111111] hover:border-[#D9A441] border-[#E5E5E5] shadow-2xs"
                   }`}
                 >
                   <Icon
-                    className={`w-4 h-4 ${isActive ? "text-amber-200" : "text-amber-700"}`}
+                    className={`w-4 h-4 ${isActive ? "text-[#111111]" : "text-[#D9A441]"}`}
                   />
                   <span>{t.label}</span>
                 </button>
@@ -545,50 +543,44 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
         )}
 
         {/* ========================================================================= */}
-        {/* TAB 1: 18 MAHAPURANAS */}
+        {/* TAB 1: 18 MAHAPURANAS (BENTO-STYLE ARCHITECTURE) */}
         {/* ========================================================================= */}
         {activeTab === "purana" && (
           <div className="space-y-8 animate-fadeIn">
-            {/* Header & Filter Controls */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-amber-200/70 shadow-xs">
+            {/* Header & Canonical Filter Controls */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-2xl border border-[#E5E5E5] shadow-xs">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-[#1E293B]">
-                  अठारह महापुराण (The 18 Mahapuranas)
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-2 h-2 rounded-full bg-[#D9A441]" />
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
+                    पद्म पुराण • उत्तरखण्ड वर्गीकरण
+                  </span>
+                </div>
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
+                  अष्टादश महापुराण (The 18 Mahapuranas)
                 </h2>
-                <p className="text-xs text-stone-600 font-devanagari mt-1">
-                  पद्म पुराण वर्गीकरण अनुसार सात्त्विक, राजस एवं तामस पुराणों का प्रामाणिक संग्रह
+                <p className="text-xs text-[#555555] font-devanagari mt-1">
+                  सात्त्विक, राजस एवं तामस त्रिगुणानुसार १८ महापुराणों का सुव्यवस्थित बेन्टो ग्रिड संग्रह
                 </p>
               </div>
 
               {/* Filters */}
               <div className="flex flex-wrap items-center gap-2.5">
-                {/* Guna Filter Chips */}
-                <div className="flex items-center gap-1 bg-[#FBF9F5] p-1 rounded-xl border border-amber-200/70 text-xs">
+                {/* Canonical Guna Filter Chips */}
+                <div className="flex items-center gap-1 bg-stone-50 p-1 rounded-xl border border-[#E5E5E5] text-xs">
                   {[
-                    { id: "all", label: "सभी (18)" },
-                    {
-                      id: "sattvika",
-                      label: "सात्त्विक (6)",
-                      color: "text-emerald-800",
-                    },
-                    {
-                      id: "rajasa",
-                      label: "राजस (6)",
-                      color: "text-amber-800",
-                    },
-                    {
-                      id: "tamasa",
-                      label: "तामस (6)",
-                      color: "text-indigo-800",
-                    },
+                    { id: "all", label: "सभी महापुराण (१८)" },
+                    { id: "sattvika", label: "सात्त्विक (६)" },
+                    { id: "rajasa", label: "राजस (६)" },
+                    { id: "tamasa", label: "तामस (६)" },
                   ].map((gf) => (
                     <button
                       key={gf.id}
                       onClick={() => setGunaFilter(gf.id)}
                       className={`px-3 py-1 rounded-lg font-semibold transition-all cursor-pointer ${
                         gunaFilter === gf.id
-                          ? "bg-gradient-to-r from-amber-700 to-amber-800 text-white shadow-2xs font-bold"
-                          : "text-stone-700 hover:text-[#1E293B] hover:bg-white"
+                          ? "bg-[#FFD21F] text-[#111111] font-bold shadow-2xs"
+                          : "text-[#555555] hover:text-[#111111] hover:bg-white"
                       }`}
                     >
                       {gf.label}
@@ -598,18 +590,18 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
 
                 {/* Text Search in Puranas */}
                 <div className="relative min-w-[220px]">
-                  <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="w-3.5 h-3.5 text-[#555555] absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="पुराण, देवता या कथा खोजें..."
-                    className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-[#FBF9F5] border border-amber-200/80 focus:border-amber-500 focus:bg-white focus:outline-none placeholder:text-stone-400 font-devanagari text-[#1E293B]"
+                    className="w-full pl-8 pr-7 py-2 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:ring-1 focus:ring-[#FFD21F] focus:outline-none placeholder:text-[#555555] font-devanagari text-[#111111]"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery("")}
-                      className="p-1 text-stone-400 hover:text-stone-700 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                      className="p-1 text-[#555555] hover:text-[#111111] absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -618,144 +610,180 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               </div>
             </div>
 
-            {/* Deep Research Overview Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <div className="bg-white border border-amber-200/70 rounded-2xl p-5 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <div className="flex items-center gap-2 text-[#78350F] font-bold text-sm mb-2">
-                  <Crown className="w-4 h-4 text-amber-700" />
-                  Cosmic Scope & Chronology
+            {/* Bento Epistemology Highlights */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
+                <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
+                  <Crown className="w-4 h-4 text-[#D9A441]" />
+                  <span>वैष्णव / सात्त्विक पुराण (विष्णु महिमा)</span>
                 </div>
-                <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-devanagari">
-                  पुराण सृष्टि, समय चक्र (मन्वन्तर), देवता, वंशावली, तीर्थ, अवतार, जीवन-दर्शन और भक्ति-मार्ग को एक समग्र दृष्टि से प्रस्तुत करते हैं।
+                <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
+                  भागवत, विष्णु, पद्म, वराह, गरुड़ एवं नारद पुराण — भक्ति, अवतार-चरित्र, मोक्ष-मार्ग और चित्त-शुद्धि के सात्त्विक आयाम।
                 </p>
               </div>
-              <div className="bg-white border border-amber-200/70 rounded-2xl p-5 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <div className="flex items-center gap-2 text-[#78350F] font-bold text-sm mb-2">
-                  <Flame className="w-4 h-4 text-amber-700" />
-                  Moral Structure & Dharma
+              <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
+                <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
+                  <Sparkles className="w-4 h-4 text-[#D9A441]" />
+                  <span>ब्राह्म / राजस पुराण (सृष्टि व तीर्थ)</span>
                 </div>
-                <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-devanagari">
-                  रामायण और महाभारत जीवन के विवेक, राजधर्म, परिवार, युद्ध, दंड, प्रेम, त्याग और मोक्ष के गहरे दार्शनिक आयाम खोलते हैं।
+                <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
+                  ब्रह्म, ब्रह्माण्ड, ब्रह्मवैवर्त, मार्कण्डेय, भविष्य एवं वामन — सृष्टि-क्रम, मन्वन्तर, सूर्य व राजवंश तथा शक्ति महात्म्य।
                 </p>
               </div>
-              <div className="bg-white border border-amber-200/70 rounded-2xl p-5 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <div className="flex items-center gap-2 text-[#78350F] font-bold text-sm mb-2">
-                  <Heart className="w-4 h-4 text-amber-700" />
-                  Living Sanatan Heritage
+              <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
+                <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
+                  <Flame className="w-4 h-4 text-[#C62828]" />
+                  <span>शैव / तामस पुराण (लय व तपश्चर्या)</span>
                 </div>
-                <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-devanagari">
-                  ये ग्रंथ सिर्फ कथाएँ नहीं हैं; वे संस्कृति, पूजा, नारी-पुरुष विवेक, सदाचार, भक्ति और सनातन धर्म की जीवन्त प्राणधारा हैं।
+                <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
+                  शिव, लिंग, स्कन्द, अग्नि, मत्स्य एवं कूर्म — संहार, ज्योतिर्लिंग, योग-साधना, ज्ञान-तप एवं शिव-शक्ति का तात्विक रहस्य।
                 </p>
               </div>
             </div>
 
-            {/* Mahapuranas Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPuranas.map((p) => {
+            {/* 18 Mahapuranas Bento Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredPuranas.map((p, idx) => {
                 const isSattvika = p.guna.includes("सात्त्विक");
                 const isRajasa = p.guna.includes("राजस");
-                const badgeColor = isSattvika
-                  ? "bg-emerald-50 text-emerald-900 border-emerald-200"
+                const isFeaturedBhagavata = p.slug === "shrimad-bhagavata" && gunaFilter === "all" && !searchQuery;
+
+                const canonicalBadge = isSattvika
+                  ? "bg-[#D9A441]/10 text-[#111111] border-[#D9A441]/40"
                   : isRajasa
-                    ? "bg-amber-50 text-amber-900 border-amber-200"
-                    : "bg-indigo-50 text-indigo-900 border-indigo-200";
+                  ? "bg-[#FFD21F]/20 text-[#111111] border-[#FFD21F]"
+                  : "bg-[#C62828]/10 text-[#C62828] border-[#C62828]/30";
 
                 return (
                   <div
                     key={p.id}
-                    className="bg-white rounded-2xl border border-amber-200/70 hover:border-amber-400 shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-5 flex flex-col justify-between group"
+                    onClick={() => navigate(`/library/purana/${p.slug}`)}
+                    className={`bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between group relative overflow-hidden cursor-pointer ${
+                      isFeaturedBhagavata ? "md:col-span-2 lg:col-span-2 border-[#D9A441] ring-1 ring-[#D9A441]/30" : ""
+                    }`}
                   >
+                    {isFeaturedBhagavata && (
+                      <div className="absolute top-0 right-0 bg-[#FFD21F] text-[#111111] text-[10px] font-bold px-3 py-1 rounded-bl-xl shadow-2xs">
+                        मुकुटमणि महापुराण • Featured
+                      </div>
+                    )}
+
                     <div>
                       {/* Top Badges */}
                       <div className="flex items-center justify-between gap-2 mb-3">
-                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#FBF9F5] text-stone-700 border border-amber-200/50">
+                        <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-stone-50 text-[#111111] border border-[#E5E5E5]">
                           #{p.order}
                         </span>
                         <div className="flex items-center gap-1.5">
-                          <span
-                            className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${badgeColor}`}
-                          >
+                          <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${canonicalBadge}`}>
                             {p.guna}
                           </span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-[#78350F] border border-amber-200/70">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-50 text-[#111111] border border-[#E5E5E5]">
                             {p.shlokas}
                           </span>
                         </div>
                       </div>
 
                       {/* Title */}
-                      <h3 className="font-serif text-xl font-bold text-[#1E293B] group-hover:text-[#78350F] transition-colors">
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors">
                         {p.name}
                       </h3>
-                      <div className="text-xs text-[#78350F] font-semibold mt-0.5 font-sans">
+                      <div className="text-xs text-[#D9A441] font-semibold mt-0.5 font-sans">
                         {p.enName} {p.alternateName && `• ${p.alternateName}`}
                       </div>
 
                       {/* Presiding Deity */}
-                      <div className="mt-2.5 flex items-center gap-1.5 text-xs text-stone-600 font-devanagari">
-                        <Crown className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
+                      <div className="mt-2.5 flex items-center gap-1.5 text-xs text-[#555555] font-devanagari">
+                        <Crown className="w-3.5 h-3.5 text-[#D9A441] flex-shrink-0" />
                         <span>
-                          उपास्य देव: <strong>{p.presidingDeity}</strong>
+                          उपास्य देव: <strong className="text-[#111111]">{p.presidingDeity}</strong>
                         </span>
                       </div>
 
                       {/* Description */}
-                      <p className="text-xs text-stone-600 font-devanagari mt-2.5 leading-relaxed line-clamp-3">
+                      <p className="text-xs text-[#555555] font-devanagari mt-2.5 leading-relaxed line-clamp-3">
                         {p.desc}
                       </p>
 
-                      {/* Major Sections Chips */}
-                      <div className="mt-4 pt-3 border-t border-amber-100">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1.5">
-                          प्रमुख खण्ड / अध्याय
-                        </span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {p.majorKhandas.slice(0, 3).map((kh, kidx) => (
-                            <span
-                              key={kidx}
-                              className="text-[10px] px-2 py-0.5 rounded-md bg-[#FBF9F5] border border-amber-200/70 text-[#78350F] font-devanagari font-semibold"
-                            >
-                              {kh}
-                            </span>
-                          ))}
-                          {p.majorKhandas.length > 3 && (
-                            <span className="text-[10px] px-1.5 py-0.5 text-stone-400 font-bold">
-                              +{p.majorKhandas.length - 3}
-                            </span>
-                          )}
+                      {/* Major Sections & Key Narratives */}
+                      <div className="mt-4 pt-3 border-t border-[#E5E5E5] space-y-2">
+                        <div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555] block mb-1">
+                            प्रमुख खण्ड / संहिता:
+                          </span>
+                          <div className="flex flex-wrap gap-1">
+                            {p.majorKhandas.slice(0, isFeaturedBhagavata ? 5 : 3).map((kh, kidx) => (
+                              <span
+                                key={kidx}
+                                className="text-[10px] px-2 py-0.5 rounded-md bg-stone-50 border border-[#E5E5E5] text-[#111111] font-devanagari font-medium"
+                              >
+                                {kh}
+                              </span>
+                            ))}
+                            {p.majorKhandas.length > (isFeaturedBhagavata ? 5 : 3) && (
+                              <span className="text-[10px] px-1.5 py-0.5 text-[#555555] font-semibold">
+                                +{p.majorKhandas.length - (isFeaturedBhagavata ? 5 : 3)}
+                              </span>
+                            )}
+                          </div>
                         </div>
+
+                        {p.keyNarratives && p.keyNarratives.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555] block mb-1">
+                              मुख्य आख्यान:
+                            </span>
+                            <div className="flex flex-wrap gap-1">
+                              {p.keyNarratives.slice(0, 3).map((kn, knidx) => (
+                                <span
+                                  key={knidx}
+                                  className="text-[10px] px-2 py-0.5 rounded-md bg-white border border-[#E5E5E5] text-[#555555] font-devanagari"
+                                >
+                                  {kn}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     {/* Action Footer */}
-                    <div className="mt-5 pt-3.5 border-t border-amber-100 flex items-center justify-between gap-2 flex-wrap">
+                    <div className="mt-5 pt-3.5 border-t border-[#E5E5E5] flex items-center justify-between gap-2 flex-wrap">
                       <button
                         type="button"
-                        onClick={() => setSelectedPuranaModal(p)}
-                        className="text-xs font-bold text-stone-600 hover:text-[#1E293B] flex items-center gap-1 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/library/purana/${p.slug}`);
+                        }}
+                        className="text-xs font-bold text-[#555555] hover:text-[#111111] flex items-center gap-1 cursor-pointer transition-colors"
                       >
-                        <Info className="w-3.5 h-3.5 text-amber-700" />
-                        <span>सारांश</span>
+                        <Info className="w-3.5 h-3.5 text-[#D9A441]" />
+                        <span>शास्त्रीय विवरण</span>
                       </button>
 
                       <div className="flex items-center gap-1.5">
                         <button
                           type="button"
-                          onClick={() => handleSelectReaderText(p.slug)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-800 text-white hover:from-amber-800 hover:to-amber-900 font-bold text-xs transition-colors cursor-pointer shadow-2xs"
-                          title="मूल श्लोक एवं अनुवाद पढ़ें"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSelectReaderText(p.slug);
+                          }}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs transition-colors cursor-pointer shadow-2xs border border-[#FFD21F] hover:border-[#D9A441]"
+                          title="मूल श्लोक एवं पाठ पढ़ें"
                         >
-                          <BookOpen className="w-3 h-3 text-amber-200" />
+                          <BookOpen className="w-3 h-3 text-[#111111]" />
                           <span>श्लोक वाचन</span>
                         </button>
 
                         <Link
                           to={`/library/purana/${p.slug}`}
-                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-amber-50 text-[#78350F] hover:bg-amber-100 border border-amber-200/70 font-bold text-xs transition-colors"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white text-[#111111] hover:border-[#D9A441] border border-[#E5E5E5] font-bold text-xs transition-colors"
                           title="विस्तृत अध्ययन करें"
                         >
                           <span>संरचना</span>
-                          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform text-[#D9A441]" />
                         </Link>
                       </div>
                     </div>
@@ -1009,7 +1037,8 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                 {MAHABHARATA_DATA.philosophicalJewels.map((j) => (
                   <div
                     key={j.id}
-                    className="bg-white rounded-2xl border border-amber-200/70 hover:border-amber-400 p-5 shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+                    onClick={() => navigate(`/texts/${j.slug || j.id}`)}
+                    className="bg-white rounded-2xl border border-amber-200/70 hover:border-amber-400 p-5 shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer group"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
@@ -1020,7 +1049,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                           {j.size}
                         </span>
                       </div>
-                      <h4 className="font-serif text-lg font-bold text-[#1E293B]">
+                      <h4 className="font-serif text-lg font-bold text-[#1E293B] group-hover:text-amber-800 transition-colors">
                         {j.title}
                       </h4>
                       <p className="text-xs text-[#78350F] font-semibold mt-0.5">
@@ -1043,16 +1072,20 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     <div className="mt-4 pt-3 border-t border-amber-100 flex items-center justify-between gap-2 flex-wrap">
                       <button
                         type="button"
-                        onClick={() => setSelectedJewelModal(j)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/texts/${j.slug || j.id}`);
+                        }}
                         className="text-xs font-bold text-stone-600 hover:text-[#1E293B] flex items-center gap-1 cursor-pointer"
                       >
                         <Info className="w-3.5 h-3.5 text-amber-700" />
-                        <span>सारांश</span>
+                        <span>शास्त्रीय अध्ययन</span>
                       </button>
 
                       <button
                         type="button"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           if (j.id === "bhagavad-gita") handleSelectReaderText("bhagavad-gita");
                           else if (j.id === "vishnu-sahasranama") handleSelectReaderText("mahabharata", "mb-vishnu-sahasranama");
                           else if (j.id === "yaksha-prashna") handleSelectReaderText("mahabharata", "mb-yaksha-prashna");
@@ -1237,164 +1270,6 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
           </div>
         )}
       </div>
-
-      {/* ========================================================================= */}
-      {/* MODAL: PURANA DEEP DETAILS MODAL */}
-      {/* ========================================================================= */}
-      {selectedPuranaModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-amber-200/80 shadow-2xl p-6 sm:p-8 space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-200">
-              <div>
-                <span className="text-xs font-bold text-[#78350F] uppercase px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200">
-                  {selectedPuranaModal.guna} • {selectedPuranaModal.shlokas}
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#1E293B] mt-1">
-                  {selectedPuranaModal.name} ({selectedPuranaModal.enName})
-                </h3>
-              </div>
-              <button
-                onClick={() => setSelectedPuranaModal(null)}
-                className="p-2 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="space-y-4 text-xs sm:text-sm font-devanagari">
-              <div>
-                <strong className="text-[#78350F] block mb-0.5">
-                  उपास्य देव एवं स्वरूप:
-                </strong>
-                <p className="text-stone-700">
-                  {selectedPuranaModal.presidingDeity}
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-[#78350F] block mb-0.5">
-                  संरचना एवं विभाजन:
-                </strong>
-                <p className="text-stone-700">
-                  {selectedPuranaModal.structure}
-                </p>
-              </div>
-
-              <div>
-                <strong className="text-[#78350F] block mb-1">
-                  प्रमुख आख्यान व ऐतिहासिक घटनाएँ:
-                </strong>
-                <ul className="list-disc pl-5 space-y-1 text-stone-700">
-                  {selectedPuranaModal.keyNarratives.map((kn, idx) => (
-                    <li key={idx}>{kn}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <strong className="text-[#78350F] block mb-1">
-                  प्रसिद्ध स्तोत्र एवं मंत्र:
-                </strong>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedPuranaModal.famousStotras.map((fs, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-1 rounded-lg bg-amber-50 text-[#78350F] font-semibold border border-amber-200/80"
-                    >
-                      {fs}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-[#FBF9F5] border border-amber-200/70">
-                <strong className="text-[#78350F] block mb-0.5">
-                  दार्शनिक संदेश:
-                </strong>
-                <p className="text-stone-700 leading-relaxed">
-                  {selectedPuranaModal.philosophy}
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-stone-200 flex items-center justify-between">
-              <Link
-                to={`/library/purana/${selectedPuranaModal.slug}`}
-                onClick={() => setSelectedPuranaModal(null)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 text-white text-xs font-bold hover:from-amber-800 hover:to-amber-900 transition-colors shadow-2xs"
-              >
-                <span>विस्तृत ग्रंथ संरचना देखें</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <button
-                onClick={() => setSelectedPuranaModal(null)}
-                className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs font-bold hover:bg-stone-200 transition-colors cursor-pointer"
-              >
-                बंद करें
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ========================================================================= */}
-      {/* MODAL: PHILOSOPHICAL JEWEL MODAL */}
-      {/* ========================================================================= */}
-      {selectedJewelModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-xl w-full max-h-[90vh] overflow-y-auto border border-amber-200/80 shadow-2xl p-6 sm:p-8 space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-200">
-              <div>
-                <span className="text-xs font-bold text-[#78350F] uppercase px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200">
-                  {selectedJewelModal.location}
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#1E293B] mt-1">
-                  {selectedJewelModal.title}
-                </h3>
-              </div>
-              <button
-                onClick={() => setSelectedJewelModal(null)}
-                className="p-2 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="space-y-4 text-xs sm:text-sm font-devanagari">
-              <p className="text-stone-700">
-                <strong>वक्ता:</strong> {selectedJewelModal.speaker} •{" "}
-                <strong>विस्तार:</strong> {selectedJewelModal.size}
-              </p>
-
-              <div>
-                <strong className="text-[#78350F] block mb-1.5">
-                  मूल उपदेश एवं सिद्धांत:
-                </strong>
-                <ul className="space-y-2">
-                  {selectedJewelModal.coreTeachings.map((ct, idx) => (
-                    <li
-                      key={idx}
-                      className="p-2.5 rounded-lg bg-[#FBF9F5] border border-amber-200/60 text-stone-800"
-                    >
-                      {ct}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-stone-200 flex items-center justify-end">
-              <button
-                onClick={() => setSelectedJewelModal(null)}
-                className="px-5 py-2 rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 text-white text-xs font-bold hover:from-amber-800 hover:to-amber-900 transition-colors cursor-pointer"
-              >
-                समझ लिया (Understood)
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

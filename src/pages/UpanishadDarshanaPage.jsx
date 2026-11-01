@@ -29,6 +29,7 @@ import {
   MAHAVAKYAS_DATA,
   MUKHYA_UPANISHADS_DATA,
   MUKTIKA_CANON_SUMMARY,
+  MUKTIKA_108_UPANISHADS_DATA,
 } from "../data/upanishadData.js";
 import {
   DARSHANA_ETYMOLOGY,
@@ -195,8 +196,28 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
 
   // Search & Filters
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedUpanishadModal, setSelectedUpanishadModal] = useState(null);
-  const [selectedDarshanaModal, setSelectedDarshanaModal] = useState(null);
+
+  // 108 Muktika Canon State
+  const [muktikaVedaFilter, setMuktikaVedaFilter] = useState("all");
+  const [muktikaCategoryFilter, setMuktikaCategoryFilter] = useState("all");
+  const [muktikaSearch, setMuktikaSearch] = useState("");
+
+  const filtered108Upanishads = useMemo(() => {
+    return (MUKTIKA_108_UPANISHADS_DATA || []).filter((u) => {
+      const matchVeda = muktikaVedaFilter === "all" || u.veda.includes(muktikaVedaFilter);
+      const matchCat = muktikaCategoryFilter === "all" || u.category === muktikaCategoryFilter;
+      if (!matchVeda || !matchCat) return false;
+      if (!muktikaSearch.trim()) return true;
+      const q = muktikaSearch.toLowerCase().trim();
+      return (
+        u.name.toLowerCase().includes(q) ||
+        u.enName.toLowerCase().includes(q) ||
+        u.veda.toLowerCase().includes(q) ||
+        u.theme.toLowerCase().includes(q) ||
+        u.category.toLowerCase().includes(q)
+      );
+    });
+  }, [muktikaVedaFilter, muktikaCategoryFilter, muktikaSearch]);
 
   // Copy & Audio state
   const [copiedId, setCopiedId] = useState(null);
@@ -292,32 +313,32 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
   }, [searchQuery]);
 
   return (
-    <div className="bg-[#FBF9F5] min-h-screen text-[#1E293B] pb-24">
+    <div className="bg-white min-h-screen text-[#111111] pb-24">
       {/* 1. Scholarly Royal Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
-        {/* Sacred Kashi Ganga Ghat Authentic Real Banner */}
+        {/* Sacred Kashi Ganga Ghat Authentic Real Banner with 80-85% Opacity and Luminous Overlay */}
         <div className="absolute inset-0 z-0">
           <img
             src={bannerKashiGhat}
             alt="Sacred Kashi Ghat Philosophical Hermitage"
-            className="w-full h-full object-cover object-center opacity-40 scale-102 transition-transform duration-1000"
+            className="w-full h-full object-cover object-center opacity-80 sm:opacity-85 scale-102 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#120a04] via-[#1a0e06]/75 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#120a04] via-[#1a0e06]/60 to-transparent" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-600/20 via-transparent to-[#120a04]/80" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs text-amber-300/90 mb-4 font-serif">
-            <Link to="/" className="hover:text-amber-200 transition-colors">
+          <div className="flex items-center gap-2 text-xs text-amber-200/90 mb-4 font-serif">
+            <Link to="/" className="hover:text-[#FFD21F] transition-colors">
               होम
             </Link>
             <span>/</span>
-            <Link to="/library" className="hover:text-amber-200 transition-colors">
+            <Link to="/library" className="hover:text-[#FFD21F] transition-colors">
               वैदिक ज्ञानकोष
             </Link>
             <span>/</span>
-            <span className="text-amber-100 font-semibold">
+            <span className="text-white font-semibold">
               उपनिषद् एवं दर्शन
             </span>
           </div>
@@ -325,8 +346,8 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center justify-between">
             {/* Left 7 Cols: Title & Shanti Invocation */}
             <div className="lg:col-span-8 space-y-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 backdrop-blur-xs">
-                <Brain className="w-3.5 h-3.5 text-amber-300" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs">
+                <Brain className="w-3.5 h-3.5 text-[#D9A441]" />
                 <span>UPANISHAD & DARSHANA PHILOSOPHY • वेदान्त एवं षड्दर्शन</span>
               </span>
 
@@ -342,10 +363,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
               </p>
 
               {/* Shanti Invocation Royal Banner with Audio & Copy */}
-              <div className="mt-4 p-4 rounded-2xl bg-white/95 backdrop-blur-md border-2 border-amber-300/90 text-[#1E293B] text-xs sm:text-sm font-devanagari leading-relaxed shadow-lg">
-                <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-amber-200/70">
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#78350F]">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+              <div className="mt-4 p-4 rounded-2xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441] text-[#111111] text-xs sm:text-sm font-devanagari leading-relaxed shadow-lg">
+                <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-[#E5E5E5]">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
                     ईशावास्य एवं बृहदारण्यक उपनिषद् शांति पाठ
                   </span>
                   <div className="flex items-center gap-1.5">
@@ -356,8 +377,8 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       title="ध्वनि श्रवण"
                       className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
                         playingId === "hero-shanti"
-                          ? "bg-amber-700 text-white shadow-xs animate-pulse"
-                          : "bg-amber-50 hover:bg-amber-100 text-[#78350F] border border-amber-300/70"
+                          ? "bg-[#FFD21F] text-[#111111] shadow-xs animate-pulse font-bold"
+                          : "bg-white hover:bg-stone-50 text-[#111111] border border-[#E5E5E5]"
                       }`}
                     >
                       {playingId === "hero-shanti" ? (
@@ -367,7 +388,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                         </>
                       ) : (
                         <>
-                          <Volume2 className="w-3.5 h-3.5 text-amber-700" />
+                          <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
                           <span>सस्वर पाठ</span>
                         </>
                       )}
@@ -381,21 +402,21 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                         )
                       }
                       title="मंत्र कॉपी करें"
-                      className="p-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-[#78350F] border border-amber-300/70 transition-colors cursor-pointer"
+                      className="p-1.5 rounded-lg bg-white hover:bg-stone-50 text-[#111111] border border-[#E5E5E5] transition-colors cursor-pointer"
                     >
                       {copiedId === "hero-shanti" ? (
                         <Check className="w-3.5 h-3.5 text-emerald-600" />
                       ) : (
-                        <Copy className="w-3.5 h-3.5 text-amber-800" />
+                        <Copy className="w-3.5 h-3.5 text-[#D9A441]" />
                       )}
                     </button>
                   </div>
                 </div>
 
-                <p className="font-serif font-bold text-base sm:text-lg text-[#78350F] leading-snug">
+                <p className="font-serif font-bold text-base sm:text-lg text-[#111111] leading-snug">
                   ॐ पूर्णमदः पूर्णमिदं पूर्णात्पूर्णमुदच्यते। पूर्णस्य पूर्णमादाय पूर्णमेवावशिष्यते॥
                 </p>
-                <p className="text-stone-600 text-xs mt-1.5 font-sans">
+                <p className="text-[#555555] text-xs mt-1.5 font-sans">
                   "परब्रह्म पूर्ण है, यह जगत भी पूर्ण है; पूर्ण से पूर्ण ही प्रकट होता है। पूर्ण में से पूर्ण निकाल लेने पर भी पूर्ण ही शेष रहता है।"
                 </p>
               </div>
@@ -476,7 +497,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
       </section>
 
       {/* 2. Interactive Navigation Tabs */}
-      <div className="sticky top-16 z-30 bg-[#FBF9F5]/95 backdrop-blur-md border-b border-amber-200/70 px-4 sm:px-6 lg:px-8 py-3 shadow-2xs">
+      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] px-4 sm:px-6 lg:px-8 py-3 shadow-2xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 overflow-x-auto scrollbar-none">
           <div className="flex items-center gap-2">
             {[
@@ -523,14 +544,14 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                 <button
                   key={t.id}
                   onClick={() => handleTabChange(t.id)}
-                  className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                  className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 whitespace-nowrap transition-all duration-200 cursor-pointer border ${
                     isActive
-                      ? "bg-gradient-to-r from-amber-700 to-amber-800 text-white shadow-sm font-bold scale-[1.02]"
-                      : "bg-white text-[#1E293B] hover:text-[#78350F] hover:bg-amber-50/80 border border-amber-200/70 hover:-translate-y-0.5 shadow-2xs"
+                      ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] shadow-xs font-bold scale-[1.02]"
+                      : "bg-white text-[#111111] hover:border-[#D9A441] border-[#E5E5E5] shadow-2xs"
                   }`}
                 >
                   <Icon
-                    className={`w-4 h-4 ${isActive ? "text-amber-200" : "text-amber-700"}`}
+                    className={`w-4 h-4 ${isActive ? "text-[#111111]" : "text-[#D9A441]"}`}
                   />
                   <span>{t.label}</span>
                 </button>
@@ -670,34 +691,41 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
         )}
 
         {/* ========================================================================= */}
-        {/* TAB 1: 11 MUKHYA UPANISHADS */}
+        {/* TAB 1: 11 MUKHYA UPANISHADS (BENTO-STYLE ARCHITECTURE) */}
         {/* ========================================================================= */}
         {activeTab === "upanishad" && (
           <div className="space-y-8 animate-fadeIn">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-amber-200/70 shadow-xs">
+            {/* Header & Filter Controls */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-2xl border border-[#E5E5E5] shadow-xs">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-[#1E293B]">
-                  ग्यारह मुख्य उपनिषद् (11 Principal Upanishads)
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-2 h-2 rounded-full bg-[#D9A441]" />
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
+                    प्रस्थानत्रयी • वेदान्त ज्ञानकाण्ड
+                  </span>
+                </div>
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
+                  एकादश मुख्योपनिषद् (11 Principal Upanishads)
                 </h2>
-                <p className="text-xs text-stone-600 font-devanagari mt-1">
-                  श्रीमद् आद्य शंकराचार्य भाष्य युक्त — ईश, केन, कठ, प्रश्न, मुण्डक, माण्डूक्य, तैत्तिरीय, ऐतरेय, छान्दोग्य, बृहदारण्यक एवं श्वेताश्वतर
+                <p className="text-xs text-[#555555] font-devanagari mt-1">
+                  आदि शंकराचार्य भाष्य युक्त — ईश, केन, कठ, प्रश्न, मुण्डक, माण्डूक्य, तैत्तिरीय, ऐतरेय, छान्दोग्य, बृहदारण्यक एवं श्वेताश्वतर
                 </p>
               </div>
 
               {/* Text Search */}
               <div className="relative min-w-[240px]">
-                <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-[#555555] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="उपनिषद, वेद या सूत्र खोजें..."
-                  className="w-full pl-8 pr-7 py-2 rounded-xl text-xs bg-[#FBF9F5] border border-amber-200/80 focus:border-amber-500 focus:bg-white focus:outline-none placeholder:text-stone-400 font-devanagari text-[#1E293B]"
+                  className="w-full pl-8 pr-7 py-2 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:ring-1 focus:ring-[#FFD21F] focus:outline-none placeholder:text-[#555555] font-devanagari text-[#111111]"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="p-1 text-stone-400 hover:text-stone-700 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                    className="p-1 text-[#555555] hover:text-[#111111] absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -705,124 +733,146 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
               </div>
             </div>
 
-            {/* Deep Research Overview Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <div className="bg-white border border-amber-200/70 rounded-2xl p-5 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <div className="flex items-center gap-2 text-[#78350F] font-bold text-sm mb-2">
-                  <Brain className="w-4 h-4 text-amber-700" />
-                  Core Philosophical Inquiries
+            {/* Bento Research Overviews */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
+                <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
+                  <Brain className="w-4 h-4 text-[#D9A441]" />
+                  <span>दार्शनिक जिज्ञासा (Core Inquiry)</span>
                 </div>
-                <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-devanagari">
-                  उपनिषदों का मूल प्रश्न है — “अहं कौन हूँ?”, “आत्मा क्या है?”, “ब्रह्म किससे जुड़ा है?”, और “संसार के परे अमर मुक्ति का मार्ग क्या है?”
+                <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
+                  उपनिषदों का मूल अनुसंधान: “अहं कौन हूँ?”, “चेतना का अधिष्ठान क्या है?”, और “संसार के परे नित्य अमृत पद क्या है?”
                 </p>
               </div>
-              <div className="bg-white border border-amber-200/70 rounded-2xl p-5 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <div className="flex items-center gap-2 text-[#78350F] font-bold text-sm mb-2">
-                  <Sparkles className="w-4 h-4 text-amber-700" />
-                  Key Vision & Transcendence
+              <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
+                <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
+                  <Sparkles className="w-4 h-4 text-[#D9A441]" />
+                  <span>साक्षी चेतना (Transcendence)</span>
                 </div>
-                <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-devanagari">
-                  ईश, कठ, बृहदारण्यक, छान्दोग्य और माण्डूक्य जैसे ग्रंथ आत्मा, ब्रह्म, अविद्या, विवेक, साक्षी-चेतना और भगवत्-प्राप्ति के शाश्वत संबंध को स्पष्ट करते हैं।
+                <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
+                  ईश, कठ, माण्डूक्य और बृहदारण्यक आत्मा, ब्रह्म, अविद्या, विवेक एवं तुरीय साक्षी-चेतना के अमर सत्य को उद्घाटित करते हैं।
                 </p>
               </div>
-              <div className="bg-white border border-amber-200/70 rounded-2xl p-5 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
-                <div className="flex items-center gap-2 text-[#78350F] font-bold text-sm mb-2">
-                  <CheckCircle2 className="w-4 h-4 text-amber-700" />
-                  Living Realization & Sadhana
+              <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
+                <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#D9A441]" />
+                  <span>जीवन-मुक्ति साधना (Living Realization)</span>
                 </div>
-                <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-devanagari">
-                  ये ग्रंथ न केवल आध्यात्मिक चिंतन देते हैं, बल्कि नैतिक आचरण (सत्यं वद धर्मं चर), ध्यान, विवेक, वैराग्य और जीवन-मुक्ति के व्यावहारिक आधार प्रस्तुत करते हैं।
+                <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
+                  नैतिक आचरण (सत्यं वद धर्मं चर), पञ्चकोश विवेक, ॐकार ध्यान एवं अनासक्ति से इसी जीवन में आत्म-साक्षात्कार।
                 </p>
               </div>
             </div>
 
-            {/* Upanishads Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredUpanishads.map((u, idx) => (
-                <div
-                  key={u.id}
-                  className="bg-white rounded-2xl border border-amber-200/70 hover:border-amber-400 shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-5 flex flex-col justify-between group"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-2.5">
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-[#FBF9F5] text-stone-700 border border-amber-200/50">
-                        #{idx + 1}
-                      </span>
-                      <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-[#78350F] border border-amber-200/70">
-                        {u.mantrasCount}
-                      </span>
-                    </div>
+            {/* 11 Mukhya Upanishads Bento Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredUpanishads.map((u, idx) => {
+                const isFeatured = u.slug === "mandukya-upanishad" || u.slug === "isha-upanishad" || u.slug === "brihadaranyaka-upanishad";
 
-                    <h3 className="font-serif text-xl font-bold text-[#1E293B] group-hover:text-[#78350F] transition-colors">
-                      {u.name}
-                    </h3>
-                    <div className="text-xs text-[#78350F] font-semibold mt-0.5 font-sans">
-                      {u.veda} • {u.enName}
-                    </div>
-
-                    <p className="text-xs text-stone-600 font-devanagari mt-2.5 leading-relaxed line-clamp-3">
-                      {u.centralTheme}
-                    </p>
-
-                    {/* Shanti Mantra Snippet with Copy Button */}
-                    <div className="mt-3 p-3 rounded-xl bg-[#FBF9F5] border border-amber-200/70 text-xs font-devanagari text-[#78350F] relative group/shanti">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500">
-                          शांति पाठ:
+                return (
+                  <div
+                    key={u.id}
+                    onClick={() => navigate(`/library/upanishad/${u.slug}`)}
+                    className={`bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between group relative cursor-pointer ${
+                      u.slug === "brihadaranyaka-upanishad" ? "md:col-span-2 lg:col-span-2 border-[#D9A441]/70" : ""
+                    }`}
+                  >
+                    <div>
+                      {/* Top Badges */}
+                      <div className="flex items-center justify-between gap-2 mb-2.5">
+                        <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-stone-50 text-[#111111] border border-[#E5E5E5]">
+                          #{idx + 1}
                         </span>
-                        <button
-                          onClick={(e) => handleCopyVerse(u.id, u.shantiMantra, e)}
-                          title="शांति पाठ कॉपी करें"
-                          className="p-1 rounded bg-white hover:bg-amber-100 text-stone-600 border border-amber-200/60 transition-colors cursor-pointer"
-                        >
-                          {copiedId === u.id ? (
-                            <Check className="w-3 h-3 text-emerald-600" />
-                          ) : (
-                            <Copy className="w-3 h-3 text-amber-800" />
-                          )}
-                        </button>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F]/20 text-[#111111] border border-[#FFD21F]">
+                            {u.veda.split(" ")[0]}
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-50 text-[#111111] border border-[#E5E5E5]">
+                            {u.mantrasCount}
+                          </span>
+                        </div>
                       </div>
-                      <p className="italic line-clamp-2 text-stone-800">
-                        {u.shantiMantra}
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className="mt-5 pt-3.5 border-t border-amber-100 flex items-center justify-between gap-1.5 flex-wrap">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedUpanishadModal(u)}
-                      className="text-xs font-bold text-stone-600 hover:text-[#1E293B] flex items-center gap-1 cursor-pointer"
-                    >
-                      <Info className="w-3.5 h-3.5 text-amber-700" />
-                      <span>सिद्धांत</span>
-                    </button>
-                    <div className="flex items-center gap-1.5">
+                      {/* Title */}
+                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors">
+                        {u.name}
+                      </h3>
+                      <div className="text-xs text-[#D9A441] font-semibold mt-0.5 font-sans">
+                        {u.veda} • {u.enName}
+                      </div>
+
+                      {/* Central Theme */}
+                      <p className="text-xs text-[#555555] font-devanagari mt-2.5 leading-relaxed line-clamp-3">
+                        {u.centralTheme}
+                      </p>
+
+                      {/* Shanti Mantra Snippet with Copy Button */}
+                      <div className="mt-3 p-3.5 rounded-xl bg-stone-50/80 border border-[#E5E5E5] text-xs font-devanagari text-[#111111] relative group/shanti">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#D9A441]">
+                            शान्ति पाठ:
+                          </span>
+                          <button
+                            onClick={(e) => handleCopyVerse(u.id, u.shantiMantra, e)}
+                            title="शान्ति पाठ कॉपी करें"
+                            className="p-1 rounded bg-white hover:bg-stone-100 text-[#111111] border border-[#E5E5E5] transition-colors cursor-pointer"
+                          >
+                            {copiedId === u.id ? (
+                              <Check className="w-3 h-3 text-emerald-700" />
+                            ) : (
+                              <Copy className="w-3 h-3 text-[#111111]" />
+                            )}
+                          </button>
+                        </div>
+                        <p className="italic line-clamp-2 text-[#111111] leading-relaxed">
+                          {u.shantiMantra}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Action Footer */}
+                    <div className="mt-5 pt-3.5 border-t border-[#E5E5E5] flex items-center justify-between gap-1.5 flex-wrap">
                       <button
                         type="button"
-                        onClick={() => {
-                          setReaderCategory("upanishads");
-                          setSelectedReaderSlug(u.slug);
-                          handleTabChange("reader", u.slug);
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/library/upanishad/${u.slug}`);
                         }}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-800 text-white hover:from-amber-800 hover:to-amber-900 font-bold text-xs transition-colors shadow-2xs cursor-pointer"
-                        title="मूल श्लोक वाचन"
+                        className="text-xs font-bold text-[#555555] hover:text-[#111111] flex items-center gap-1 cursor-pointer transition-colors"
                       >
-                        <BookOpen className="w-3.5 h-3.5 text-amber-200" />
-                        <span>श्लोक वाचन</span>
+                        <Info className="w-3.5 h-3.5 text-[#D9A441]" />
+                        <span>दार्शनिक सार</span>
                       </button>
-                      <Link
-                        to={`/library/upanishad/${u.slug}`}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-amber-50 text-[#78350F] hover:bg-amber-100 border border-amber-200/70 font-bold text-xs transition-colors"
-                        title="विस्तृत उपनिषद संरचना"
-                      >
-                        <span>मंत्र संरचना</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                      </Link>
+
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setReaderCategory("upanishads");
+                            setSelectedReaderSlug(u.slug);
+                            handleTabChange("reader", u.slug);
+                          }}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs transition-colors shadow-2xs cursor-pointer border border-[#FFD21F] hover:border-[#D9A441]"
+                          title="मूल मन्त्र एवं अनुवाद पढ़ें"
+                        >
+                          <BookOpen className="w-3 h-3 text-[#111111]" />
+                          <span>मन्त्र वाचन</span>
+                        </button>
+                        <Link
+                          to={`/library/upanishad/${u.slug}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white text-[#111111] hover:border-[#D9A441] border border-[#E5E5E5] font-bold text-xs transition-colors"
+                          title="विस्तृत उपनिषद संरचना"
+                        >
+                          <span>संरचना</span>
+                          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform text-[#D9A441]" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -952,7 +1002,8 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
               {filteredDarshanas.map((d) => (
                 <div
                   key={d.id}
-                  className="bg-white rounded-2xl border border-amber-200/70 hover:border-amber-400 p-5 shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
+                  onClick={() => navigate(`/library/darshana/${d.id}`)}
+                  className="bg-white rounded-2xl border border-amber-200/70 hover:border-amber-400 p-5 shadow-xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group cursor-pointer"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
@@ -988,7 +1039,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                   <div className="mt-5 pt-3 border-t border-amber-100 flex items-center justify-between gap-1.5 flex-wrap">
                     <button
                       type="button"
-                      onClick={() => setSelectedDarshanaModal(d)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/library/darshana/${d.id}`);
+                      }}
                       className="text-xs font-bold text-stone-600 hover:text-[#1E293B] flex items-center gap-1 cursor-pointer"
                     >
                       <Info className="w-3.5 h-3.5 text-amber-700" />
@@ -997,7 +1051,8 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                     <div className="flex items-center gap-1.5">
                       <button
                         type="button"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setReaderCategory("darshanas");
                           setSelectedReaderSlug(d.id);
                           handleTabChange("reader", d.id);
@@ -1010,6 +1065,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       </button>
                       <Link
                         to={`/library/darshana/${d.id}`}
+                        onClick={(e) => e.stopPropagation()}
                         className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-amber-50 text-[#78350F] hover:bg-amber-100 border border-amber-200/70 font-bold text-xs transition-colors"
                         title="विस्तृत सूत्र संरचना"
                       >
@@ -1071,239 +1127,222 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
         )}
 
         {/* ========================================================================= */}
-        {/* TAB 4: 108 MUKTIKA CANON */}
+        {/* TAB 4: 108 MUKTIKA CANON (BENTO-STYLE ARCHITECTURE) */}
         {/* ========================================================================= */}
         {activeTab === "muktika" && (
           <div className="space-y-8 animate-fadeIn">
-            <div className="bg-white rounded-3xl border border-amber-200/70 shadow-xs p-6 sm:p-8">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#78350F] bg-amber-50 px-3 py-1 rounded-full border border-amber-200/70">
-                108 MUKTIKA CANON • भगवान श्रीराम-हनुमान संवाद
-              </span>
-              <h2 className="font-serif text-3xl font-bold text-[#1E293B] mt-2 mb-2">
+            {/* Header & Canonical Vedic Epistemology */}
+            <div className="bg-white rounded-3xl border border-[#E5E5E5] shadow-xs p-6 sm:p-8 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] px-3.5 py-1 rounded-full shadow-2xs border border-[#FFD21F]">
+                  108 MUKTIKA CANON • भगवान श्रीराम-हनुमान संवाद
+                </span>
+                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-stone-50 border border-[#E5E5E5] text-[#111111]">
+                  कुल १०८ उपनिषद संगणना
+                </span>
+              </div>
+              <h2 className="font-serif text-3xl font-bold text-[#111111]">
                 १०८ मुक्तिक उपनिषद् कोष (The 108 Muktika Canon)
               </h2>
-              <p className="text-sm text-stone-600 font-devanagari leading-relaxed">
-                मुक्तिक उपनिषद में भगवान श्रीराम ने पवनपुत्र हनुमान जी को १०८ उपनिषदों का क्रम व महात्म्य बताया। वेदों एवं विशिष्ट आध्यात्मिक परंपराओं (सामान्य वेदान्त, संन्यास, शाक्त, वैष्णव, शैव, योग) के अनुसार इनका सुव्यवस्थित विभाजन।
+              <p className="text-sm text-[#555555] font-devanagari leading-relaxed">
+                मुक्तिक उपनिषद में मर्यादा पुरुषोत्तम भगवान श्रीराम ने पवनपुत्र श्री हनुमान जी को समस्त १०८ उपनिषदों का प्रामाणिक क्रम एवं मुक्ति-मार्ग का उपदेश दिया। वेदों (ऋक्, यजुष्, साम, अथर्व) एवं साधना-परंपराओं (सामान्य वेदान्त, संन्यास, शाक्त, वैष्णव, शैव, योग) के अनुसार इनका सुव्यवस्थित विभाजन।
               </p>
 
-              {/* By Veda Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-6">
-                {MUKTIKA_CANON_SUMMARY.byVeda.map((bv, bIdx) => (
-                  <div
-                    key={bIdx}
-                    className="p-4 rounded-2xl bg-[#FBF9F5] border border-amber-200/70 text-center hover:border-amber-400 hover:shadow-xs transition-all"
-                  >
-                    <div className="font-serif text-2xl font-black text-[#78350F]">
-                      {bv.count}
-                    </div>
-                    <div className="text-xs font-bold text-[#1E293B] mt-0.5">
-                      {bv.veda}
-                    </div>
-                    <div className="text-[10px] text-stone-500 mt-1 line-clamp-1">
-                      {bv.key.join(", ")}
-                    </div>
-                  </div>
-                ))}
+              {/* By Veda Bento Bar */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2">
+                {MUKTIKA_CANON_SUMMARY.byVeda.map((bv, bIdx) => {
+                  const isSelected = muktikaVedaFilter === bv.veda;
+                  return (
+                    <button
+                      key={bIdx}
+                      type="button"
+                      onClick={() => setMuktikaVedaFilter(isSelected ? "all" : bv.veda)}
+                      className={`p-4 rounded-2xl border text-center transition-all cursor-pointer ${
+                        isSelected
+                          ? "bg-[#FFD21F] border-[#FFD21F] shadow-sm -translate-y-0.5 text-[#111111]"
+                          : "bg-white hover:bg-stone-50 border-[#E5E5E5] hover:border-[#D9A441]"
+                      }`}
+                    >
+                      <div className="font-serif text-2xl font-black text-[#111111]">
+                        {bv.count}
+                      </div>
+                      <div className="text-xs font-bold text-[#111111] mt-0.5">
+                        {bv.veda}
+                      </div>
+                      <div className="text-[10px] text-[#555555] mt-1 line-clamp-1">
+                        {bv.key.join(", ")}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            {/* By Category Details */}
-            <div className="bg-white rounded-3xl border border-amber-200/70 shadow-xs p-6 sm:p-8">
-              <h3 className="font-serif text-2xl font-bold text-[#1E293B] mb-4">
-                विषयगत ७ श्रेणियाँ (Categorical Classification)
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {MUKTIKA_CANON_SUMMARY.byCategory.map((cat, cIdx) => (
-                  <div
-                    key={cIdx}
-                    className="p-4 rounded-xl bg-[#FBF9F5] border border-amber-200/70 hover:border-amber-400 transition-colors"
-                  >
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <h4 className="font-serif text-base font-bold text-[#1E293B]">
-                        {cat.category}
-                      </h4>
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100/70 text-[#78350F] border border-amber-200/60">
-                        {cat.count} उपनिषद
-                      </span>
-                    </div>
-                    <p className="text-xs text-stone-600 font-devanagari mt-1 leading-relaxed">
-                      {cat.desc}
-                    </p>
-                  </div>
-                ))}
+            {/* Filter & Search Bar for 108 Upanishads Bento Grid */}
+            <div className="bg-white rounded-2xl border border-[#E5E5E5] p-5 shadow-xs space-y-4">
+              <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                {/* Search */}
+                <div className="relative flex-1 max-w-md">
+                  <Search className="w-3.5 h-3.5 text-[#555555] absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={muktikaSearch}
+                    onChange={(e) => setMuktikaSearch(e.target.value)}
+                    placeholder="१०८ उपनिषदों में नाम, वेद या विषय खोजें..."
+                    className="w-full pl-8 pr-7 py-2 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:ring-1 focus:ring-[#FFD21F] focus:outline-none placeholder:text-[#555555] font-devanagari text-[#111111]"
+                  />
+                  {muktikaSearch && (
+                    <button
+                      onClick={() => setMuktikaSearch("")}
+                      className="p-1 text-[#555555] hover:text-[#111111] absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Counter */}
+                <div className="text-xs font-bold text-[#111111] self-start md:self-auto flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#D9A441]" />
+                  <span>प्रदर्शित: {filtered108Upanishads.length} / १०८ उपनिषद</span>
+                  {(muktikaVedaFilter !== "all" || muktikaCategoryFilter !== "all" || muktikaSearch) && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMuktikaVedaFilter("all");
+                        setMuktikaCategoryFilter("all");
+                        setMuktikaSearch("");
+                      }}
+                      className="text-[11px] text-[#D9A441] hover:underline font-semibold cursor-pointer ml-1"
+                    >
+                      फ़िल्टर रीसेट
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* 7 Tradition Filter Chips */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
+                <span className="text-[11px] font-bold text-[#555555] whitespace-nowrap mr-1">
+                  परंपरा:
+                </span>
+                {[
+                  "all",
+                  "दशोपनिषद् / मुख्योपनिषद्",
+                  "सामान्य वेदान्त",
+                  "संन्यास उपनिषद्",
+                  "शाक्त उपनिषद्",
+                  "वैष्णव उपनिषद्",
+                  "शैव उपनिषद्",
+                  "योग उपनिषद्",
+                ].map((catName) => {
+                  const isSelected = muktikaCategoryFilter === catName;
+                  const label = catName === "all" ? "समस्त ७ परंपराएँ" : catName;
+                  return (
+                    <button
+                      key={catName}
+                      type="button"
+                      onClick={() => setMuktikaCategoryFilter(catName)}
+                      className={`px-3 py-1 rounded-full whitespace-nowrap font-medium text-[11px] border transition-all cursor-pointer ${
+                        isSelected
+                          ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] font-bold shadow-2xs"
+                          : "bg-white text-[#555555] border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
+
+            {/* 108 Upanishads Bento Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filtered108Upanishads.map((u) => {
+                const isMukhya = u.category.includes("दशोपनिषद्");
+                const uSlug =
+                  u.slug ||
+                  (u.enName
+                    ? `${u.enName.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-")}-upanishad`
+                    : `upanishad-${u.order}`);
+                const readerMatch = READER_UPANISHADS.find((r) =>
+                  u.enName.toLowerCase().includes(r.slug.replace("-upanishad", "")) ||
+                  r.name.includes(u.name.replace("ोपनिषद्", "").replace("पनिषद्", ""))
+                );
+
+                return (
+                  <div
+                    key={u.order}
+                    onClick={() => navigate(`/library/upanishad/${uSlug}`)}
+                    className={`p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group cursor-pointer ${
+                      isMukhya ? "border-[#D9A441]/50 bg-stone-50/20" : ""
+                    }`}
+                  >
+                    <div>
+                      {/* Top Badges */}
+                      <div className="flex items-center justify-between gap-1 mb-2">
+                        <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-stone-100 text-[#111111] border border-[#E5E5E5]">
+                          #{u.order}
+                        </span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F]/20 text-[#111111] border border-[#FFD21F] truncate max-w-[130px]">
+                          {u.veda}
+                        </span>
+                      </div>
+
+                      {/* Name */}
+                      <h4 className="font-serif text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug">
+                        {u.name}
+                      </h4>
+                      <div className="text-[11px] font-medium text-[#D9A441] mt-0.5 font-sans">
+                        {u.enName} Upanishad • <span className="text-[#555555]">{u.category.split(" ")[0]}</span>
+                      </div>
+
+                      {/* Sacred Theme */}
+                      <p className="text-xs text-[#555555] font-devanagari mt-2 leading-relaxed line-clamp-3">
+                        {u.theme}
+                      </p>
+                    </div>
+
+                    {/* Bottom Actions */}
+                    <div className="mt-4 pt-2.5 border-t border-[#E5E5E5] flex items-center justify-between gap-1 text-[11px]">
+                      <span className="text-[#555555] font-devanagari text-[10px]">
+                        मुक्तिक क्रम #{u.order}
+                      </span>
+
+                      {readerMatch ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setReaderCategory("upanishads");
+                            setSelectedReaderSlug(readerMatch.slug);
+                            handleTabChange("reader", readerMatch.slug);
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-[10px] shadow-2xs border border-[#FFD21F] cursor-pointer"
+                        >
+                          <BookOpen className="w-3 h-3 text-[#111111]" />
+                          <span>मूल पाठ</span>
+                        </button>
+                      ) : (
+                        <span className="text-[10px] font-semibold text-[#D9A441] group-hover:underline flex items-center gap-0.5">
+                          <span>संरचना</span>
+                          <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {filtered108Upanishads.length === 0 && (
+              <div className="p-12 text-center bg-white rounded-2xl border border-[#E5E5E5] text-[#555555]">
+                <p className="text-sm font-devanagari">कोई उपनिषद नहीं मिला। कृपया अन्य शब्द या श्रेणी चुनें।</p>
+              </div>
+            )}
           </div>
         )}
       </div>
-
-      {/* ========================================================================= */}
-      {/* MODAL: UPANISHAD TEACHINGS MODAL */}
-      {/* ========================================================================= */}
-      {selectedUpanishadModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-amber-200/80 shadow-2xl p-6 sm:p-8 space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-200">
-              <div>
-                <span className="text-xs font-bold text-[#78350F] uppercase px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200">
-                  {selectedUpanishadModal.veda}
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#1E293B] mt-1">
-                  {selectedUpanishadModal.name}
-                </h3>
-              </div>
-              <button
-                onClick={() => setSelectedUpanishadModal(null)}
-                className="p-2 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="space-y-4 text-xs sm:text-sm font-devanagari">
-              <div className="p-3.5 rounded-xl bg-[#FBF9F5] border border-amber-200/70 text-[#78350F] italic">
-                <strong>शांति पाठ:</strong>{" "}
-                {selectedUpanishadModal.shantiMantra}
-                <div className="text-xs text-stone-600 mt-1 not-italic">
-                  {selectedUpanishadModal.shantiMeaning}
-                </div>
-              </div>
-
-              <div>
-                <strong className="text-[#78350F] block mb-1">
-                  प्रमुख गूढ़ सिद्धांत व आख्यान:
-                </strong>
-                <ul className="space-y-2">
-                  {selectedUpanishadModal.keyTeachings.map((kt, idx) => (
-                    <li
-                      key={idx}
-                      className="p-2.5 rounded-lg bg-stone-50 border border-stone-200/80 text-stone-800 flex items-start gap-2"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-600 mt-2 flex-shrink-0" />
-                      <span>{kt}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-stone-200 flex items-center justify-between">
-              <Link
-                to={`/library/upanishad/${selectedUpanishadModal.slug}`}
-                onClick={() => setSelectedUpanishadModal(null)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 text-white text-xs font-bold hover:from-amber-800 hover:to-amber-900 transition-colors shadow-2xs"
-              >
-                <span>विस्तृत उपनिषद संरचना देखें</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <button
-                onClick={() => setSelectedUpanishadModal(null)}
-                className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs font-bold hover:bg-stone-200 transition-colors cursor-pointer"
-              >
-                बंद करें
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ========================================================================= */}
-      {/* MODAL: DARSHANA MODAL */}
-      {/* ========================================================================= */}
-      {selectedDarshanaModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-amber-200/80 shadow-2xl p-6 sm:p-8 space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-200">
-              <div>
-                <span className="text-xs font-bold text-amber-900 uppercase px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200">
-                  प्रवर्तक: {selectedDarshanaModal.founder}
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#1E293B] mt-1">
-                  {selectedDarshanaModal.name} ({selectedDarshanaModal.enName})
-                </h3>
-              </div>
-              <button
-                onClick={() => setSelectedDarshanaModal(null)}
-                className="p-2 rounded-xl text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="space-y-4 text-xs sm:text-sm font-devanagari">
-              <p>
-                <strong>मूल ग्रंथ:</strong>{" "}
-                {selectedDarshanaModal.foundationalText}
-              </p>
-              <p>
-                <strong>स्वीकृत प्रमाण:</strong>{" "}
-                {selectedDarshanaModal.pramanas.join(", ")}
-              </p>
-              {selectedDarshanaModal.padarthas && (
-                <p>
-                  <strong>मूल पदार्थ:</strong> {selectedDarshanaModal.padarthas}
-                </p>
-              )}
-
-              {selectedDarshanaModal.traditions && (
-                <div>
-                  <strong className="text-[#78350F] block mb-1">
-                    प्रमुख वेदान्त संप्रदाय व आचार्य:
-                  </strong>
-                  <div className="space-y-2">
-                    {selectedDarshanaModal.traditions.map((tr, idx) => (
-                      <div
-                        key={idx}
-                        className="p-2.5 rounded-lg bg-amber-50/60 border border-amber-200"
-                      >
-                        <strong className="text-amber-950 block">
-                          {tr.name} — {tr.acharya}
-                        </strong>
-                        <p className="text-stone-700 text-xs mt-0.5">
-                          {tr.tenet}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <strong className="text-[#1E293B] block mb-1">
-                  दार्शनिक आधारभूत सिद्धांत:
-                </strong>
-                <ul className="space-y-1.5 list-disc pl-5 text-stone-700">
-                  {selectedDarshanaModal.corePhilosophy.map((cp, idx) => (
-                    <li key={idx}>{cp}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950">
-                <strong>मोक्ष (मुक्ति) की अवधारणा:</strong>{" "}
-                {selectedDarshanaModal.mokshaView}
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-stone-200 flex items-center justify-between">
-              <Link
-                to={`/library/darshana/${selectedDarshanaModal.id}`}
-                onClick={() => setSelectedDarshanaModal(null)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 text-white text-xs font-bold hover:from-amber-800 hover:to-amber-900 transition-colors shadow-2xs"
-              >
-                <span>विस्तृत सूत्र संरचना देखें</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-              <button
-                onClick={() => setSelectedDarshanaModal(null)}
-                className="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs font-bold hover:bg-stone-200 transition-colors cursor-pointer"
-              >
-                बंद करें
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

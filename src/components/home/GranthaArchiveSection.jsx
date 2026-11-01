@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowRight, ChevronDown, ChevronUp, BookOpen, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
 import { GRANTHA_ARCHIVE } from "../../data/libraryHomeData.js";
 import { useLanguage } from "../../context/LanguageContext.jsx";
 
@@ -21,44 +21,51 @@ const GRANTHA_IMAGES = {
   "card-purana.jpg": puranaImg,
   "card-astrology.jpg": astrologyImg,
   "card-samskara.jpg": samskaraImg,
-  "card-vastu.jpg": vastuImg
+  "card-vastu.jpg": vastuImg,
 };
 
 export default function GranthaArchiveSection({ onNavigateCollections }) {
   const [showAll, setShowAll] = useState(false);
   const { isHindi } = useLanguage();
 
-  // Show only 4 cards by default, or all 8 cards when "View All" is clicked
+  // Show 4 cards by default, or all 8 cards when "View All" is toggled
   const displayedGranthas = showAll ? GRANTHA_ARCHIVE : GRANTHA_ARCHIVE.slice(0, 4);
 
   return (
-    <section id="granthas" className="py-12 sm:py-16 bg-[#fffdf8] border-y border-amber-100">
+    <section
+      id="granthas"
+      className="py-10 sm:py-14 bg-white border-b border-[#E5E5E5] relative"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-3">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
-            <div className="flex items-center gap-1.5 mb-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-              <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#FFD21F]/40 mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FFD21F]" />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111]">
                 {isHindi ? "शास्त्रीय ग्रंथ संग्रह" : "CLASSICAL CORPUS"}
               </span>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
-              {isHindi ? "ग्रंथ संग्रह का अन्वेषण करें" : "Explore Grantha"}
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111111]">
+              {isHindi ? "ग्रंथ संग्रह का अन्वेषण करें" : "Explore Grantha Archive"}
             </h2>
-            <p className={`text-xs sm:text-sm text-stone-600 mt-0.5 ${isHindi ? "font-devanagari" : ""}`}>
+            <p
+              className={`text-xs sm:text-sm text-[#555555] mt-1 ${
+                isHindi ? "font-devanagari" : ""
+              }`}
+            >
               {isHindi
-                ? "प्रमुख भारतीय ग्रंथों को उनके विषय, अध्याय और संदर्भ के साथ explore करें।"
-                : "Explore principal Indian scriptures by subject, chapter, and canonical context."}
+                ? "प्रमुख भारतीय ग्रंथों को उनके विषय, अध्याय, प्रामाणिक भाष्य और संदर्भ के साथ खोजें।"
+                : "Explore canonical Indian scriptures by subject, chapter, and traditional context."}
             </p>
           </div>
 
-          <div className="flex items-center gap-2 self-start sm:self-auto">
+          <div className="flex items-center gap-3 self-start sm:self-auto">
             {/* Toggle View All (8 Granthas) / Show Less (4 Granthas) */}
             <button
               type="button"
               onClick={() => setShowAll((prev) => !prev)}
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full bg-amber-100/70 hover:bg-amber-200/80 text-amber-950 border border-amber-300/70 transition-all cursor-pointer shadow-2xs"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold px-4 py-2 rounded-full bg-white hover:bg-[#FFD21F] text-[#111111] border border-[#E5E5E5] hover:border-[#FFD21F] transition-all cursor-pointer shadow-xs active:scale-95"
             >
               <span>
                 {showAll
@@ -70,9 +77,9 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
                   : "View All (8 Texts)"}
               </span>
               {showAll ? (
-                <ChevronUp className="w-3.5 h-3.5 text-amber-900" />
+                <ChevronUp className="w-4 h-4 text-[#111111]" />
               ) : (
-                <ChevronDown className="w-3.5 h-3.5 text-amber-900" />
+                <ChevronDown className="w-4 h-4 text-[#111111]" />
               )}
             </button>
 
@@ -80,16 +87,16 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
             <button
               type="button"
               onClick={onNavigateCollections}
-              className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-amber-800 hover:text-amber-950 px-2 py-1 transition-colors cursor-pointer group"
+              className="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-[#111111] hover:text-[#D9A441] px-2 py-1 transition-colors cursor-pointer group"
             >
-              <span>{isHindi ? "समस्त ग्रंथ सूची" : "View Grantha Archive"}</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              <span>{isHindi ? "समस्त ग्रंथ सूची" : "View Archive"}</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
             </button>
           </div>
         </div>
 
-        {/* Dynamic Compact Cards Grid (4 by default, 8 when View All clicked) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fadeIn">
+        {/* Dynamic Cards Grid: Crisp 1px border (#E5E5E5), hover golden border (#D9A441), Refined Badges in #FFD21F */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {displayedGranthas.map((grantha, idx) => {
             const imgSrc = GRANTHA_IMAGES[grantha.imageKey] || gitaImg;
             const title = isHindi ? grantha.name : grantha.enName;
@@ -99,40 +106,53 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
               <div
                 key={idx}
                 onClick={onNavigateCollections}
-                className="group flex flex-col bg-white rounded-xl border border-stone-200/90 shadow-2xs hover:shadow-md hover:border-amber-300 transition-all duration-300 overflow-hidden cursor-pointer"
+                className="group flex flex-col justify-between bg-white rounded-2xl border border-[#E5E5E5] shadow-xs hover:shadow-lg hover:border-[#D9A441] hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer"
               >
-                {/* 16:9 Thumbnail Image */}
-                <div className="relative aspect-16/9 overflow-hidden bg-stone-900">
-                  <img
-                    src={imgSrc}
-                    alt={grantha.name}
-                    className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-103"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                  <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-white/90 text-stone-800 backdrop-blur-xs shadow-2xs">
-                    {grantha.category}
-                  </span>
-                </div>
+                <div>
+                  {/* 16:9 Thumbnail Image with Dark Vignette */}
+                  <div className="relative aspect-16/9 overflow-hidden bg-[#111111]">
+                    <img
+                      src={imgSrc}
+                      alt={grantha.name}
+                      className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    
+                    {/* Refined Category Badge in Brand Yellow #FFD21F with Deep Black #111111 text */}
+                    <span className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs font-devanagari">
+                      {grantha.category}
+                    </span>
+                  </div>
 
-                <div className="p-3.5 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className={`font-serif text-base font-bold text-stone-900 group-hover:text-amber-800 transition-colors ${isHindi ? "font-devanagari" : ""}`}>
+                  {/* Card Content with High-Contrast Typography */}
+                  <div className="p-4 sm:p-5">
+                    <h3
+                      className={`font-serif text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-tight ${
+                        isHindi ? "font-devanagari" : ""
+                      }`}
+                    >
                       {title}
                     </h3>
-                    <p className="text-[11px] text-amber-800 font-medium">
+                    <p className="text-xs text-[#D9A441] font-bold tracking-wide mt-0.5">
                       {subtitleTag}
                     </p>
-                    <p className="text-[10px] text-stone-400 mt-0.5">
-                      {isHindi ? "रचयिता:" : "Author:"} <strong className="text-stone-600">{grantha.author}</strong>
+                    <p className="text-[11px] text-[#555555] mt-1.5 font-devanagari">
+                      {isHindi ? "रचयिता / परम्परा:" : "Author / Tradition:"}{" "}
+                      <strong className="text-[#111111] font-bold">
+                        {grantha.author}
+                      </strong>
                     </p>
-                    <p className="text-[11px] text-stone-500 font-devanagari mt-1.5 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-[#555555] font-devanagari mt-2 line-clamp-2 leading-relaxed">
                       {grantha.summary}
                     </p>
                   </div>
+                </div>
 
-                  <div className="mt-3 pt-2.5 border-t border-stone-100 text-xs font-semibold text-amber-700 group-hover:text-amber-900 flex items-center justify-between transition-colors">
-                    <span>{isHindi ? "ग्रंथ पढ़ें" : "Read Scripture"}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                {/* Bottom CTA Bar with arrow slide micro-interaction */}
+                <div className="p-4 sm:p-5 pt-0">
+                  <div className="pt-3 border-t border-[#E5E5E5] text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center justify-between transition-colors">
+                    <span>{isHindi ? "ग्रंथ का अध्ययन करें" : "Read Scripture"}</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
                   </div>
                 </div>
               </div>
@@ -140,23 +160,23 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
           })}
         </div>
 
-        {/* Optional Helper Strip when expanded */}
+        {/* Helper Strip when expanded */}
         {showAll && (
-          <div className="mt-5 p-3 rounded-xl bg-amber-50/70 border border-amber-200/80 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
-            <span className="text-stone-700 font-medium flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-amber-700" />
+          <div className="mt-6 p-4 rounded-2xl bg-white border border-[#FFD21F]/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <span className="text-[#555555] font-medium flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-[#D9A441] shrink-0" />
               <span>
                 {isHindi
-                  ? "प्रस्थानत्रयी, आदिकाव्य, इतिहास, उपनिषद, पुराण, दर्शन एवं आयुर्वेद के अमर ग्रंथ संग्रह।"
-                  : "Principal scriptures of Prasthanatrayi, Epics, Upanishads, Puranas, and Classical Darshanas."}
+                  ? "प्रस्थानत्रयी, आदिकाव्य, इतिहास, उपनिषद, पुराण, दर्शन एवं आयुर्वेद के अमर प्रामाणिक ग्रंथ संग्रह।"
+                  : "Preserving the canonical Prasthanatrayi, Epics, Upanishads, Puranas, and Darshanas."}
               </span>
             </span>
             <button
               type="button"
               onClick={onNavigateCollections}
-              className="font-bold text-amber-900 hover:text-amber-950 flex items-center gap-1 cursor-pointer"
+              className="text-[#111111] hover:text-[#D9A441] font-bold text-xs flex items-center gap-1.5 cursor-pointer shrink-0"
             >
-              <span>{isHindi ? "संपूर्ण ग्रंथ संग्रह देखें" : "Explore Complete Corpus"}</span>
+              <span>{isHindi ? "समस्त ग्रंथ आर्काइव में खोजें" : "Explore Archive"}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

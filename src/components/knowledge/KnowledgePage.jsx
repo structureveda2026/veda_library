@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useMemo, useEffect } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import SEO from "../common/SEO.jsx";
 import {
   BookOpen,
   ArrowRight,
@@ -17,8 +18,26 @@ import bannerTempleGhat from "../../assets/images/library/banners/banner-temple-
 
 export default function KnowledgePage({ onNavigateHome }) {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryParam = searchParams.get("q") || "";
+
   const [selectedBranchId, setSelectedBranchId] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(queryParam);
+
+  useEffect(() => {
+    if (queryParam) {
+      setSearchQuery(queryParam);
+    }
+  }, [queryParam]);
+
+  const handleSearchChange = (val) => {
+    setSearchQuery(val);
+    if (val.trim()) {
+      setSearchParams({ q: val.trim() });
+    } else {
+      setSearchParams({});
+    }
+  };
 
   const handleCardClick = (cardId) => {
     if (cardId === "veda") {
@@ -85,54 +104,88 @@ export default function KnowledgePage({ onNavigateHome }) {
     }).filter(Boolean);
   }, [selectedBranchId, searchQuery]);
 
+  const searchSchema = [
+    {
+      "@type": "CollectionPage",
+      name: searchQuery ? `खोज परिणाम: "${searchQuery}" | Veda Library` : "Browse Knowledge — ज्ञान अन्वेषण | Veda Library",
+      description: "वैदिक एवं भारतीय ज्ञान परंपरा का प्रामाणिक खोज एवं अन्वेषण पृष्ठ।",
+      url: `https://library.vedastructure.com/search${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`,
+      inLanguage: ["hi", "en", "sa"]
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "होम (Home)",
+          item: "https://library.vedastructure.com/"
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "ज्ञान अन्वेषण (Browse Knowledge)",
+          item: "https://library.vedastructure.com/search"
+        }
+      ]
+    }
+  ];
+
   return (
-    <div className="bg-[#FBF9F5] min-h-screen">
+    <div className="bg-[#FFFFFF] min-h-screen text-[#111111]">
+      <SEO
+        title={searchQuery ? `"${searchQuery}" — खोज परिणाम | Veda Library` : "Browse Knowledge — ज्ञान अन्वेषण | Veda Library"}
+        description="वेद, वेदाङ्ग, उपनिषद, दर्शन, धर्म, मंत्र, पूजा, ज्योतिष एवं पारंपरिक ज्ञान का संपूर्ण संरचित संग्रह।"
+        canonical="/search"
+        schema={searchSchema}
+      />
       {/* 1. Mobile-First Hero Header with Vivid Image Visibility */}
-      <div className="relative bg-[#1A0E05] text-white py-10 sm:py-14 px-4 sm:px-6 lg:px-8 border-b-2 border-amber-600/70 overflow-hidden shadow-md">
+      <div className="relative bg-[#111111] text-white py-10 sm:py-14 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] overflow-hidden shadow-sm">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerTempleGhat}
             alt="Temple Ghats"
-            className="w-full h-full object-cover object-center opacity-80 scale-102 transition-transform duration-700"
+            className="w-full h-full object-cover object-center opacity-85 scale-102 transition-transform duration-700"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1a0e05]/60 to-black/35" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/25 via-transparent to-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/90 via-[#111111]/45 to-[#111111]/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#111111]/80 via-transparent to-[#111111]/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-[#111111]/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs font-medium text-amber-200/80 mb-2">
+          <div className="flex items-center gap-2 text-xs font-medium text-white/80 mb-2">
             <Link
               to="/"
               className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
             >
-              <Home className="w-3.5 h-3.5" />
+              <Home className="w-3.5 h-3.5 text-[#D9A441]" />
               <span>Home</span>
             </Link>
-            <span>›</span>
+            <span className="text-[#D9A441]">›</span>
             <Link
               to="/library"
               className="hover:text-white transition-colors cursor-pointer"
             >
               Veda Library
             </Link>
-            <span>›</span>
-            <span className="text-white font-semibold">Knowledge Branches</span>
+            <span className="text-[#D9A441]">›</span>
+            <span className="text-[#FFD21F] font-semibold">Knowledge Branches</span>
           </div>
 
-          <span className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-300 bg-amber-500/15 border border-amber-400/30 px-3 py-1 rounded-full mb-2">
+          <span className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full mb-2 shadow-xs">
             १२ ज्ञान शाखाएँ • VEDIC TAXONOMY
           </span>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-2">
             Explore Knowledge Branches
           </h1>
-          <p className="text-xs sm:text-sm text-amber-100/90 font-devanagari max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-white/90 font-devanagari max-w-2xl leading-relaxed">
             वेद, वेदाङ्ग, उपनिषद, दर्शन, धर्म, मंत्र, पूजा, ज्योतिष, आयुर्वेद एवं पारंपरिक ज्ञान का संपूर्ण संरचित संग्रह।
           </p>
         </div>
       </div>
 
       {/* 2. Sleek Horizontal Scrollable Filter Chips + Search Input */}
-      <div className="sticky top-16 z-30 bg-[#fffdfa]/95 backdrop-blur-md border-b border-amber-200/80 py-2.5 px-4 sm:px-6 lg:px-8 shadow-2xs">
+      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] py-2.5 px-4 sm:px-6 lg:px-8 shadow-xs">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
           {/* Filter Chips */}
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 flex-1">
@@ -141,8 +194,8 @@ export default function KnowledgePage({ onNavigateHome }) {
               onClick={() => setSelectedBranchId("all")}
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer shrink-0 ${
                 selectedBranchId === "all"
-                  ? "bg-amber-700 text-white shadow-xs font-bold"
-                  : "bg-white text-stone-700 border border-stone-200 hover:border-amber-300 hover:bg-amber-50"
+                  ? "bg-[#FFD21F] text-[#111111] shadow-xs font-bold border border-[#FFD21F]"
+                  : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111] hover:bg-stone-50"
               }`}
             >
               All Branches (सभी १२ शाखाएँ)
@@ -157,8 +210,8 @@ export default function KnowledgePage({ onNavigateHome }) {
                   onClick={() => setSelectedBranchId(b.id)}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer shrink-0 ${
                     isSelected
-                      ? "bg-amber-700 text-white shadow-xs font-bold"
-                      : "bg-white text-stone-700 border border-stone-200 hover:border-amber-300 hover:bg-amber-50"
+                      ? "bg-[#FFD21F] text-[#111111] shadow-xs font-bold border border-[#FFD21F]"
+                      : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111] hover:bg-stone-50"
                   }`}
                 >
                   {b.title} ({b.hindiTitle})
@@ -169,19 +222,19 @@ export default function KnowledgePage({ onNavigateHome }) {
 
           {/* Quick Search */}
           <div className="relative min-w-[200px] sm:min-w-[260px] shrink-0">
-            <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-[#D9A441] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder="ज्ञान शाखा या विषय खोजें..."
-              className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-white border border-stone-200 focus:border-amber-400 focus:outline-none placeholder:text-stone-400 font-devanagari shadow-2xs"
+              className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari shadow-xs text-[#111111]"
             />
             {searchQuery && (
               <button
                 type="button"
-                onClick={() => setSearchQuery("")}
-                className="p-1 text-stone-400 hover:text-stone-700 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                onClick={() => handleSearchChange("")}
+                className="p-1 text-[#555555] hover:text-[#111111] absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -193,11 +246,11 @@ export default function KnowledgePage({ onNavigateHome }) {
       {/* 3. Main Content: Flowing Knowledge Sections */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
         {filteredBranches.length === 0 ? (
-          <div className="p-12 text-center bg-white rounded-3xl border border-stone-200 shadow-2xs space-y-3">
-            <p className="font-serif text-lg font-bold text-stone-800">
+          <div className="p-12 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
+            <p className="font-serif text-lg font-bold text-[#111111]">
               खोजे गए शब्द के अनुसार कोई ज्ञान शाखा अथवा विषय नहीं मिला।
             </p>
-            <p className="text-xs text-stone-500 font-devanagari">
+            <p className="text-xs text-[#555555] font-devanagari">
               कृपया भिन्न कीवर्ड टाइप करें या फ़िल्टर रीसेट करें।
             </p>
             <button
@@ -206,7 +259,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                 setSelectedBranchId("all");
                 setSearchQuery("");
               }}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold shadow-xs hover:bg-amber-700 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFD21F] text-[#111111] text-xs font-bold shadow-xs hover:bg-[#ffe052] cursor-pointer"
             >
               फ़िल्टर रीसेट करें (Reset Filter)
             </button>
@@ -216,24 +269,24 @@ export default function KnowledgePage({ onNavigateHome }) {
           <section
             key={branch.id}
             id={branch.id}
-            className="bg-white p-5 sm:p-7 rounded-3xl border border-amber-200/60 shadow-xs space-y-6"
+            className="bg-white p-5 sm:p-7 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-6"
           >
             {/* Branch Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-amber-100 gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E5E5E5] gap-2">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold uppercase tracking-wider text-amber-800 font-devanagari">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
                     {branch.hindiTitle}
                   </span>
                   <span className="text-stone-300">•</span>
-                  <span className="text-xs text-stone-500 font-medium">
+                  <span className="text-xs text-[#555555] font-medium">
                     {branch.subItems?.length || branch.cards.length} Sub-divisions
                   </span>
                 </div>
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
                   {branch.title}
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-0.5">
+                <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-0.5">
                   {branch.subtitle}
                 </p>
               </div>
@@ -243,7 +296,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                   {branch.subItems.slice(0, 4).map((sub, idx) => (
                     <span
                       key={idx}
-                      className="px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-900 border border-amber-200/70"
+                      className="px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-stone-50 text-[#111111] border border-[#E5E5E5]"
                     >
                       {sub}
                     </span>
@@ -260,7 +313,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                   <div
                     key={card.id}
                     onClick={() => handleCardClick(card.id)}
-                    className="group p-4 sm:p-5 rounded-2xl bg-white border border-amber-200/70 hover:border-amber-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-start gap-3.5 cursor-pointer"
+                    className="group p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 flex items-start gap-3.5 cursor-pointer"
                   >
                     {/* Pastel Circle Icon Badge */}
                     <div
@@ -269,7 +322,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                       {IconComponent ? (
                         <IconComponent className={`w-6 h-6 ${card.iconColor}`} />
                       ) : (
-                        <BookOpen className="w-5 h-5 text-amber-700" />
+                        <BookOpen className="w-5 h-5 text-[#D9A441]" />
                       )}
                     </div>
 
@@ -277,23 +330,23 @@ export default function KnowledgePage({ onNavigateHome }) {
                     <div className="flex-1 min-w-0 flex flex-col justify-between min-h-[85px]">
                       <div>
                         <div className="flex items-center justify-between gap-1">
-                          <h3 className="font-serif text-base sm:text-lg font-bold text-stone-900 group-hover:text-amber-800 transition-colors truncate">
+                          <h3 className="font-serif text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors truncate">
                             {card.title}
                           </h3>
-                          <span className="text-[10px] font-devanagari text-stone-400 flex-shrink-0">
+                          <span className="text-[10px] font-devanagari text-[#D9A441] font-semibold flex-shrink-0">
                             {card.hindiTitle}
                           </span>
                         </div>
-                        <p className="text-xs text-stone-500 mt-1 leading-relaxed line-clamp-2">
+                        <p className="text-xs text-[#555555] mt-1 leading-relaxed line-clamp-2">
                           {card.desc}
                         </p>
                       </div>
 
-                      <div className="mt-3 pt-2 border-t border-stone-100 flex items-center justify-between text-xs">
-                        <span className="text-[11px] font-medium text-stone-500">
+                      <div className="mt-3 pt-2 border-t border-[#E5E5E5] flex items-center justify-between text-xs">
+                        <span className="text-[11px] font-medium text-[#555555]">
                           {card.sectionsCount}
                         </span>
-                        <span className="text-amber-700 group-hover:text-amber-900 font-bold flex items-center gap-1 transition-colors">
+                        <span className="text-[#111111] group-hover:text-[#D9A441] font-bold flex items-center gap-1 transition-colors">
                           Explore →
                         </span>
                       </div>
@@ -305,13 +358,13 @@ export default function KnowledgePage({ onNavigateHome }) {
 
             {/* Related Tags */}
             {branch.relatedTags && (
-              <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-stone-500">
-                <span className="font-semibold text-stone-700 text-[11px]">Related:</span>
+              <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-[#555555]">
+                <span className="font-semibold text-[#111111] text-[11px]">Related:</span>
                 {branch.relatedTags.map((t) => (
                   <span
                     key={t}
                     onClick={() => navigate("/library/veda")}
-                    className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-600 hover:bg-amber-100 hover:text-amber-900 cursor-pointer transition-colors text-[11px]"
+                    className="px-2 py-0.5 rounded-md bg-stone-50 text-[#555555] hover:bg-stone-100 hover:text-[#111111] border border-[#E5E5E5] cursor-pointer transition-colors text-[11px]"
                   >
                     #{t}
                   </span>
@@ -322,18 +375,18 @@ export default function KnowledgePage({ onNavigateHome }) {
         )))}
 
         {/* Sacred Quote Card */}
-        <div className="relative rounded-3xl overflow-hidden border border-amber-200/80 shadow-xs bg-gradient-to-r from-amber-50/90 via-[#fff8eb] to-amber-50/90 p-6 sm:p-8 text-center">
+        <div className="relative rounded-2xl overflow-hidden border border-[#D9A441]/50 shadow-xs bg-white p-6 sm:p-8 text-center">
           <div className="relative z-10 max-w-xl mx-auto space-y-2">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-amber-800 bg-amber-100 px-3 py-1 rounded-full">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full shadow-xs">
               तैत्तिरीयोपनिषद्
             </span>
-            <p className="font-devanagari text-lg sm:text-xl font-bold text-amber-950">
+            <p className="font-devanagari text-lg sm:text-xl font-bold text-[#D9A441]">
               “{SACRED_QUOTE.sanskrit}”
             </p>
-            <p className="font-serif italic text-xs sm:text-sm text-stone-700">
+            <p className="font-serif italic text-xs sm:text-sm text-[#555555]">
               "{SACRED_QUOTE.translation}"
             </p>
-            <span className="text-xs font-semibold text-amber-900 block">
+            <span className="text-xs font-semibold text-[#111111] block">
               — {SACRED_QUOTE.source}
             </span>
           </div>

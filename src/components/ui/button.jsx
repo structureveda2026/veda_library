@@ -3,28 +3,39 @@ import { cva } from "class-variance-authority";
 import { cn } from "../../lib/utils.js";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD21F] disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none",
   {
     variants: {
       variant: {
+        // Master Brand Identity Primary CTA
         default:
-          "bg-amber-600 text-white shadow-xs hover:bg-amber-700 active:scale-[0.98]",
-        sacred:
-          "bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white font-semibold shadow-md shadow-amber-600/25 hover:shadow-lg hover:from-amber-600 hover:to-amber-800 active:scale-[0.98]",
-        destructive:
-          "bg-red-600 text-white shadow-xs hover:bg-red-700 active:scale-[0.98]",
-        outline:
-          "border border-stone-200 bg-white hover:bg-stone-50 hover:text-stone-900 text-stone-700 shadow-2xs hover:border-amber-300",
+          "bg-[#FFD21F] text-[#111111] font-semibold shadow-2xs hover:bg-[#D9A441] active:scale-[0.98]",
+        primary:
+          "bg-[#FFD21F] text-[#111111] font-semibold shadow-2xs hover:bg-[#D9A441] active:scale-[0.98]",
+        // Secondary contrast button
         secondary:
-          "bg-amber-50 text-amber-900 border border-amber-200/80 hover:bg-amber-100/80 shadow-2xs",
+          "bg-[#111111] text-[#FFD21F] font-medium shadow-2xs hover:bg-black hover:text-[#D9A441] active:scale-[0.98]",
+        // Spiritual sacred actions
+        spiritual:
+          "bg-[#C62828] text-[#FFFFFF] font-medium shadow-2xs hover:bg-[#A71D1D] active:scale-[0.98]",
+        sacred:
+          "bg-[#C62828] text-[#FFFFFF] font-medium shadow-2xs hover:bg-[#A71D1D] active:scale-[0.98]",
+        // Sacred & premium highlight
+        premium:
+          "bg-[#D9A441] text-[#111111] font-semibold shadow-2xs hover:bg-[#C28E2E] active:scale-[0.98]",
+        outline:
+          "border border-[#E5E5E5] bg-[#FFFFFF] text-[#111111] hover:border-[#D9A441] hover:bg-[#FFFDF5] shadow-2xs active:scale-[0.98]",
         ghost:
-          "hover:bg-amber-100/50 hover:text-amber-900 text-stone-700",
-        link: "text-amber-700 underline-offset-4 hover:underline",
+          "text-[#111111] hover:bg-[#FFD21F]/15 hover:text-[#111111] active:scale-[0.98]",
+        destructive:
+          "bg-[#C62828] text-white shadow-2xs hover:bg-[#A71D1D] active:scale-[0.98]",
+        link:
+          "text-[#111111] underline-offset-4 hover:underline hover:text-[#D9A441]",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-8 rounded-lg px-3 text-xs",
-        lg: "h-12 rounded-2xl px-6 text-base",
+        lg: "h-12 rounded-xl px-6 text-base font-semibold",
         pill: "h-10 rounded-full px-5 text-sm",
         icon: "h-9 w-9 rounded-xl",
       },

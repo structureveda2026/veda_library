@@ -1,26 +1,120 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
+  --font-devanagari: "Noto Sans Devanagari", "Inter", system-ui, sans-serif;
+  --font-serif: "Noto Serif Devanagari", "Cormorant Garamond", Georgia, serif;
+  --font-shloka: "Noto Serif Devanagari", "Cormorant Garamond", Georgia, serif;
+
+  --color-primary-yellow: #FFD21F;
+  --color-premium-gold: #D9A441;
+  --color-spiritual-red: #C62828;
+  --color-white: #FFFFFF;
+  --color-black: #111111;
+  --color-text-secondary: #555555;
+  --color-border: #E5E5E5;
+}
+
 @layer base {
   :root {
-    --veda-primary: #ea580c;
-    --veda-accent-gold: #d97706;
-    --veda-background: #fbf9f5;
-    --veda-surface: #ffffff;
-    --veda-text: #1e293b;
-    --veda-muted: #64748b;
+    /* Master Brand Identity (15%) - Active Nav, Category Badges, Primary CTAs */
+    --color-primary-yellow: #FFD21F;
+
+    /* Premium & Sacred Highlight (5%) - Sanskrit Shloka Highlights, Premium Badges, Borders */
+    --color-premium-gold: #D9A441;
+
+    /* Spiritual & Action Color (3%) - Spiritual categories, sacred alerts, critical actions */
+    --color-spiritual-red: #C62828;
+
+    /* Main Canvas & Content (65%) - Background, Reading Cards, Modals */
+    --color-white: #FFFFFF;
+
+    /* Primary Typography & Information (12%) - Headings, Body Text, Navigation */
+    --color-black: #111111;
+
+    /* Secondary Information */
+    --color-text-secondary: #555555;
+
+    /* Clean Borders & Dividers */
+    --color-border: #E5E5E5;
+
+    --veda-primary: #FFD21F;
+    --veda-accent-gold: #D9A441;
+    --veda-spiritual-red: #C62828;
+    --veda-background: #FFFFFF;
+    --veda-surface: #FFFFFF;
+    --veda-text: #111111;
+    --veda-muted: #555555;
+    --veda-border: #E5E5E5;
   }
 
   html {
-    font-family: "Manrope", sans-serif;
+    font-family: "Inter", "Manrope", sans-serif;
     scroll-behavior: smooth;
+    background-color: #FFFFFF;
+    color: #111111;
+    overflow-x: hidden;
   }
 
   body {
-    background-color: #fbf9f5;
-    color: #1e293b;
+    background-color: #FFFFFF;
+    color: #111111;
+    font-family: "Inter", "Manrope", sans-serif;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Master Typography Hierarchy (Section 6) */
+  /* Desktop H1: 48–64px | Mobile H1: 32–40px */
+  h1, .h1 {
+    font-size: clamp(2rem, 1.25rem + 3.5vw, 4rem);
+    line-height: 1.15;
+    font-weight: 800;
+    color: var(--color-black);
+    letter-spacing: -0.02em;
+  }
+
+  /* Desktop H2: 36–48px | Mobile H2: 26–32px */
+  h2, .h2 {
+    font-size: clamp(1.625rem, 1.1rem + 2.4vw, 3rem);
+    line-height: 1.25;
+    font-weight: 700;
+    color: var(--color-black);
+    letter-spacing: -0.01em;
+  }
+
+  /* Desktop H3: 26–32px | Mobile H3: 22–26px */
+  h3, .h3 {
+    font-size: clamp(1.375rem, 1.125rem + 1.1vw, 2rem);
+    line-height: 1.35;
+    font-weight: 700;
+    color: var(--color-black);
+  }
+
+  /* Desktop H4: 20–24px */
+  h4, .h4 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.4;
+    font-weight: 600;
+    color: var(--color-black);
+  }
+
+  /* Desktop Body: 16–18px | Mobile Body: 15–17px | Line-height: 1.75 */
+  p, .body-text {
+    font-size: clamp(0.9375rem, 0.875rem + 0.35vw, 1.125rem);
+    line-height: 1.75;
+    color: var(--color-black);
+  }
+
+  /* Small text: 13–14px */
+  small, .text-small {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
   }
 
   /* Global Cursor Pointer Guarantee */
@@ -32,34 +126,53 @@
   .cursor-pointer {
     cursor: pointer !important;
   }
+
+  /* Section 40/41: Mobile Minimum Touch Target Helper (>= 44px) */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
-.font-serif {
-  font-family: "Cormorant Garamond", Georgia, serif;
+/* Master Font Family Systems (Section 5) */
+/* Primary English: Inter / Manrope */
+.font-sans, .font-primary {
+  font-family: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
 }
 
-.font-devanagari {
+/* Hindi / Devanagari: Noto Sans Devanagari with strict 1.75 line-height */
+.font-devanagari, .font-hindi {
+  font-family: "Noto Sans Devanagari", "Inter", system-ui, sans-serif;
+  line-height: 1.75;
+}
+
+/* Sanskrit / Shloka / Mantra / Sacred Quotes: Serif Devanagari with strict 1.75 line-height */
+.font-serif, .font-shloka {
   font-family: "Noto Serif Devanagari", "Cormorant Garamond", Georgia, serif;
+  line-height: 1.75;
 }
 
 .font-display {
   font-family: "Rozha One", "Cormorant Garamond", Georgia, serif;
 }
 
-/* Subtle scrollbars */
+/* Subtle clean scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #fbf9f5;
+  background: #FFFFFF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #e2d2b5;
+  background: #E5E5E5;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c9b18b;
+  background: #D9A441;
 }
 
 /* Mandala slow rotation animation */
@@ -83,19 +196,18 @@
 }
 
 .hub-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 32px -8px rgba(234, 88, 12, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -6px rgba(217, 164, 65, 0.15), 0 4px 8px rgba(0, 0, 0, 0.04);
 }
 
 /* Glassmorphism helpers */
 .glass-gold {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  border: 1px solid #E5E5E5;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: #FFFFFF;
+  border: 1px solid #E5E5E5;
 }

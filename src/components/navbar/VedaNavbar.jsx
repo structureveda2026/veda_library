@@ -44,18 +44,29 @@ export default function VedaNavbar({
       path.startsWith("/articles")
     )
       return "articles";
-    if (path.startsWith("/library/knowledge")) return "explore";
-    if (path.startsWith("/library/collections")) return "grantha";
+    if (
+      path.startsWith("/library/veda") ||
+      path.startsWith("/category/veda") ||
+      path.startsWith("/library/upanishad") ||
+      path.startsWith("/upanishad")
+    )
+      return "veda-upanishad";
     if (
       path.startsWith("/library/mantra-stotra") ||
-      path.startsWith("/library/mantra")
+      path.startsWith("/library/mantra") ||
+      path.startsWith("/mantras") ||
+      path.startsWith("/stotram")
     )
       return "mantra-stotra";
     if (
-      path.startsWith("/library/veda") ||
-      path.startsWith("/library/puja")
+      path.startsWith("/library/jyotish") ||
+      path.startsWith("/category/jyotish") ||
+      path.startsWith("/category/vedanga") ||
+      path.startsWith("/library/vedanga")
     )
-      return "explore";
+      return "jyotish-shastra";
+    if (path.startsWith("/about")) return "about";
+    if (path.startsWith("/library/knowledge") || path.startsWith("/library/collections")) return "explore";
     return currentView || "home";
   };
 
@@ -69,74 +80,74 @@ export default function VedaNavbar({
     setIsMobileMenuOpen(false);
   };
 
-  // Nav items dynamically updated based on selected language
+  // Nav items matching Document Section 3.1 (Header and navigation specifications)
   const navItems = [
     { id: "home", label: isHindi ? "होम" : "Home", path: "/library" },
-    { id: "explore", label: isHindi ? "वेद ज्ञान" : "Explore", path: "/library/knowledge" },
-    { id: "grantha", label: isHindi ? "ग्रंथ संग्रह" : "Grantha", path: "/library/collections" },
-    { id: "mantra-stotra", label: isHindi ? "मंत्र एवं स्तोत्र" : "Mantra & Stotra", path: "/library/mantra-stotra" },
-    { id: "articles", label: isHindi ? "शास्त्रीय आलेख" : "Blogs & Articles", path: "/library/articles" },
-    { id: "topics", label: isHindi ? "प्रमुख विषय" : "Topics", path: "/library/knowledge" },
-    { id: "research", label: isHindi ? "अनुसंधान" : "Research", path: "/library/knowledge" },
+    { id: "explore", label: isHindi ? "ज्ञान अन्वेषण" : "Browse Knowledge", path: "/library/knowledge" },
+    { id: "veda-upanishad", label: isHindi ? "वेद व उपनिषद" : "Vedas & Upanishads", path: "/library/veda" },
+    { id: "mantra-stotra", label: isHindi ? "मंत्र व स्तोत्र" : "Mantra & Stotram", path: "/library/mantra-stotra/all" },
+    { id: "jyotish-shastra", label: isHindi ? "ज्योतिष व शास्त्र" : "Jyotish & Shastra", path: "/library/jyotisha" },
+    { id: "articles", label: isHindi ? "आलेख" : "Articles", path: "/library/articles" },
+    { id: "about", label: isHindi ? "परिचय" : "About", path: "/about" },
   ];
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-all duration-300 border-t-2 border-amber-500/90 ${
+      className={`sticky top-0 z-40 transition-all duration-300 border-t-2 border-[#FFD21F] ${
         isScrolled
-          ? "bg-[#fffdf8]/95 backdrop-blur-xl border-b border-amber-200/90 shadow-md py-2.5"
-          : "bg-[#fffdfa]/90 backdrop-blur-md border-b border-amber-200/70 shadow-2xs py-3.5"
+          ? "bg-[#FFFFFF]/98 backdrop-blur-md border-b border-[#E5E5E5] shadow-xs py-2.5"
+          : "bg-[#FFFFFF] border-b border-[#E5E5E5] py-3.5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-1.5 sm:gap-4">
           {/* Left: Brand Logo & Title */}
           <Link
             to="/library"
             onClick={(e) => handleNavClick("home", "/library", e)}
-            className="flex items-center gap-3 group focus:outline-none flex-shrink-0 cursor-pointer text-left select-none"
+            className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none shrink-0 flex-shrink-0 cursor-pointer text-left select-none whitespace-nowrap"
           >
             {/* Sacred Lotus / Surya Emblem */}
-            <div className="relative">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 flex items-center justify-center text-white shadow-md shadow-amber-500/25 ring-2 ring-amber-300/40 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-amber-500/40 transition-all duration-300">
+            <div className="relative shrink-0">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#FFD21F] flex items-center justify-center text-[#111111] shadow-2xs ring-2 ring-[#D9A441]/40 group-hover:bg-[#D9A441] group-hover:scale-105 transition-all duration-300">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="1.7"
-                  className="w-6 h-6 text-amber-50 animate-pulse"
+                  strokeWidth="1.8"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-[#111111]"
                 >
-                  <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.3" />
+                  <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.25" />
                   <circle cx="12" cy="12" r="3" />
                   <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
                   <path d="M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" />
                   <path
                     d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"
-                    opacity="0.2"
+                    opacity="0.15"
                     fill="currentColor"
                   />
                 </svg>
               </div>
-              <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#18110b] border border-amber-400/60 flex items-center justify-center text-[8px] font-bold text-amber-400">
+              <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#111111] border border-[#FFD21F] flex items-center justify-center text-[8px] font-bold text-[#FFD21F]">
                 ॐ
               </span>
             </div>
 
-            <div>
+            <div className="shrink-0">
               <div className="flex items-center gap-1.5">
-                <span className="font-serif text-xl sm:text-2xl font-bold tracking-[0.14em] text-stone-900 group-hover:text-amber-800 transition-colors leading-none">
+                <span className="font-serif text-lg sm:text-2xl font-bold tracking-[0.08em] sm:tracking-[0.12em] text-[#111111] group-hover:text-[#D9A441] transition-colors leading-none whitespace-nowrap">
                   VEDA LIBRARY
                 </span>
               </div>
               {/* Document-specified Hindi subtitle */}
-              <span className="block text-[10px] font-devanagari font-semibold text-amber-800/85 mt-0.5 leading-tight">
+              <span className="hidden md:block text-[10px] font-devanagari font-semibold text-[#555555] mt-1 leading-tight whitespace-nowrap">
                 वैदिक एवं भारतीय ज्ञान परंपरा का डिजिटल संग्रह
               </span>
             </div>
           </Link>
 
-          {/* Center: Desktop Navigation — Document-specified 6 items */}
-          <nav className="hidden lg:flex items-center gap-1 bg-amber-50/40 p-1 rounded-2xl border border-amber-200/50 shadow-2xs">
+          {/* Center: Desktop Navigation — Master Clean Styled */}
+          <nav className="hidden lg:flex items-center gap-1 bg-[#FFFFFF] p-1 rounded-2xl border border-[#E5E5E5]">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
               return (
@@ -146,43 +157,40 @@ export default function VedaNavbar({
                   onClick={(e) => handleNavClick(item.id, item.path, e)}
                   className={`relative px-4 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer ${
                     isActive
-                      ? "bg-white text-amber-950 font-bold shadow-xs border border-amber-300/70"
-                      : "text-stone-700 hover:text-amber-900 hover:bg-white/60"
+                      ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs border border-[#FFD21F]"
+                      : "text-[#111111] hover:text-[#111111] hover:bg-[#FFFFFF]"
                   }`}
                 >
                   <span className="relative z-10">{item.label}</span>
-                  {isActive && (
-                    <span className="block w-1 h-1 rounded-full bg-amber-600 mx-auto mt-0.5" />
-                  )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right: Search Pill + Language Tag + Mobile Toggle */}
-          <div className="flex items-center gap-2.5">
-            {/* Desktop Pill Search Bar */}
+          {/* Right: Quick Search CTA + Language Tag + Mobile Toggle */}
+          <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
+            {/* Desktop Quick Search CTA Button in #FFD21F */}
             <button
               type="button"
               onClick={onOpenSearch}
-              className="hidden sm:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/90 border border-amber-200/90 hover:border-amber-400 hover:bg-amber-50/60 text-stone-500 hover:text-stone-800 transition-all shadow-2xs hover:shadow-xs group cursor-pointer"
+              className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-semibold transition-all shadow-2xs hover:shadow-xs group cursor-pointer border border-[#FFD21F]"
             >
-              <Search className="w-3.5 h-3.5 text-amber-700 group-hover:scale-110 transition-transform" />
-              <span className="text-xs font-medium pr-3 text-stone-600">Search library...</span>
-              <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-900 border border-amber-300/70 font-semibold shadow-2xs">
+              <Search className="w-3.5 h-3.5 text-[#111111] group-hover:scale-110 transition-transform" />
+              <span className="text-xs">{isHindi ? "त्वरित खोज" : "Quick Search"}</span>
+              <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-[#111111] text-[#FFD21F] font-bold">
                 ⌘K
               </kbd>
             </button>
 
             {/* Interactive Hindi / English Language Switcher */}
-            <div className="flex items-center bg-amber-100/70 p-0.5 rounded-full border border-amber-300/80 shadow-2xs">
+            <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-xl border border-[#E5E5E5]">
               <button
                 type="button"
                 onClick={() => setLanguage("hi")}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                className={`flex items-center justify-center gap-1 min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${
                   isHindi
-                    ? "bg-gradient-to-r from-amber-700 to-amber-900 text-white shadow-xs"
-                    : "text-amber-950/70 hover:text-amber-950 hover:bg-white/50"
+                    ? "bg-[#111111] text-[#FFD21F] shadow-xs"
+                    : "text-[#555555] hover:text-[#111111] hover:bg-[#FFFFFF]"
                 }`}
                 title="हिन्दी भाषा चुनें"
               >
@@ -191,10 +199,10 @@ export default function VedaNavbar({
               <button
                 type="button"
                 onClick={() => setLanguage("en")}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer ${
+                className={`flex items-center justify-center gap-1 min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${
                   isEnglish
-                    ? "bg-gradient-to-r from-amber-700 to-amber-900 text-white shadow-xs"
-                    : "text-amber-950/70 hover:text-amber-950 hover:bg-white/50"
+                    ? "bg-[#111111] text-[#FFD21F] shadow-xs"
+                    : "text-[#555555] hover:text-[#111111] hover:bg-[#FFFFFF]"
                 }`}
                 title="Switch to English"
               >
@@ -202,27 +210,27 @@ export default function VedaNavbar({
               </button>
             </div>
 
-            {/* Mobile Search Icon */}
+            {/* Mobile Search Icon - Section 40: Minimum 44px Touch Target */}
             <button
               type="button"
               onClick={onOpenSearch}
-              className="sm:hidden p-2 rounded-xl text-stone-700 hover:bg-amber-100/70 transition-colors cursor-pointer"
+              className="sm:hidden min-h-[40px] min-w-[40px] flex items-center justify-center p-2 rounded-xl text-[#111111] bg-[#FFD21F] hover:bg-[#D9A441] transition-colors cursor-pointer"
               aria-label="Search"
             >
-              <Search className="w-5 h-5 text-amber-800" />
+              <Search className="w-4 h-4 text-[#111111]" />
             </button>
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Toggle - Section 40: Minimum 44px Touch Target */}
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-stone-700 hover:bg-amber-100/70 transition-colors cursor-pointer"
+              className="lg:hidden min-h-[40px] min-w-[40px] flex items-center justify-center p-2 rounded-xl text-[#111111] hover:bg-black/5 transition-colors cursor-pointer"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6 text-amber-900" />
+                <X className="w-6 h-6 text-[#111111]" />
               ) : (
-                <Menu className="w-6 h-6 text-stone-800" />
+                <Menu className="w-6 h-6 text-[#111111]" />
               )}
             </button>
           </div>
@@ -231,19 +239,19 @@ export default function VedaNavbar({
 
       {/* Mobile Navigation Drawer */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-amber-200 bg-[#fffdf8]/98 backdrop-blur-xl px-4 py-4 space-y-3 animate-fadeIn shadow-lg">
+        <div className="lg:hidden border-t border-[#E5E5E5] bg-[#FFFFFF] px-4 py-4 space-y-3 animate-fadeIn shadow-lg">
           {/* Mobile Language Switcher */}
-          <div className="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 border border-amber-200/90 shadow-2xs">
-            <span className="text-xs font-bold text-stone-700 flex items-center gap-1.5">
-              <Globe className="w-3.5 h-3.5 text-amber-700" />
+          <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#F9F9F9] border border-[#E5E5E5]">
+            <span className="text-xs font-bold text-[#111111] flex items-center gap-1.5">
+              <Globe className="w-4 h-4 text-[#D9A441]" />
               <span>{isHindi ? "भाषा (Language):" : "Language:"}</span>
             </span>
-            <div className="flex items-center bg-white p-0.5 rounded-lg border border-amber-300">
+            <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-lg border border-[#E5E5E5]">
               <button
                 type="button"
                 onClick={() => setLanguage("hi")}
-                className={`px-3 py-1 rounded-md text-xs font-bold transition cursor-pointer ${
-                  isHindi ? "bg-amber-800 text-white shadow-2xs" : "text-stone-600 hover:text-stone-900"
+                className={`min-h-[40px] px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center ${
+                  isHindi ? "bg-[#111111] text-[#FFD21F] shadow-2xs" : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
                 हिन्दी
@@ -251,54 +259,52 @@ export default function VedaNavbar({
               <button
                 type="button"
                 onClick={() => setLanguage("en")}
-                className={`px-3 py-1 rounded-md text-xs font-bold transition cursor-pointer ${
-                  isEnglish ? "bg-amber-800 text-white shadow-2xs" : "text-stone-600 hover:text-stone-900"
+                className={`min-h-[40px] px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center ${
+                  isEnglish ? "bg-[#111111] text-[#FFD21F] shadow-2xs" : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
                 English
               </button>
             </div>
           </div>
+
+          {/* Mobile Search Button */}
           <button
             type="button"
             onClick={() => {
               setIsMobileMenuOpen(false);
               onOpenSearch();
             }}
-            className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-white border border-amber-200 text-stone-600 text-sm font-medium shadow-2xs cursor-pointer"
+            className="w-full min-h-[44px] flex items-center justify-between px-4 py-3 rounded-xl bg-[#FFD21F] text-[#111111] text-sm font-semibold shadow-2xs hover:bg-[#D9A441] cursor-pointer transition-colors"
           >
             <span className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-amber-700" />
-              Search Veda, Grantha, Mantra...
+              <Search className="w-4 h-4 text-[#111111]" />
+              {isHindi ? "पुस्तकालय में खोजें..." : "Search Veda, Grantha, Mantra..."}
             </span>
-            <kbd className="text-[10px] px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-bold">
+            <kbd className="text-[10px] px-2 py-0.5 rounded bg-[#111111] text-[#FFD21F] font-bold">
               ⌘K
             </kbd>
           </button>
 
           <div className="space-y-1 pt-2">
-            {[
-              { label: "Home (मुख्य पृष्ठ)", path: "/library", icon: BookOpen },
-              { label: "Explore (ज्ञान शाखाएँ)", path: "/library/knowledge", icon: Layers },
-              { label: "Grantha (ग्रंथ संग्रह)", path: "/library/collections", icon: Scroll },
-              { label: "Mantra & Stotra (मंत्र संग्रह)", path: "/library/mantra-stotra", icon: FileText },
-              { label: "Blogs & Articles (लेख व शोध)", path: "/library/articles", icon: BookOpen },
-              { label: "Topics (विषय सूची)", path: "/library/knowledge", icon: Compass },
-              { label: "Research (शोध)", path: "/library/knowledge", icon: Sparkles },
-            ].map((link) => {
-              const Icon = link.icon;
+            {navItems.map((item) => {
+              const isActive = activeTab === item.id;
               return (
                 <Link
-                  key={link.label}
-                  to={link.path}
-                  onClick={(e) => handleNavClick("view", link.path, e)}
-                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold text-stone-800 hover:bg-amber-50 cursor-pointer"
+                  key={item.id}
+                  to={item.path}
+                  onClick={(e) => handleNavClick(item.id, item.path, e)}
+                  className={`w-full min-h-[44px] flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold cursor-pointer transition-colors ${
+                    isActive
+                      ? "bg-[#FFD21F] text-[#111111] font-bold"
+                      : "text-[#111111] hover:bg-[#F5F5F5]"
+                  }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <Icon className="w-4 h-4 text-amber-700" />
-                    <span>{link.label}</span>
+                    <BookOpen className="w-4 h-4 text-[#111111]" />
+                    <span>{item.label}</span>
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-stone-400" />
+                  <ArrowRight className="w-4 h-4 text-[#555555]" />
                 </Link>
               );
             })}

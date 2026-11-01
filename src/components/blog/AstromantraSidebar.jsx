@@ -144,23 +144,23 @@ export default function AstromantraSidebar({
 
   return (
     <aside className={`space-y-6 ${className}`}>
-      {/* Widget 1: Digital Japa Mala (१०८ जप माला) - Royal & Serene */}
-      <div className="bg-white rounded-2xl border border-amber-200/80 p-5 shadow-xs hover:shadow-md transition-shadow relative overflow-hidden">
+      {/* Widget 1: Digital Japa Mala (१०८ जप माला) - Master Palette #FFFFFF, #FFD21F, #111111 */}
+      <div className="bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] p-5 shadow-xs transition-colors relative overflow-hidden">
         {/* Sacred Subtle Om Watermark */}
-        <div className="absolute -right-3 -bottom-3 text-7xl font-devanagari text-amber-900/[0.04] select-none pointer-events-none">
+        <div className="absolute -right-3 -bottom-3 text-7xl font-devanagari text-black/[0.03] select-none pointer-events-none">
           ॐ
         </div>
 
-        <div className="flex items-center justify-between pb-3 border-b border-amber-100">
+        <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
           <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 rounded-full bg-gradient-to-br from-amber-600 to-amber-700 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+            <span className="w-7 h-7 rounded-full bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold text-xs shadow-xs">
               ॐ
             </span>
             <div>
-              <h3 className="font-serif font-bold text-slate-900 text-sm">
+              <h3 className="font-serif font-bold text-[#111111] text-sm">
                 {isHindi ? "डिजिटल जप माला" : "Digital Japa Mala"}
               </h3>
-              <p className="text-[11px] text-[#78350F] font-semibold">
+              <p className="text-[11px] text-[#555555] font-semibold">
                 {isHindi ? "१०८ पावन मनके जप गणक" : "108 Sacred Chants Counter"}
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function AstromantraSidebar({
             <button
               onClick={handleResetJapa}
               title={isHindi ? "पुनः प्रारंभ करें" : "Reset Count"}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-amber-50 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-[#555555] hover:text-[#111111] hover:bg-stone-100 transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
             </button>
@@ -188,7 +188,7 @@ export default function AstromantraSidebar({
                 r="46"
                 stroke="currentColor"
                 strokeWidth="6"
-                className="text-amber-100"
+                className="text-stone-100"
                 fill="transparent"
               />
               <circle
@@ -200,17 +200,17 @@ export default function AstromantraSidebar({
                 strokeDasharray={289}
                 strokeDashoffset={289 - (289 * japaCount) / 108}
                 strokeLinecap="round"
-                className="text-amber-600 transition-all duration-300"
+                className="text-[#FFD21F] transition-all duration-300"
                 fill="transparent"
               />
             </svg>
 
-            {/* Centered Count in deep slate & warm saffron */}
+            {/* Centered Count in Black #111111 & Golden #D9A441 */}
             <div className="absolute flex flex-col items-center justify-center">
-              <span className={`text-2xl font-serif font-black text-slate-900 transition-transform ${justChanted ? "scale-125 text-amber-700" : ""}`}>
+              <span className={`text-2xl font-serif font-black text-[#111111] transition-transform ${justChanted ? "scale-125 text-[#D9A441]" : ""}`}>
                 {japaCount}
               </span>
-              <span className="text-[10px] font-bold text-slate-400 tracking-wider">
+              <span className="text-[10px] font-bold text-[#555555] tracking-wider">
                 {isHindi ? "/ १०८ मनके" : "/ 108 BEADS"}
               </span>
             </div>
@@ -218,8 +218,8 @@ export default function AstromantraSidebar({
 
           {/* Malas Completed Badge */}
           {malasCompleted > 0 && (
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-50 border border-amber-300 text-[#78350F] text-[11px] font-bold shadow-2xs">
-              <Award className="w-3.5 h-3.5 text-amber-700" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-stone-50 border border-[#D9A441] text-[#111111] text-[11px] font-bold shadow-2xs">
+              <Award className="w-3.5 h-3.5 text-[#D9A441]" />
               <span>{isHindi ? `${malasCompleted} माला पूर्ण` : `${malasCompleted} Malas Completed`}</span>
             </div>
           )}
@@ -228,68 +228,68 @@ export default function AstromantraSidebar({
           <div>
             <button
               onClick={handleChant}
-              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 hover:from-amber-700 hover:to-amber-900 active:scale-98 text-white font-bold text-xs shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#FFD21F] hover:bg-[#FFD21F]/90 active:scale-98 text-[#111111] font-bold text-xs shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer border border-[#E5E5E5] hover:border-[#D9A441]"
             >
-              <Sparkles className="w-4 h-4 text-amber-200" />
+              <Sparkles className="w-4 h-4 text-[#111111]" />
               <span>{isHindi ? "जप स्पर्श करें (+१ मनका)" : "Tap to Chant (+1 Japa)"}</span>
             </button>
-            <p className="text-[10px] text-slate-400 mt-1.5 font-sans">
+            <p className="text-[10px] text-[#555555] mt-1.5 font-sans">
               {isHindi ? "१०८ मनके पूर्ण होने पर स्वतः १ माला जोड़ी जाएगी" : "1 Mala completed automatically after 108 counts"}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Widget 2: Daily Sacred Sukti (दैनिक अमृत सूक्ति) - Zero Roman/IAST */}
-      <div className="bg-white rounded-2xl border border-amber-200/70 p-5 shadow-xs hover:shadow-md transition-shadow space-y-3.5 relative">
-        <div className="flex items-center justify-between pb-2 border-b border-amber-100">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-[#78350F]">
-            <Flame className="w-4 h-4 text-amber-600" />
+      {/* Widget 2: Daily Sacred Sukti (दैनिक अमृत सूक्ति) - Golden Yellow #D9A441 & Pure Devanagari */}
+      <div className="bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] p-5 shadow-xs transition-colors space-y-3.5 relative">
+        <div className="flex items-center justify-between pb-2 border-b border-[#E5E5E5]">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#111111]">
+            <Flame className="w-4 h-4 text-[#D9A441]" />
             <span>{isHindi ? "दैनिक अमृत सूक्ति" : "Daily Sacred Sukti"}</span>
           </div>
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-[#78350F] border border-amber-200/80 font-bold">
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-stone-50 text-[#555555] border border-[#E5E5E5] font-bold">
             {activeSukti.source}
           </span>
         </div>
 
-        {/* Sacred Devanagari Sanskrit Verse (No Roman transliteration) */}
-        <div className="p-4 rounded-xl bg-[#FFFDF9] border border-amber-200/70 text-center space-y-2">
-          <p className="font-devanagari text-sm sm:text-[15px] font-bold text-slate-900 leading-relaxed select-text">
+        {/* Sacred Devanagari Sanskrit Verse - Golden #D9A441 Accent */}
+        <div className="p-4 rounded-xl bg-white border-l-4 border-[#D9A441] border-y border-r border-[#E5E5E5] text-center space-y-2 shadow-2xs">
+          <p className="font-devanagari text-sm sm:text-[15px] font-bold text-[#111111] leading-relaxed select-text">
             {activeSukti.shloka}
           </p>
         </div>
 
         {/* Hindi & English Meaning */}
-        <div className="space-y-1.5 text-xs">
+        <div className="space-y-1.5 text-xs leading-[1.75]">
           {isHindi ? (
             <>
-              <p className="font-devanagari text-slate-700 text-xs leading-relaxed">
-                <strong className="text-[#78350F]">भावार्थ:</strong> {activeSukti.meaningHi}
+              <p className="font-devanagari text-[#111111] text-xs leading-relaxed">
+                <strong className="text-[#D9A441]">भावार्थ:</strong> {activeSukti.meaningHi}
               </p>
-              <p className="font-sans text-slate-500 text-[11px] leading-relaxed">
-                <strong className="text-slate-700">English:</strong> {activeSukti.meaningEn}
+              <p className="font-sans text-[#555555] text-[11px] leading-relaxed">
+                <strong className="text-[#111111]">English:</strong> {activeSukti.meaningEn}
               </p>
             </>
           ) : (
             <>
-              <p className="font-sans text-slate-700 text-xs leading-relaxed">
-                <strong className="text-[#78350F]">Meaning:</strong> {activeSukti.meaningEn}
+              <p className="font-sans text-[#111111] text-xs leading-relaxed">
+                <strong className="text-[#D9A441]">Meaning:</strong> {activeSukti.meaningEn}
               </p>
-              <p className="font-devanagari text-slate-500 text-[11px] leading-relaxed">
-                <strong className="text-slate-700">भावार्थ:</strong> {activeSukti.meaningHi}
+              <p className="font-devanagari text-[#555555] text-[11px] leading-relaxed">
+                <strong className="text-[#111111]">भावार्थ:</strong> {activeSukti.meaningHi}
               </p>
             </>
           )}
         </div>
 
         {/* One-Click Copy Sukti Button */}
-        <div className="pt-2 border-t border-amber-100 flex items-center justify-between">
-          <span className="text-[10px] text-slate-400 font-medium">
+        <div className="pt-2 border-t border-[#E5E5E5] flex items-center justify-between">
+          <span className="text-[10px] text-[#555555] font-medium">
             {isHindi ? "पवित्र वेद-वाक्य" : "Sacred Vedic Verse"}
           </span>
           <button
             onClick={handleCopySukti}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#78350F] hover:text-amber-900 hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#111111] hover:text-[#D9A441] hover:underline cursor-pointer"
           >
             {copiedSukti ? (
               <>
@@ -298,7 +298,7 @@ export default function AstromantraSidebar({
               </>
             ) : (
               <>
-                <Copy className="w-3.5 h-3.5 text-amber-700" />
+                <Copy className="w-3.5 h-3.5 text-[#D9A441]" />
                 <span>{isHindi ? "सूक्ति कॉपी करें" : "Copy Sukti"}</span>
               </>
             )}
@@ -307,13 +307,13 @@ export default function AstromantraSidebar({
       </div>
 
       {/* Widget 3: Topic Categories Directory */}
-      <div className="bg-white rounded-2xl border border-amber-200/70 p-5 shadow-xs hover:shadow-md transition-shadow space-y-3">
-        <div className="flex items-center justify-between pb-2 border-b border-amber-100">
-          <h3 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-1.5">
-            <Compass className="w-4 h-4 text-amber-700" />
+      <div className="bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] p-5 shadow-xs transition-colors space-y-3">
+        <div className="flex items-center justify-between pb-2 border-b border-[#E5E5E5]">
+          <h3 className="font-serif font-bold text-[#111111] text-sm flex items-center gap-1.5">
+            <Compass className="w-4 h-4 text-[#D9A441]" />
             <span>{isHindi ? "विषय श्रेणियाँ" : "Topic Categories"}</span>
           </h3>
-          <span className="text-[11px] text-slate-400 font-semibold">
+          <span className="text-[11px] text-[#555555] font-semibold">
             {isHindi ? `${categories.length} श्रेणियाँ` : `${categories.length} Topics`}
           </span>
         </div>
@@ -321,14 +321,14 @@ export default function AstromantraSidebar({
         <div className="space-y-1.5">
           <button
             onClick={() => handleCategoryClick("All")}
-            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
               currentCategory === "All"
-                ? "bg-amber-800 text-white shadow-2xs font-bold"
-                : "text-slate-700 hover:bg-amber-50/80"
+                ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] shadow-xs font-bold"
+                : "bg-white text-[#555555] border-transparent hover:border-[#E5E5E5] hover:text-[#111111] hover:bg-stone-50"
             }`}
           >
             <span className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#111111]" />
               {isHindi ? "समस्त लेख (All Articles)" : "All Articles (समस्त लेख)"}
             </span>
             <ChevronRight className="w-3.5 h-3.5 opacity-60" />
@@ -344,20 +344,20 @@ export default function AstromantraSidebar({
               <button
                 key={idx}
                 onClick={() => handleCategoryClick(catName)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
                   isActive
-                    ? "bg-amber-800 text-white shadow-2xs font-bold"
-                    : "text-slate-700 hover:bg-amber-50/80"
+                    ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] shadow-xs font-bold"
+                    : "bg-white text-[#555555] border-transparent hover:border-[#E5E5E5] hover:text-[#111111] hover:bg-stone-50"
                 }`}
               >
                 <span className="flex items-center gap-2 text-left truncate mr-2">
-                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-amber-300" : "bg-amber-500"}`} />
+                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-[#111111]" : "bg-[#D9A441]"}`} />
                   <span className="truncate">{catName}</span>
                 </span>
                 {count !== null && (
                   <span
                     className={`text-[10px] px-2 py-0.5 rounded-full font-bold flex-shrink-0 ${
-                      isActive ? "bg-amber-950 text-amber-200" : "bg-amber-50 text-[#78350F] border border-amber-200/60"
+                      isActive ? "bg-white text-[#111111] border border-[#111111]/20" : "bg-stone-100 text-[#555555] border border-[#E5E5E5]"
                     }`}
                   >
                     {count}
@@ -371,13 +371,13 @@ export default function AstromantraSidebar({
 
       {/* Widget 4: Trending / Most Read Articles */}
       {trendingArticles && trendingArticles.length > 0 && (
-        <div className="bg-white rounded-2xl border border-amber-200/70 p-5 shadow-xs hover:shadow-md transition-shadow space-y-3.5">
-          <div className="flex items-center justify-between pb-2 border-b border-amber-100">
-            <h3 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-1.5">
-              <TrendingUp className="w-4 h-4 text-amber-700" />
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] p-5 shadow-xs transition-colors space-y-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-[#E5E5E5]">
+            <h3 className="font-serif font-bold text-[#111111] text-sm flex items-center gap-1.5">
+              <TrendingUp className="w-4 h-4 text-[#D9A441]" />
               <span>{isHindi ? "सर्वाधिक पठित लेख" : "Most Read Articles"}</span>
             </h3>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-[#78350F]">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-[#D9A441]">
               {isHindi ? "लोकप्रिय" : "Popular"}
             </span>
           </div>
@@ -387,22 +387,22 @@ export default function AstromantraSidebar({
               <Link
                 key={art.id || idx}
                 to={`/library/articles/${art.slug}`}
-                className="group flex items-start gap-3 p-2 rounded-xl hover:bg-amber-50/60 transition-colors"
+                className="group flex items-start gap-3 p-2 rounded-xl hover:bg-stone-50 transition-colors"
               >
                 {/* Ranking Badge */}
-                <div className="w-6 h-6 rounded-lg bg-amber-50 border border-amber-200 text-[#78350F] flex items-center justify-center font-bold text-xs flex-shrink-0 group-hover:bg-amber-700 group-hover:text-white transition-colors">
+                <div className="w-6 h-6 rounded-lg bg-stone-100 border border-[#E5E5E5] text-[#111111] flex items-center justify-center font-bold text-xs flex-shrink-0 group-hover:bg-[#FFD21F] group-hover:border-[#FFD21F] transition-colors">
                   #{idx + 1}
                 </div>
 
                 <div className="space-y-1 flex-1 min-w-0">
-                  <h4 className="font-serif text-xs font-bold text-slate-800 group-hover:text-[#78350F] line-clamp-2 leading-snug">
+                  <h4 className="font-serif text-xs font-bold text-[#111111] group-hover:text-[#D9A441] line-clamp-2 leading-snug">
                     {art.title}
                   </h4>
-                  <div className="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
-                    <span className="text-[#78350F] font-semibold">{art.category}</span>
+                  <div className="flex items-center gap-2 text-[10px] text-[#555555] font-medium">
+                    <span className="text-[#D9A441] font-semibold">{art.category}</span>
                     <span>•</span>
                     <span className="flex items-center gap-0.5">
-                      <Clock className="w-3 h-3 text-amber-600" />
+                      <Clock className="w-3 h-3 text-[#555555]" />
                       {art.readTime || (isHindi ? "५ मिनट पठन" : "5 min read")}
                     </span>
                   </div>
@@ -414,10 +414,10 @@ export default function AstromantraSidebar({
       )}
 
       {/* Widget 5: Sacred Topic Tags */}
-      <div className="bg-white rounded-2xl border border-amber-200/70 p-5 shadow-xs hover:shadow-md transition-shadow space-y-3">
-        <div className="flex items-center justify-between pb-2 border-b border-amber-100">
-          <h3 className="font-serif font-bold text-slate-900 text-sm flex items-center gap-1.5">
-            <Tag className="w-4 h-4 text-amber-700" />
+      <div className="bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] p-5 shadow-xs transition-colors space-y-3">
+        <div className="flex items-center justify-between pb-2 border-b border-[#E5E5E5]">
+          <h3 className="font-serif font-bold text-[#111111] text-sm flex items-center gap-1.5">
+            <Tag className="w-4 h-4 text-[#D9A441]" />
             <span>{isHindi ? "पवित्र विषय सूत्र (Tags)" : "Sacred Topic Tags"}</span>
           </h3>
         </div>
@@ -429,10 +429,10 @@ export default function AstromantraSidebar({
               <button
                 key={tag}
                 onClick={() => handleTagClick(tag)}
-                className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer border ${
                   isActive
-                    ? "bg-amber-800 text-white shadow-2xs font-bold"
-                    : "bg-amber-50/60 hover:bg-amber-100 text-slate-700 border border-amber-200/60"
+                    ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] shadow-2xs font-bold"
+                    : "bg-white hover:bg-stone-50 text-[#555555] hover:text-[#111111] border-[#E5E5E5] hover:border-[#D9A441]"
                 }`}
               >
                 #{tag}

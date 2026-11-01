@@ -1,23 +1,26 @@
 import React, { useState } from "react";
-import { Copy, Check, Quote, Sparkles } from "lucide-react";
+import { Copy, Check, Sparkles } from "lucide-react";
 import { SACRED_QUOTE } from "../../data/libraryHomeData.js";
 import { useLanguage } from "../../context/LanguageContext.jsx";
 import templeHeroImg from "../../assets/images/library/banners/banner-temple-hero.jpg";
 
 const TRANSLATIONS = {
   hi: {
+    key: "hi",
     label: "हिन्दी भावार्थ",
     text:
       SACRED_QUOTE.hindiTranslation ||
       "जहाँ से वाणी मन सहित, उस परब्रह्म को प्राप्त किए बिना लौट आती है (परमसत्य वाणी और बुद्धि की सीमा से परे है)।",
   },
   en: {
+    key: "en",
     label: "English Meaning",
     text:
       SACRED_QUOTE.translation ||
       "Where words return, along with the mind, unable to reach the Supreme Consciousness.",
   },
   hinglish: {
+    key: "hinglish",
     label: "सरल हिंग्लिश",
     text:
       SACRED_QUOTE.hinglishTranslation ||
@@ -35,76 +38,98 @@ export default function SacredQuoteSection() {
 
   const handleCopy = () => {
     const activeText = TRANSLATIONS[activeTab]?.text || "";
-    const copyContent = `“${shloka}”\n\n${TRANSLATIONS[activeTab]?.label}: "${activeText}"\n\n— ${source}\n(via Veda Library)`;
-    navigator.clipboard.writeText(copyContent).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }).catch(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    const copyContent = `॥ ${shloka} ॥\n\n${TRANSLATIONS[activeTab]?.label}: "${activeText}"\n\n— ${source}\n(via Veda Library • Digital Vedic Wisdom Archive)`;
+    navigator.clipboard
+      .writeText(copyContent)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-[#FAF6EF]/60 border-b border-amber-200/50">
+    <section className="py-8 sm:py-12 bg-white border-b border-[#E5E5E5] relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* White Glass Card */}
-        <div className="relative rounded-3xl bg-white/95 backdrop-blur-md border border-amber-200/90 shadow-xl shadow-amber-950/5 ring-1 ring-amber-200/50 p-6 sm:p-10 md:p-12 text-center transition-all overflow-hidden">
-          {/* Subtle Temple Architecture Texture (Preserved) */}
-          <div className="absolute inset-0 z-0 opacity-10 pointer-events-none mix-blend-multiply">
+        {/* Bespoke Editorial Quote Card (21st.dev / Cult UI craftsmanship) */}
+        <div className="relative rounded-3xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 sm:p-10 md:p-12 text-center transition-all overflow-hidden group">
+          
+          {/* Subtle Watermark Silhouette */}
+          <div className="absolute inset-0 z-0 opacity-[0.035] pointer-events-none mix-blend-multiply">
             <img
               src={templeHeroImg}
-              alt="Temple Architecture Silhouette"
+              alt="Sacred Architecture Texture"
               className="w-full h-full object-cover object-bottom"
             />
           </div>
 
-          {/* Subtle spiritual ambient aura watermark */}
-          <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
-            <div className="w-[450px] h-[450px] rounded-full border border-amber-300/20 opacity-30 animate-spin-slow flex items-center justify-center">
-              <div className="w-[320px] h-[320px] rounded-full border border-amber-400/20 border-dashed" />
-            </div>
-            <div className="absolute inset-0 bg-radial from-amber-100/40 via-transparent to-transparent" />
+          {/* Decorative Golden Corner Accents */}
+          <div className="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-[#D9A441]/40 rounded-tl-sm pointer-events-none" />
+          <div className="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-[#D9A441]/40 rounded-tr-sm pointer-events-none" />
+          <div className="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-[#D9A441]/40 rounded-bl-sm pointer-events-none" />
+          <div className="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-[#D9A441]/40 rounded-br-sm pointer-events-none" />
+
+          {/* Golden Watermark Quote Glyphs in Card Background */}
+          <div className="absolute -top-6 left-6 text-[120px] sm:text-[160px] font-serif text-[#D9A441]/10 pointer-events-none select-none leading-none">
+            “
+          </div>
+          <div className="absolute -bottom-16 right-6 text-[120px] sm:text-[160px] font-serif text-[#D9A441]/10 pointer-events-none select-none leading-none">
+            ”
           </div>
 
           <div className="relative z-10 max-w-2xl mx-auto">
-            {/* Sacred Tag & Copy Button Header */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/80 text-[11px] font-bold uppercase tracking-wider text-[#78350F]">
-                <Sparkles className="w-3.5 h-3.5 text-orange-600" />
-                <span>{isHindi ? "दार्शनिक उपनिषद् सूत्र" : "Sacred Upanishadic Insight"}</span>
+            {/* Header: Sacred Pill & Copy Button */}
+            <div className="flex items-center justify-between gap-3 mb-6">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#FFD21F]/50 text-[11px] font-bold uppercase tracking-wider text-[#111111] shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
+                <span>
+                  {isHindi
+                    ? "दार्शनिक उपनिषद् सूत्र"
+                    : "Sacred Upanishadic Insight"}
+                </span>
               </div>
 
               <button
                 type="button"
                 onClick={handleCopy}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-50 hover:bg-amber-100/70 border border-amber-200 text-xs font-semibold text-[#78350F] transition-all cursor-pointer shadow-2xs hover:scale-105"
-                title="Copy shloka and meaning"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-[#FFD21F] border border-[#E5E5E5] hover:border-[#FFD21F] text-xs font-semibold text-[#111111] transition-all cursor-pointer shadow-xs active:scale-95"
+                title="Copy verse and meaning"
               >
                 {copied ? (
                   <>
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-emerald-700 font-bold">{isHindi ? "प्रतिलिपि बन गई!" : "Copied!"}</span>
+                    <Check className="w-3.5 h-3.5 text-[#D9A441]" />
+                    <span className="text-[#111111] font-bold">
+                      {isHindi ? "प्रतिलिपि बन गई!" : "Copied!"}
+                    </span>
                   </>
                 ) : (
                   <>
-                    <Copy className="w-3.5 h-3.5 text-amber-700" />
-                    <span>{isHindi ? "कॉपी करें" : "Copy"}</span>
+                    <Copy className="w-3.5 h-3.5 text-[#555555]" />
+                    <span>{isHindi ? "श्लोक कॉपी करें" : "Copy Verse"}</span>
                   </>
                 )}
               </button>
             </div>
 
-            {/* Sacred Quote Icon */}
-            <Quote className="w-9 h-9 text-orange-500/25 mx-auto mb-3" />
+            {/* Pure Devanagari Sanskrit Verse (Strictly 0% Roman transliteration) */}
+            <div className="my-6 sm:my-7">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <span className="text-2xl font-serif text-[#D9A441] select-none">❖</span>
+                <span className="h-[1px] w-12 bg-gradient-to-r from-[#D9A441]/40 to-transparent" />
+              </div>
 
-            {/* Pure Devanagari Sanskrit Shloka */}
-            <h3 className="font-devanagari text-2xl sm:text-3xl md:text-4xl font-bold text-[#78350F] mb-4 tracking-wide leading-relaxed">
-              “{shloka}”
-            </h3>
+              <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111] leading-relaxed sm:leading-relaxed tracking-normal font-devanagari">
+                ॥ {shloka} ॥
+              </h3>
 
-            {/* 3-Language Tabs / Toggle */}
-            <div className="inline-flex items-center p-1 rounded-full bg-amber-100/60 border border-amber-200/80 mb-5 shadow-2xs">
+              <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-[#D9A441] to-transparent mx-auto mt-4" />
+            </div>
+
+            {/* Trilingual Segmented Tabs (हिन्दी / English / हिंग्लिश) */}
+            <div className="inline-flex items-center p-1 rounded-full bg-white border border-[#E5E5E5] mb-5 shadow-xs">
               {Object.entries(TRANSLATIONS).map(([key, item]) => {
                 const isActive = activeTab === key;
                 return (
@@ -112,10 +137,10 @@ export default function SacredQuoteSection() {
                     key={key}
                     type="button"
                     onClick={() => setActiveTab(key)}
-                    className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                    className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer ${
                       isActive
-                        ? "bg-white text-[#78350F] shadow-xs"
-                        : "text-stone-600 hover:text-stone-900"
+                        ? "bg-[#FFD21F] text-[#111111] shadow-xs"
+                        : "text-[#555555] hover:text-[#111111] hover:bg-white/60"
                     }`}
                   >
                     {item.label}
@@ -124,18 +149,30 @@ export default function SacredQuoteSection() {
               })}
             </div>
 
-            {/* Translation Text */}
-            <div className="min-h-[56px] flex items-center justify-center mb-6">
-              <p className={`text-base sm:text-lg text-[#1E293B] font-medium leading-relaxed max-w-xl mx-auto ${
-                activeTab === "en" ? "font-serif italic" : "font-devanagari"
-              }`}>
+            {/* Translation Text with High-Contrast Typography */}
+            <div className="min-h-[60px] flex items-center justify-center mb-6">
+              <p
+                className={`text-base sm:text-lg text-[#111111] font-medium leading-relaxed max-w-xl mx-auto ${
+                  activeTab === "en"
+                    ? "font-serif italic text-[#111111]"
+                    : "font-devanagari"
+                }`}
+              >
                 “{TRANSLATIONS[activeTab]?.text}”
               </p>
             </div>
 
-            {/* Canonical Source Reference */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-100/70 border border-amber-300/70 text-xs font-bold text-[#78350F]">
-              <span>{source}</span>
+            {/* Golden Verse Attribution */}
+            <div className="pt-4 border-t border-[#E5E5E5] flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D9A441]" />
+              <span className="font-serif font-bold text-[#D9A441] tracking-wide text-xs sm:text-sm">
+                तैत्तिरीयोपनिषद् २.९.१ (ब्रह्मानन्दवल्ली)
+              </span>
+              <span className="text-[#555555]">•</span>
+              <span className="text-[#555555] font-semibold">
+                Taittiriya Upanishad 2.9.1
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D9A441]" />
             </div>
           </div>
         </div>

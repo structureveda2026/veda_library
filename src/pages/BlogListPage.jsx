@@ -17,6 +17,12 @@ import {
   Flame,
   Calendar,
   Award,
+  Copy,
+  Check,
+  CheckCircle2,
+  Languages,
+  User,
+  ShieldCheck,
 } from "lucide-react";
 import BlogService from "../services/blogService.js";
 import BlogCard from "../components/blog/BlogCard.jsx";
@@ -135,6 +141,70 @@ export default function BlogListPage() {
   });
   const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState(currentSearch);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [langMode, setLangMode] = useState("both"); // "both", "hi", "en"
+  const [activeSectionId, setActiveSectionId] = useState("thematic-categories");
+  const [citationStyle, setCitationStyle] = useState("shastric");
+  const [citationCopied, setCitationCopied] = useState(false);
+
+  // Reading progress tracker
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, progress)));
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Active anchor tracking for Table of Contents
+  useEffect(() => {
+    const sections = [
+      "thematic-categories",
+      "featured-treatise",
+      "articles-archive",
+      "scholars-spotlight",
+      "citation-standards",
+    ];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSectionId(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -60% 0px", threshold: 0.1 }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [blogs]);
+
+  const getRepositoryCitation = () => {
+    const year = new Date().getFullYear();
+    const url = "https://library.vedastructure.com/articles";
+    if (citationStyle === "shastric") {
+      return `वेद पुस्तकालय शोध प्रपत्र संग्रह: "वैदिक वाङ्मय, संहिता भाष्य एवं दार्शनिक शोध ग्रन्थावली", संपादन: विद्वत परिषद एवं वैदिक अध्ययन केंद्र, संदर्भ संवत्: २०८३, कोष सं.: VEDA-LIB-ARCHIVE-${year}।`;
+    }
+    if (citationStyle === "chicago") {
+      return `Veda Library Editorial Board. "Veda Structure Articles & Research Archive: Canonical Shastric Treatises." Veda Library Sacred Digital Repository (${year}). ${url}.`;
+    }
+    return `Veda Library Editorial Board. (${year}). Vedic Insights & Canonical Shastric Commentary. Veda Structure Canonical Digital Archive. Retrieved from ${url}`;
+  };
+
+  const handleCopyCitation = () => {
+    navigator.clipboard.writeText(getRepositoryCitation());
+    setCitationCopied(true);
+    setTimeout(() => setCitationCopied(false), 2500);
+  };
 
   // Sync search input with url search param
   useEffect(() => {
@@ -229,55 +299,147 @@ export default function BlogListPage() {
     return staticTopic?.count ?? null;
   };
 
+  // Helper to detect spiritual topics for Master Palette (#C62828)
+  const isSpiritualTopic = (key = "") => {
+    const k = key.toLowerCase();
+    return (
+      k.includes("puja") ||
+      k.includes("ritual") ||
+      k.includes("mantra") ||
+      k.includes("stotram") ||
+      k.includes("vrat")
+    );
+  };
+
   const featuredBlog = blogs.find((b) => b.isFeatured) || (blogs.length > 0 ? blogs[0] : null);
   const regularBlogs = blogs.filter((b) => b.id !== featuredBlog?.id);
 
   return (
-    <div className="bg-[#FBF9F5] min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-20">
+      {/* 0. Top Reading Progress Bar (#FFD21F) */}
+      <div
+        className="fixed top-0 left-0 right-0 h-[3px] bg-[#E5E5E5] z-50 pointer-events-none"
+        role="progressbar"
+        aria-valuenow={scrollProgress}
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <div
+          className="h-full bg-[#FFD21F] transition-all duration-150 ease-out shadow-xs"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       {/* 1. Top Vedic Ribbon & Breadcrumb */}
-      <div className="bg-[#FFFDF9] border-b border-amber-200/70 py-3.5 px-4 sm:px-6 lg:px-8">
+      <div className="bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] sticky top-16 z-30 py-3 px-4 sm:px-6 lg:px-8 shadow-2xs">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
           {/* Breadcrumb Links */}
-          <nav className="flex items-center gap-2 text-slate-500 font-medium">
+          <nav className="flex items-center gap-2 text-[#555555] font-medium">
             <Link
               to="/library"
-              className="hover:text-amber-800 transition-colors flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#111111] transition-colors flex items-center gap-1 cursor-pointer"
             >
-              <Home className="w-3.5 h-3.5 text-amber-700" />
-              <span>{isHindi ? "पुस्तकालय" : "Library"}</span>
+              <Home className="w-3.5 h-3.5 text-[#D9A441]" />
+              <span>{isHindi || langMode === "hi" ? "पुस्तकालय" : "Library"}</span>
             </Link>
-            <span className="text-amber-400">›</span>
-            <span className="text-[#78350F] font-bold">
-              {isHindi ? "शास्त्रीय आलेख एवं शोध" : "Articles & Blogs"}
+            <span className="text-[#D9A441]">›</span>
+            <span className="text-[#111111] font-bold">
+              {isHindi || langMode === "hi" ? "शास्त्रीय आलेख एवं शोध" : "Articles & Research Papers"}
             </span>
           </nav>
 
-          {/* Vedic Mantra Motto - Pure Devanagari */}
-          <div className="hidden sm:flex items-center gap-2 text-[11px] font-devanagari font-semibold text-[#78350F] bg-amber-50/80 border border-amber-200/80 px-3 py-0.5 rounded-full shadow-2xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse" />
-            <span>ऋग्वेदो यजुर्वेदः सामवेदोऽथर्वणस्तथा • ज्ञानं परमं बलम्</span>
+          {/* Dual-Language Switcher (हिन्दी / English / Both) */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center bg-stone-50 rounded-lg p-0.5 border border-[#E5E5E5] text-[11px] font-semibold shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setLangMode("en")}
+                className={`px-2.5 py-1 rounded transition-all cursor-pointer ${
+                  langMode === "en" ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs" : "text-[#555555] hover:text-[#111111]"
+                }`}
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                onClick={() => setLangMode("hi")}
+                className={`px-2.5 py-1 rounded transition-all font-devanagari cursor-pointer ${
+                  langMode === "hi" ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs" : "text-[#555555] hover:text-[#111111]"
+                }`}
+              >
+                हिन्दी
+              </button>
+              <button
+                type="button"
+                onClick={() => setLangMode("both")}
+                className={`px-2.5 py-1 rounded transition-all cursor-pointer ${
+                  langMode === "both" ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs" : "text-[#555555] hover:text-[#111111]"
+                }`}
+              >
+                Both
+              </button>
+            </div>
+
+            {/* Vedic Motto Badge */}
+            <div className="hidden md:flex items-center gap-2 text-[11px] font-devanagari font-semibold text-[#111111] bg-white border border-[#E5E5E5] px-3 py-1 rounded-full shadow-2xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D9A441] animate-pulse" />
+              <span>ऋग्वेदो यजुर्वेदः सामवेदोऽथर्वणस्तथा • ज्ञानं परमं बलम्</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 2. Hero Header Section with Authentic Vedic Panoramic Banner Strictly Preserved */}
-      <section className="relative overflow-hidden bg-slate-950 border-b border-amber-200/80 py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-        {/* Real Panoramic Banner Background */}
+      {/* Table of Contents / Thematic Directory with Active Anchor Tracking */}
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-semibold">
+          {[
+            { id: "thematic-categories", label: "विषय श्रेणियाँ", en: "Topic Categories" },
+            { id: "featured-treatise", label: "विशिष्ट शोध आलेख", en: "Featured Treatise" },
+            { id: "articles-archive", label: "शोध प्रपत्र संग्रह", en: "Articles Archive" },
+            { id: "scholars-spotlight", label: "विद्वत शोध मंडल", en: "Scholars Dossier" },
+            { id: "citation-standards", label: "शास्त्रीय उद्धरण विधि", en: "Citation Guide" },
+          ].map((sec) => {
+            const isActive = activeSectionId === sec.id;
+            return (
+              <a
+                key={sec.id}
+                href={`#${sec.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById(sec.id);
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className={`px-3 py-1.5 rounded-full border whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                  isActive
+                    ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] font-bold shadow-2xs scale-102"
+                    : "bg-white text-[#555555] hover:text-[#111111] border-[#E5E5E5] hover:border-[#D9A441]"
+                }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-[#111111]" : "bg-[#D9A441]"}`} />
+                <span>{isHindi || langMode === "hi" ? sec.label : sec.en}</span>
+              </a>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* 2. Hero Header Section with Authentic Vedic Panoramic Banner Strictly Preserved (Opacity 0.85 with subtle luminous overlay) */}
+      <section className="relative overflow-hidden bg-white border-b border-[#E5E5E5] py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+        {/* Real Panoramic Banner Background - Clearly visible (0.80 - 0.85 opacity with luminous overlay) */}
         <div className="absolute inset-0">
           <img
             src={bannerArticlesHero}
             alt="Veda Library Articles & Blogs Hero Banner"
-            className="w-full h-full object-cover object-center filter brightness-90 saturate-110"
+            className="w-full h-full object-cover object-center opacity-85 filter brightness-95"
           />
-          {/* Multi-layer spiritual vignette for sublime readability & depth */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-950/65 to-slate-950/90" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(15,23,42,0.75)_100%)]" />
+          {/* Subtle luminous spiritual overlay preserving banner details */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/70 backdrop-blur-[0.5px]" />
         </div>
 
         {/* Content Container on top */}
         <div className="relative z-10 max-w-7xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/40 text-amber-200 text-xs font-bold shadow-lg backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFD21F] text-[#111111] text-xs font-bold shadow-md">
+            <Sparkles className="w-3.5 h-3.5 text-[#111111]" />
             <span className="font-devanagari">
               {isHindi ? "वेद व्याख्या एवं शास्त्रीय आलेख" : "Vedic Insights & Commentary"}
             </span>
@@ -289,7 +451,7 @@ export default function BlogListPage() {
             {isHindi ? "वेद पुस्तकालय आलेख एवं शोध संग्रह" : "Veda Library Blogs & Articles"}
           </h1>
 
-          <p className="max-w-2xl mx-auto text-sm sm:text-base text-amber-100/90 leading-relaxed font-sans drop-shadow-xs">
+          <p className="max-w-2xl mx-auto text-sm sm:text-base text-white/90 leading-relaxed font-sans drop-shadow-xs">
             {isHindi
               ? "विद्वानों एवं आचार्यों द्वारा रचित प्रामाणिक वैदिक अनुसंधान, पूजा-अनुष्ठान विधान, ज्योतिषीय मार्गदर्शन एवं शास्त्रीय विश्लेषण।"
               : "Authentic commentary, Vedic research, ritual explanations, astrology guides, and shastric wisdom authored by seasoned scholars and practitioners."}
@@ -297,8 +459,8 @@ export default function BlogListPage() {
 
           {/* Search Bar & Instant Filter */}
           <div className="max-w-2xl mx-auto pt-3">
-            <form onSubmit={handleSearchSubmit} className="relative flex items-center shadow-xl rounded-2xl">
-              <div className="absolute left-4 text-amber-600 pointer-events-none">
+            <form onSubmit={handleSearchSubmit} className="relative flex items-center shadow-lg rounded-2xl">
+              <div className="absolute left-4 text-[#D9A441] pointer-events-none">
                 <Search className="w-5 h-5" />
               </div>
               <input
@@ -310,20 +472,20 @@ export default function BlogListPage() {
                     ? "लेख, मंत्र, श्लोक, विषय अथवा रचयिता खोजें..."
                     : "Search articles, mantras, shlokas, topics or authors..."
                 }
-                className="w-full pl-12 pr-28 py-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-amber-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all shadow-md"
+                className="w-full pl-12 pr-28 py-3.5 rounded-2xl bg-white border border-[#E5E5E5] text-sm text-[#111111] placeholder:text-[#555555] focus:outline-none focus:ring-2 focus:ring-[#FFD21F] focus:border-[#FFD21F] transition-all shadow-md"
               />
               {searchInput && (
                 <button
                   type="button"
                   onClick={handleClearSearch}
-                  className="absolute right-24 p-1.5 rounded-full text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                  className="absolute right-24 p-1.5 rounded-full text-[#555555] hover:text-[#111111] transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
               )}
               <button
                 type="submit"
-                className="absolute right-2 px-5 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+                className="absolute right-2 px-5 py-2 rounded-xl bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs shadow-xs transition-all cursor-pointer border border-[#FFD21F] hover:border-[#D9A441]"
               >
                 {isHindi ? "खोजें" : "Search"}
               </button>
@@ -332,8 +494,8 @@ export default function BlogListPage() {
 
           {/* Popular Tag Chips */}
           <div className="flex flex-wrap items-center justify-center gap-1.5 pt-3">
-            <span className="text-xs font-semibold text-amber-200/90 flex items-center gap-1 mr-1">
-              <Tag className="w-3 h-3 text-amber-400" />
+            <span className="text-xs font-semibold text-white/90 flex items-center gap-1 mr-1">
+              <Tag className="w-3 h-3 text-[#FFD21F]" />
               {isHindi ? "प्रमुख विषय:" : "Trending Topics:"}
             </span>
             {POPULAR_TAGS.map((tag) => {
@@ -344,8 +506,8 @@ export default function BlogListPage() {
                   onClick={() => updateParams({ tag: isActive ? "" : tag })}
                   className={`text-[11px] font-semibold px-2.5 py-1 rounded-full transition-all cursor-pointer backdrop-blur-xs ${
                     isActive
-                      ? "bg-amber-500 text-slate-950 font-extrabold shadow-sm ring-1 ring-amber-300"
-                      : "bg-black/40 hover:bg-black/60 text-amber-100 border border-amber-400/30 hover:border-amber-300"
+                      ? "bg-[#FFD21F] text-[#111111] font-extrabold shadow-sm ring-1 ring-white"
+                      : "bg-black/50 hover:bg-black/70 text-white border border-white/30 hover:border-[#FFD21F]"
                   }`}
                 >
                   #{tag}
@@ -355,7 +517,7 @@ export default function BlogListPage() {
             {currentTag && (
               <button
                 onClick={() => updateParams({ tag: "" })}
-                className="text-[11px] font-bold text-amber-300 hover:text-amber-200 ml-1 underline cursor-pointer"
+                className="text-[11px] font-bold text-[#FFD21F] hover:text-white ml-1 underline cursor-pointer"
               >
                 {isHindi ? "टैग हटाएं" : "Clear Tag"}
               </button>
@@ -365,21 +527,21 @@ export default function BlogListPage() {
       </section>
 
       {/* 3. Prominent Categories Header & Grid at the TOP (8 Topics Strictly Preserved) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="bg-white rounded-3xl border border-amber-200/70 p-4 sm:p-6 shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-amber-100">
+      <section id="thematic-categories" className="scroll-mt-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="bg-white rounded-3xl border border-[#E5E5E5] p-4 sm:p-6 shadow-xs space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#E5E5E5]">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-amber-700 text-white flex items-center justify-center font-bold shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold shadow-xs">
                 <Compass className="w-4 h-4" />
               </div>
               <div>
-                <h2 className="font-serif text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+                <h2 className="font-serif text-lg sm:text-xl font-bold text-[#111111] flex items-center gap-2">
                   <span>{isHindi ? "विषय श्रेणियाँ" : "Topic Categories"}</span>
-                  <span className="text-[11px] font-sans font-bold px-2 py-0.5 rounded-full bg-amber-50 text-[#78350F] border border-amber-200/80">
+                  <span className="text-[11px] font-sans font-bold px-2 py-0.5 rounded-full bg-stone-100 text-[#111111] border border-[#E5E5E5]">
                     {isHindi ? "८ श्रेणियाँ" : "8 Topics"}
                   </span>
                 </h2>
-                <p className="text-xs text-slate-500 font-sans">
+                <p className="text-xs text-[#555555] font-sans">
                   {isHindi
                     ? "प्रामाणिक वैदिक एवं शास्त्रीय विषयों के अनुसार आलेख पढ़ें"
                     : "Browse Vedic insights by canonical topic and category"}
@@ -390,10 +552,10 @@ export default function BlogListPage() {
             {currentCategory !== "All" && (
               <button
                 onClick={() => updateParams({ category: "All" })}
-                className="self-start sm:self-auto text-xs font-bold text-[#78350F] hover:text-amber-950 flex items-center gap-1 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 px-3.5 py-1.5 rounded-full transition-colors cursor-pointer"
+                className="self-start sm:self-auto text-xs font-bold text-[#111111] hover:text-[#D9A441] flex items-center gap-1 bg-stone-50 hover:bg-stone-100 border border-[#E5E5E5] px-3.5 py-1.5 rounded-full transition-colors cursor-pointer"
               >
                 <span>{isHindi ? "समस्त लेख देखें" : "Show All Articles"}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5 text-[#D9A441]" />
               </button>
             )}
           </div>
@@ -407,6 +569,7 @@ export default function BlogListPage() {
                 topic.key === "All"
                   ? currentCategory === "All" || !currentCategory
                   : currentCategory.toLowerCase() === topic.key.toLowerCase();
+              const spiritual = isSpiritualTopic(topic.key);
 
               return (
                 <button
@@ -414,27 +577,29 @@ export default function BlogListPage() {
                   onClick={() => updateParams({ category: topic.key })}
                   className={`group relative rounded-2xl border transition-all text-left flex flex-col justify-between overflow-hidden cursor-pointer ${
                     isActive
-                      ? "bg-amber-50/80 border-amber-600 shadow-md ring-2 ring-amber-500/70 -translate-y-0.5"
-                      : "bg-white hover:bg-amber-50/40 border-amber-200/70 hover:border-amber-400 hover:shadow-xs"
+                      ? "bg-stone-50/80 border-[#D9A441] shadow-md ring-2 ring-[#FFD21F] -translate-y-0.5"
+                      : "bg-white hover:bg-stone-50/40 border-[#E5E5E5] hover:border-[#D9A441] hover:shadow-xs"
                   }`}
                 >
-                  {/* Image Container with Elegant Aspect Ratio, Overlay & Badges */}
-                  <div className="relative aspect-4/3 w-full overflow-hidden bg-slate-900">
+                  {/* Image Container with Elegant Aspect Ratio, Overlay & Badges (Opacity 0.85) */}
+                  <div className="relative aspect-4/3 w-full overflow-hidden bg-stone-900">
                     <img
                       src={topic.image}
                       alt={topic.label}
-                      className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-500"
+                      className="w-full h-full object-cover object-center opacity-85 group-hover:opacity-100 group-hover:scale-108 transition-all duration-500"
                     />
-                    {/* Vignette Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-black/20" />
+                    {/* Subtle Vignette Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                    {/* Count Badge Top-Right */}
+                    {/* Count Badge Top-Right: Red #C62828 for spiritual, Yellow #FFD21F for active */}
                     {count !== null && (
                       <span
                         className={`absolute top-1.5 right-1.5 text-[10px] font-bold px-1.5 py-0.2 rounded-full backdrop-blur-xs border ${
                           isActive
-                            ? "bg-amber-500 text-slate-950 border-amber-300 font-extrabold shadow-xs"
-                            : "bg-black/60 text-amber-200 border-amber-400/40"
+                            ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] font-extrabold shadow-xs"
+                            : spiritual
+                            ? "bg-[#C62828] text-white border-red-400"
+                            : "bg-black/60 text-white border-white/20"
                         }`}
                       >
                         {count}
@@ -445,8 +610,8 @@ export default function BlogListPage() {
                     <div
                       className={`absolute bottom-1.5 left-1.5 w-5 h-5 rounded-md flex items-center justify-center backdrop-blur-xs ${
                         isActive
-                          ? "bg-amber-500 text-slate-950 shadow-xs"
-                          : "bg-black/55 text-amber-300 border border-amber-400/30"
+                          ? "bg-[#FFD21F] text-[#111111] shadow-xs"
+                          : "bg-black/60 text-[#FFD21F] border border-white/20"
                       }`}
                     >
                       <Icon className="w-3 h-3" />
@@ -454,17 +619,17 @@ export default function BlogListPage() {
                   </div>
 
                   {/* Title & Hindi Subtitle */}
-                  <div className="p-2 sm:p-2.5 flex-1 flex flex-col justify-center">
+                  <div className="p-2 sm:p-2.5 flex-1 flex flex-col justify-center bg-white">
                     <div
                       className={`font-serif font-bold text-xs sm:text-[13px] leading-tight line-clamp-1 transition-colors ${
-                        isActive ? "text-[#78350F]" : "text-slate-900 group-hover:text-amber-800"
+                        isActive ? "text-[#D9A441]" : "text-[#111111] group-hover:text-[#D9A441]"
                       }`}
                     >
                       {isHindi ? topic.labelHi : topic.label}
                     </div>
                     <div
                       className={`text-[10px] ${isHindi ? "font-sans" : "font-devanagari"} mt-0.5 line-clamp-1 font-medium ${
-                        isActive ? "text-[#78350F] font-semibold" : "text-slate-500"
+                        isActive ? "text-[#111111] font-semibold" : "text-[#555555]"
                       }`}
                     >
                       {isHindi ? topic.label : topic.labelHi}
@@ -483,8 +648,8 @@ export default function BlogListPage() {
           {/* Left Column: 70% (8 Cols on LG) */}
           <main className="lg:col-span-8 space-y-6">
             {/* Sort & Count Controls Bar */}
-            <div className="flex items-center justify-between pb-3 border-b border-amber-200/70">
-              <span className="font-semibold text-xs sm:text-sm text-slate-700">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
+              <span className="font-semibold text-xs sm:text-sm text-[#555555]">
                 {currentCategory !== "All"
                   ? `${currentCategory} (${pagination.total} ${isHindi ? "लेख" : "Articles"})`
                   : isHindi
@@ -492,12 +657,12 @@ export default function BlogListPage() {
                   : `Showing ${pagination.total} Articles`}
               </span>
 
-              <div className="flex items-center gap-1.5 bg-white border border-amber-200/80 rounded-xl px-2.5 py-1.5 shadow-2xs">
-                <SlidersHorizontal className="w-3.5 h-3.5 text-amber-700" />
+              <div className="flex items-center gap-1.5 bg-white border border-[#E5E5E5] rounded-xl px-2.5 py-1.5 shadow-2xs">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-[#D9A441]" />
                 <select
                   value={currentSort}
                   onChange={(e) => updateParams({ sort: e.target.value })}
-                  className="bg-transparent text-xs font-semibold text-slate-800 focus:outline-none cursor-pointer"
+                  className="bg-transparent text-xs font-semibold text-[#111111] focus:outline-none cursor-pointer"
                 >
                   <option value="createdAt">{isHindi ? "नवीनतम (Newest First)" : "Newest First"}</option>
                   <option value="viewsCount">{isHindi ? "सर्वाधिक पठित (Most Read)" : "Most Read"}</option>
@@ -508,18 +673,18 @@ export default function BlogListPage() {
 
             {/* Active Filters Strip (if any) */}
             {(currentSearch || currentTag || (currentCategory && currentCategory !== "All")) && (
-              <div className="flex flex-wrap items-center gap-2 p-3 rounded-xl bg-white border border-amber-200/80 text-xs shadow-xs">
-                <span className="font-bold text-[#78350F] flex items-center gap-1">
-                  <Filter className="w-3.5 h-3.5 text-amber-700" />
+              <div className="flex flex-wrap items-center gap-2 p-3 rounded-xl bg-white border border-[#E5E5E5] text-xs shadow-xs">
+                <span className="font-bold text-[#111111] flex items-center gap-1">
+                  <Filter className="w-3.5 h-3.5 text-[#D9A441]" />
                   {isHindi ? "सक्रिय फ़िल्टर:" : "Active Filters:"}
                 </span>
 
                 {currentCategory && currentCategory !== "All" && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 font-semibold text-slate-800">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FFD21F] text-[#111111] font-bold">
                     {isHindi ? "श्रेणी: " : "Category: "}{currentCategory}
                     <button
                       onClick={() => updateParams({ category: "All" })}
-                      className="text-slate-400 hover:text-slate-800 ml-1 cursor-pointer"
+                      className="text-[#111111] hover:opacity-70 ml-1 cursor-pointer"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -527,11 +692,11 @@ export default function BlogListPage() {
                 )}
 
                 {currentTag && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 font-semibold text-slate-800">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-stone-100 text-[#111111] border border-[#E5E5E5] font-semibold">
                     {isHindi ? "टैग: #" : "Tag: #"}{currentTag}
                     <button
                       onClick={() => updateParams({ tag: "" })}
-                      className="text-slate-400 hover:text-slate-800 ml-1 cursor-pointer"
+                      className="text-[#555555] hover:text-[#111111] ml-1 cursor-pointer"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -539,11 +704,11 @@ export default function BlogListPage() {
                 )}
 
                 {currentSearch && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 font-semibold text-slate-800">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-stone-100 text-[#111111] border border-[#E5E5E5] font-semibold">
                     {isHindi ? "खोज: " : "Search: "}"{currentSearch}"
                     <button
                       onClick={handleClearSearch}
-                      className="text-slate-400 hover:text-slate-800 ml-1 cursor-pointer"
+                      className="text-[#555555] hover:text-[#111111] ml-1 cursor-pointer"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -555,7 +720,7 @@ export default function BlogListPage() {
                     setSearchInput("");
                     setSearchParams({});
                   }}
-                  className="text-xs font-bold text-[#78350F] hover:text-amber-950 underline ml-auto cursor-pointer"
+                  className="text-xs font-bold text-[#555555] hover:text-[#111111] underline ml-auto cursor-pointer"
                 >
                   {isHindi ? "सभी फ़िल्टर रीसेट करें" : "Reset All Filters"}
                 </button>
@@ -564,37 +729,38 @@ export default function BlogListPage() {
 
             {/* Featured Article Spotlight (shown on Page 1 if no search/tag) */}
             {currentPage === 1 && !currentSearch && !currentTag && featuredBlog && (
-              <div className="space-y-3">
+              <div id="featured-treatise" className="scroll-mt-28 space-y-3">
                 <FeaturedBlogCard blog={featuredBlog} />
               </div>
             )}
 
             {/* Articles Grid / Loading / Empty States */}
+            <div id="articles-archive" className="scroll-mt-28">
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                 {[1, 2, 3, 4].map((idx) => (
                   <div
                     key={idx}
-                    className="bg-white rounded-2xl border border-amber-200/60 p-4 space-y-4 animate-pulse shadow-xs"
+                    className="bg-white rounded-2xl border border-[#E5E5E5] p-4 space-y-4 animate-pulse shadow-xs"
                   >
-                    <div className="aspect-[16/10] bg-amber-100/60 rounded-xl" />
+                    <div className="aspect-[16/10] bg-stone-100 rounded-xl" />
                     <div className="space-y-2">
-                      <div className="h-4 bg-amber-100/80 rounded w-1/3" />
-                      <div className="h-6 bg-amber-100 rounded w-4/5" />
-                      <div className="h-4 bg-amber-100/60 rounded w-full" />
+                      <div className="h-4 bg-stone-100 rounded w-1/3" />
+                      <div className="h-6 bg-stone-200 rounded w-4/5" />
+                      <div className="h-4 bg-stone-100 rounded w-full" />
                     </div>
                   </div>
                 ))}
               </div>
             ) : blogs.length === 0 ? (
-              <div className="py-16 text-center bg-white rounded-3xl border border-amber-200/80 p-8 space-y-4 shadow-sm max-w-xl mx-auto">
-                <div className="w-16 h-16 rounded-full bg-amber-50 border border-amber-300 flex items-center justify-center text-[#78350F] mx-auto">
+              <div className="py-16 text-center bg-white rounded-3xl border border-[#E5E5E5] p-8 space-y-4 shadow-sm max-w-xl mx-auto">
+                <div className="w-16 h-16 rounded-full bg-stone-50 border border-[#E5E5E5] flex items-center justify-center text-[#D9A441] mx-auto">
                   <BookOpen className="w-8 h-8" />
                 </div>
-                <h3 className="font-serif text-2xl font-bold text-slate-900">
+                <h3 className="font-serif text-2xl font-bold text-[#111111]">
                   {isHindi ? "कोई लेख नहीं मिला" : "No Articles Found"}
                 </h3>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-[#555555]">
                   {isHindi
                     ? "आपकी खोज या चुने गए फ़िल्टर के अनुसार कोई लेख नहीं मिला। कृपया अन्य शब्द खोजें या समस्त लेख देखें।"
                     : "We could not find any articles matching your search or filters. Try adjusting your search query or view all articles."}
@@ -604,7 +770,7 @@ export default function BlogListPage() {
                     setSearchInput("");
                     setSearchParams({});
                   }}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs shadow-sm transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs shadow-xs transition-all cursor-pointer border border-[#FFD21F] hover:border-[#D9A441]"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>{isHindi ? "समस्त लेख देखें" : "Show All Articles"}</span>
@@ -613,8 +779,8 @@ export default function BlogListPage() {
             ) : (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="font-serif text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-amber-700" />
+                  <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#111111] flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-[#D9A441]" />
                     <span>
                       {currentCategory !== "All"
                         ? (isHindi ? `${currentCategory} से संबंधित लेख` : `${currentCategory} Articles`)
@@ -636,11 +802,11 @@ export default function BlogListPage() {
 
             {/* Pagination Bar */}
             {pagination.totalPages > 1 && (
-              <div className="pt-8 border-t border-amber-200/80 flex items-center justify-center gap-2">
+              <div className="pt-8 border-t border-[#E5E5E5] flex items-center justify-center gap-2">
                 <button
                   disabled={pagination.page <= 1}
                   onClick={() => updateParams({ page: pagination.page - 1 })}
-                  className="flex items-center gap-1 px-4 py-2 rounded-xl bg-white border border-amber-200/80 text-xs font-bold text-slate-700 hover:bg-amber-50 disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs cursor-pointer"
+                  className="flex items-center gap-1 px-4 py-2 rounded-xl bg-white border border-[#E5E5E5] text-xs font-bold text-[#555555] hover:text-[#111111] hover:border-[#D9A441] disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   <span>{isHindi ? "पिछला" : "Previous"}</span>
@@ -653,8 +819,8 @@ export default function BlogListPage() {
                       onClick={() => updateParams({ page: pageNum })}
                       className={`w-9 h-9 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         pagination.page === pageNum
-                          ? "bg-amber-800 text-white shadow-xs"
-                          : "bg-white text-slate-700 hover:bg-amber-50 border border-amber-200/80"
+                          ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs"
+                          : "bg-white text-[#555555] hover:text-[#111111] hover:border-[#D9A441] border border-[#E5E5E5]"
                       }`}
                     >
                       {pageNum}
@@ -665,13 +831,154 @@ export default function BlogListPage() {
                 <button
                   disabled={pagination.page >= pagination.totalPages}
                   onClick={() => updateParams({ page: pagination.page + 1 })}
-                  className="flex items-center gap-1 px-4 py-2 rounded-xl bg-white border border-amber-200/80 text-xs font-bold text-slate-700 hover:bg-amber-50 disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs cursor-pointer"
+                  className="flex items-center gap-1 px-4 py-2 rounded-xl bg-white border border-[#E5E5E5] text-xs font-bold text-[#555555] hover:text-[#111111] hover:border-[#D9A441] disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs cursor-pointer"
                 >
                   <span>{isHindi ? "अगला" : "Next"}</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
             )}
+            </div>
+
+            {/* Scholar Dossier Spotlight Card with Scholar Credentials */}
+            <div
+              id="scholars-spotlight"
+              className="scroll-mt-28 p-6 sm:p-7 rounded-3xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] transition-all shadow-sm space-y-4"
+            >
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+                <div className="relative">
+                  <img
+                    src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=200&auto=format&fit=crop&q=80"
+                    alt="Dr. Acharya Vidyadhar Sharma"
+                    className="w-18 h-18 rounded-full object-cover ring-2 ring-[#FFD21F] ring-offset-2 flex-shrink-0 shadow-xs"
+                  />
+                  <span className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#FFD21F] text-[#111111] flex items-center justify-center text-xs font-bold shadow-2xs">
+                    ॐ
+                  </span>
+                </div>
+                <div className="text-center sm:text-left space-y-2 flex-1">
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                    <h3 className="font-serif text-xl font-bold text-[#111111]">
+                      डॉ. आचार्य विद्याधर शर्मा (Dr. Vidyadhar Sharma)
+                    </h3>
+                    <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] border border-[#FFD21F] flex items-center gap-1 shadow-2xs">
+                      <Award className="w-3 h-3 text-[#111111]" />
+                      मुख्य संपादक एवं शोध अध्यक्ष
+                    </span>
+                    <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-stone-50 text-[#555555] border border-[#E5E5E5]">
+                      विद्वत समीक्षा परिषद
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-[#555555] leading-relaxed font-sans">
+                    काशी हिन्दू विश्वविद्यालय एवं संपूर्णानंद संस्कृत विश्वविद्यालय के पूर्व शोधार्थी। चारों वेदों की संहिताओं, वैदिक स्वर विज्ञान एवं यजुर्वेद माध्यन्दिन शाखा के भाष्य संरक्षण में ३०+ वर्षों का अकादमिक व पारंपरिक अनुभव।
+                  </p>
+
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-[11px] font-medium text-[#111111]">
+                    <span className="px-2.5 py-1 rounded-md bg-stone-50 border border-[#E5E5E5]">
+                      परंपरा: शुक्ल यजुर्वेद वाजसनेयी
+                    </span>
+                    <span className="px-2.5 py-1 rounded-md bg-stone-50 border border-[#E5E5E5]">
+                      प्रकाशित शोध: ३ प्रमुख ग्रन्थ, ४८ समीक्षाएँ
+                    </span>
+                    <Link
+                      to="/scholars/vidyadhar-sharma"
+                      className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-[11px] border border-[#FFD21F] hover:border-[#D9A441] transition-all ml-auto"
+                    >
+                      <span>समस्त विद्वान मंडल देखें (View Scholars)</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Verified Shastric Citation Box */}
+            <div
+              id="citation-standards"
+              className="scroll-mt-28 p-6 sm:p-7 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs space-y-4 transition-all"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E5E5E5]">
+                <div className="flex items-center gap-2 text-[#111111] font-bold text-sm">
+                  <BookOpen className="w-4 h-4 text-[#D9A441]" />
+                  <span className="font-devanagari">शास्त्रीय उद्धरण एवं संदर्भ प्रमाण</span>
+                  <span className="text-xs text-[#555555] font-normal">(Canonical Citation Guide)</span>
+                </div>
+
+                {/* Citation Style Switcher */}
+                <div className="flex items-center bg-stone-50 rounded-lg p-0.5 border border-[#E5E5E5] text-[11px] font-semibold self-start sm:self-auto">
+                  <button
+                    type="button"
+                    onClick={() => setCitationStyle("shastric")}
+                    className={`px-2.5 py-1 rounded transition-all cursor-pointer font-devanagari ${
+                      citationStyle === "shastric"
+                        ? "bg-[#FFD21F] text-[#111111] font-bold shadow-2xs"
+                        : "text-[#555555] hover:text-[#111111]"
+                    }`}
+                  >
+                    शास्त्रीय
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCitationStyle("chicago")}
+                    className={`px-2.5 py-1 rounded transition-all cursor-pointer ${
+                      citationStyle === "chicago"
+                        ? "bg-[#FFD21F] text-[#111111] font-bold shadow-2xs"
+                        : "text-[#555555] hover:text-[#111111]"
+                    }`}
+                  >
+                    Chicago
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCitationStyle("apa")}
+                    className={`px-2.5 py-1 rounded transition-all cursor-pointer ${
+                      citationStyle === "apa"
+                        ? "bg-[#FFD21F] text-[#111111] font-bold shadow-2xs"
+                        : "text-[#555555] hover:text-[#111111]"
+                    }`}
+                  >
+                    APA 7th
+                  </button>
+                </div>
+              </div>
+
+              {/* Formatted Citation Display */}
+              <div className="p-3.5 rounded-xl bg-stone-50/70 border border-[#E5E5E5] text-xs font-mono text-[#111111] leading-relaxed relative group">
+                <p className="select-all break-words pr-20">{getRepositoryCitation()}</p>
+                <button
+                  type="button"
+                  onClick={handleCopyCitation}
+                  className="absolute top-2 right-2 flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-[11px] shadow-2xs transition-all cursor-pointer border border-[#FFD21F]"
+                  title="Copy Citation"
+                >
+                  {citationCopied ? (
+                    <>
+                      <Check className="w-3 h-3 text-emerald-700" />
+                      <span className="text-emerald-800">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3 text-[#111111]" />
+                      <span>Copy</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Archive Metadata & Verification Badges */}
+              <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-semibold text-[#111111]">
+                <span className="px-2.5 py-1 rounded-full bg-stone-50 border border-[#E5E5E5]">
+                  Digital Repository Corpus: Veda Library Shastric Archive
+                </span>
+                <span className="px-2.5 py-1 rounded-full bg-stone-50 border border-[#E5E5E5]">
+                  Canonical DOI: 10.VEDA-LIBRARY/ARCHIVE
+                </span>
+                <span className="px-2.5 py-1 rounded-full bg-[#FFD21F] text-[#111111] font-bold">
+                  Editorial Peer-Reviewed
+                </span>
+              </div>
+            </div>
           </main>
 
           {/* Right Column: 30% Astromantra Sidebar (4 Cols on LG) */}

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import SEO from "../common/SEO.jsx";
 import {
   Home,
   CheckCircle2,
@@ -92,6 +93,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
   const [fontSize, setFontSize] = useState("md"); // "sm", "md", "lg"
   const [selectedLanguage, setSelectedLanguage] = useState("hindi"); // "hindi", "english", "hinglish"
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [adhyayaCategory, setAdhyayaCategory] = useState("all");
   const [adhyayaSearch, setAdhyayaSearch] = useState("");
   const [expandedAdhyayaNum, setExpandedAdhyayaNum] = useState(null);
@@ -99,11 +101,32 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
   useEffect(() => {
     const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, progress)));
+      }
       setShowScrollTop(window.scrollY > 400);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Helper to identify spiritual categories for Red #C62828 compliance
+  const isSpiritualTag = (t = "") => {
+    const s = String(t).toLowerCase();
+    return (
+      s.includes("puja") ||
+      s.includes("ritual") ||
+      s.includes("mantra") ||
+      s.includes("stotra") ||
+      s.includes("shaiva") ||
+      s.includes("yagya") ||
+      s.includes("sadhana") ||
+      s.includes("upanishad") ||
+      s.includes("devata")
+    );
+  };
 
   const subjectKey = `${category}/${subject}`;
   const subjectData =
@@ -368,46 +391,175 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
   const getSanskritFontSize = () => {
     switch (fontSize) {
-      case "sm": return "text-base sm:text-lg";
-      case "lg": return "text-xl sm:text-2xl";
-      default: return "text-lg sm:text-xl";
+      case "sm": return "text-base sm:text-lg leading-[1.7]";
+      case "lg": return "text-xl sm:text-2xl lg:text-3xl leading-[1.85]";
+      default: return "text-lg sm:text-xl lg:text-2xl leading-[1.75]";
     }
   };
 
+  // Dynamic SEO metadata calculation (Document Section 11 & Section 4)
+  const articleHeading = articleData?.hindiTitle || articleData?.title || "वैदिक ग्रंथ";
+  const seoTitle = `${articleHeading} — ${effectiveSubjectData?.name || effectiveCatData?.name} | Veda Library`;
+  const seoDescription =
+    (articleData?.intro
+      ? `${articleHeading}: ${articleData.intro.slice(0, 140).replace(/\n/g, " ")}`
+      : `${articleHeading} — वैदिक ज्ञान परंपरा का प्रामाणिक ग्रंथ एवं विस्तृत भाष्य। Veda Library`
+    ).trim();
+
+  const canonicalPath = `/library/${effectiveCategory}/${effectiveSubject}/${article}`;
+
+  const breadcrumbElements = [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "होम (Home)",
+      item: "https://library.vedastructure.com/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "वेद लाइब्रेरी (Veda Library)",
+      item: "https://library.vedastructure.com/library",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: effectiveCatData?.name || "Category",
+      item: `https://library.vedastructure.com/library/${effectiveCategory}`,
+    },
+  ];
+
+  if (effectiveSubject) {
+    breadcrumbElements.push({
+      "@type": "ListItem",
+      position: 4,
+      name: effectiveSubjectData ? `${effectiveSubjectData.name} (${effectiveSubjectData.enName})` : effectiveSubject,
+      item: `https://library.vedastructure.com/library/${effectiveCategory}/${effectiveSubject}`,
+    });
+  }
+
+  breadcrumbElements.push({
+    "@type": "ListItem",
+    position: effectiveSubject ? 5 : 4,
+    name: articleHeading,
+    item: `https://library.vedastructure.com${canonicalPath}`,
+  });
+
+  const jsonLdSchema = [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbElements,
+    },
+    {
+      "@type": "Article",
+      headline: articleHeading,
+      alternativeHeadline: articleData?.title,
+      name: articleHeading,
+      description: seoDescription,
+      url: `https://library.vedastructure.com${canonicalPath}`,
+      inLanguage: ["hi", "en", "sa"],
+      articleSection: effectiveCatData?.name,
+      keywords: [
+        articleData?.hindiTitle,
+        articleData?.title,
+        effectiveSubjectData?.name,
+        effectiveCatData?.name,
+        "वैदिक ग्रंथ",
+        "Veda Library",
+      ].filter(Boolean),
+      publisher: {
+        "@type": "Organization",
+        name: "Veda Library",
+        url: "https://library.vedastructure.com/",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://library.vedastructure.com/vite.svg",
+        },
+      },
+      isPartOf: {
+        "@type": "WebSite",
+        name: "Veda Library",
+        url: "https://library.vedastructure.com/",
+      },
+    },
+    {
+      "@type": "ItemPage",
+      name: articleHeading,
+      url: `https://library.vedastructure.com${canonicalPath}`,
+      description: seoDescription,
+    },
+    {
+      "@type": "CreativeWork",
+      name: articleHeading,
+      inLanguage: ["hi", "en", "sa"],
+      genre: "Vedic Scripture / Grantha",
+      url: `https://library.vedastructure.com${canonicalPath}`,
+    },
+  ];
+
   return (
-    <div className="bg-[#fffaf0] min-h-screen pb-20 lg:pb-12 text-stone-900 overflow-x-hidden">
+    <div className="bg-white min-h-screen pb-20 lg:pb-12 text-[#111111] overflow-x-hidden">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalPath}
+        schema={jsonLdSchema}
+        keywords={[
+          articleHeading,
+          articleData?.title,
+          effectiveSubjectData?.name,
+          effectiveCatData?.name,
+          "वेद",
+          "वैदिक संहिता",
+          "Veda Library",
+        ].filter(Boolean)}
+      />
+      {/* 0. Top Reading Progress Indicator (Section 28 Compliance) */}
+      <div
+        className="fixed top-0 left-0 right-0 h-1 bg-[#E5E5E5] z-50 pointer-events-none"
+        role="progressbar"
+        aria-valuenow={scrollProgress}
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <div
+          className="h-full bg-[#FFD21F] transition-all duration-150 ease-out shadow-xs"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+
       {/* Top Breadcrumb & Article Header */}
-      <div className="bg-white border-b border-amber-200/70 py-4 sm:py-5 px-3 sm:px-6 lg:px-8">
+      <div className="bg-white border-b border-[#E5E5E5] py-4 sm:py-5 px-3 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-medium text-stone-500 mb-3 flex-wrap leading-tight">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-medium text-[#555555] mb-3 flex-wrap leading-tight">
             <Link
               to="/"
-              className="hover:text-amber-800 transition-colors flex items-center gap-1 cursor-pointer"
+              className="hover:text-[#111111] transition-colors flex items-center gap-1 cursor-pointer"
             >
-              <Home className="w-3.5 h-3.5" />
+              <Home className="w-3.5 h-3.5 text-[#D9A441]" />
               <span>Home</span>
             </Link>
-            <span>›</span>
+            <span className="text-[#D9A441]">›</span>
             <Link
               to="/library"
-              className="hover:text-amber-800 transition-colors cursor-pointer"
+              className="hover:text-[#111111] transition-colors cursor-pointer"
             >
               Veda Library
             </Link>
-            <span>›</span>
+            <span className="text-[#D9A441]">›</span>
             <Link
               to={`/library/${effectiveCategory}`}
-              className="hover:text-amber-800 transition-colors cursor-pointer"
+              className="hover:text-[#111111] transition-colors cursor-pointer"
             >
               {effectiveCatData.name || "Category"}
             </Link>
             {effectiveSubject && (
               <>
-                <span>›</span>
+                <span className="text-[#D9A441]">›</span>
                 <Link
                   to={`/library/${effectiveCategory}/${effectiveSubject}`}
-                  className="hover:text-amber-800 transition-colors cursor-pointer truncate max-w-[120px] sm:max-w-none"
+                  className="hover:text-[#111111] transition-colors cursor-pointer truncate max-w-[120px] sm:max-w-none"
                 >
                   {effectiveSubjectData ? `${effectiveSubjectData.name} (${effectiveSubjectData.enName})` : effectiveSubject}
                 </Link>
@@ -415,12 +567,12 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
             )}
             {branchAncestors.map((branch) => (
               <React.Fragment key={branch.id}>
-                <span>›</span>
-                <span className="text-stone-600 font-medium truncate max-w-[100px] sm:max-w-none">{branch.name}</span>
+                <span className="text-[#D9A441]">›</span>
+                <span className="text-[#555555] font-medium truncate max-w-[100px] sm:max-w-none">{branch.name}</span>
               </React.Fragment>
             ))}
-            <span>›</span>
-            <span className="text-amber-900 font-semibold truncate max-w-[150px] sm:max-w-none">
+            <span className="text-[#D9A441]">›</span>
+            <span className="text-[#111111] font-semibold truncate max-w-[150px] sm:max-w-none">
               {articleData.hindiTitle || articleData.title}
             </span>
           </div>
@@ -429,24 +581,31 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-stone-900 break-words">
+                <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111111] break-words">
                   {articleData.title}
                 </h1>
-                <span className="font-devanagari text-lg sm:text-xl font-bold text-amber-900">
+                <span className="font-devanagari text-lg sm:text-xl font-bold text-[#D9A441]">
                   {articleData.hindiTitle}
                 </span>
               </div>
 
-              {/* Tags */}
+              {/* Tags: Yellow #FFD21F with #111111 text, Spiritual category: Red #C62828 */}
               <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                {articleData.tags?.map((t) => (
-                  <span
-                    key={t}
-                    className="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200"
-                  >
-                    {t}
-                  </span>
-                ))}
+                {articleData.tags?.map((t) => {
+                  const spiritual = isSpiritualTag(t);
+                  return (
+                    <span
+                      key={t}
+                      className={`text-[11px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full shadow-2xs ${
+                        spiritual
+                          ? "bg-[#C62828] text-white"
+                          : "bg-[#FFD21F] text-[#111111]"
+                      }`}
+                    >
+                      {t}
+                    </span>
+                  );
+                })}
               </div>
             </div>
 
@@ -456,16 +615,16 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 Source Verified
               </span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full bg-stone-100 text-stone-600">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full bg-stone-100 text-[#555555] border border-[#E5E5E5]">
                 • Collected
               </span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-full bg-[#FFD21F]/20 text-[#111111] border border-[#FFD21F]">
                 • Under Review
               </span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full bg-stone-100 text-stone-600">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full bg-stone-100 text-[#555555] border border-[#E5E5E5]">
                 • Tradition Verified
               </span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full bg-emerald-50 text-emerald-800">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
                 • Library Approved
               </span>
             </div>
@@ -474,7 +633,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
       </div>
 
       {/* TOP VIEW MODE TABS & CONTROLS (Dual-Mode UX: Hymns vs 10-Section Scholarly Analysis vs All-in-One) */}
-      <div className="bg-white/95 backdrop-blur-md border-b border-amber-200/80 sticky top-0 z-30 shadow-2xs">
+      <div className="bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] sticky top-0 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
           {/* View Mode Buttons */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
@@ -483,8 +642,8 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                 onClick={() => setViewMode("hymns")}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                   viewMode === "hymns"
-                    ? "bg-amber-800 text-white shadow-xs"
-                    : "bg-amber-50/80 text-amber-900 border border-amber-200 hover:bg-amber-100"
+                    ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs"
+                    : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
                 }`}
               >
                 <BookOpen className="w-3.5 h-3.5" />
@@ -496,8 +655,8 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
               onClick={() => setViewMode("analysis")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 viewMode === "analysis"
-                  ? "bg-amber-800 text-white shadow-xs"
-                  : "bg-amber-50/80 text-amber-900 border border-amber-200 hover:bg-amber-100"
+                  ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs"
+                  : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -508,8 +667,8 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
               onClick={() => setViewMode("classic")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 viewMode === "classic"
-                  ? "bg-amber-800 text-white shadow-xs"
-                  : "bg-amber-50/80 text-amber-900 border border-amber-200 hover:bg-amber-100"
+                  ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs"
+                  : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -523,12 +682,12 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
             <button
               type="button"
               onClick={() => setIsTocDrawerOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-100/80 hover:bg-amber-200/90 text-amber-950 font-bold text-xs border border-amber-300 transition-colors cursor-pointer shadow-2xs"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white hover:bg-stone-50 text-[#111111] font-bold text-xs border border-[#E5E5E5] hover:border-[#D9A441] transition-colors cursor-pointer shadow-xs"
               title="अनुक्रमणिका (Table of Contents)"
             >
-              <Menu className="w-3.5 h-3.5 text-amber-800" />
+              <Menu className="w-3.5 h-3.5 text-[#D9A441]" />
               <span className="font-devanagari">अनुक्रमणिका</span>
-              <span className="text-[10px] bg-amber-800 text-white px-1.5 py-0.2 rounded-full font-sans font-bold">10</span>
+              <span className="text-[10px] bg-[#FFD21F] text-[#111111] px-1.5 py-0.2 rounded-full font-sans font-bold">10</span>
             </button>
 
             {/* Wide Reading / Focus Mode Toggle (Desktop) */}
@@ -537,8 +696,8 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
               onClick={() => setIsWideReadingMode(!isWideReadingMode)}
               className={`hidden md:flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer border ${
                 isWideReadingMode
-                  ? "bg-amber-800 text-white border-amber-900 shadow-2xs"
-                  : "bg-stone-100 text-stone-700 border-stone-200 hover:bg-stone-200"
+                  ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] shadow-xs"
+                  : "bg-white text-[#555555] border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
               }`}
               title={isWideReadingMode ? "सामान्य दृश्य (Standard Layout)" : "विस्तृत वाचन मोड (Wide Reading Mode)"}
             >
@@ -556,14 +715,14 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
             </button>
 
             {/* Unified 3-Language Selector: हिंदी / English / Hinglish */}
-            <div className="flex items-center gap-1 bg-stone-100 p-0.5 rounded-lg text-[11px] font-bold text-stone-700">
+            <div className="flex items-center gap-1 bg-stone-50 p-0.5 rounded-lg border border-[#E5E5E5] text-[11px] font-bold text-[#555555]">
               <button
                 type="button"
                 onClick={() => setSelectedLanguage("hindi")}
                 className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
                   selectedLanguage === "hindi"
-                    ? "bg-amber-800 text-white shadow-2xs font-bold"
-                    : "text-stone-600 hover:text-stone-900"
+                    ? "bg-[#FFD21F] text-[#111111] shadow-xs font-bold"
+                    : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
                 हिंदी
@@ -573,8 +732,8 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                 onClick={() => setSelectedLanguage("english")}
                 className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
                   selectedLanguage === "english"
-                    ? "bg-amber-800 text-white shadow-2xs font-bold"
-                    : "text-stone-600 hover:text-stone-900"
+                    ? "bg-[#FFD21F] text-[#111111] shadow-xs font-bold"
+                    : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
                 English
@@ -584,8 +743,8 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                 onClick={() => setSelectedLanguage("hinglish")}
                 className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
                   selectedLanguage === "hinglish"
-                    ? "bg-amber-800 text-white shadow-2xs font-bold"
-                    : "text-stone-600 hover:text-stone-900"
+                    ? "bg-[#FFD21F] text-[#111111] shadow-xs font-bold"
+                    : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
                 Hinglish
@@ -593,11 +752,11 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
             </div>
 
             {/* Font Size Adjuster */}
-            <div className="flex items-center gap-1 bg-stone-100 p-0.5 rounded-lg text-[11px] font-bold text-stone-700">
+            <div className="flex items-center gap-1 bg-stone-50 p-0.5 rounded-lg border border-[#E5E5E5] text-[11px] font-bold text-[#555555]">
               <button
                 onClick={() => setFontSize("sm")}
                 className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
-                  fontSize === "sm" ? "bg-white text-amber-900 shadow-2xs font-extrabold" : "hover:text-stone-900"
+                  fontSize === "sm" ? "bg-[#FFD21F] text-[#111111] shadow-xs font-extrabold" : "hover:text-[#111111]"
                 }`}
                 title="Small text"
               >
@@ -606,7 +765,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
               <button
                 onClick={() => setFontSize("md")}
                 className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
-                  fontSize === "md" ? "bg-white text-amber-900 shadow-2xs font-extrabold" : "hover:text-stone-900"
+                  fontSize === "md" ? "bg-[#FFD21F] text-[#111111] shadow-xs font-extrabold" : "hover:text-[#111111]"
                 }`}
                 title="Normal text"
               >
@@ -615,7 +774,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
               <button
                 onClick={() => setFontSize("lg")}
                 className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
-                  fontSize === "lg" ? "bg-white text-amber-900 shadow-2xs font-extrabold" : "hover:text-stone-900"
+                  fontSize === "lg" ? "bg-[#FFD21F] text-[#111111] shadow-xs font-extrabold" : "hover:text-[#111111]"
                 }`}
                 title="Large text"
               >
@@ -627,10 +786,10 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
         {/* Quick Horizontal Jump Bar (Quick Section Pills across Desktop & Mobile) */}
         {viewMode !== "hymns" && (
-          <div className="border-t border-amber-200/50 bg-[#fffdfa] px-3 sm:px-6 lg:px-8 py-1.5 overflow-x-auto scrollbar-thin">
+          <div className="border-t border-[#E5E5E5] bg-white px-3 sm:px-6 lg:px-8 py-1.5 overflow-x-auto scrollbar-thin">
             <div className="max-w-7xl mx-auto flex items-center gap-1.5 min-w-max">
-              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider flex items-center gap-1 mr-1">
-                <BookMarked className="w-3 h-3 text-amber-700" />
+              <span className="text-[10px] font-bold text-[#888888] uppercase tracking-wider flex items-center gap-1 mr-1">
+                <BookMarked className="w-3 h-3 text-[#D9A441]" />
                 अनुभाग:
               </span>
               {contentsList.map((item) => (
@@ -639,15 +798,15 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                   onClick={() => scrollToSection(item.id)}
                   className={`px-2.5 py-1 rounded-lg text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer font-devanagari flex items-center gap-1 ${
                     activeTab === item.id
-                      ? "bg-amber-800 text-white shadow-2xs"
-                      : "bg-white text-stone-700 border border-stone-200/80 hover:bg-amber-50 hover:text-amber-950"
+                      ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs"
+                      : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
                   }`}
                 >
                   <span>{item.shortTitle || item.title}</span>
                   {item.badge && (
                     <span
                       className={`text-[9px] px-1.5 py-0.2 rounded-full font-bold ${
-                        activeTab === item.id ? "bg-amber-950 text-amber-200" : "bg-amber-100 text-amber-800"
+                        activeTab === item.id ? "bg-white/80 text-[#111111]" : "bg-[#F9F9F9] text-[#555555] border border-[#E5E5E5]"
                       }`}
                     >
                       {item.badge}
@@ -661,7 +820,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
       </div>
 
       {/* Main Spacious Content Layout (Spacious Central Canvas + Right Contextual Rail) */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 pb-24 lg:pb-10">
         <div
           className={`grid grid-cols-1 ${
             isWideReadingMode || viewMode === "hymns" ? "lg:grid-cols-1" : "lg:grid-cols-12"
@@ -675,12 +834,12 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                 : "lg:col-span-8 xl:col-span-9"
             } bg-white p-4 sm:p-7 lg:p-9 rounded-2xl sm:rounded-3xl border border-stone-200/90 shadow-2xs space-y-6 sm:space-y-8 w-full overflow-hidden`}
           >
-            {/* Hero Image in Article */}
-            <div className="relative aspect-16/9 rounded-xl sm:rounded-2xl overflow-hidden shadow-xs bg-stone-900">
+            {/* Hero Image in Article - Clearly visible (0.80 - 0.85 opacity with subtle luminous overlay) */}
+            <div className="relative aspect-16/9 rounded-xl sm:rounded-2xl overflow-hidden shadow-xs bg-stone-900 border border-[#E5E5E5]">
               <img
                 src={heroImage}
-                alt={articleData.title}
-                className="w-full h-full object-cover object-center"
+                alt={`${articleHeading} (${articleData.title || ""}) — ${effectiveSubjectData?.name || effectiveCatData?.name} | Veda Library`}
+                className="w-full h-full object-cover object-center opacity-85 hover:opacity-100 transition-opacity duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
               <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 right-2 sm:right-3 flex items-center justify-between gap-2">
@@ -688,7 +847,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                   {articleData.hindiTitle} — मूल शास्त्रीय संदर्भ एवं विशद व्याख्या
                 </span>
                 {hasAllMantras && (
-                  <span className="shrink-0 text-[10px] sm:text-xs font-bold text-amber-200 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-400/40">
+                  <span className="shrink-0 text-[10px] sm:text-xs font-bold text-[#111111] bg-[#FFD21F] px-2 py-0.5 rounded border border-[#FFD21F]">
                     {articleData.allMantras.length} ऋचाएँ
                   </span>
                 )}
@@ -697,27 +856,27 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
             {/* Quick Hymn Reader Showcase / Fast Jump Pill on Classic/Analysis Mode */}
             {hasAllMantras && viewMode !== "hymns" && (
-              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-r from-amber-50 via-[#fff8eb] to-amber-50 border border-amber-200/90 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-2xs">
+              <div className="p-3 sm:p-4 rounded-xl bg-stone-50 border border-[#E5E5E5] hover:border-[#D9A441] transition-colors flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-2xs">
                 <div className="space-y-0.5">
-                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-amber-950">
-                    <BookOpen className="w-4 h-4 text-amber-700" />
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#111111]">
+                    <BookOpen className="w-4 h-4 text-[#D9A441]" />
                     <span>समस्त {articleData.allMantras.length} ऋचाओं का पावन पाठ उपलब्ध</span>
                   </div>
-                  <p className="text-[11px] sm:text-xs text-stone-600 font-devanagari">
+                  <p className="text-[11px] sm:text-xs text-[#555555] font-devanagari">
                     स्वर चिह्नों, पदच्छेद, हिन्दी भावार्थ एवं सायणाचार्य भाष्य सहित अध्ययन करें।
                   </p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={() => setViewMode("hymns")}
-                    className="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs shadow-2xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs shadow-2xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer border border-[#FFD21F] hover:border-[#D9A441]"
                   >
                     <span>📜 ऋचाएँ पढ़ें</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => scrollToSection("content-5")}
-                    className="px-3 py-1.5 rounded-lg bg-white hover:bg-amber-100 text-amber-900 border border-amber-300 font-semibold text-xs transition-colors cursor-pointer"
+                    className="px-3 py-1.5 rounded-lg bg-white hover:bg-stone-100 text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] font-semibold text-xs transition-colors cursor-pointer"
                   >
                     अनुभाग ५ देखें ↓
                   </button>
@@ -728,12 +887,12 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
             {/* HYMNS MODE: Renders Section 5 at the very top */}
             {(viewMode === "hymns" || viewMode === "classic") && (
               <div id="content-5" className="space-y-4 pt-2">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-amber-200/80 pb-2.5 gap-2">
-                  <h2 className="font-serif text-lg sm:text-xl font-bold text-stone-900 flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-amber-800" />
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E5E5E5] pb-2.5 gap-2">
+                  <h2 className="font-serif text-lg sm:text-xl font-bold text-[#111111] flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-[#D9A441]" />
                     <span>5. संबंधित मंत्र एवं ऋचाएँ</span>
                     {hasAllMantras && (
-                      <span className="text-xs bg-amber-100 text-amber-900 font-bold px-2.5 py-0.5 rounded-full border border-amber-300">
+                      <span className="text-xs bg-[#FFD21F] text-[#111111] font-bold px-2.5 py-0.5 rounded-full border border-[#FFD21F]">
                         समस्त {articleData.allMantras.length} ऋचाएँ
                       </span>
                     )}
@@ -743,7 +902,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setShowAllMantrasView(!showAllMantrasView)}
-                        className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 transition-colors cursor-pointer"
+                        className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] transition-colors cursor-pointer"
                       >
                         {showAllMantrasView ? "एकल ऋचा वाचन" : "समग्र पाठ (Show All)"}
                       </button>
@@ -755,7 +914,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                 {hasAllMantras ? (
                   <div className="space-y-4">
                     {/* Verse Search Bar */}
-                    <div className="p-2.5 sm:p-3 rounded-xl bg-amber-50/70 border border-amber-200/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 shadow-2xs">
+                    <div className="p-2.5 sm:p-3 rounded-xl bg-stone-50 border border-[#E5E5E5] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 shadow-2xs">
                       <div className="relative flex-1">
                         <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                         <input
@@ -766,7 +925,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                             setSelectedMantraIdx(0);
                           }}
                           placeholder="ऋचा में खोजें (संस्कृत पद, भावार्थ या संख्या)..."
-                          className="w-full pl-8 pr-7 py-1.5 rounded-lg text-xs bg-white border border-stone-200 focus:border-amber-400 focus:outline-none placeholder:text-stone-400 font-devanagari"
+                          className="w-full pl-8 pr-7 py-1.5 rounded-lg text-xs bg-white border border-[#E5E5E5] focus:border-[#FFD21F] focus:outline-none placeholder:text-stone-400 font-devanagari text-[#111111]"
                         />
                         {verseSearch && (
                           <button
@@ -781,8 +940,8 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                           </button>
                         )}
                       </div>
-                      <div className="text-[11px] font-semibold text-stone-500 shrink-0 text-right">
-                        <span className="text-amber-900 font-bold">{filteredAllMantras.length}</span> / {articleData.allMantras.length} ऋचाएँ
+                      <div className="text-[11px] font-semibold text-[#555555] shrink-0 text-right">
+                        <span className="text-[#111111] font-bold">{filteredAllMantras.length}</span> / {articleData.allMantras.length} ऋचाएँ
                       </div>
                     </div>
 
@@ -813,8 +972,8 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                                 onClick={() => setSelectedMantraIdx(idx)}
                                 className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all shrink-0 cursor-pointer ${
                                   selectedMantraIdx === idx
-                                    ? "bg-amber-800 text-white shadow-xs scale-105"
-                                    : "bg-amber-50 text-amber-900 border border-amber-200/80 hover:bg-amber-100"
+                                    ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs scale-105"
+                                    : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
                                 }`}
                               >
                                 ऋचा {m.number || idx + 1}
@@ -829,17 +988,17 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                           return (
                             <div
                               key={actualIdx}
-                              className="p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-[#fffcf5] to-[#fff6e6] border-2 border-amber-300/80 shadow-xs space-y-4 transition-all w-full overflow-hidden"
+                              className="p-4 sm:p-6 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs space-y-4 transition-all w-full overflow-hidden"
                             >
                               {/* Top Header of the Mantra Card */}
-                              <div className="flex items-center justify-between border-b border-amber-200/60 pb-2.5 flex-wrap gap-2">
-                                <span className="text-xs font-bold text-amber-900 bg-amber-100/90 px-2.5 py-1 rounded-md border border-amber-300 font-devanagari">
+                              <div className="flex items-center justify-between border-b border-[#E5E5E5] pb-2.5 flex-wrap gap-2">
+                                <span className="text-xs font-bold text-[#111111] bg-[#FFD21F] px-2.5 py-1 rounded-md border border-[#FFD21F] font-devanagari">
                                   ऋचा {m.number || actualIdx + 1}
                                 </span>
                                 <div className="flex items-center gap-2">
                                   <button
                                     onClick={() => handleCopyMantraText(m.sanskrit, actualIdx)}
-                                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-900 bg-white/80 hover:bg-white px-2.5 py-1 rounded border border-amber-200 transition-colors cursor-pointer"
+                                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#111111] bg-white hover:bg-stone-50 px-2.5 py-1 rounded border border-[#E5E5E5] hover:border-[#D9A441] transition-colors cursor-pointer"
                                     title="मंत्र कॉपी करें"
                                   >
                                     {copiedMantraIndex === actualIdx ? (
@@ -849,7 +1008,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                                       </>
                                     ) : (
                                       <>
-                                        <Copy className="w-3 h-3 text-stone-600" />
+                                        <Copy className="w-3 h-3 text-[#555555]" />
                                         <span>कॉपी</span>
                                       </>
                                     )}
@@ -857,7 +1016,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                                   {m.readerId && (
                                     <Link
                                       to={`/library/mantra/${m.readerId}`}
-                                      className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 px-2.5 py-1 rounded border border-amber-300 transition-colors cursor-pointer"
+                                      className="inline-flex items-center gap-1 text-[11px] font-bold text-[#111111] bg-[#FFD21F] hover:bg-[#D9A441] px-2.5 py-1 rounded border border-[#FFD21F] transition-colors cursor-pointer"
                                     >
                                       <BookOpen className="w-3 h-3" />
                                       <span>मंत्र पाठक</span>
@@ -870,7 +1029,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                               {/* Sanskrit Svara Accent Text (Fully Responsive with word break) */}
                               <div className="text-center py-2 px-1">
                                 <p
-                                  className={`font-devanagari font-bold text-amber-950 leading-loose tracking-wide break-words whitespace-pre-wrap ${getSanskritFontSize()}`}
+                                  className={`font-devanagari font-bold text-[#111111] leading-[1.75] tracking-wide break-words whitespace-pre-wrap ${getSanskritFontSize()}`}
                                   style={{ overflowWrap: "anywhere" }}
                                 >
                                   {m.sanskrit}
@@ -879,18 +1038,18 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
                               {/* Padapatha Badges Grid (Responsive Grid) */}
                               {m.padapathaBadges && m.padapathaBadges.length > 0 && (
-                                <div className="pt-2 border-t border-amber-200/60">
-                                  <span className="text-[11px] sm:text-xs font-bold text-amber-900 block mb-1.5 font-devanagari">
+                                <div className="pt-2 border-t border-[#E5E5E5]">
+                                  <span className="text-[11px] sm:text-xs font-bold text-[#111111] block mb-1.5 font-devanagari">
                                     {selectedLanguage === "english" ? "Word-by-Word Analysis (पदच्छेद एवं पदार्थ):" : "पदच्छेद एवं पदार्थ (Word Meanings):"}
                                   </span>
                                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                                     {m.padapathaBadges.map((p, pIdx) => (
                                       <div
                                         key={pIdx}
-                                        className="p-1.5 bg-white border border-amber-200/80 rounded-lg shadow-2xs text-[11px] font-devanagari flex flex-col justify-between"
+                                        className="p-1.5 bg-white border border-[#E5E5E5] rounded-lg shadow-xs text-[11px] font-devanagari flex flex-col justify-between"
                                       >
-                                        <strong className="text-amber-950 font-bold break-words">{p.word}:</strong>
-                                        <span className="text-stone-600 break-words">{p.meaning}</span>
+                                        <strong className="text-[#111111] font-bold break-words">{p.word}:</strong>
+                                        <span className="text-[#555555] break-words">{p.meaning}</span>
                                       </div>
                                     ))}
                                   </div>
@@ -899,32 +1058,32 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
                               {/* Hindi Translation (shown for hindi & hinglish) */}
                               {(selectedLanguage === "hindi" || selectedLanguage === "hinglish") && (m.hindiTranslation || m.translation) && (
-                                <div className="pt-2 border-t border-amber-200/60 text-xs sm:text-sm font-devanagari text-stone-800 leading-relaxed">
-                                  <strong className="text-amber-950">भावार्थ: </strong>
+                                <div className="pt-2 border-t border-[#E5E5E5] text-xs sm:text-sm font-devanagari text-[#555555] leading-relaxed">
+                                  <strong className="text-[#111111]">भावार्थ: </strong>
                                   <span className="break-words">{m.hindiTranslation || m.translation}</span>
                                 </div>
                               )}
 
                               {/* English Translation (shown for english & hinglish) */}
                               {(selectedLanguage === "english" || selectedLanguage === "hinglish") && (m.englishTranslation || m.english) && (
-                                <div className="text-[11px] sm:text-xs text-stone-700 leading-relaxed font-sans bg-white/70 p-2.5 rounded-lg border border-amber-200/70">
-                                  <strong className="text-amber-950 font-bold">English Meaning: </strong>
+                                <div className="text-[11px] sm:text-xs text-[#555555] leading-relaxed font-sans bg-white p-2.5 rounded-lg border border-[#E5E5E5]">
+                                  <strong className="text-[#111111] font-bold">English Meaning: </strong>
                                   <span className="break-words">{m.englishTranslation || m.english}</span>
                                 </div>
                               )}
 
                               {/* Hinglish Translation (shown for hinglish) */}
                               {selectedLanguage === "hinglish" && (m.hinglishTranslation || m.hinglish) && (
-                                <div className="text-[11px] sm:text-xs text-stone-700 leading-relaxed font-sans bg-indigo-50/50 p-2.5 rounded-lg border border-indigo-200/70">
-                                  <strong className="text-indigo-950 font-bold">सरल हिंग्लिश: </strong>
+                                <div className="text-[11px] sm:text-xs text-[#555555] leading-relaxed font-sans bg-white p-2.5 rounded-lg border border-[#E5E5E5]">
+                                  <strong className="text-[#111111] font-bold">सरल हिंग्लिश: </strong>
                                   <span className="break-words">{m.hinglishTranslation || m.hinglish}</span>
                                 </div>
                               )}
 
                               {/* Sayana Bhashya */}
                               {m.sayanaBhashya && (
-                                <div className="text-[11px] sm:text-xs font-devanagari text-amber-900 bg-amber-50/80 p-2.5 rounded-lg border border-amber-200/60 leading-relaxed">
-                                  <strong className="text-amber-950">
+                                <div className="text-[11px] sm:text-xs font-devanagari text-[#111111] bg-white p-2.5 rounded-lg border border-[#E5E5E5] leading-relaxed">
+                                  <strong className="text-[#D9A441]">
                                     {selectedLanguage === "english" ? "Shastric Commentary (सायण रहस्य): " : "शास्त्रीय भाष्य / सायण रहस्य: "}
                                   </strong>
                                   <span className="break-words">{m.sayanaBhashya}</span>
@@ -936,21 +1095,21 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
                         {/* Navigation Footer for Single Mantra View */}
                         {!showAllMantrasView && filteredAllMantras.length > 1 && (
-                          <div className="flex items-center justify-between pt-2 border-t border-amber-200/60">
+                          <div className="flex items-center justify-between pt-2 border-t border-[#E5E5E5]">
                             <button
                               disabled={selectedMantraIdx === 0}
                               onClick={() => setSelectedMantraIdx(Math.max(0, selectedMantraIdx - 1))}
-                              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-stone-700 border border-stone-200 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                             >
                               ← पिछली ऋचा
                             </button>
-                            <span className="text-xs font-bold text-amber-900 font-devanagari">
+                            <span className="text-xs font-bold text-[#111111] font-devanagari">
                               ऋचा {selectedMantraIdx + 1} / {filteredAllMantras.length}
                             </span>
                             <button
                               disabled={selectedMantraIdx >= filteredAllMantras.length - 1}
                               onClick={() => setSelectedMantraIdx(Math.min(filteredAllMantras.length - 1, selectedMantraIdx + 1))}
-                              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-800 text-white hover:bg-amber-900 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] border border-[#FFD21F] hover:border-[#D9A441] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                             >
                               अगली ऋचा →
                             </button>
@@ -960,19 +1119,19 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                     )}
                   </div>
                 ) : articleData.primaryMantra ? (
-                  <div className="p-4 sm:p-5 rounded-2xl bg-[#fff8ea] border border-amber-200 text-center space-y-2">
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white border-l-4 border-[#D9A441] border-y border-r border-[#E5E5E5] text-center space-y-2 shadow-xs">
                     <p
-                      className={`font-devanagari font-bold text-amber-950 leading-relaxed whitespace-pre-wrap break-words ${getSanskritFontSize()}`}
+                      className={`font-devanagari font-bold text-[#111111] leading-relaxed whitespace-pre-wrap break-words ${getSanskritFontSize()}`}
                       style={{ overflowWrap: "anywhere" }}
                     >
                       {articleData.primaryMantra.sanskrit}
                     </p>
-                    <p className="text-xs text-stone-500 font-devanagari">
+                    <p className="text-xs text-[#555555] font-devanagari">
                       — {articleData.primaryMantra.ref}
                     </p>
                     {articleData.primaryMantra.translation && (
-                      <p className="text-xs sm:text-sm text-stone-700 font-devanagari pt-2 border-t border-amber-200/60 leading-relaxed break-words">
-                        <strong>भावार्थ:</strong> {articleData.primaryMantra.translation}
+                      <p className="text-xs sm:text-sm text-[#111111] font-devanagari pt-2 border-t border-[#E5E5E5] leading-relaxed break-words">
+                        <strong className="text-[#D9A441]">भावार्थ:</strong> {articleData.primaryMantra.translation}
                       </p>
                     )}
                   </div>
@@ -985,38 +1144,38 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
               <>
                 {/* Section 1: विषय परिचय */}
                 <div id="content-1" className="space-y-3 pt-2">
-                  <h2 className="font-serif text-lg sm:text-xl font-bold text-stone-900 border-b border-amber-100 pb-2 flex items-center justify-between">
+                  <h2 className="font-serif text-lg sm:text-xl font-bold text-[#111111] border-b border-[#E5E5E5] pb-2 flex items-center justify-between">
                     <span>1. विषय परिचय</span>
-                    <span className="text-[11px] font-normal text-stone-400">Introduction</span>
+                    <span className="text-[11px] font-normal text-[#555555]">Introduction</span>
                   </h2>
-                  <p className="text-xs sm:text-sm text-stone-700 font-devanagari leading-relaxed break-words whitespace-pre-wrap">
+                  <p className="text-xs sm:text-sm text-[#111111] font-devanagari leading-[1.75] break-words whitespace-pre-wrap">
                     {articleData.intro}
                   </p>
                 </div>
 
                 {/* Section 2: शब्द का अर्थ एवं व्युत्पत्ति */}
                 <div id="content-2" className="space-y-3">
-                  <h2 className="font-serif text-lg sm:text-xl font-bold text-stone-900 border-b border-amber-100 pb-2 flex items-center justify-between">
+                  <h2 className="font-serif text-lg sm:text-xl font-bold text-[#111111] border-b border-[#E5E5E5] pb-2 flex items-center justify-between">
                     <span>2. शब्द का अर्थ एवं व्युत्पत्ति</span>
-                    <span className="text-[11px] font-normal text-stone-400">Etymology</span>
+                    <span className="text-[11px] font-normal text-[#555555]">Etymology</span>
                   </h2>
-                  <div className="p-3.5 sm:p-4 rounded-xl bg-amber-50/50 border border-amber-100 text-xs sm:text-sm font-devanagari space-y-2.5 text-stone-800">
+                  <div className="p-3.5 sm:p-4 rounded-xl bg-stone-50 border border-[#E5E5E5] text-xs sm:text-sm font-devanagari space-y-2.5 text-[#111111]">
                     {articleData.etymology && articleData.etymology.length > 0 ? (
                       articleData.etymology.map((et, idx) => (
                         <div
                           key={idx}
-                          className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-2.5 pb-2 border-b border-amber-100/60 last:border-0 last:pb-0"
+                          className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-2.5 pb-2 border-b border-[#E5E5E5] last:border-0 last:pb-0"
                         >
-                          <span className="font-bold text-amber-950 bg-amber-100/90 px-2 py-0.5 rounded text-xs shrink-0 self-start border border-amber-200">
+                          <span className="font-bold text-[#111111] bg-[#FFD21F] px-2 py-0.5 rounded text-xs shrink-0 self-start border border-[#FFD21F]">
                             {et.term}
                           </span>
-                          <span className="text-stone-700 leading-relaxed break-words">
+                          <span className="text-[#111111] leading-[1.75] break-words">
                             {et.meaning}
                           </span>
                         </div>
                       ))
                     ) : (
-                      <p className="break-words text-stone-600">
+                      <p className="break-words text-[#555555]">
                         वैदिक संस्कृत व्याकरण (पाणिनीय अष्टाध्यायी) एवं यास्क मुनि कृत निरुक्त के अनुसार विशिष्ट नामकरण एवं शास्त्रीय व्युत्पत्ति।
                       </p>
                     )}
@@ -1025,64 +1184,71 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
                 {/* Section 3: शास्त्रीय आधार */}
                 <div id="content-3" className="space-y-3">
-                  <h2 className="font-serif text-lg sm:text-xl font-bold text-stone-900 border-b border-amber-100 pb-2 flex items-center justify-between">
+                  <h2 className="font-serif text-lg sm:text-xl font-bold text-[#111111] border-b border-[#E5E5E5] pb-2 flex items-center justify-between">
                     <span>3. शास्त्रीय आधार</span>
-                    <span className="text-[11px] font-normal text-stone-400">Shastric Basis</span>
+                    <span className="text-[11px] font-normal text-[#555555]">Shastric Basis</span>
                   </h2>
-                  <p className="text-xs sm:text-sm text-stone-700 font-devanagari leading-relaxed break-words">
+                  <p className="text-xs sm:text-sm text-[#111111] font-devanagari leading-[1.75] break-words">
                     {articleData.shastricBase || "प्रामाणिक वैदिक संहिताओं, ब्राह्मण ग्रंथों और उपनिषदों में विशद व्याख्या।"}
                   </p>
                 </div>
 
-                {/* Section 4: मूल स्रोत (Responsive Metadata Table) */}
+                {/* Section 4: मूल स्रोत (Source & Bibliographic Metadata Card) */}
                 <div id="content-4" className="space-y-3">
-                  <h2 className="font-serif text-lg sm:text-xl font-bold text-stone-900 border-b border-amber-100 pb-2 flex items-center justify-between">
-                    <span>4. मूल स्रोत (Source Metadata)</span>
-                    <span className="text-[11px] font-normal text-stone-400">Canonical Sources</span>
+                  <h2 className="font-serif text-lg sm:text-xl font-bold text-[#111111] border-b border-[#E5E5E5] pb-2 flex items-center justify-between">
+                    <span>4. मूल स्रोत एवं संदर्भ (Source & Bibliographic Metadata)</span>
+                    <span className="text-[11px] font-normal text-[#888888]">Canonical Sources</span>
                   </h2>
-                  <div className="border border-stone-200 rounded-xl overflow-x-auto shadow-2xs">
-                    <table className="w-full text-xs font-devanagari divide-y divide-stone-200 min-w-[280px]">
-                      <tbody className="divide-y divide-stone-100">
-                        <tr className="bg-stone-50">
-                          <td className="px-3 py-2 font-bold text-stone-700 w-1/3 shrink-0">ग्रंथ</td>
-                          <td className="px-3 py-2 text-stone-900 font-semibold break-words">
-                            {articleData.sourceMeta?.grantha || "वैदिक संहिता"}
+                  <div className="border border-[#E5E5E5] rounded-xl overflow-x-auto shadow-xs bg-white">
+                    <table className="w-full text-xs font-devanagari divide-y divide-[#E5E5E5] min-w-[280px]">
+                      <tbody className="divide-y divide-[#E5E5E5]">
+                        <tr className="bg-[#F9F9F9]">
+                          <td className="px-3.5 py-2.5 font-bold text-[#555555] w-1/3 shrink-0">मूल ग्रंथ / शीर्षक</td>
+                          <td className="px-3.5 py-2.5 text-[#111111] font-bold break-words">
+                            {articleData.sourceMeta?.grantha || articleData.title || "वैदिक संहिता"}
                           </td>
                         </tr>
                         <tr>
-                          <td className="px-3 py-2 font-bold text-stone-700">शाखा</td>
-                          <td className="px-3 py-2 text-stone-800 break-words">
-                            {articleData.sourceMeta?.shakha || "प्रामाणिक शाखा"}
+                          <td className="px-3.5 py-2.5 font-bold text-[#555555]">शाखा / संस्करण</td>
+                          <td className="px-3.5 py-2.5 text-[#111111] break-words">
+                            {articleData.sourceMeta?.shakha || "प्रामाणिक वैदिक शाखा परंपरा"}
                           </td>
                         </tr>
-                        <tr className="bg-stone-50">
-                          <td className="px-3 py-2 font-bold text-stone-700">काण्ड / मण्डल</td>
-                          <td className="px-3 py-2 text-stone-800 break-words">
+                        <tr className="bg-[#F9F9F9]">
+                          <td className="px-3.5 py-2.5 font-bold text-[#555555]">काण्ड / मण्डल / अध्याय</td>
+                          <td className="px-3.5 py-2.5 text-[#111111] break-words">
                             {articleData.sourceMeta?.kanda || "काण्ड / मण्डल संदर्भ"}
                           </td>
                         </tr>
                         {articleData.sourceMeta?.anuvaka && (
                           <tr>
-                            <td className="px-3 py-2 font-bold text-stone-700">अनुवाक / सूक्त</td>
-                            <td className="px-3 py-2 text-stone-800 break-words">
+                            <td className="px-3.5 py-2.5 font-bold text-[#555555]">अनुवाक / सूक्त / मंत्र संख्या</td>
+                            <td className="px-3.5 py-2.5 text-[#111111] break-words">
                               {articleData.sourceMeta.anuvaka}
                             </td>
                           </tr>
                         )}
-                        <tr className="bg-stone-50">
-                          <td className="px-3 py-2 font-bold text-stone-700">ऋषि व देवता</td>
-                          <td className="px-3 py-2 text-stone-800 break-words">
+                        <tr className="bg-[#F9F9F9]">
+                          <td className="px-3.5 py-2.5 font-bold text-[#555555]">ऋषि व देवता</td>
+                          <td className="px-3.5 py-2.5 text-[#111111] break-words">
                             {articleData.sourceMeta?.rishi || "ऋषि परंपरा"} • {articleData.sourceMeta?.devata || "देवता"}
                           </td>
                         </tr>
                         {articleData.sourceMeta?.chandas && (
                           <tr>
-                            <td className="px-3 py-2 font-bold text-stone-700">वैदिक छंद</td>
-                            <td className="px-3 py-2 text-amber-900 font-semibold break-words">
+                            <td className="px-3.5 py-2.5 font-bold text-[#555555]">वैदिक छंद विधान</td>
+                            <td className="px-3.5 py-2.5 text-[#D9A441] font-bold break-words">
                               {articleData.sourceMeta.chandas}
                             </td>
                           </tr>
                         )}
+                        <tr className="bg-[#F9F9F9]">
+                          <td className="px-3.5 py-2.5 font-bold text-[#555555]">समीक्षक एवं संपादन</td>
+                          <td className="px-3.5 py-2.5 text-[#111111] font-semibold break-words flex items-center gap-1.5">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>Veda Library Editorial Board (विद्वत परिषद द्वारा सत्यापित)</span>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -1091,11 +1257,11 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                 {/* Researched Children / Sub-Texts Cards */}
                 {foundNode?.children && foundNode.children.length > 0 && (
                   <div id="content-subtexts" className="space-y-4 pt-2">
-                    <div className="flex items-center justify-between flex-wrap gap-2 border-b border-amber-100 pb-2">
-                      <h2 className="font-serif text-lg sm:text-xl font-bold text-stone-900">
+                    <div className="flex items-center justify-between flex-wrap gap-2 border-b border-[#E5E5E5] pb-2">
+                      <h2 className="font-serif text-lg sm:text-xl font-bold text-[#111111]">
                         संबंधित उप-ग्रंथ, शाखाएँ एवं प्रभाग ({foundNode.children.length})
                       </h2>
-                      <span className="text-xs text-amber-800 font-semibold bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+                      <span className="text-xs text-[#111111] font-semibold bg-stone-100 px-2.5 py-1 rounded-full border border-[#E5E5E5]">
                         Researched Cards
                       </span>
                     </div>
@@ -1104,29 +1270,29 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
                         <div
                           key={child.id || cIdx}
                           onClick={() => navigate(`/library/${category}/${subject}/${child.slug || child.id}`)}
-                          className="group p-3.5 sm:p-4 rounded-2xl bg-white border border-stone-200 hover:border-amber-400 hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-2.5"
+                          className="group p-3.5 sm:p-4 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-2.5"
                         >
                           <div>
                             <div className="flex items-center justify-between gap-2">
-                              <h3 className="font-serif font-bold text-stone-900 group-hover:text-amber-800 transition-colors text-xs sm:text-sm">
+                              <h3 className="font-serif font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors text-xs sm:text-sm">
                                 {child.name}
                               </h3>
                               {child.stats && (
-                                <span className="text-[10px] font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 shrink-0">
+                                <span className="text-[10px] font-semibold text-[#111111] bg-stone-50 px-2 py-0.5 rounded border border-[#E5E5E5] shrink-0">
                                   {child.stats}
                                 </span>
                               )}
                             </div>
                             {child.enName && (
-                              <p className="text-[11px] text-stone-400 font-medium mt-0.5">
+                              <p className="text-[11px] text-[#555555] font-medium mt-0.5">
                                 {child.enName}
                               </p>
                             )}
-                            <p className="text-xs text-stone-600 font-devanagari mt-1.5 line-clamp-2 leading-relaxed">
+                            <p className="text-xs text-[#555555] font-devanagari mt-1.5 line-clamp-2 leading-[1.75]">
                               {child.desc}
                             </p>
                           </div>
-                          <div className="pt-2 border-t border-stone-100 flex items-center justify-between text-xs font-bold text-amber-800 group-hover:text-amber-950">
+                          <div className="pt-2 border-t border-[#E5E5E5] flex items-center justify-between text-xs font-bold text-[#111111] group-hover:text-[#D9A441]">
                             <span>अध्ययन करें (Explore)</span>
                             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                           </div>
@@ -1808,11 +1974,11 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
       </div>
 
       {/* Floating Bottom Quick Bar on Mobile (lg:hidden) */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amber-200/90 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] z-40 lg:hidden px-3 py-2 flex items-center justify-around">
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-amber-200/90 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] z-40 lg:hidden px-3 py-2 flex items-center justify-around gap-1">
         {hasAllMantras && (
           <button
             onClick={() => setViewMode("hymns")}
-            className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+            className={`min-h-[44px] flex flex-col items-center justify-center gap-0.5 px-3 py-1 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
               viewMode === "hymns" ? "text-amber-900 bg-amber-100" : "text-stone-600 hover:text-amber-900"
             }`}
           >
@@ -1826,7 +1992,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
             setViewMode("analysis");
             scrollToSection("content-1");
           }}
-          className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+          className={`min-h-[44px] flex flex-col items-center justify-center gap-0.5 px-3 py-1 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
             viewMode === "analysis" ? "text-amber-900 bg-amber-100" : "text-stone-600 hover:text-amber-900"
           }`}
         >
@@ -1836,7 +2002,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
 
         <button
           onClick={() => setIsTocDrawerOpen(true)}
-          className="flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-xs font-bold text-stone-600 hover:text-amber-900 transition-colors cursor-pointer"
+          className="min-h-[44px] flex flex-col items-center justify-center gap-0.5 px-3 py-1 rounded-xl text-xs font-bold text-stone-600 hover:text-amber-900 transition-colors cursor-pointer"
         >
           <Menu className="w-4 h-4" />
           <span className="text-[10px]">अनुक्रमणिका</span>
@@ -1845,7 +2011,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
         {showScrollTop && (
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-xs font-bold text-amber-800 hover:text-amber-950 transition-colors cursor-pointer"
+            className="min-h-[44px] flex flex-col items-center justify-center gap-0.5 px-3 py-1 rounded-xl text-xs font-bold text-amber-800 hover:text-amber-950 transition-colors cursor-pointer"
           >
             <ArrowUp className="w-4 h-4" />
             <span className="text-[10px]">शीर्ष (Top)</span>

@@ -507,6 +507,18 @@ export const CATEGORIES_DATA = {
   }
 };
 
+// Canonical & Document Slug Aliases for Category Resolution (Document Section 2 & 4)
+CATEGORIES_DATA.jyotish = CATEGORIES_DATA.jyotisha;
+CATEGORIES_DATA.mantra = CATEGORIES_DATA["mantra-stotra"];
+CATEGORIES_DATA.stotra = CATEGORIES_DATA["mantra-stotra"];
+CATEGORIES_DATA.stotram = CATEGORIES_DATA["mantra-stotra"];
+CATEGORIES_DATA.mantras = CATEGORIES_DATA["mantra-stotra"];
+CATEGORIES_DATA.puranas = CATEGORIES_DATA.purana;
+CATEGORIES_DATA.upanishads = CATEGORIES_DATA.upanishad;
+CATEGORIES_DATA.darshan = CATEGORIES_DATA.darshana;
+CATEGORIES_DATA.vedangas = CATEGORIES_DATA.vedanga;
+CATEGORIES_DATA.yagya = CATEGORIES_DATA["yagya-sanskar"];
+
 // Subjects Data for Page 3: /library/:category/:subject
 export const SUBJECTS_DATA = {
   "veda/rigveda": {

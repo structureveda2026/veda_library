@@ -5,7 +5,7 @@ import { ALL_MASTER_TAXONOMY_CARDS } from "../../data/libraryHomeData.js";
 import { SACRED_ICON_MAP } from "../common/SacredIcons.jsx";
 import { useLanguage } from "../../context/LanguageContext.jsx";
 
-// 6 Core Hub Bento Cards (Bhaktilok style: Clean white/glass, subtle golden border, top glowing accent border)
+// 6 Core Hub Bento Cards (Master Design System: Crisp White, clean #E5E5E5 border, #D9A441 top accent, #FFD21F badges)
 export const CORE_HUB_BENTO_CARDS = [
   {
     id: "veda",
@@ -21,12 +21,8 @@ export const CORE_HUB_BENTO_CARDS = [
     enDesc: "The primeval shruti corpus of Samhitas, Brahmanas, Aranyakas, and canonical Shakhas.",
     keyTags: ["ऋग्वेद", "यजुर्वेद", "सामवेद", "अथर्ववेद"],
     enKeyTags: ["Rigveda", "Yajurveda", "Samaveda", "Atharvaveda"],
-    topBorder: "border-t-amber-500",
-    badgeBg: "bg-amber-100 text-amber-800 border-amber-300",
-    iconColor: "text-amber-700",
+    topBorder: "border-t-[#D9A441]",
     iconKey: "veda",
-    glowColor: "hover:border-amber-400 hover:shadow-amber-500/10",
-    tagBg: "bg-amber-50 text-amber-900 border-amber-200/80"
   },
   {
     id: "mantra-stotra",
@@ -43,12 +39,8 @@ export const CORE_HUB_BENTO_CARDS = [
     enDesc: "Vedic chants, peace-invoking Suktas, sacred Stotras, protective Kavachas, and complete Sahasranamas.",
     keyTags: ["महामृत्युंजय", "गायत्री", "सूक्त", "सहस्रनाम"],
     enKeyTags: ["Mahamrityunjaya", "Gayatri", "Sukta", "Sahasranama"],
-    topBorder: "border-t-purple-600",
-    badgeBg: "bg-purple-100 text-purple-800 border-purple-300",
-    iconColor: "text-purple-700",
+    topBorder: "border-t-[#D9A441]",
     iconKey: "mantra",
-    glowColor: "hover:border-purple-400 hover:shadow-purple-500/10",
-    tagBg: "bg-purple-50 text-purple-900 border-purple-200/80"
   },
   {
     id: "upanishad",
@@ -65,12 +57,8 @@ export const CORE_HUB_BENTO_CARDS = [
     enDesc: "Metaphysical enquiry into Brahman and Atman across 108 Upanishads and the 6 orthodox schools.",
     keyTags: ["१०८ उपनिषद्", "षड्दर्शन", "वेदांत", "सांख्य"],
     enKeyTags: ["108 Upanishads", "6 Darshanas", "Vedanta", "Samkhya"],
-    topBorder: "border-t-sky-600",
-    badgeBg: "bg-sky-100 text-sky-800 border-sky-300",
-    iconColor: "text-sky-700",
+    topBorder: "border-t-[#D9A441]",
     iconKey: "upanishad",
-    glowColor: "hover:border-sky-400 hover:shadow-sky-500/10",
-    tagBg: "bg-sky-50 text-sky-900 border-sky-200/80"
   },
   {
     id: "purana-itihasa",
@@ -87,12 +75,8 @@ export const CORE_HUB_BENTO_CARDS = [
     enDesc: "The monumental epics and 18 Mahapuranas preserving eternal genealogies, dharma, and wisdom.",
     keyTags: ["१८ महापुराण", "रामायण", "महाभारत", "श्रीमद्भागवत"],
     enKeyTags: ["18 Puranas", "Ramayana", "Mahabharata", "Bhagavata"],
-    topBorder: "border-t-indigo-600",
-    badgeBg: "bg-indigo-100 text-indigo-800 border-indigo-300",
-    iconColor: "text-indigo-700",
+    topBorder: "border-t-[#D9A441]",
     iconKey: "purana-itihasa",
-    glowColor: "hover:border-indigo-400 hover:shadow-indigo-500/10",
-    tagBg: "bg-indigo-50 text-indigo-900 border-indigo-200/80"
   },
   {
     id: "research",
@@ -109,12 +93,8 @@ export const CORE_HUB_BENTO_CARDS = [
     enDesc: "Critical editions, authentic commentaries, manuscript studies, and research on classical Indian thought.",
     keyTags: ["शोध", "व्याख्या", "पांडुलिपि", "जीवन दर्शन"],
     enKeyTags: ["Research", "Commentary", "Manuscripts", "Philosophy"],
-    topBorder: "border-t-emerald-600",
-    badgeBg: "bg-emerald-100 text-emerald-800 border-emerald-300",
-    iconColor: "text-emerald-700",
+    topBorder: "border-t-[#D9A441]",
     iconKey: "research",
-    glowColor: "hover:border-emerald-400 hover:shadow-emerald-500/10",
-    tagBg: "bg-emerald-50 text-emerald-900 border-emerald-200/80"
   },
   {
     id: "puja",
@@ -131,12 +111,8 @@ export const CORE_HUB_BENTO_CARDS = [
     enDesc: "The sacred domestic and solemn rites, 16 Samskaras, fire altars, and authentic liturgical worship.",
     keyTags: ["१६ संस्कार", "यज्ञ", "षोडशोपचार", "दैनिक उपासना"],
     enKeyTags: ["16 Samskaras", "Yagya", "Puja Vidhi", "Daily Worship"],
-    topBorder: "border-t-rose-600",
-    badgeBg: "bg-rose-100 text-rose-800 border-rose-300",
-    iconColor: "text-rose-700",
+    topBorder: "border-t-[#D9A441]",
     iconKey: "puja",
-    glowColor: "hover:border-rose-400 hover:shadow-rose-500/10",
-    tagBg: "bg-rose-50 text-rose-900 border-rose-200/80"
   }
 ];
 
@@ -158,21 +134,21 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
   };
 
   return (
-    <section id="categories" className="py-12 sm:py-16 bg-[#fffaf0] border-b border-amber-200/60 relative">
+    <section id="categories" className="py-8 sm:py-10 bg-white border-b border-[#E5E5E5] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100/80 border border-amber-300/80 text-amber-900 mb-2">
-              <span className="w-2 h-2 rounded-full bg-amber-600 animate-pulse" />
-              <span className="text-[11px] font-bold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E5E5E5] text-[#555555] mb-2 shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-[#FFD21F]" />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111]">
                 {isHindi ? "ज्ञान परंपरा एवं वर्गीकरण" : "DEVOTIONAL & KNOWLEDGE HUB"}
               </span>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-stone-900 tracking-tight">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111111] tracking-tight">
               {isHindi ? "पुस्तकालय का अन्वेषण करें" : "Explore the Sacred Library"}
             </h2>
-            <p className={`text-xs sm:text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+            <p className={`text-xs sm:text-sm text-[#555555] mt-1 max-w-2xl leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
               {isHindi
                 ? "छह प्रमुख ज्ञान केंद्र — अपनी रुचि के अनुसार किसी भी ज्ञान परंपरा से शुरुआत करें और प्रामाणिक ग्रंथों का अध्ययन करें।"
                 : "Six Core Knowledge Hubs — Discover canonical Vedic traditions, sacred chants, Upanishads, and authentic rituals."}
@@ -184,7 +160,7 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
             <button
               type="button"
               onClick={() => setShowAllTaxonomy((prev) => !prev)}
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white hover:bg-amber-50 text-amber-950 border border-amber-300 shadow-xs hover:shadow-md transition-all duration-300 cursor-pointer group"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white hover:bg-white text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs transition-all duration-300 cursor-pointer group"
             >
               <span>
                 {showAllTaxonomy
@@ -196,15 +172,15 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                   : "View All 18 Categories"}
               </span>
               {showAllTaxonomy ? (
-                <ChevronUp className="w-4 h-4 text-amber-900 group-hover:-translate-y-0.5 transition-transform" />
+                <ChevronUp className="w-4 h-4 text-[#111111] group-hover:-translate-y-0.5 transition-transform" />
               ) : (
-                <ChevronDown className="w-4 h-4 text-amber-900 group-hover:translate-y-0.5 transition-transform" />
+                <ChevronDown className="w-4 h-4 text-[#111111] group-hover:translate-y-0.5 transition-transform" />
               )}
             </button>
           </div>
         </div>
 
-        {/* 6 Core Hub Bento Cards (Bhaktilok style) */}
+        {/* 6 Core Hub Bento Cards (Crisp White #FFFFFF, 1px border #E5E5E5, top accent #D9A441, badges #FFD21F) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {CORE_HUB_BENTO_CARDS.map((card) => {
             const IconComponent = SACRED_ICON_MAP[card.iconKey] || BookOpen;
@@ -219,23 +195,16 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
               <div
                 key={card.id}
                 onClick={() => handleCardClick(card)}
-                className={`group relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-white border border-amber-200/60 shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 cursor-pointer overflow-hidden border-t-4 ${card.topBorder} ${card.glowColor}`}
+                className={`group relative flex flex-col justify-between p-6 sm:p-7 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden border-t-4 ${card.topBorder}`}
               >
-                {/* Subtle top-right ambient background glow */}
-                <div className="absolute top-0 right-0 w-36 h-36 bg-amber-100/30 rounded-bl-full pointer-events-none transition-opacity duration-300 opacity-60 group-hover:opacity-100" />
-
                 <div>
                   {/* Card Header: Icon Badge & Pill Counter */}
                   <div className="flex items-start justify-between gap-3 mb-4 relative z-10">
-                    <div
-                      className={`w-13 h-13 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-2xs border ${card.badgeBg}`}
-                    >
-                      <IconComponent className={`w-7 h-7 sm:w-8 sm:h-8 ${card.iconColor}`} />
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105 border border-[#E5E5E5] bg-white text-[#111111]">
+                      <IconComponent className="w-6 h-6 text-[#111111]" />
                     </div>
 
-                    <span
-                      className={`text-[11px] font-bold px-3 py-1 rounded-full border shadow-2xs ${card.badgeBg}`}
-                    >
+                    <span className="text-[11px] font-bold px-3 py-1 rounded-full border border-[#FFD21F] bg-[#FFD21F] text-[#111111] shadow-xs">
                       {pillText}
                     </span>
                   </div>
@@ -243,24 +212,24 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                   {/* Title & English Subtitle */}
                   <div className="relative z-10">
                     <h3
-                      className={`text-xl sm:text-2xl font-bold text-stone-900 group-hover:text-amber-800 transition-colors leading-snug ${
+                      className={`text-xl sm:text-2xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug ${
                         isHindi ? "font-devanagari" : "font-serif"
                       }`}
                     >
                       {title}
                     </h3>
-                    <p className="text-xs font-serif font-bold text-stone-500 tracking-wide mt-0.5">
+                    <p className="text-xs font-serif font-semibold text-[#555555] tracking-wide mt-0.5">
                       {subTitle}
                     </p>
 
                     {/* Brief sub-tradition badge */}
-                    <div className="mt-2.5 inline-block px-2.5 py-1 rounded-lg bg-amber-50/80 border border-amber-200/60 text-[11px] font-semibold text-amber-900 font-devanagari">
+                    <div className="mt-2.5 inline-block px-2.5 py-1 rounded-lg bg-white border border-[#E5E5E5] text-[11px] font-semibold text-[#111111] font-devanagari">
                       {subtitleList}
                     </div>
 
                     {/* Description */}
                     <p
-                      className={`mt-3 text-xs sm:text-sm text-stone-600 leading-relaxed line-clamp-2 ${
+                      className={`mt-3 text-xs sm:text-sm text-[#555555] leading-relaxed line-clamp-2 ${
                         isHindi ? "font-devanagari" : ""
                       }`}
                     >
@@ -272,7 +241,7 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                       {tags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-stone-50 text-stone-700 border border-stone-200/80 group-hover:bg-amber-50 group-hover:text-amber-900 group-hover:border-amber-200 transition-colors font-devanagari"
+                          className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white text-[#555555] border border-[#E5E5E5] group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors font-devanagari"
                         >
                           {tag}
                         </span>
@@ -282,12 +251,12 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                 </div>
 
                 {/* Bottom Action Row */}
-                <div className="mt-6 pt-4 border-t border-amber-100 flex items-center justify-between relative z-10">
-                  <span className="text-xs font-bold text-amber-800 group-hover:text-amber-950 transition-colors flex items-center gap-1 font-devanagari">
+                <div className="mt-6 pt-4 border-t border-[#E5E5E5] flex items-center justify-between relative z-10">
+                  <span className="text-xs font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors flex items-center gap-1 font-devanagari">
                     {isHindi ? "अन्वेषण करें" : "Explore Category"}
                   </span>
 
-                  <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200 text-amber-800 flex items-center justify-center transition-all duration-300 group-hover:bg-amber-600 group-hover:text-white group-hover:border-amber-600 group-hover:translate-x-1 shadow-2xs">
+                  <div className="w-8 h-8 rounded-full bg-white border border-[#E5E5E5] text-[#111111] flex items-center justify-center transition-all duration-300 group-hover:bg-[#FFD21F] group-hover:border-[#FFD21F] group-hover:text-[#111111] group-hover:translate-x-1 shadow-xs">
                     <ArrowRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
@@ -298,17 +267,17 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
 
         {/* Expandable Section: View All 18 Master Taxonomy Categories */}
         {showAllTaxonomy && (
-          <div className="mt-10 sm:mt-12 pt-8 sm:pt-10 border-t border-amber-200/70 animate-fadeIn">
+          <div className="mt-10 sm:mt-12 pt-8 sm:pt-10 border-t border-[#E5E5E5] animate-fadeIn">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#555555]">
                   {isHindi ? "सम्पूर्ण ज्ञान वितान • १८ श्रेणियाँ" : "COMPLETE MASTER TAXONOMY"}
                 </span>
-                <h3 className="font-serif text-xl sm:text-2xl font-bold text-stone-900 mt-0.5">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#111111] mt-0.5">
                   {isHindi ? "समस्त १८ वैदिक ज्ञान श्रेणियाँ" : "All 18 Vedic Knowledge Categories"}
                 </h3>
               </div>
-              <span className="text-xs text-stone-500 font-medium">
+              <span className="text-xs text-[#555555] font-medium">
                 {isHindi ? "विस्तृत वर्गीकरण एवं मूल ग्रंथ" : "Comprehensive Archive Directory"}
               </span>
             </div>
@@ -330,27 +299,25 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                         navigate(`/library/${card.id}`);
                       }
                     }}
-                    className="group relative flex flex-col items-center justify-between text-center p-3.5 sm:p-4 rounded-xl bg-white border border-amber-200/60 hover:border-amber-400 shadow-2xs hover:shadow-md transition-all duration-300 hover:-translate-y-1 cursor-pointer w-full"
+                    className="group relative flex flex-col items-center justify-between text-center p-3.5 sm:p-4 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm transition-all duration-300 hover:-translate-y-0.5 cursor-pointer w-full"
                   >
-                    <div
-                      className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-2.5 transition-transform duration-300 group-hover:scale-105 border ${card.badgeBg}`}
-                    >
-                      <IconComponent className={`w-5 h-5 sm:w-6 sm:h-6 ${card.iconColor}`} />
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center mb-2.5 transition-transform duration-300 group-hover:scale-105 border border-[#E5E5E5] bg-white text-[#111111]">
+                      <IconComponent className="w-5 h-5 text-[#111111]" />
                     </div>
 
                     <h4
-                      className={`text-xs sm:text-sm font-bold text-stone-900 group-hover:text-amber-800 transition-colors leading-tight truncate w-full ${
+                      className={`text-xs sm:text-sm font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-tight truncate w-full ${
                         isHindi ? "font-devanagari" : "font-serif"
                       }`}
                     >
                       {title}
                     </h4>
 
-                    <span className="text-[10px] text-stone-500 font-medium mt-0.5 leading-snug truncate w-full">
+                    <span className="text-[10px] text-[#555555] font-medium mt-0.5 leading-snug truncate w-full">
                       {subtitle}
                     </span>
 
-                    <span className="mt-2 text-[10px] font-bold text-amber-700 group-hover:text-amber-900 flex items-center gap-0.5 transition-colors">
+                    <span className="mt-2 text-[10px] font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center gap-0.5 transition-colors">
                       {isHindi ? "देखें" : "View"} <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                     </span>
                   </button>
@@ -363,7 +330,7 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
               <button
                 type="button"
                 onClick={() => setShowAllTaxonomy(false)}
-                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-amber-100/70 hover:bg-amber-200 text-amber-950 border border-amber-300 text-xs font-semibold cursor-pointer transition-all"
+                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white hover:bg-white text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] text-xs font-semibold cursor-pointer transition-all shadow-xs"
               >
                 <span>{isHindi ? "संक्षिप्त करें" : "Show Less"}</span>
                 <ChevronUp className="w-3.5 h-3.5" />
@@ -377,7 +344,7 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
           <button
             type="button"
             onClick={onNavigateKnowledge}
-            className="inline-flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-white border border-amber-300 hover:bg-amber-50 hover:border-amber-500 text-amber-900 font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition-all cursor-pointer group"
+            className="inline-flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-xs hover:shadow-sm transition-all cursor-pointer group"
           >
             <span>{isHindi ? "सम्पूर्ण ज्ञान आर्काइव का अन्वेषण करें" : "Explore Complete Knowledge Archive"}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

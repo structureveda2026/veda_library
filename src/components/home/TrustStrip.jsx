@@ -1,43 +1,43 @@
 import React from "react";
-import { BookOpen, Sparkles, Languages, HeartHandshake } from "lucide-react";
+import { BookOpen, Sparkles, Languages, HeartHandshake, ShieldCheck, Flame } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext.jsx";
 
 const PILLARS = [
   {
     icon: BookOpen,
+    statHi: "४ वेद • १०८ उपनिषद्",
+    statEn: "4 Vedas • 108 Upanishads",
     title: "प्रामाणिक मूल पाठ",
-    enTitle: "Canonical Texts",
-    subtitle: "वेद संहिता, उपनिषद एवं आचार्यों का भाष्य",
-    enSubtitle: "Authentic scriptures with classical commentary",
-    badgeColor: "bg-orange-50 text-orange-700 border-orange-200",
-    accent: "#EA580C",
+    enTitle: "Canonical Scriptures",
+    subtitle: "संहिता, ब्राह्मण, आरण्यक एवं आचार्यों के प्रामाणिक भाष्य",
+    enSubtitle: "Samhitas, Brahmanas, Aranyakas with classical commentaries",
   },
   {
-    icon: Sparkles,
+    icon: Flame,
+    statHi: "१०,५५२+ सस्वर मन्त्र",
+    statEn: "10,552+ Accented Verses",
     title: "शुद्ध देवनागरी पाठ",
-    enTitle: "Pure Devanagari",
-    subtitle: "त्रुटिरहित सस्वर वैदिक पाठ व छंद",
-    enSubtitle: "Flawless accented Vedic verses and meters",
-    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    accent: "#059669",
+    enTitle: "Pure Devanagari Texts",
+    subtitle: "त्रुटिरहित सस्वर वैदिक पाठ, पदच्छेद, ऋषि, छंद व देवता",
+    enSubtitle: "Flawless accented Vedic verses, Rishi, Chhanda & Devata",
   },
   {
     icon: Languages,
-    title: "त्रिभाषी मानक",
+    statHi: "३ भाषा मानक",
+    statEn: "Trilingual Standard",
+    title: "त्रिभाषी अन्वय व अर्थ",
     enTitle: "3-Language Standard",
-    subtitle: "हिंदी, English एवं सरल हिंग्लिश भावार्थ",
-    enSubtitle: "Hindi, English and simple Hinglish translations",
-    badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
-    accent: "#2563EB",
+    subtitle: "विशुद्ध हिंदी, English एवं सरल हिंग्लिश में भावार्थ",
+    enSubtitle: "Original Sanskrit, Hindi, English and accessible Hinglish",
   },
   {
-    icon: HeartHandshake,
-    title: "100% निःशुल्क व सुगम",
-    enTitle: "Open Knowledge",
-    subtitle: "समस्त सनातन साधकों व पाठकों हेतु सुलभ",
-    enSubtitle: "Accessible to all seekers and scholars worldwide",
-    badgeColor: "bg-purple-50 text-purple-700 border-purple-200",
-    accent: "#7C3AED",
+    icon: ShieldCheck,
+    statHi: "१००% निःशुल्क व सुगम",
+    statEn: "100% Free & Open Access",
+    title: "मुक्त सनातन ज्ञान",
+    enTitle: "Open Knowledge Corpus",
+    subtitle: "समस्त साधकों, छात्रों एवं शोधार्थियों हेतु सार्वजनिक",
+    enSubtitle: "Preserved and accessible to seekers and scholars worldwide",
   },
 ];
 
@@ -45,27 +45,27 @@ export default function TrustStrip() {
   const { isHindi } = useLanguage();
 
   return (
-    <div className="bg-[#FAF6EF]/90 border-b border-amber-200/60 py-6 sm:py-8 shadow-xs">
+    <section className="bg-white border-b border-[#E5E5E5] shadow-xs relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#E5E5E5]">
           {PILLARS.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={idx}
-                className="group flex items-center gap-3.5 p-4 rounded-2xl bg-white/95 border border-amber-200/80 hover:border-amber-400/90 shadow-2xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                className="group flex items-start gap-3.5 p-4 sm:p-5 transition-colors duration-200 hover:bg-[#FFD21F]/10"
               >
-                <div
-                  className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-xs"
-                  style={{ backgroundColor: `${item.accent}14`, color: item.accent }}
-                >
-                  <Icon className="w-5 h-5" />
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 shadow-xs border border-[#E5E5E5] bg-white group-hover:border-[#FFD21F]">
+                  <Icon className="w-5 h-5 text-[#D9A441]" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="text-sm font-bold text-[#1E293B] leading-snug group-hover:text-[#78350F] transition-colors">
+                  <div className="text-[10px] font-bold text-[#D9A441] uppercase tracking-wider mb-0.5">
+                    {isHindi ? item.statHi : item.statEn}
+                  </div>
+                  <h4 className="text-sm font-bold text-[#111111] leading-snug">
                     {isHindi ? item.title : item.enTitle}
                   </h4>
-                  <p className="text-xs text-stone-600 font-medium leading-tight mt-0.5 truncate">
+                  <p className="text-xs text-[#555555] font-normal leading-relaxed mt-0.5 line-clamp-2">
                     {isHindi ? item.subtitle : item.enSubtitle}
                   </p>
                 </div>
@@ -74,6 +74,6 @@ export default function TrustStrip() {
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

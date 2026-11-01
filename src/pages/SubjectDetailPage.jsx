@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import SEO from "../components/common/SEO.jsx";
 import {
   ArrowRight,
   ArrowLeft,
@@ -18,9 +19,10 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Feather,
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
-import MantraModal from "../components/mantra/MantraModal.jsx";
+import ScriptureReaderView from "../components/common/ScriptureReaderView.jsx";
 import { getMantraById, ALL_VEDIC_MANTRAS } from "../data/vedicMantrasData.js";
 import {
   SUBJECTS_DATA,
@@ -955,330 +957,88 @@ function collectMantraIdsFromNode(node, idSet) {
   }
 }
 
-function ScriptureReaderView({ scripture }) {
-  const { isHindi } = useLanguage();
-  const [selectedChapterId, setSelectedChapterId] = useState(
-    scripture.chapters[0]?.id || "",
-  );
-  const [pageSize, setPageSize] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [jumpTo, setJumpTo] = useState("");
-  const [searchText, setSearchText] = useState("");
+/**
+ * Canonical 5-Pillar Metadata Resolver
+ * Extracts or synthesizes the 5 foundational Vedic pillars:
+ * 1. Veda (वेद / श्रुति परंपरा)
+ * 2. Shakha (शाखा / Recension)
+ * 3. Rishi (ऋषि / Seer-Sage)
+ * 4. Chhandas (छन्द / Sacred Metre)
+ * 5. Devata (देवता / Presiding Deity)
+ */
+function resolve5Pillars(subject = "", category = "", subjectData = {}) {
+  const s = (subject || "").toLowerCase();
+  const q = subjectData?.quickInfo || {};
 
-  const selectedChapter =
-    scripture.chapters.find((chapter) => chapter.id === selectedChapterId) ||
-    scripture.chapters[0];
+  let veda = q.type || q.veda || "वैदिक श्रुति परंपरा";
+  let shakha = q.shakha || "प्रामाणिक शाखा";
+  let rishi = q.chiefRishis || "परंपरागत वैदिक महर्षि";
+  let chhandas = q.chhandas || "गायत्री, त्रिष्टुप्, अनुष्टुप्";
+  let devata = q.devata || "अग्नि, इन्द्र, सविता";
 
-  useEffect(() => {
-    if (scripture?.chapters?.length > 0) {
-      if (!scripture.chapters.some((c) => c.id === selectedChapterId)) {
-        setSelectedChapterId(scripture.chapters[0].id);
-      }
-    }
-  }, [scripture]);
+  if (s.includes("rigveda")) {
+    veda = "ऋग्वेद संहिता (प्रधान श्रुति)";
+    shakha = "शाकल शाखा (२१ शाखाओं में मुख्य पाठ)";
+    rishi = "मधुच्छन्दा, विश्वामित्र, वसिष्ठ, अत्रि, भारद्वाज";
+    chhandas = "गायत्री, त्रिष्टुप्, जगती, अनुष्टुप्";
+    devata = "अग्नि (प्रथम सूक्त), इन्द्र, सोम, वरुण, सविता";
+  } else if (s.includes("yajurveda")) {
+    veda = "यजुर्वेद संहिता (यज्ञीय कर्मकाण्ड)";
+    shakha = "माध्यन्दिन वाजसनेयी (शुक्ल) व तैत्तिरीय (कृष्ण)";
+    rishi = "महर्षि याज्ञवल्क्य, वैशम्पायन, तित्तिरि";
+    chhandas = "त्रिष्टुप्, बृहती, गायत्री, पंक्ति";
+    devata = "प्रजापति, अग्नि, वायु, सूर्य, रुद्र";
+  } else if (s.includes("samaveda")) {
+    veda = "सामवेद संहिता (गान व उपासना परंपरा)";
+    shakha = "कौथुम, राणायनीय, जैमिनीय (तलवकार)";
+    rishi = "महर्षि जैमिनि, सुधन्वा, सुकर्मा";
+    chhandas = "गायत्री, बृहती, जगती (सामगान छंद)";
+    devata = "इन्द्र, सविता, अग्नि, सोम देव";
+  } else if (s.includes("atharvaveda")) {
+    veda = "अथर्ववेद संहिता (ब्रह्मवेद व जीवन विज्ञान)";
+    shakha = "शौनक शाखा एवं पैप्पलाद शाखा";
+    rishi = "महर्षि अथर्वा, अङ्गिरा, भृगु";
+    chhandas = "अनुष्टुप्, त्रिष्टुप्, जगती, विराट्";
+    devata = "परब्रह्म, काल, पृथिवी, रुद्र, व्रात्य";
+  } else if (s.includes("gita") || s.includes("bhagavad")) {
+    veda = "महाभारत भीष्मपर्व (स्मृति-प्रस्थान)";
+    shakha = "श्रीमद्भगवद्गीता (१८ अध्याय, ७०० श्लोक)";
+    rishi = "महर्षि कृष्ण द्वैपायन वेदव्यास";
+    chhandas = "अनुष्टुप् (प्रधान) एवं त्रिष्टुप्";
+    devata = "श्रीकृष्ण (पुरुषोत्तम परब्रह्म)";
+  } else if (s.includes("bhagavata")) {
+    veda = "श्रीमद्भागवत महापुराण (पुराण-संहिता)";
+    shakha = "द्वादश स्कन्ध (३३५ अध्याय, १८,००० श्लोक)";
+    rishi = "महर्षि वेदव्यास (वक्ता: शुकदेव जी)";
+    chhandas = "अनुष्टुप्, त्रिष्टुप्, वसन्ततिलका";
+    devata = "भगवान् श्रीकृष्ण / श्रीहरि नारायण";
+  } else if (s.includes("ramayana")) {
+    veda = "वाल्मीकीय रामायण (आदिकाव्य)";
+    shakha = "सप्तकाण्ड (२४,००० श्लोक)";
+    rishi = "आदिकवि महर्षि वाल्मीकि";
+    chhandas = "अनुष्टुप् (मा निषाद प्रतिष्ठां...)";
+    devata = "मर्यादा पुरुषोत्तम प्रभु श्रीराम";
+  } else if (s.includes("upanishad") || category === "upanishad") {
+    veda = q.veda || "वेदान्त श्रुति (ज्ञानकाण्ड)";
+    shakha = q.shakha || "संहिता-ब्राह्मण शाखा";
+    rishi = q.chiefRishis || "याज्ञवल्क्य, पिप्पलाद, उद्दालक आरुणि";
+    chhandas = "अनुष्टुप्, त्रिष्टुप् एवं गद्यात्मक मन्त्र";
+    devata = "निर्गुण-सगुण परब्रह्म परमात्मा";
+  } else if (subjectData?.rishis && Array.isArray(subjectData.rishis)) {
+    rishi = subjectData.rishis
+      .slice(0, 3)
+      .map((r) => (typeof r === "string" ? r : r.name))
+      .join(", ");
+  }
 
-  useEffect(() => {
-    setCurrentPage(1);
-    setJumpTo("");
-  }, [selectedChapterId, pageSize]);
-
-  const filteredItems = useMemo(() => {
-    if (!selectedChapter) return [];
-    if (!searchText.trim()) return selectedChapter.items;
-
-    const q = searchText.trim().toLowerCase();
-    return selectedChapter.items.filter((item) => {
-      return (
-        String(item.number).includes(q) ||
-        (item.devanagari && item.devanagari.toLowerCase().includes(q)) ||
-        (item.hinglish && item.hinglish.toLowerCase().includes(q)) ||
-        (item.hindi && item.hindi.toLowerCase().includes(q)) ||
-        (item.english && item.english.toLowerCase().includes(q)) ||
-        (item.commentary && item.commentary.toLowerCase().includes(q))
-      );
-    });
-  }, [selectedChapter, searchText]);
-
-  const availableCount = filteredItems.length;
-  const totalPages = Math.max(1, Math.ceil(availableCount / pageSize));
-  const safePage = Math.min(currentPage, totalPages);
-  const startIndex = (safePage - 1) * pageSize;
-  const visibleItems = filteredItems.slice(startIndex, startIndex + pageSize);
-
-  const pageNumberButtons = Array.from(
-    { length: totalPages },
-    (_, index) => index + 1,
-  );
-
-  const handleJump = () => {
-    const value = Number(jumpTo);
-    if (!Number.isFinite(value) || value < 1) return;
-
-    // Check if the user entered a specific verse number in this chapter
-    const itemIndex = filteredItems.findIndex(
-      (item) => Number(item.number) === value,
-    );
-    if (itemIndex !== -1) {
-      const targetPage = Math.floor(itemIndex / pageSize) + 1;
-      setCurrentPage(targetPage);
-      return;
-    }
-
-    // Otherwise navigate by page number
-    const targetPage = Math.min(
-      Math.max(1, value <= totalPages ? value : Math.ceil(value / pageSize)),
-      totalPages,
-    );
-    setCurrentPage(targetPage);
-  };
-
-  const navigatePage = (direction) => {
-    setCurrentPage((prev) =>
-      Math.min(Math.max(1, prev + direction), totalPages),
-    );
-  };
-
-  const isPaginated = totalPages > 1;
-  const showPageSizeSelect = availableCount > 10;
-
-  return (
-    <div className="rounded-3xl border border-stone-200 bg-white p-5 md:p-6 shadow-2xs">
-      <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          <label className="text-xs font-bold uppercase tracking-[0.18em] text-stone-500">
-            अध्याय / सूक्त
-          </label>
-          <select
-            value={selectedChapterId}
-            onChange={(e) => setSelectedChapterId(e.target.value)}
-            className="rounded-xl border border-stone-200 bg-[#fffaf0] px-3 py-2 text-xs font-medium text-stone-700 focus:border-amber-400 outline-none"
-          >
-            {scripture.chapters.map((chapter) => (
-              <option key={chapter.id} value={chapter.id}>
-                {chapter.title}
-              </option>
-            ))}
-          </select>
-          {scripture.chapters.length > 1 && (
-            <button
-              type="button"
-              onClick={() =>
-                setSelectedChapterId(scripture.chapters[0]?.id || "")
-              }
-              className="rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-bold text-stone-700 hover:bg-stone-50 cursor-pointer"
-            >
-              प्रारंभिक अध्याय
-            </button>
-          )}
-        </div>
-
-        {showPageSizeSelect && (
-          <div className="flex flex-wrap items-center gap-2">
-            <label className="text-xs font-bold uppercase tracking-[0.18em] text-stone-500">
-              प्रति पृष्ठ श्लोक
-            </label>
-            <select
-              value={pageSize}
-              onChange={(e) => setPageSize(Number(e.target.value))}
-              className="rounded-xl border border-stone-200 bg-[#fffaf0] px-3 py-2 text-xs font-medium text-stone-700 focus:border-amber-400 outline-none"
-            >
-              <option value={10}>10 श्लोक प्रति पृष्ठ</option>
-              <option value={20}>20 श्लोक प्रति पृष्ठ</option>
-            </select>
-          </div>
-        )}
-      </div>
-
-      <div className="mt-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="rounded-2xl border border-amber-200 bg-amber-50/90 p-3.5 text-xs sm:text-sm text-amber-950 flex flex-col md:flex-row md:items-center justify-between gap-2.5 w-full">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <div>
-              <span className="font-bold text-amber-900">पारंपरिक कुल परिमाण (Canon Total):</span>{" "}
-              <span className="font-semibold text-stone-800">{scripture.sourceTotal}</span>
-            </div>
-            <span className="hidden md:inline text-amber-400">•</span>
-            <div>
-              <span className="font-bold text-amber-900">लाइब्रेरी में उपलब्ध:</span>{" "}
-              <span className="font-bold text-amber-800">{availableCount} प्रामाणिक श्लोक</span>{" "}
-              <span className="text-stone-600 text-xs font-normal">({selectedChapter?.title || "इस अध्याय में"})</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold text-amber-850 bg-amber-100/90 px-2.5 py-1 rounded-lg border border-amber-300">
-              {isPaginated ? "क्रमबद्ध पृष्ठीय वाचन (Paginated)" : "सम्पूर्ण पाठांश (Single View)"}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0">
-          <input
-            type="text"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            placeholder="Search within chapter..."
-            className="w-full min-w-[180px] rounded-xl border border-stone-200 bg-[#fffaf0] px-3 py-2 text-xs focus:border-amber-400 outline-none"
-          />
-          {searchText && (
-            <button
-              type="button"
-              onClick={() => setSearchText("")}
-              className="rounded-xl border border-stone-200 bg-white px-2.5 py-2 text-xs font-bold text-stone-600 hover:bg-stone-50 cursor-pointer"
-            >
-              Clear
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="mt-3 rounded-2xl border border-stone-200 bg-[#fffaf0] p-3 text-xs text-stone-600 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div>
-          <span className="font-bold text-stone-700">
-            {isPaginated ? "वर्तमान दृश्य:" : "प्रदर्शित पाठांश:"}
-          </span>{" "}
-          {filteredItems.length > 0
-            ? isPaginated
-              ? `${(safePage - 1) * pageSize + 1}–${Math.min(safePage * pageSize, filteredItems.length)} of ${filteredItems.length} श्लोक`
-              : `कुल ${filteredItems.length} श्लोक (सम्पूर्ण पृष्ठ)`
-            : "0 श्लोक"}
-        </div>
-        <div className="text-[11px] text-stone-500 italic">
-          {scripture.editionNote}
-        </div>
-      </div>
-
-      {isPaginated && (
-        <>
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                disabled={safePage <= 1}
-                onClick={() => navigatePage(-1)}
-                className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-bold text-stone-700 disabled:opacity-40 hover:bg-stone-50 cursor-pointer disabled:cursor-not-allowed"
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-                {isHindi ? "पिछला" : "Previous"}
-              </button>
-              <button
-                type="button"
-                disabled={safePage >= totalPages}
-                onClick={() => navigatePage(1)}
-                className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-bold text-stone-700 disabled:opacity-40 hover:bg-stone-50 cursor-pointer disabled:cursor-not-allowed"
-              >
-                {isHindi ? "अगला" : "Next"}
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-500">
-                {isHindi ? `पृष्ठ ${safePage} / ${totalPages}` : `Page ${safePage} / ${totalPages}`}
-              </div>
-              <input
-                type="number"
-                min="1"
-                max={totalPages}
-                value={jumpTo}
-                onChange={(e) => setJumpTo(e.target.value)}
-                placeholder={isHindi ? "श्लोक या पृष्ठ" : "Jump to verse"}
-                className="w-28 rounded-xl border border-stone-200 bg-white px-2.5 py-2 text-xs focus:border-amber-400 outline-none"
-              />
-              <button
-                type="button"
-                onClick={handleJump}
-                className="rounded-xl bg-amber-600 px-3 py-2 text-xs font-bold text-white hover:bg-amber-700 cursor-pointer"
-              >
-                {isHindi ? "जाएँ" : "Go"}
-              </button>
-            </div>
-          </div>
-
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              (pageNo) => (
-                <button
-                  key={pageNo}
-                  type="button"
-                  onClick={() => setCurrentPage(pageNo)}
-                  className={`rounded-lg px-2.5 py-1.5 text-[11px] font-bold cursor-pointer transition-colors ${
-                    currentPage === pageNo
-                      ? "bg-amber-600 text-white shadow-2xs"
-                      : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                  }`}
-                >
-                  {pageNo}
-                </button>
-              ),
-            )}
-          </div>
-        </>
-      )}
-
-      <div className="mt-6 space-y-4">
-        {visibleItems.length === 0 ? (
-          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-6 text-center text-sm text-stone-600">
-            No matching verses found in this chapter.
-          </div>
-        ) : (
-          visibleItems.map((item) => (
-            <article
-              key={item.number}
-              className="rounded-2xl border border-stone-200 bg-white p-4 md:p-5"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-amber-900">
-                  Verse {item.number}
-                </span>
-                {item.number && (
-                  <span className="text-[10px] font-semibold text-stone-500">
-                    #{item.number}
-                  </span>
-                )}
-              </div>
-
-              <div className="mt-3 rounded-xl border border-amber-100 bg-[#fffaf0] p-3">
-                <p className="font-devanagari text-lg leading-[2] text-stone-900 md:text-xl">
-                  {item.devanagari}
-                </p>
-              </div>
-
-              {item.hindi && (
-                <div className="mt-2 text-sm text-stone-700">
-                  <span className="font-bold text-stone-800">Hindi:</span>{" "}
-                  {item.hindi}
-                </div>
-              )}
-
-              {item.english && (
-                <div className="mt-2 text-sm text-stone-700">
-                  <span className="font-bold text-stone-800">English:</span>{" "}
-                  {item.english}
-                </div>
-              )}
-
-              {(item.hinglish || item.hindi) && (
-                <div className="mt-2 text-sm text-stone-700">
-                  <span className="font-bold text-stone-800">Hinglish:</span>{" "}
-                  {item.hinglish || item.hindi}
-                </div>
-              )}
-
-              {item.commentary && (
-                <div className="mt-3 rounded-xl border border-stone-200 bg-stone-50 p-3 text-sm leading-relaxed text-stone-600">
-                  <span className="font-bold text-stone-800">Commentary:</span>{" "}
-                  {item.commentary}
-                </div>
-              )}
-            </article>
-          ))
-        )}
-      </div>
-    </div>
-  );
+  return { veda, shakha, rishi, chhandas, devata };
 }
 
 export default function SubjectDetailPage({ onOpenSearch }) {
-  const { category = "veda", subject = "rigveda" } = useParams();
+  const params = useParams();
+  const slug = params.slug || params.subject || params.subcategorySlug || "rigveda";
+  let category = params.category || params.categorySlug || "veda";
+  let subject = slug;
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Overview");
   const [drillPath, setDrillPath] = useState([]);
@@ -1288,16 +1048,6 @@ export default function SubjectDetailPage({ onOpenSearch }) {
   const [granthaSearch, setGranthaSearch] = useState("");
   const [textSearch, setTextSearch] = useState("");
   const [liveData, setLiveData] = useState(null);
-
-  // Mantra Modal state for seamless reading experience
-  const [selectedMantraId, setSelectedMantraId] = useState(null);
-  const [isMantraModalOpen, setIsMantraModalOpen] = useState(false);
-
-  const handleOpenMantraModal = (mantraId) => {
-    if (!mantraId) return;
-    setSelectedMantraId(mantraId);
-    setIsMantraModalOpen(true);
-  };
 
   useEffect(() => {
     setDrillPath([]);
@@ -1354,6 +1104,11 @@ export default function SubjectDetailPage({ onOpenSearch }) {
   } else {
     subjectData = generateDynamicSubjectData(category, subject);
   }
+
+  const pillars = useMemo(
+    () => resolve5Pillars(subject, category, subjectData),
+    [subject, category, subjectData],
+  );
 
   const catData = CATEGORIES_DATA[category] || CATEGORIES_DATA["veda"];
 
@@ -1517,7 +1272,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
   const handleBranchCardClick = (branch) => {
     if (branch.mantraId) {
-      handleOpenMantraModal(branch.mantraId);
+      navigate(`/library/mantra/${branch.mantraId}`);
     } else if (branch.children && branch.children.length > 0) {
       setDrillPath((prev) => [...prev, branch.id]);
       const el = document.getElementById("structure");
@@ -1530,35 +1285,140 @@ export default function SubjectDetailPage({ onOpenSearch }) {
     }
   };
 
+  // Dynamic SEO metadata calculation (Document Section 11 & Section 4)
+  const seoTitle =
+    drillNodesPath.length > 0
+      ? `${drillNodesPath.map((n) => n.name).join(" — ")} | ${subjectData.name} (${subjectData.enName}) — ${catData.name} | Veda Library`
+      : `${subjectData.name} (${subjectData.enName}) — ${catData.name} विवरण एवं संहिता शाखा | Veda Library`;
+
+  const seoDescription =
+    `${subjectData.name} (${subjectData.enName}) — ${catData.name} के अंतर्गत शाखाएँ, संहिता, ब्राह्मण, आरण्यक, उपनिषद एवं सूक्त संग्रह। ${subjectData.description || subjectData.introText || ""}`
+      .trim()
+      .slice(0, 160);
+
+  const canonicalPath =
+    drillNodesPath.length > 0
+      ? `/library/${category}/${subject}?sub=${drillNodesPath[drillNodesPath.length - 1].id || drillNodesPath[drillNodesPath.length - 1].slug}`
+      : `/library/${category}/${subject}`;
+
+  const breadcrumbElements = [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "होम (Home)",
+      item: "https://library.vedastructure.com/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "वेद लाइब्रेरी (Veda Library)",
+      item: "https://library.vedastructure.com/library",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: `${catData.name} (${catData.enName})`,
+      item: `https://library.vedastructure.com/library/${category}`,
+    },
+    {
+      "@type": "ListItem",
+      position: 4,
+      name: `${subjectData.name} (${subjectData.enName})`,
+      item: `https://library.vedastructure.com/library/${category}/${subject}`,
+    },
+  ];
+
+  if (drillNodesPath.length > 0) {
+    drillNodesPath.forEach((node, index) => {
+      breadcrumbElements.push({
+        "@type": "ListItem",
+        position: 5 + index,
+        name: `${node.name} (${node.enName || ""})`,
+        item: `https://library.vedastructure.com/library/${category}/${subject}?sub=${node.id || node.slug}`,
+      });
+    });
+  }
+
+  const jsonLdSchema = [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbElements,
+    },
+    {
+      "@type": "ItemPage",
+      name: seoTitle,
+      headline: `${subjectData.name} (${subjectData.enName})`,
+      description: seoDescription,
+      url: `https://library.vedastructure.com${canonicalPath}`,
+      inLanguage: ["hi", "en", "sa"],
+      isPartOf: {
+        "@type": "WebSite",
+        name: "Veda Library",
+        url: "https://library.vedastructure.com/",
+      },
+      mainEntity: {
+        "@type": "CreativeWork",
+        name: subjectData.name,
+        alternateName: subjectData.enName,
+        description: subjectData.description || subjectData.introText,
+        genre: catData.name,
+        inLanguage: ["hi", "en", "sa"],
+        publisher: {
+          "@type": "Organization",
+          name: "Veda Library",
+          url: "https://library.vedastructure.com/",
+        },
+      },
+    },
+  ];
+
   return (
-    <div className="bg-[#fffaf0] min-h-screen">
+    <div className="bg-[#FFFFFF] min-h-screen text-[#111111]">
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        canonical={canonicalPath}
+        schema={jsonLdSchema}
+        keywords={[
+          subjectData.name,
+          subjectData.enName,
+          catData.name,
+          catData.enName,
+          "संहिता",
+          "शाखा",
+          "ब्राह्मण",
+          "आरण्यक",
+          "उपनिषद",
+          "Veda Library",
+        ]}
+      />
       {/* Breadcrumb (Matching Page 3 Section 2) */}
-      <div className="bg-white border-b border-amber-200/70 py-3 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs font-medium text-stone-500 flex-wrap">
+      <div className="bg-white border-b border-[#E5E5E5] py-3 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs font-medium text-[#555555] flex-wrap">
           <Link
             to="/"
-            className="hover:text-amber-800 transition-colors flex items-center gap-1"
+            className="hover:text-[#111111] transition-colors flex items-center gap-1"
           >
-            <Home className="w-3.5 h-3.5" />
+            <Home className="w-3.5 h-3.5 text-[#D9A441]" />
             <span>Home</span>
           </Link>
-          <span>›</span>
+          <span className="text-[#D9A441]">›</span>
           <Link
             to="/library"
-            className="hover:text-amber-800 transition-colors"
+            className="hover:text-[#111111] transition-colors"
           >
             Veda Library
           </Link>
-          <span>›</span>
+          <span className="text-[#D9A441]">›</span>
           <Link
             to={`/library/${category}`}
-            className="hover:text-amber-800 transition-colors"
+            className="hover:text-[#111111] transition-colors"
           >
             {catData.name}
           </Link>
-          <span>›</span>
+          <span className="text-[#D9A441]">›</span>
           {drillPath.length === 0 ? (
-            <span className="text-amber-900 font-bold">
+            <span className="text-[#111111] font-bold">
               {subjectData.name && subjectData.enName && subjectData.name !== subjectData.enName
                 ? `${subjectData.name} (${subjectData.enName})`
                 : subjectData.name || subjectData.enName}
@@ -1568,7 +1428,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               <button
                 type="button"
                 onClick={() => setDrillPath([])}
-                className="text-stone-600 hover:text-amber-800 hover:underline cursor-pointer"
+                className="text-[#555555] hover:text-[#111111] hover:underline cursor-pointer"
               >
                 {subjectData.name}
               </button>
@@ -1576,9 +1436,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                 const isLast = index === drillNodesPath.length - 1;
                 return (
                   <React.Fragment key={node.id || index}>
-                    <span>›</span>
+                    <span className="text-[#D9A441]">›</span>
                     {isLast ? (
-                      <span className="text-amber-900 font-bold">
+                      <span className="text-[#111111] font-bold bg-[#FFD21F] px-2.5 py-0.5 rounded-md border border-[#FFD21F]">
                         {node.name}
                       </span>
                     ) : (
@@ -1587,7 +1447,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         onClick={() =>
                           setDrillPath(drillPath.slice(0, index + 1))
                         }
-                        className="text-stone-600 hover:text-amber-800 hover:underline cursor-pointer"
+                        className="text-[#555555] hover:text-[#111111] hover:underline cursor-pointer"
                       >
                         {node.name}
                       </button>
@@ -1601,51 +1461,51 @@ export default function SubjectDetailPage({ onOpenSearch }) {
       </div>
 
       {/* Subject Hero (Matching Page 3 Section 3) */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e07] via-[#2c1a0e] to-[#140b05] text-white py-14 sm:py-18 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
+      <section className="relative overflow-hidden bg-[#111111] text-white py-14 sm:py-18 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] shadow-sm">
         <div className="absolute inset-0 z-0">
           <img
             src={resolveSubjectBanner(subject, category, subjectData)}
-            alt={subjectData.name}
-            className="w-full h-full object-cover object-center opacity-75 scale-102 transition-transform duration-1000"
+            alt={`${subjectData.name} (${subjectData.enName}) — ${catData.name} | Veda Library`}
+            className="w-full h-full object-cover object-center opacity-85 scale-102 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#140b05] via-[#1c1108]/45 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#140b05]/80 via-transparent to-[#140b05]/80" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-[#140b05]/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/90 via-[#111111]/45 to-[#111111]/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#111111]/80 via-transparent to-[#111111]/80" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-500/15 via-transparent to-[#111111]/70" />
         </div>
         <div className="relative z-10 max-w-5xl mx-auto text-center space-y-3">
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-amber-300 bg-amber-500/20 border border-amber-400/40 px-3.5 py-1.5 rounded-full backdrop-blur-md shadow-sm">
-            <Sparkles className="w-3 h-3 text-amber-300" />
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3.5 py-1.5 rounded-full shadow-xs">
+            <Sparkles className="w-3 h-3 text-[#111111]" />
             <span>{subjectData.eyebrow}</span>
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight drop-shadow-md">
             {subjectData.name}
           </h1>
-          <p className="font-serif text-lg sm:text-2xl text-amber-200/95 font-medium tracking-wide">
+          <p className="font-serif text-lg sm:text-2xl text-[#FFD21F] font-medium tracking-wide">
             {subjectData.enName}
           </p>
-          <p className="text-xs sm:text-sm text-amber-100/90 font-devanagari max-w-2xl mx-auto leading-relaxed drop-shadow-xs">
+          <p className="text-xs sm:text-sm text-white/90 font-devanagari max-w-2xl mx-auto leading-relaxed drop-shadow-xs">
             {subjectData.intro}
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 max-w-2xl mx-auto">
             <a
               href="#structure"
-              className="px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-amber-950/40 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer border border-amber-400/30"
+              className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] font-bold text-xs sm:text-sm shadow-xs transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer border border-[#FFD21F]"
             >
               <span>Explore Types & Branches →</span>
             </a>
             {associatedMantras.length > 0 && (
               <a
                 href="#key-mantras"
-                className="px-6 py-2.5 rounded-full bg-amber-500/20 hover:bg-amber-500/35 border border-amber-400/50 text-amber-200 font-bold text-xs sm:text-sm backdrop-blur-md transition-all transform hover:-translate-y-0.5 cursor-pointer shadow-md flex items-center gap-1.5"
+                className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold text-xs sm:text-sm backdrop-blur-md transition-all transform hover:-translate-y-0.5 cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <Sparkles className="w-3.5 h-3.5 text-[#FFD21F]" />
                 <span>प्रमुख मंत्र व श्लोक ({associatedMantras.length}) →</span>
               </a>
             )}
             <a
               href="#articles"
-              className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold text-xs sm:text-sm backdrop-blur-md transition-all cursor-pointer shadow-md"
+              className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold text-xs sm:text-sm backdrop-blur-md transition-all cursor-pointer shadow-xs flex items-center justify-center"
             >
               <span>Explore Articles →</span>
             </a>
@@ -1653,76 +1513,103 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         </div>
       </section>
 
-      {/* Subject Quick Info Bar (Matching Page 3 Section 4) */}
-      <div className="bg-amber-50/60 border-b border-amber-200/80 py-3.5 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 text-xs">
-          <div>
-            <span className="block text-[10px] font-bold uppercase tracking-wider text-amber-800">
-              TYPE
-            </span>
-            <span className="font-semibold text-stone-900">
-              {subjectData.quickInfo?.type || "Veda (श्रुति)"}
-            </span>
-          </div>
-          <div>
-            <span className="block text-[10px] font-bold uppercase tracking-wider text-amber-800">
-              LANGUAGE
-            </span>
-            <span className="font-semibold text-stone-900">
-              {subjectData.quickInfo?.language || "Vedic Sanskrit"}
-            </span>
-          </div>
-          <div>
-            <span className="block text-[10px] font-bold uppercase tracking-wider text-amber-800">
-              CHIEF PRIEST
-            </span>
-            <span className="font-semibold text-stone-900">
-              {subjectData.quickInfo?.chiefPriest || "मुख्य ऋत्विक"}
+      {/* Subject 5-Pillar Canonical Metadata Strip (Veda, Shakha, Rishi, Chhandas, Devata) */}
+      <div className="bg-[#FFFFFF] border-b border-[#E5E5E5] py-4 px-4 sm:px-6 lg:px-8 shadow-xs">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 text-xs">
+          {/* Pillar 1: Veda */}
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs transition-all duration-200 flex flex-col justify-between group">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
+                  १. वेद • Veda
+                </span>
+                <BookOpen className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="font-bold text-[#111111] text-xs sm:text-sm block leading-snug">
+                {pillars.veda}
+              </span>
+            </div>
+            <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
+              मूल श्रुति वांग्मय
             </span>
           </div>
-          <div>
-            <span className="block text-[10px] font-bold uppercase tracking-wider text-amber-800">
-              STRUCTURE
-            </span>
-            <span className="font-semibold text-stone-900">
-              {subjectData.quickInfo?.mandalCount
-                ? `${subjectData.quickInfo.mandalCount} • ${subjectData.quickInfo.suktaCount}`
-                : "प्रामाणिक संरचना"}
+
+          {/* Pillar 2: Shakha */}
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs transition-all duration-200 flex flex-col justify-between group">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
+                  २. शाखा • Shakha
+                </span>
+                <Layers className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="font-bold text-[#111111] text-xs sm:text-sm block leading-snug truncate" title={pillars.shakha}>
+                {pillars.shakha}
+              </span>
+            </div>
+            <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
+              प्रामाणिक परम्परा पाठ
             </span>
           </div>
-          <div>
-            <span className="block text-[10px] font-bold uppercase tracking-wider text-amber-800">
-              CHIEF RISHIS
+
+          {/* Pillar 3: Rishi */}
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs transition-all duration-200 flex flex-col justify-between group">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
+                  ३. ऋषि • Rishi
+                </span>
+                <User className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="font-bold text-[#111111] text-xs sm:text-sm block leading-snug truncate" title={pillars.rishi}>
+                {pillars.rishi}
+              </span>
+            </div>
+            <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
+              मन्त्रदृष्टा आचार्य
             </span>
-            <span
-              className="font-semibold text-stone-900 truncate block"
-              title={
-                subjectData.quickInfo?.chiefRishis ||
-                (Array.isArray(subjectData.rishis)
-                  ? subjectData.rishis
-                      .map((r) =>
-                        typeof r === "string" ? r.split(" ")[0] : r.name,
-                      )
-                      .join(", ")
-                  : "")
-              }
-            >
-              {subjectData.quickInfo?.chiefRishis ||
-                (Array.isArray(subjectData.rishis)
-                  ? subjectData.rishis
-                      .slice(0, 4)
-                      .map((r) =>
-                        typeof r === "string" ? r.split(" ")[0] : r.name,
-                      )
-                      .join(", ")
-                  : "प्रामाणिक ऋषि परंपरा")}
+          </div>
+
+          {/* Pillar 4: Chhandas */}
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs transition-all duration-200 flex flex-col justify-between group">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
+                  ४. छन्द • Chhandas
+                </span>
+                <Feather className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="font-bold text-[#111111] text-xs sm:text-sm block leading-snug truncate" title={pillars.chhandas}>
+                {pillars.chhandas}
+              </span>
+            </div>
+            <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
+              स्वर-मात्रा छन्दोबद्ध
+            </span>
+          </div>
+
+          {/* Pillar 5: Devata */}
+          <div className="p-3.5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs transition-all duration-200 flex flex-col justify-between group col-span-2 sm:col-span-1">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
+                  ५. देवता • Devata
+                </span>
+                <Sun className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="font-bold text-[#111111] text-xs sm:text-sm block leading-snug truncate" title={pillars.devata}>
+                {pillars.devata}
+              </span>
+            </div>
+            <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
+              उपास्य देव सत्ता
             </span>
           </div>
         </div>
       </div>
 
       {/* Sticky Sub-Navigation (Matching Page 3 Section 5) */}
-      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-stone-200 px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto shadow-2xs">
+      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto scrollbar-none touch-pan-x shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs font-semibold">
           {[
             "Overview",
@@ -1736,15 +1623,15 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <a
               key={tab}
               href={`#${tab.toLowerCase().replace(/\s+/g, "-")}`}
-              className={`px-3.5 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
+              className={`min-h-[38px] px-3.5 py-1.5 rounded-lg whitespace-nowrap transition-colors flex items-center justify-center ${
                 tab === "Key Mantras"
-                  ? "text-amber-900 bg-amber-100/90 hover:bg-amber-200/80 font-bold border border-amber-300/60 inline-flex items-center gap-1.5 shadow-2xs"
-                  : "text-stone-700 hover:text-amber-900 hover:bg-amber-50"
+                  ? "text-[#111111] bg-[#FFD21F] font-bold border border-[#FFD21F] inline-flex items-center gap-1.5 shadow-xs"
+                  : "text-[#555555] hover:text-[#111111] hover:bg-stone-50"
               }`}
             >
               {tab === "Key Mantras" ? (
                 <>
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600 inline" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#111111] inline" />
                   <span>प्रमुख मंत्र व श्लोक ({associatedMantras.length})</span>
                 </>
               ) : (
@@ -1759,12 +1646,12 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         {/* 6. Overview (Section 6) */}
         <section
           id="overview"
-          className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200/90 shadow-2xs"
+          className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
         >
-          <h2 className="font-serif text-2xl font-bold text-stone-900 mb-3">
+          <h2 className="font-serif text-2xl font-bold text-[#111111] mb-3">
             {subjectData.name} के बारे में
           </h2>
-          <p className="text-sm text-stone-700 font-devanagari leading-relaxed">
+          <p className="text-sm text-[#555555] font-devanagari leading-relaxed">
             {subjectData.overviewText}
           </p>
         </section>
@@ -1774,12 +1661,12 @@ export default function SubjectDetailPage({ onOpenSearch }) {
           <section id="structure" className="scroll-mt-24">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-stone-900">
+                <h2 className="font-serif text-2xl font-bold text-[#111111]">
                   {drillPath.length === 0
                     ? `${subjectData.name} के प्रमुख प्रकार, शाखाएँ एवं वांग्मय`
                     : activeNode.name}
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-500 font-devanagari mt-1">
+                <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-1">
                   {drillPath.length === 0
                     ? `क्लाइंट द्वारा निर्धारित प्रामाणिक विभाजन के अनुसार किसी भी शाखा या प्रकार पर क्लिक करें (${displayBranchCards.length} प्रकार उपलब्ध)`
                     : `${activeNode.enName || ""} — नीचे दिए गए उप-प्रकार व ग्रंथ (${displayBranchCards.length} उपलब्ध)`}
@@ -1791,7 +1678,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                   <button
                     type="button"
                     onClick={() => setDrillPath([])}
-                    className="text-xs font-bold text-amber-800 hover:text-amber-950 underline cursor-pointer"
+                    className="text-xs font-bold text-[#111111] hover:text-[#D9A441] underline cursor-pointer"
                   >
                     मूल प्रकारों पर लौटें (Reset)
                   </button>
@@ -1801,14 +1688,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
             {/* Breadcrumb / Back Bar when drilled down */}
             {drillPath.length > 0 && (
-              <div className="mb-6 p-4 rounded-2xl bg-amber-50/80 border border-amber-200/90 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
+              <div className="mb-6 p-4 rounded-2xl bg-stone-50 border border-[#E5E5E5] flex flex-wrap items-center justify-between gap-3 shadow-xs">
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   <button
                     type="button"
                     onClick={() => setDrillPath((prev) => prev.slice(0, -1))}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-amber-100/80 text-amber-900 font-bold text-xs border border-amber-300 shadow-2xs transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-stone-100 text-[#111111] font-bold text-xs border border-[#E5E5E5] shadow-xs transition-colors cursor-pointer"
                   >
-                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#D9A441]" />
                     <span>पीछे जाएं (Back)</span>
                   </button>
 
@@ -1817,7 +1704,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                   <button
                     type="button"
                     onClick={() => setDrillPath([])}
-                    className="font-bold text-amber-800 hover:text-amber-950 hover:underline cursor-pointer"
+                    className="font-bold text-[#111111] hover:text-[#D9A441] hover:underline cursor-pointer"
                   >
                     {currentVedaNode.name} (मुख्य प्रकार)
                   </button>
@@ -1826,9 +1713,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     const isLast = index === drillNodesPath.length - 1;
                     return (
                       <React.Fragment key={node.id || index}>
-                        <span className="text-stone-400">›</span>
+                        <span className="text-[#D9A441]">›</span>
                         {isLast ? (
-                          <span className="font-bold text-stone-900 bg-amber-100/90 px-2.5 py-0.5 rounded-md border border-amber-200">
+                          <span className="font-bold text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded-md border border-[#FFD21F]">
                             {node.name}
                           </span>
                         ) : (
@@ -1837,7 +1724,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                             onClick={() =>
                               setDrillPath(drillPath.slice(0, index + 1))
                             }
-                            className="text-stone-600 hover:text-amber-800 hover:underline cursor-pointer"
+                            className="text-[#555555] hover:text-[#111111] hover:underline cursor-pointer"
                           >
                             {node.name}
                           </button>
@@ -1848,7 +1735,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-semibold text-stone-500">
+                  <span className="text-[11px] font-semibold text-[#555555]">
                     स्तर {drillPath.length + 1} • {displayBranchCards.length}{" "}
                     उपलब्ध
                   </span>
@@ -1858,11 +1745,11 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
             {/* Dynamic Filter & Search Toolbar */}
             {allCurrentCards.length > 1 && (
-              <div className="mb-6 p-3 sm:p-4 rounded-2xl bg-white border border-stone-200/90 shadow-2xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+              <div className="mb-6 p-3 sm:p-4 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
                 {/* Type Filter Chips */}
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
-                  <span className="text-stone-400 mr-1 flex items-center gap-1 text-[11px] font-semibold">
-                    <Filter className="w-3.5 h-3.5 text-amber-700" />
+                  <span className="text-[#555555] mr-1 flex items-center gap-1 text-[11px] font-semibold">
+                    <Filter className="w-3.5 h-3.5 text-[#D9A441]" />
                     <span>फ़िल्टर:</span>
                   </span>
                   <button
@@ -1870,8 +1757,8 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     onClick={() => setFilterType("all")}
                     className={`px-3 py-1.5 rounded-full text-xs transition-colors cursor-pointer whitespace-nowrap ${
                       filterType === "all"
-                        ? "bg-amber-600 text-white font-bold shadow-2xs"
-                        : "bg-amber-50/80 text-stone-700 hover:bg-amber-100 border border-amber-200/60"
+                        ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs border border-[#FFD21F]"
+                        : "bg-stone-50 text-[#555555] hover:bg-stone-100 border border-[#E5E5E5]"
                     }`}
                   >
                     सभी ({allCurrentCards.length})
@@ -1883,8 +1770,8 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                       onClick={() => setFilterType(t)}
                       className={`px-3 py-1.5 rounded-full text-xs transition-colors cursor-pointer whitespace-nowrap ${
                         filterType === t
-                          ? "bg-amber-600 text-white font-bold shadow-2xs"
-                          : "bg-amber-50/80 text-stone-700 hover:bg-amber-100 border border-amber-200/60"
+                          ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs border border-[#FFD21F]"
+                          : "bg-stone-50 text-[#555555] hover:bg-stone-100 border border-[#E5E5E5]"
                       }`}
                     >
                       {t}
@@ -1894,19 +1781,19 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
                 {/* Local Quick Search */}
                 <div className="relative min-w-[200px] sm:min-w-[240px]">
-                  <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="w-3.5 h-3.5 text-[#D9A441] absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={localSearch}
                     onChange={(e) => setLocalSearch(e.target.value)}
                     placeholder="इस स्तर में खोजें..."
-                    className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-[#fffaf0] border border-stone-200 focus:border-amber-400 focus:outline-none placeholder:text-stone-400 font-devanagari"
+                    className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari text-[#111111]"
                   />
                   {localSearch && (
                     <button
                       type="button"
                       onClick={() => setLocalSearch("")}
-                      className="p-1 text-stone-400 hover:text-stone-700 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                      className="p-1 text-[#555555] hover:text-[#111111] absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -1917,11 +1804,11 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
             {/* If zero results matched the filter */}
             {displayBranchCards.length === 0 ? (
-              <div className="p-12 text-center bg-white rounded-3xl border border-stone-200 shadow-2xs space-y-3">
-                <p className="font-serif text-lg font-bold text-stone-800">
+              <div className="p-12 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
+                <p className="font-serif text-lg font-bold text-[#111111]">
                   चयनित फ़िल्टर के अनुसार कोई ग्रंथ या मंत्र नहीं मिला।
                 </p>
-                <p className="text-xs text-stone-500 font-devanagari">
+                <p className="text-xs text-[#555555] font-devanagari">
                   कृपया फ़िल्टर रीसेट करें या भिन्न कीवर्ड द्वारा खोजें।
                 </p>
                 <button
@@ -1930,7 +1817,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     setFilterType("all");
                     setLocalSearch("");
                   }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold shadow-xs hover:bg-amber-700 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFD21F] text-[#111111] text-xs font-bold shadow-xs hover:bg-[#ffe052] cursor-pointer"
                 >
                   फ़िल्टर रीसेट करें (Reset Filter)
                 </button>
@@ -1951,12 +1838,12 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     <div
                       key={branch.id || idx}
                       onClick={() => handleBranchCardClick(branch)}
-                      className="group flex flex-col bg-white rounded-2xl border border-stone-200/90 shadow-2xs hover:shadow-lg hover:border-amber-300 transition-all duration-300 overflow-hidden cursor-pointer"
+                      className="group flex flex-col bg-white rounded-2xl border border-[#E5E5E5] shadow-xs hover:shadow-sm hover:border-[#D9A441] transition-all duration-300 overflow-hidden cursor-pointer"
                     >
                       <div className="relative aspect-16/9 overflow-hidden bg-stone-900">
                         <img
                           src={imgSrc}
-                          alt={branch.name}
+                          alt={`${branch.name} (${branch.enName || ""}) — ${subjectData.name} | Veda Library`}
                           className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
@@ -1966,15 +1853,15 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                           </span>
                         )}
                         {branch.badge ? (
-                          <span className="absolute top-2.5 right-2.5 text-[10px] font-bold text-amber-900 bg-amber-100/90 border border-amber-300 px-2 py-0.5 rounded-full shadow-xs backdrop-blur-xs flex items-center gap-1">
+                          <span className="absolute top-2.5 right-2.5 text-[10px] font-bold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
                             <span>{branch.badge}</span>
                             {hasChildren && (
                               <span>({branch.children.length})</span>
                             )}
                           </span>
                         ) : hasChildren ? (
-                          <span className="absolute top-2.5 right-2.5 text-[10px] font-bold text-amber-900 bg-amber-100/90 border border-amber-300 px-2 py-0.5 rounded-full shadow-xs backdrop-blur-xs flex items-center gap-1">
-                            <Layers className="w-3 h-3" />
+                          <span className="absolute top-2.5 right-2.5 text-[10px] font-bold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
+                            <Layers className="w-3 h-3 text-[#111111]" />
                             <span>
                               {branch.children.length} उप-प्रकार / शाखाएँ
                             </span>
@@ -1984,28 +1871,28 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                       <div className="p-4 flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-serif text-base sm:text-lg font-bold text-stone-900 group-hover:text-amber-800 transition-colors leading-snug">
+                            <h3 className="font-serif text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug">
                               {branch.name}
                             </h3>
                             {branch.enName && (
-                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-200 shrink-0 max-w-[130px] truncate text-right">
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-stone-50 text-[#555555] border border-[#E5E5E5] shrink-0 max-w-[130px] truncate text-right">
                                 {branch.enName}
                               </span>
                             )}
                           </div>
                           {branch.desc && (
-                            <p className="text-xs text-stone-600 font-devanagari mt-2 line-clamp-2 leading-relaxed">
+                            <p className="text-xs text-[#555555] font-devanagari mt-2 line-clamp-2 leading-relaxed">
                               {branch.desc}
                             </p>
                           )}
                           {branch.stats && (
-                            <p className="text-[10px] text-stone-500 mt-2 font-medium">
+                            <p className="text-[10px] text-[#D9A441] mt-2 font-medium">
                               {branch.stats}
                             </p>
                           )}
                         </div>
 
-                        <div className="mt-4 pt-2.5 border-t border-stone-100 flex items-center justify-between text-xs font-bold text-amber-700 group-hover:text-amber-900">
+                        <div className="mt-4 pt-2.5 border-t border-[#E5E5E5] flex items-center justify-between text-xs font-bold text-[#111111] group-hover:text-[#D9A441]">
                           <span>
                             {branch.mantraId
                               ? "मंत्र पढ़ें (Read Mantra)"
@@ -2015,7 +1902,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                                   ? `Explore ${branch.enName}`
                                   : "ग्रंथ का विवरण देखें"}
                           </span>
-                          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 text-[#D9A441]" />
                         </div>
                       </div>
                     </div>
@@ -2027,7 +1914,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         ) : (
           subjectData.structureCards && (
             <section id="structure">
-              <h2 className="font-serif text-2xl font-bold text-stone-900 mb-4">
+              <h2 className="font-serif text-2xl font-bold text-[#111111] mb-4">
                 {subjectData.name} की संरचना एवं मुख्य विभाजन
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -2037,34 +1924,34 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                       key={idx}
                       href={idx === 2 ? "#scripture-reader" : "#browse-texts"}
                       aria-label={`${st.title}: ${st.desc}`}
-                      className="group rounded-2xl border border-stone-200/90 bg-white p-5 text-center shadow-2xs transition-all hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2"
+                      className="group rounded-2xl border border-[#E5E5E5] bg-white p-5 text-center shadow-xs transition-all hover:-translate-y-0.5 hover:border-[#D9A441] hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD21F] focus-visible:ring-offset-2"
                     >
-                      <span className="mb-1 block font-serif text-3xl font-bold text-amber-700">
+                      <span className="mb-1 block font-serif text-3xl font-bold text-[#D9A441]">
                         {st.num}
                       </span>
-                      <h3 className="font-serif text-lg font-bold text-stone-900 group-hover:text-amber-800">
+                      <h3 className="font-serif text-lg font-bold text-[#111111] group-hover:text-[#D9A441]">
                         {st.title}
                       </h3>
-                      <p className="mt-1 font-devanagari text-xs text-stone-500">
+                      <p className="mt-1 font-devanagari text-xs text-[#555555]">
                         {st.desc}
                       </p>
-                      <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-amber-800">
+                      <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#111111] group-hover:text-[#D9A441]">
                         विवरण देखें{" "}
-                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 text-[#D9A441]" />
                       </span>
                     </a>
                   ) : (
                     <div
                       key={idx}
-                      className="rounded-2xl border border-stone-200/90 bg-white p-5 text-center shadow-2xs"
+                      className="rounded-2xl border border-[#E5E5E5] bg-white p-5 text-center shadow-xs"
                     >
-                      <span className="mb-1 block font-serif text-3xl font-bold text-amber-700">
+                      <span className="mb-1 block font-serif text-3xl font-bold text-[#D9A441]">
                         {st.num}
                       </span>
-                      <h3 className="font-serif text-lg font-bold text-stone-900">
+                      <h3 className="font-serif text-lg font-bold text-[#111111]">
                         {st.title}
                       </h3>
-                      <p className="mt-1 font-devanagari text-xs text-stone-500">
+                      <p className="mt-1 font-devanagari text-xs text-[#555555]">
                         {st.desc}
                       </p>
                     </div>
@@ -2087,26 +1974,26 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-100/90 border border-amber-300 px-2.5 py-0.5 rounded-full shadow-2xs">
-                        <BookOpen className="w-3 h-3 text-amber-600" />
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2.5 py-0.5 rounded-full shadow-xs">
+                        <BookOpen className="w-3 h-3 text-[#111111]" />
                         <span>Scripture Reader</span>
                       </span>
-                      <span className="text-xs font-semibold text-stone-500">
+                      <span className="text-xs font-semibold text-[#555555]">
                         {scriptureReader.label}
                       </span>
                     </div>
-                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
                       {isMultiPage
                         ? "ग्रंथ पाठ-पठन • क्रमबद्ध पृष्ठीय वाचन"
                         : "मूल ग्रंथ पाठ • प्रामाणिक पाठांश वाचन"}
                     </h2>
-                    <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-1 max-w-2xl leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-1 max-w-2xl leading-relaxed">
                       पारंपरिक परिमाण:{" "}
-                      <span className="font-semibold text-stone-800">
+                      <span className="font-semibold text-[#111111]">
                         {scriptureReader.sourceTotal}
                       </span>{" "}
                       • लाइब्रेरी में उपलब्ध:{" "}
-                      <span className="font-bold text-amber-800">
+                      <span className="font-bold text-[#D9A441]">
                         {totalVerses} प्रामाणिक श्लोक
                       </span>{" "}
                       {isMultiPage
@@ -2128,18 +2015,18 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-100/90 border border-amber-300 px-2.5 py-0.5 rounded-full shadow-2xs">
-                    <Flame className="w-3 h-3 text-amber-600" />
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2.5 py-0.5 rounded-full shadow-xs">
+                    <Flame className="w-3 h-3 text-[#111111]" />
                     <span>पावन वैदिक वांग्मय</span>
                   </span>
-                  <span className="text-xs font-semibold text-stone-500">
+                  <span className="text-xs font-semibold text-[#555555]">
                     {associatedMantras.length} प्रमुख मंत्र व श्लोक
                   </span>
                 </div>
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
                   प्रमुख मंत्र व श्लोक (Key Mantras & Shlokas)
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-600 font-devanagari mt-1 max-w-2xl leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-1 max-w-2xl leading-relaxed">
                   {subjectData.name} के सर्वाधिक पवित्र, प्रामाणिक एवं नित्य
                   पठनीय मंत्र। किसी भी मंत्र पर क्लिक करके उसका शुद्ध पाठ, सस्वर
                   उच्चारण व सरल भावार्थ तुरंत पढ़ें।
@@ -2147,8 +2034,8 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-amber-900 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl shadow-2xs inline-flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                <span className="text-xs font-semibold text-[#111111] bg-stone-50 border border-[#E5E5E5] px-3 py-1.5 rounded-xl shadow-xs inline-flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
                   <span>एक क्लिक में सस्वर पाठ</span>
                 </span>
               </div>
@@ -2159,34 +2046,34 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               {associatedMantras.map((m, mIdx) => (
                 <div
                   key={m.id || mIdx}
-                  onClick={() => handleOpenMantraModal(m.id)}
-                  className="p-5 rounded-2xl bg-gradient-to-b from-white via-[#fffdfa] to-[#fffbf2] border border-amber-200/90 hover:border-amber-400 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group cursor-pointer"
+                  onClick={() => navigate(`/library/mantra/${m.id}`)}
+                  className="p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm transition-all duration-300 flex flex-col justify-between group cursor-pointer"
                 >
                   <div>
                     {/* Top reference tags */}
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="text-[10px] font-bold text-amber-900 bg-amber-100/90 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                      <span className="text-[10px] font-bold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2.5 py-0.5 rounded-full">
                         {m.textName ? m.textName.split(" ")[0] : "वेदमंत्र"} •{" "}
                         {m.mantraNumber || m.sectionRef}
                       </span>
                       {m.devata && (
-                        <span className="text-[10px] font-semibold text-stone-600 bg-stone-100 px-2 py-0.5 rounded-full truncate max-w-[120px]">
+                        <span className="text-[10px] font-semibold text-[#555555] bg-stone-100 px-2 py-0.5 rounded-full truncate max-w-[120px]">
                           {m.devata}
                         </span>
                       )}
                     </div>
 
                     {/* Sacred Devanagari verse box */}
-                    <div className="my-2 p-3.5 rounded-xl bg-amber-50/50 border border-amber-200/70 group-hover:border-amber-300 transition-colors">
-                      <p className="font-devanagari font-bold text-stone-900 text-sm sm:text-base leading-relaxed line-clamp-3 select-text">
+                    <div className="my-2 p-3.5 rounded-xl bg-stone-50 border border-[#E5E5E5] group-hover:border-[#D9A441] transition-colors">
+                      <p className="font-devanagari font-bold text-[#111111] text-sm sm:text-base leading-relaxed line-clamp-3 select-text">
                         {m.sanskrit}
                       </p>
                     </div>
 
                     {/* Hindi translation preview */}
                     {m.hindiTranslation && (
-                      <p className="font-devanagari text-xs text-stone-600 line-clamp-2 mt-2 leading-relaxed">
-                        <span className="font-bold text-amber-800">
+                      <p className="font-devanagari text-xs text-[#555555] line-clamp-2 mt-2 leading-relaxed">
+                        <span className="font-bold text-[#D9A441]">
                           भावार्थ:{" "}
                         </span>
                         {m.hindiTranslation}
@@ -2195,22 +2082,22 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                   </div>
 
                   {/* Footer actions */}
-                  <div className="mt-4 pt-3 border-t border-amber-100 flex items-center justify-between">
+                  <div className="mt-4 pt-3 border-t border-[#E5E5E5] flex items-center justify-between">
                     <button
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleOpenMantraModal(m.id);
+                        navigate(`/library/mantra/${m.id}`);
                       }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-2xs transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] shadow-xs transition-colors cursor-pointer border border-[#FFD21F]"
                     >
                       <BookOpen className="w-3.5 h-3.5" />
                       <span>मंत्र पढ़ें (Read Mantra)</span>
                     </button>
 
-                    <span className="text-xs font-bold text-amber-800 group-hover:text-amber-950 flex items-center gap-1">
+                    <span className="text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center gap-1">
                       <span>विस्तार</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[#D9A441]" />
                     </span>
                   </div>
                 </div>
@@ -2224,29 +2111,29 @@ export default function SubjectDetailPage({ onOpenSearch }) {
           <section id="browse-texts">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-stone-900">
+                <h2 className="font-serif text-2xl font-bold text-[#111111]">
                   Browse {subjectData.enName} Texts
                 </h2>
-                <p className="text-xs text-stone-500 font-devanagari mt-0.5">
+                <p className="text-xs text-[#555555] font-devanagari mt-0.5">
                   प्रमुख सूक्त, ऋचाएँ एवं प्रामाणिक संदर्भ
                 </p>
               </div>
 
               {allAvailableTexts.length > 3 && (
                 <div className="relative min-w-[200px] sm:min-w-[240px]">
-                  <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="w-3.5 h-3.5 text-[#D9A441] absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={textSearch}
                     onChange={(e) => setTextSearch(e.target.value)}
                     placeholder="सूक्त या पाठ खोजें..."
-                    className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-white border border-stone-200 focus:border-amber-400 focus:outline-none placeholder:text-stone-400 font-devanagari shadow-2xs"
+                    className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari shadow-xs text-[#111111]"
                   />
                   {textSearch && (
                     <button
                       type="button"
                       onClick={() => setTextSearch("")}
-                      className="p-1 text-stone-400 hover:text-stone-700 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                      className="p-1 text-[#555555] hover:text-[#111111] absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -2256,14 +2143,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             </div>
 
             {displayAvailableTexts.length === 0 ? (
-              <div className="p-8 text-center bg-white rounded-2xl border border-stone-200 shadow-2xs space-y-2">
-                <p className="text-sm font-semibold text-stone-700">
+              <div className="p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-2">
+                <p className="text-sm font-semibold text-[#555555]">
                   कोई सूक्त नहीं मिला।
                 </p>
                 <button
                   type="button"
                   onClick={() => setTextSearch("")}
-                  className="text-xs text-amber-700 hover:text-amber-900 underline font-bold cursor-pointer"
+                  className="text-xs text-[#111111] hover:text-[#D9A441] underline font-bold cursor-pointer"
                 >
                   खोज साफ़ करें
                 </button>
@@ -2275,7 +2162,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     key={idx}
                     onClick={() => {
                       if (text.mantraId) {
-                        handleOpenMantraModal(text.mantraId);
+                        navigate(`/library/mantra/${text.mantraId}`);
                       } else if (text.slug) {
                         navigate(
                           `/library/${category}/${subject}/${text.slug}`,
@@ -2284,17 +2171,17 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         navigate(`/library/${category}/${subject}/agnisukta`);
                       }
                     }}
-                    className="p-4 rounded-xl bg-white border border-stone-200/90 hover:border-amber-400 shadow-2xs hover:shadow-xs transition-all cursor-pointer flex items-center justify-between group"
+                    className="p-4 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm transition-all cursor-pointer flex items-center justify-between group"
                   >
                     <div>
-                      <h4 className="font-serif text-base font-bold text-stone-900 group-hover:text-amber-800 transition-colors">
+                      <h4 className="font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors">
                         {text.title}
                       </h4>
-                      <p className="text-xs text-stone-500 font-devanagari mt-0.5 leading-relaxed">
+                      <p className="text-xs text-[#555555] font-devanagari mt-0.5 leading-relaxed">
                         {text.desc}
                       </p>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-amber-700 flex-shrink-0 ml-2 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-4 h-4 text-[#D9A441] flex-shrink-0 ml-2 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 ))}
               </div>
@@ -2309,8 +2196,8 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
             {subjectData.rishis && subjectData.rishis.length > 0 && (
-              <div className="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-2xs">
-                <h3 className="font-serif text-xl font-bold text-stone-900 mb-3 flex items-center gap-2">
+              <div className="bg-white p-6 rounded-2xl border border-[#E5E5E5] shadow-xs">
+                <h3 className="font-serif text-xl font-bold text-[#111111] mb-3 flex items-center gap-2">
                   <User className="w-5 h-5 text-emerald-700" />
                   <span>प्रमुख ऋषि (Vedic Rishis)</span>
                 </h3>
@@ -2322,11 +2209,11 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     return (
                       <span
                         key={isObj ? `${r.name || idx}-${idx}` : `${r}-${idx}`}
-                        className="px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-900 inline-flex items-center gap-1.5"
+                        className="px-3 py-1.5 rounded-lg bg-stone-50 border border-[#E5E5E5] text-xs font-semibold text-[#111111] inline-flex items-center gap-1.5"
                       >
                         <span>{name}</span>
                         {role && (
-                          <span className="text-[10px] text-emerald-700 font-normal">
+                          <span className="text-[10px] text-[#555555] font-normal">
                             ({role})
                           </span>
                         )}
@@ -2338,9 +2225,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             )}
 
             {(subjectData.devatas || subjectData.deities) && (
-              <div className="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-2xs">
-                <h3 className="font-serif text-xl font-bold text-stone-900 mb-3 flex items-center gap-2">
-                  <Sun className="w-5 h-5 text-amber-700" />
+              <div className="bg-white p-6 rounded-2xl border border-[#E5E5E5] shadow-xs">
+                <h3 className="font-serif text-xl font-bold text-[#111111] mb-3 flex items-center gap-2">
+                  <Sun className="w-5 h-5 text-[#D9A441]" />
                   <span>उपास्य देवता (Devatas)</span>
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -2352,11 +2239,11 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                       return (
                         <span
                           key={isObj ? `${name || idx}-${idx}` : `${d}-${idx}`}
-                          className="px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-900 inline-flex items-center gap-1.5"
+                          className="px-3 py-1.5 rounded-lg bg-stone-50 border border-[#E5E5E5] text-xs font-semibold text-[#111111] inline-flex items-center gap-1.5"
                         >
                           <span>{name}</span>
                           {title && (
-                            <span className="text-[10px] text-amber-700 font-normal">
+                            <span className="text-[10px] text-[#555555] font-normal">
                               ({title})
                             </span>
                           )}
@@ -2373,7 +2260,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         {/* 13. Articles (Section 13) */}
         {subjectData.articles && (
           <section id="articles">
-            <h2 className="font-serif text-2xl font-bold text-stone-900 mb-4">
+            <h2 className="font-serif text-2xl font-bold text-[#111111] mb-4">
               Learn More About {subjectData.enName}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -2383,19 +2270,19 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                   onClick={() =>
                     navigate(`/library/${category}/${subject}/${art.slug}`)
                   }
-                  className="p-5 rounded-2xl bg-white border border-stone-200/90 shadow-2xs hover:shadow-md hover:border-amber-400 transition-all cursor-pointer flex flex-col justify-between"
+                  className="p-5 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs hover:shadow-sm hover:border-[#D9A441] transition-all cursor-pointer flex flex-col justify-between"
                 >
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-stone-900">
+                    <h3 className="font-serif text-lg font-bold text-[#111111] group-hover:text-[#D9A441]">
                       {art.title}
                     </h3>
-                    <p className="text-xs text-stone-600 font-devanagari mt-2 leading-relaxed">
+                    <p className="text-xs text-[#555555] font-devanagari mt-2 leading-relaxed">
                       {art.desc}
                     </p>
                   </div>
-                  <div className="mt-4 pt-2.5 border-t border-stone-100 text-xs font-bold text-amber-700 flex items-center justify-between">
+                  <div className="mt-4 pt-2.5 border-t border-[#E5E5E5] text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center justify-between">
                     <span>Read Article</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#D9A441]" />
                   </div>
                 </div>
               ))}
@@ -2407,19 +2294,19 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         {allRelatedGranthas.length > 0 && (
           <section
             id="related-grantha"
-            className="bg-[#fffdf8] p-6 sm:p-8 rounded-3xl border border-amber-200/90 shadow-2xs"
+            className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
           >
             <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
               <div>
-                <h2 className="font-serif text-2xl font-bold text-stone-900">
+                <h2 className="font-serif text-2xl font-bold text-[#111111]">
                   Related Grantha & Commentaries
                 </h2>
-                <p className="text-xs text-stone-500 font-devanagari mt-0.5">
+                <p className="text-xs text-[#555555] font-devanagari mt-0.5">
                   {subjectData.name} से संबंधित प्रामाणिक संहिताएँ, ब्राह्मण,
                   आरण्यक, उपनिषद एवं सायण भाष्य
                 </p>
               </div>
-              <span className="text-xs font-semibold text-amber-800 bg-amber-100/70 border border-amber-300 px-3 py-1 rounded-full">
+              <span className="text-xs font-semibold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full">
                 {displayRelatedGranthas.length} / {allRelatedGranthas.length}{" "}
                 उपलब्ध ग्रंथ
               </span>
@@ -2427,7 +2314,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
             {/* Grantha Filter & Search Toolbar */}
             {allRelatedGranthas.length > 2 && (
-              <div className="mb-5 p-3 rounded-xl bg-white border border-amber-200/80 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div className="mb-5 p-3 rounded-xl bg-stone-50 border border-[#E5E5E5] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 {/* Grantha Type Filter Chips */}
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none text-xs">
                   <button
@@ -2435,8 +2322,8 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     onClick={() => setGranthaFilterType("all")}
                     className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
                       granthaFilterType === "all"
-                        ? "bg-amber-700 text-white font-bold shadow-2xs"
-                        : "bg-amber-50 text-stone-700 hover:bg-amber-100 border border-amber-200/70"
+                        ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs border border-[#FFD21F]"
+                        : "bg-white text-[#555555] hover:text-[#111111] border border-[#E5E5E5]"
                     }`}
                   >
                     सभी ({allRelatedGranthas.length})
@@ -2448,8 +2335,8 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                       onClick={() => setGranthaFilterType(gt)}
                       className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
                         granthaFilterType === gt
-                          ? "bg-amber-700 text-white font-bold shadow-2xs"
-                          : "bg-amber-50 text-stone-700 hover:bg-amber-100 border border-amber-200/70"
+                          ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs border border-[#FFD21F]"
+                          : "bg-white text-[#555555] hover:text-[#111111] border border-[#E5E5E5]"
                       }`}
                     >
                       {gt}
@@ -2459,19 +2346,19 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
                 {/* Grantha Search Input */}
                 <div className="relative min-w-[180px] sm:min-w-[220px]">
-                  <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="w-3.5 h-3.5 text-[#D9A441] absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={granthaSearch}
                     onChange={(e) => setGranthaSearch(e.target.value)}
                     placeholder="ग्रंथ या भाष्य खोजें..."
-                    className="w-full pl-8 pr-7 py-1 rounded-lg text-xs bg-[#fffaf0] border border-stone-200 focus:border-amber-400 focus:outline-none placeholder:text-stone-400 font-devanagari"
+                    className="w-full pl-8 pr-7 py-1 rounded-lg text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari text-[#111111]"
                   />
                   {granthaSearch && (
                     <button
                       type="button"
                       onClick={() => setGranthaSearch("")}
-                      className="p-1 text-stone-400 hover:text-stone-700 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                      className="p-1 text-[#555555] hover:text-[#111111] absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -2481,8 +2368,8 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             )}
 
             {displayRelatedGranthas.length === 0 ? (
-              <div className="p-8 text-center bg-white rounded-2xl border border-stone-200 shadow-2xs space-y-2">
-                <p className="text-sm font-semibold text-stone-700">
+              <div className="p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-2">
+                <p className="text-sm font-semibold text-[#555555]">
                   चयनित फ़िल्टर के अनुसार कोई ग्रंथ नहीं मिला।
                 </p>
                 <button
@@ -2491,7 +2378,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     setGranthaFilterType("all");
                     setGranthaSearch("");
                   }}
-                  className="text-xs text-amber-700 hover:text-amber-900 underline font-bold cursor-pointer"
+                  className="text-xs text-[#111111] hover:text-[#D9A441] underline font-bold cursor-pointer"
                 >
                   फ़िल्टर रीसेट करें
                 </button>
@@ -2503,7 +2390,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     key={idx}
                     onClick={() => {
                       if (g.mantraId) {
-                        handleOpenMantraModal(g.mantraId);
+                        navigate(`/library/mantra/${g.mantraId}`);
                       } else if (g.slug) {
                         navigate(`/library/${category}/${subject}/${g.slug}`);
                       } else {
@@ -2512,25 +2399,25 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         );
                       }
                     }}
-                    className="p-4 rounded-2xl bg-white border border-stone-200 hover:border-amber-400 hover:shadow-md transition-all duration-300 cursor-pointer group flex flex-col justify-between"
+                    className="p-4 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm transition-all duration-300 cursor-pointer group flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[10px] font-bold text-amber-900 uppercase px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200">
+                        <span className="text-[10px] font-bold text-[#111111] uppercase px-2.5 py-0.5 rounded-full bg-[#FFD21F] border border-[#FFD21F]">
                           {g.type}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-800 group-hover:translate-x-0.5 transition-all" />
+                        <ArrowRight className="w-3.5 h-3.5 text-[#D9A441] group-hover:translate-x-0.5 transition-all" />
                       </div>
-                      <h4 className="font-serif text-base font-bold text-stone-900 group-hover:text-amber-800 transition-colors mt-2 leading-snug">
+                      <h4 className="font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors mt-2 leading-snug">
                         {g.name}
                       </h4>
-                      <p className="text-xs text-stone-500 font-devanagari mt-1">
+                      <p className="text-xs text-[#555555] font-devanagari mt-1">
                         {g.author
                           ? `रचयिता / परंपरा: ${g.author}`
                           : g.desc || "वैदिक परंपरा"}
                       </p>
                     </div>
-                    <div className="mt-3.5 pt-2 border-t border-stone-100 flex items-center justify-between text-xs font-bold text-amber-700 group-hover:text-amber-900">
+                    <div className="mt-3.5 pt-2 border-t border-[#E5E5E5] flex items-center justify-between text-xs font-bold text-[#111111] group-hover:text-[#D9A441]">
                       <span>ग्रंथ का अध्ययन करें (Explore)</span>
                       <span>→</span>
                     </div>
@@ -2541,16 +2428,6 @@ export default function SubjectDetailPage({ onOpenSearch }) {
           </section>
         )}
       </div>
-
-      {/* Accessible Vedic Mantra & Shloka Reader Popover Modal */}
-      <MantraModal
-        isOpen={isMantraModalOpen}
-        onClose={() => {
-          setIsMantraModalOpen(false);
-          setSelectedMantraId(null);
-        }}
-        mantraId={selectedMantraId}
-      />
     </div>
   );
 }
