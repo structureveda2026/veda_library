@@ -80,42 +80,42 @@ export default function VedaNavbar({
     setIsMobileMenuOpen(false);
   };
 
-  // Nav items matching Document Section 3.1 (Header and navigation specifications)
+  // Nav items: Home ke baad About, then Knowledge, Vedas & Upanishads, Mantra, Jyotish, Articles
   const navItems = [
     { id: "home", label: isHindi ? "होम" : "Home", path: "/library" },
-    { id: "explore", label: isHindi ? "ज्ञान अन्वेषण" : "Browse Knowledge", path: "/library/knowledge" },
+    { id: "about", label: isHindi ? "परिचय" : "About", path: "/about" },
+    { id: "explore", label: isHindi ? "ज्ञान" : "Knowledge", path: "/library/knowledge" },
     { id: "veda-upanishad", label: isHindi ? "वेद व उपनिषद" : "Vedas & Upanishads", path: "/library/veda" },
-    { id: "mantra-stotra", label: isHindi ? "मंत्र व स्तोत्र" : "Mantra & Stotram", path: "/library/mantra-stotra/all" },
+    { id: "mantra-stotra", label: isHindi ? "मंत्र व स्तोत्र" : "Mantra & Stotra", path: "/library/mantra-stotra/all" },
     { id: "jyotish-shastra", label: isHindi ? "ज्योतिष व शास्त्र" : "Jyotish & Shastra", path: "/library/jyotisha" },
     { id: "articles", label: isHindi ? "आलेख" : "Articles", path: "/library/articles" },
-    { id: "about", label: isHindi ? "परिचय" : "About", path: "/about" },
   ];
 
   return (
     <header
       className={`sticky top-0 z-40 transition-all duration-300 border-t-2 border-[#FFD21F] ${
         isScrolled
-          ? "bg-[#FFFFFF]/98 backdrop-blur-md border-b border-[#E5E5E5] shadow-xs py-2.5"
-          : "bg-[#FFFFFF] border-b border-[#E5E5E5] py-3.5"
+          ? "bg-[#FFFFFF]/98 backdrop-blur-md border-b border-[#E5E5E5] shadow-xs py-2"
+          : "bg-[#FFFFFF] border-b border-[#E5E5E5] py-2.5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-1.5 sm:gap-4">
+        <div className="flex items-center justify-between gap-1.5 sm:gap-3">
           {/* Left: Brand Logo & Title */}
           <Link
             to="/library"
             onClick={(e) => handleNavClick("home", "/library", e)}
-            className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none shrink-0 flex-shrink-0 cursor-pointer text-left select-none whitespace-nowrap"
+            className="flex items-center gap-2 sm:gap-2.5 group focus:outline-none shrink-0 flex-shrink-0 cursor-pointer text-left select-none whitespace-nowrap"
           >
             {/* Sacred Lotus / Surya Emblem */}
             <div className="relative shrink-0">
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-[#FFD21F] flex items-center justify-center text-[#111111] shadow-2xs ring-2 ring-[#D9A441]/40 group-hover:bg-[#D9A441] group-hover:scale-105 transition-all duration-300">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#FFD21F] flex items-center justify-center text-[#111111] shadow-2xs ring-2 ring-[#D9A441]/40 group-hover:bg-[#D9A441] group-hover:scale-105 transition-all duration-300">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.8"
-                  className="w-5 h-5 sm:w-6 sm:h-6 text-[#111111]"
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-[#111111]"
                 >
                   <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.25" />
                   <circle cx="12" cy="12" r="3" />
@@ -128,26 +128,26 @@ export default function VedaNavbar({
                   />
                 </svg>
               </div>
-              <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#111111] border border-[#FFD21F] flex items-center justify-center text-[8px] font-bold text-[#FFD21F]">
+              <span className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-[#111111] border border-[#FFD21F] flex items-center justify-center text-[7px] sm:text-[8px] font-bold text-[#FFD21F]">
                 ॐ
               </span>
             </div>
 
             <div className="shrink-0">
               <div className="flex items-center gap-1.5">
-                <span className="font-serif text-lg sm:text-2xl font-bold tracking-[0.08em] sm:tracking-[0.12em] text-[#111111] group-hover:text-[#D9A441] transition-colors leading-none whitespace-nowrap">
+                <span className="font-serif text-base sm:text-xl font-bold tracking-[0.08em] sm:tracking-[0.1em] text-[#111111] group-hover:text-[#D9A441] transition-colors leading-none whitespace-nowrap">
                   VEDA LIBRARY
                 </span>
               </div>
-              {/* Document-specified Hindi/English subtitle */}
-              <span className="hidden md:block text-[10px] font-semibold text-[#555555] mt-1 leading-tight whitespace-nowrap">
+              {/* Document-specified Hindi/English subtitle (visible on xl screens to give nav room) */}
+              <span className="hidden xl:block text-[9px] font-semibold text-[#555555] mt-0.5 leading-tight whitespace-nowrap">
                 {isHindi ? "वैदिक एवं भारतीय ज्ञान परंपरा का डिजिटल संग्रह" : "Digital Archive of Vedic & Indian Wisdom"}
               </span>
             </div>
           </Link>
 
           {/* Center: Desktop Navigation — Master Clean Styled */}
-          <nav className="hidden lg:flex items-center gap-1 bg-[#FFFFFF] p-1 rounded-2xl border border-[#E5E5E5]">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 bg-[#FFFFFF] p-1 rounded-2xl border border-[#E5E5E5] shrink-0">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
               return (
@@ -155,58 +155,58 @@ export default function VedaNavbar({
                   key={item.id}
                   to={item.path}
                   onClick={(e) => handleNavClick(item.id, item.path, e)}
-                  className={`relative px-4 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer ${
+                  className={`relative px-2.5 xl:px-3 py-1 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 ${
                     isActive
                       ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs border border-[#FFD21F]"
-                      : "text-[#111111] hover:text-[#111111] hover:bg-[#FFFFFF]"
+                      : "text-[#111111] hover:text-[#111111] hover:bg-stone-50"
                   }`}
                 >
-                  <span className="relative z-10">{item.label}</span>
+                  <span className="relative z-10 whitespace-nowrap">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
 
           {/* Right: Quick Search CTA + Language Tag + Mobile Toggle */}
-          <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             {/* Desktop Quick Search CTA Button in #FFD21F */}
             <button
               type="button"
               onClick={onOpenSearch}
-              className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-semibold transition-all shadow-2xs hover:shadow-xs group cursor-pointer border border-[#FFD21F]"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-semibold transition-all shadow-2xs hover:shadow-xs group cursor-pointer border border-[#FFD21F] whitespace-nowrap"
             >
               <Search className="w-3.5 h-3.5 text-[#111111] group-hover:scale-110 transition-transform" />
-              <span className="text-xs">{isHindi ? "त्वरित खोज" : "Quick Search"}</span>
+              <span className="text-xs">{isHindi ? "खोजें" : "Search"}</span>
               <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-[#111111] text-[#FFD21F] font-bold">
                 ⌘K
               </kbd>
             </button>
 
-            {/* Interactive Hindi / English Language Switcher */}
-            <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-xl border border-[#E5E5E5] whitespace-nowrap flex-shrink-0">
+            {/* Interactive Hindi (HI) / English (EN) Language Switcher */}
+            <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-xl border border-[#E5E5E5] whitespace-nowrap shrink-0">
               <button
                 type="button"
                 onClick={() => setLanguage("hi")}
-                className={`flex items-center justify-center gap-1 min-h-[32px] sm:min-h-[36px] px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                className={`flex items-center justify-center min-h-[28px] sm:min-h-[30px] px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   isHindi
                     ? "bg-[#111111] text-[#FFD21F] shadow-xs"
                     : "text-[#555555] hover:text-[#111111] hover:bg-[#FFFFFF]"
                 }`}
-                title="हिन्दी भाषा चुनें"
+                title="हिन्दी (HI)"
               >
-                <span className="font-devanagari">हिन्दी</span>
+                <span>HI</span>
               </button>
               <button
                 type="button"
                 onClick={() => setLanguage("en")}
-                className={`flex items-center justify-center gap-1 min-h-[32px] sm:min-h-[36px] px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                className={`flex items-center justify-center min-h-[28px] sm:min-h-[30px] px-2.5 sm:px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   isEnglish
                     ? "bg-[#111111] text-[#FFD21F] shadow-xs"
                     : "text-[#555555] hover:text-[#111111] hover:bg-[#FFFFFF]"
                 }`}
-                title="Switch to English"
+                title="English (EN)"
               >
-                <span>English</span>
+                <span>EN</span>
               </button>
             </div>
 
@@ -250,20 +250,20 @@ export default function VedaNavbar({
               <button
                 type="button"
                 onClick={() => setLanguage("hi")}
-                className={`min-h-[40px] px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center whitespace-nowrap ${
+                className={`min-h-[34px] px-3 py-1 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center whitespace-nowrap ${
                   isHindi ? "bg-[#111111] text-[#FFD21F] shadow-2xs" : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
-                हिन्दी
+                HI
               </button>
               <button
                 type="button"
                 onClick={() => setLanguage("en")}
-                className={`min-h-[40px] px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center whitespace-nowrap ${
+                className={`min-h-[34px] px-3 py-1 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center whitespace-nowrap ${
                   isEnglish ? "bg-[#111111] text-[#FFD21F] shadow-2xs" : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
-                English
+                EN
               </button>
             </div>
           </div>
