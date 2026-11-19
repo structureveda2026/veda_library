@@ -117,22 +117,22 @@ export default function KnowledgeConnectionSection() {
   const insightText = isHindi ? activeNode.insight : activeNode.insightEn;
 
   return (
-    <section id="connections" className="py-7 sm:py-9 bg-white border-y border-[#E5E5E5]">
+    <section id="connections" className="py-6 sm:py-7 bg-white border-y border-[#E5E5E5]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] px-3 py-1 rounded-full border border-[#FFD21F] shadow-2xs">
+        <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded-full border border-[#FFD21F] shadow-2xs">
           {isHindi ? "शास्त्रीय ज्ञान अंतर्संबंध" : "CONNECTED SHASTRA MATRIX"}
         </span>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111] mt-2.5">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111] mt-2">
           {isHindi ? "ज्ञान अंतर्संबंध रेखाचित्र" : "Discover Knowledge Connections"}
         </h2>
-        <p className={`text-xs sm:text-sm text-[#555555] mt-1.5 max-w-2xl mx-auto leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+        <p className={`text-xs sm:text-sm text-[#555555] mt-1 max-w-2xl mx-auto leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
           {isHindi
             ? "परंपरा में ज्ञान एकाकी नहीं, अपितु परस्पर संबद्ध है। किसी भी केंद्र-बिंदु को चुनकर उसके वेद, मंत्र, ऋषि, देवता, छंद एवं दार्शनिक संबंध को समझें:"
             : "In traditional Indian scholarship, knowledge is interlinked across Vedas, Mantras, Rishis, Deities, Metres, and Ritual practices. Select any node to trace its connections:"}
         </p>
 
         {/* 5 Interactive Selectable Canonical Nodes */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-5 mb-6">
+        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-4 sm:mt-5 mb-5">
           {CONNECTION_NODES.map((node) => {
             const isSelected = node.id === selectedNodeId;
             const btnLabel = isHindi ? node.label : node.englishLabel;
@@ -141,7 +141,7 @@ export default function KnowledgeConnectionSection() {
                 key={node.id}
                 type="button"
                 onClick={() => setSelectedNodeId(node.id)}
-                className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer ${
+                className={`px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer ${
                   isSelected
                     ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs scale-102"
                     : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#FFD21F] hover:bg-[#FFD21F]/15 hover:text-[#111111]"
@@ -154,8 +154,8 @@ export default function KnowledgeConnectionSection() {
         </div>
 
         {/* Dynamic Connected Node Visualization Box */}
-        <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-sm p-4 sm:p-6 text-left relative overflow-hidden">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-[#E5E5E5] gap-3">
+        <div className="bg-white rounded-2xl border border-[#E5E5E5] shadow-xs p-3.5 sm:p-5 text-left relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-3 sm:pb-3.5 border-b border-[#E5E5E5] gap-2.5 sm:gap-3">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#D9A441] block">
                 {isHindi ? "प्रधान ग्रंथ संदर्भ" : "PRIMARY CORPUS ROOT"}
@@ -171,7 +171,7 @@ export default function KnowledgeConnectionSection() {
             <button
               type="button"
               onClick={() => navigate(activeNode.targetRoute)}
-              className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs shadow-xs transition-all cursor-pointer"
+              className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs shadow-xs transition-all cursor-pointer"
             >
               <span>{isHindi ? "सम्बद्ध ग्रंथ पढ़ें" : "Read Connected Text"}</span>
               <ArrowRight className="w-3.5 h-3.5" />

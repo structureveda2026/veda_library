@@ -424,10 +424,10 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
   };
 
   return (
-    <section id="mantras" className="py-8 sm:py-10 bg-white border-b border-[#E5E5E5] relative overflow-hidden">
+    <section id="mantras" className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-5 pb-6 border-b border-[#E5E5E5]">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-5 gap-3.5 pb-4 border-b border-[#E5E5E5]">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="w-2 h-2 rounded-full bg-[#FFD21F]" />
@@ -503,7 +503,7 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
         </div>
 
         {/* Category Filtering Tabs */}
-        <div className="flex flex-wrap items-center gap-2 mb-8">
+        <div className="flex flex-wrap items-center gap-2 mb-5">
           {categoryTabs.map((tab) => {
             const isActive = activeCategoryTab === tab.id;
             return (
@@ -517,9 +517,9 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
                     setPlayingId(null);
                   }
                 }}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer flex items-center gap-2 ${
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer flex items-center gap-2 ${
                   isActive
-                    ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs border border-[#FFD21F]"
+                    ? "bg-[#FFD21F] text-[#111111] font-bold shadow-2xs border border-[#FFD21F]"
                     : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#FFD21F] hover:bg-[#FFD21F]/15 hover:text-[#111111]"
                 }`}
               >
@@ -535,7 +535,7 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
         </div>
 
         {/* Mantra Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 animate-fadeIn">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-4.5 animate-fadeIn">
           {displayedMantras.map((mantra) => {
             const isPlayingThis = playingId === mantra.id;
             const isCopied = copiedId === mantra.id;
@@ -552,87 +552,83 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
               <div
                 key={mantra.id}
                 onClick={() => handleOpenMantraReader(mantra.id)}
-                className="group flex flex-col justify-between rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-md transition-all duration-300 relative overflow-hidden p-5 sm:p-6 cursor-pointer"
+                className="group flex flex-col justify-between rounded-xl sm:rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs hover:shadow-md transition-all duration-300 relative overflow-hidden p-3.5 sm:p-4.5 cursor-pointer"
               >
                 {/* Golden Yellow Shloka Accent Line */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-[#D9A441]" />
 
                 <div>
                   {/* Card Header: Category Badge + Source + Quick Copy */}
-                  <div className="flex items-start justify-between gap-2 pb-3 border-b border-[#E5E5E5]">
+                  <div className="flex items-start justify-between gap-2 pb-2.5 border-b border-[#E5E5E5]">
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#FFD21F] text-[#111111] text-[11px] font-bold border border-[#FFD21F]">
-                        <Flame className="w-3 h-3 text-[#C62828]" />
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#FFD21F] text-[#111111] text-[10px] sm:text-[11px] font-bold border border-[#FFD21F]">
+                        <Flame className="w-2.5 h-2.5 text-[#C62828]" />
                         {featuredTag}
                       </span>
-                      <span className={`text-[11px] sm:text-xs font-semibold text-[#555555] ${isHindi ? "font-devanagari" : ""}`}>
+                      <span className={`text-[10px] sm:text-[11px] font-semibold text-[#555555] ${isHindi ? "font-devanagari" : ""}`}>
                         {sourceBadge}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 shrink-0">
+                    <div className="flex items-center gap-1 shrink-0">
                       <button
                         type="button"
                         onClick={(e) => handleCopy(mantra.sanskrit, mantra.id, e)}
                         title={isHindi ? "संस्कृत मूल पाठ कॉपी करें" : "Copy Sanskrit text"}
-                        className="p-1.5 rounded-lg border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-[#555555] hover:text-[#111111] transition-colors cursor-pointer"
+                        className="p-1 rounded-md border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-[#555555] hover:text-[#111111] transition-colors cursor-pointer"
                       >
                         {isCopied ? (
-                          <Check className="w-3.5 h-3.5 text-[#D9A441]" />
+                          <Check className="w-3 h-3 text-[#D9A441]" />
                         ) : (
-                          <Copy className="w-3.5 h-3.5" />
+                          <Copy className="w-3 h-3" />
                         )}
                       </button>
                     </div>
                   </div>
 
                   {/* Shastra Meta Tags: Rishi, Devata, Chhanda */}
-                  <div className="flex flex-wrap items-center gap-1.5 mt-3 mb-2 text-[11px] sm:text-xs text-[#555555]">
-                    <span className="px-2 py-0.5 rounded-md bg-white border border-[#E5E5E5]">
-                      {isHindi ? "ऋषि: " : "Seer: "}<strong className="text-[#111111] font-semibold">{rishi}</strong>
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md bg-white border border-[#E5E5E5]">
-                      {isHindi ? "देवता: " : "Deity: "}<strong className="text-[#111111] font-semibold">{devata}</strong>
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md bg-white border border-[#E5E5E5]">
-                      {isHindi ? "छंद: " : "Metre: "}<strong className="text-[#111111] font-semibold">{chhanda}</strong>
-                    </span>
+                  <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2 mb-1.5 text-[10px] sm:text-[11px] text-[#666666]">
+                    <span>{isHindi ? "ऋषि: " : "Seer: "}<strong className="text-[#111111] font-semibold">{rishi}</strong></span>
+                    <span>•</span>
+                    <span>{isHindi ? "देवता: " : "Deity: "}<strong className="text-[#111111] font-semibold">{devata}</strong></span>
+                    <span>•</span>
+                    <span>{isHindi ? "छंद: " : "Metre: "}<strong className="text-[#111111] font-semibold">{chhanda}</strong></span>
                   </div>
 
                   {/* Title */}
-                  <h3 className={`font-serif text-lg sm:text-xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors mt-2 mb-3 ${isHindi ? "font-devanagari" : ""}`}>
+                  <h3 className={`font-serif text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors mt-1 mb-2 ${isHindi ? "font-devanagari" : ""}`}>
                     {title}
                   </h3>
 
                   {/* Sacred Sanskrit Text Box (Always authentic Devanagari) */}
-                  <div className="rounded-xl bg-white border border-[#E5E5E5] shadow-xs p-4 sm:p-5 relative my-3">
+                  <div className="rounded-lg bg-stone-50 border border-[#E5E5E5] shadow-2xs p-3 sm:p-3.5 relative my-2">
                     <p
-                      className={`font-devanagari font-bold text-[#111111] text-center whitespace-pre-line tracking-wide select-text ${fontSizes[fontSizeIndex].shlokaClass}`}
+                      className={`font-devanagari font-bold text-[#111111] text-center whitespace-pre-line tracking-wide select-text text-sm sm:text-base leading-relaxed`}
                     >
                       {mantra.sanskrit}
                     </p>
                   </div>
 
                   {/* Translation Exposition (Strictly matching selected mode) */}
-                  <div className="mt-3.5 space-y-2.5">
+                  <div className="mt-2.5 space-y-2">
                     {langMode === "hindi" && mantra.hindiTranslation && (
-                      <p className="text-xs sm:text-sm text-[#555555] font-devanagari leading-relaxed">
+                      <p className="text-xs sm:text-[13px] text-[#555555] font-devanagari leading-relaxed">
                         <strong className="text-[#111111] font-bold">हिन्दी भावार्थ: </strong>
                         {mantra.hindiTranslation}
                       </p>
                     )}
 
                     {langMode === "english" && mantra.englishTranslation && (
-                      <p className="text-xs sm:text-sm text-[#555555] font-serif italic leading-relaxed">
+                      <p className="text-xs sm:text-[13px] text-[#555555] font-serif italic leading-relaxed">
                         <strong className="text-[#111111] font-sans font-bold not-italic">English Meaning: </strong>
                         "{mantra.englishTranslation}"
                       </p>
                     )}
 
                     {/* Highlighted Spiritual Purport */}
-                    <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] text-[#555555] text-xs sm:text-[13px] flex items-start gap-2 shadow-xs">
-                      <Sparkles className="w-4 h-4 text-[#D9A441] mt-0.5 shrink-0" />
-                      <div className="leading-relaxed">
+                    <div className="p-2 sm:p-2.5 rounded-lg bg-stone-50 border border-[#E5E5E5] text-[#555555] text-[11px] sm:text-xs flex items-start gap-1.5 shadow-2xs">
+                      <Sparkles className="w-3.5 h-3.5 text-[#D9A441] mt-0.5 shrink-0" />
+                      <div className="leading-snug">
                         <strong className="text-[#D9A441] font-bold">
                           {isHindi ? "आध्यात्मिक मर्म: " : "Spiritual Purport: "}
                         </strong>
@@ -643,26 +639,26 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
                 </div>
 
                 {/* Card Action Footer Bar */}
-                <div className="mt-5 pt-3.5 border-t border-[#E5E5E5] flex flex-wrap items-center justify-between gap-2.5">
-                  <div className="flex items-center gap-2">
+                <div className="mt-3.5 pt-2.5 border-t border-[#E5E5E5] flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
                     <button
                       type="button"
                       onClick={(e) => handleToggleSpeech(mantra, e)}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs ${
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer shadow-2xs ${
                         isPlayingThis
                           ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] animate-pulse"
-                          : "bg-white hover:bg-white text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441]"
+                          : "bg-white hover:bg-stone-50 text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441]"
                       }`}
                     >
                       {isPlayingThis ? (
                         <>
-                          <VolumeX className="w-3.5 h-3.5 text-[#C62828]" />
-                          <span>{isHindi ? "रोकें" : "Stop Audio"}</span>
+                          <VolumeX className="w-3 h-3 text-[#C62828]" />
+                          <span>{isHindi ? "रोकें" : "Stop"}</span>
                         </>
                       ) : (
                         <>
-                          <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
-                          <span>{isHindi ? "उच्चारण सुनें" : "Listen Chanting"}</span>
+                          <Volume2 className="w-3 h-3 text-[#D9A441]" />
+                          <span>{isHindi ? "सुनें" : "Listen Chanting"}</span>
                         </>
                       )}
                     </button>
@@ -670,16 +666,16 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
                     <button
                       type="button"
                       onClick={(e) => handleCopy(mantra.sanskrit, mantra.id, e)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1.5 sm:py-2 rounded-xl text-xs font-semibold bg-white hover:bg-white text-[#555555] hover:text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold bg-white hover:bg-stone-50 text-[#555555] hover:text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] transition-colors cursor-pointer"
                     >
                       {isCopied ? (
                         <>
-                          <Check className="w-3.5 h-3.5 text-[#D9A441]" />
+                          <Check className="w-3 h-3 text-[#D9A441]" />
                           <span className="text-[#111111] font-bold">{isHindi ? "कॉपी हुआ" : "Copied!"}</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-3.5 h-3.5 text-[#555555]" />
+                          <Copy className="w-3 h-3 text-[#555555]" />
                           <span>{isHindi ? "कॉपी" : "Copy"}</span>
                         </>
                       )}
@@ -689,11 +685,11 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
                   <button
                     type="button"
                     onClick={(e) => handleOpenMantraReader(mantra.id, e)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] shadow-xs hover:shadow-sm transition-all cursor-pointer group"
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-lg text-xs font-bold bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] shadow-2xs hover:shadow-xs transition-all cursor-pointer group"
                   >
-                    <BookOpen className="w-3.5 h-3.5" />
+                    <BookOpen className="w-3 h-3" />
                     <span>{isHindi ? "पूर्ण भावार्थ व जप विधि" : "Full Meaning & Chanting Guide"}</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </div>

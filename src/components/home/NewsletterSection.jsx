@@ -19,15 +19,15 @@ export default function NewsletterSection() {
   };
 
   return (
-    <section id="newsletter" className="py-8 sm:py-10 bg-white border-t border-[#E5E5E5]">
+    <section id="newsletter" className="py-6 sm:py-8 bg-white border-t border-[#E5E5E5]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span className="text-xs font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] px-3 py-1 rounded-full border border-[#FFD21F]">
+        <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded-full border border-[#FFD21F]">
           {isHindi ? "ज्ञान सूचना" : "KNOWLEDGE UPDATES"}
         </span>
-        <h2 className={`font-serif text-3xl sm:text-4xl font-bold text-[#111111] mt-3 ${isHindi ? "font-devanagari" : ""}`}>
+        <h2 className={`font-serif text-2xl sm:text-3xl font-bold text-[#111111] mt-2 ${isHindi ? "font-devanagari" : ""}`}>
           {isHindi ? "Veda Library से जुड़े रहें" : "Stay Connected with Veda Library"}
         </h2>
-        <p className={`text-sm text-[#555555] mt-2 max-w-lg mx-auto ${isHindi ? "font-devanagari" : ""}`}>
+        <p className={`text-xs sm:text-sm text-[#555555] mt-1.5 max-w-lg mx-auto ${isHindi ? "font-devanagari" : ""}`}>
           {isHindi
             ? "नए प्रकाशित ग्रंथ, वैदिक सूक्त, शोध संदर्भ एवं पाण्डुलिपि विवरणी की नियमित सूचना प्राप्त करें।"
             : "Receive regular updates on newly published scriptures, Vedic hymns, scholarly references, and manuscripts."}
@@ -35,22 +35,22 @@ export default function NewsletterSection() {
 
         <form
           onSubmit={handleSubmit}
-          className="mt-8 max-w-md mx-auto flex flex-col sm:flex-row gap-2"
+          className="mt-5 max-w-md mx-auto flex flex-col sm:flex-row gap-2"
         >
           <div className="relative flex-1">
-            <Mail className="w-5 h-5 text-[#555555] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Mail className="w-4 h-4 text-[#555555] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={isHindi ? "आपका ईमेल पता" : "Your Email Address"}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none text-sm text-[#111111] shadow-2xs font-medium"
+              className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none text-xs sm:text-sm text-[#111111] shadow-2xs font-medium"
             />
           </div>
           <button
             type="submit"
-            className="px-6 py-3 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-sm shadow-xs transition-all cursor-pointer flex-shrink-0"
+            className="px-5 py-2.5 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-xs transition-all cursor-pointer flex-shrink-0"
           >
             {isHindi ? "सदस्यता लें" : "Subscribe"}
           </button>

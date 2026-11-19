@@ -18,10 +18,10 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
   const { isHindi } = useLanguage();
 
   return (
-    <section id="recent" className="py-8 sm:py-10 bg-white border-y border-[#E5E5E5]">
+    <section id="recent" className="py-6 sm:py-8 bg-white border-y border-[#E5E5E5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
               {isHindi ? "हाल ही में जोड़े गए" : "Recently Added"}
@@ -36,15 +36,15 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
           <button
             type="button"
             onClick={() => onSelectArticle && onSelectArticle("rudrabhisheka")}
-            className="inline-flex items-center gap-1 text-sm font-semibold text-[#111111] hover:text-[#D9A441] group cursor-pointer transition-colors"
+            className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#111111] hover:text-[#D9A441] group cursor-pointer transition-colors"
           >
             <span>{isHindi ? "समस्त देखें" : "View All"}</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
 
         {/* Cards Grid — with image, description, Read More CTA */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
           {RECENTLY_ADDED.map((item) => {
             const thumb = THUMBNAILS[item.imageKey] || yagyaFireImg;
             const titleText = isHindi ? item.title : (item.enTitle || item.title);
@@ -58,10 +58,10 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
               <div
                 key={item.id}
                 onClick={() => onSelectArticle && onSelectArticle(item.id)}
-                className="group flex flex-col bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs hover:shadow-md transition-all cursor-pointer overflow-hidden"
+                className="group flex flex-col bg-white rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs hover:shadow-md transition-all cursor-pointer overflow-hidden"
               >
                 {/* Thumbnail Image */}
-                <div className="relative h-40 overflow-hidden bg-[#111111] flex-shrink-0">
+                <div className="relative h-32 sm:h-36 overflow-hidden bg-[#111111] flex-shrink-0">
                   <img
                     src={thumb}
                     alt={titleText}
@@ -69,24 +69,24 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                   {/* Category badge on image */}
-                  <span className={`absolute bottom-2 left-3 text-[10px] font-bold text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded shadow-xs ${isHindi ? "font-devanagari" : ""}`}>
+                  <span className={`absolute bottom-2 left-2.5 text-[10px] font-bold text-[#111111] bg-[#FFD21F] px-2 py-0.5 rounded shadow-2xs ${isHindi ? "font-devanagari" : ""}`}>
                     {categoryText}
                   </span>
                 </div>
 
                 {/* Content */}
-                <div className="p-4 flex-1 flex flex-col">
+                <div className="p-3.5 flex-1 flex flex-col">
                   {/* Status + Time row */}
-                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                  <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
                     {item.statusType === "verified" && (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#FFD21F]/15 text-[#111111] border border-[#FFD21F]/40">
-                        <CheckCircle2 className="w-3 h-3 text-[#D9A441]" />
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#FFD21F]/15 text-[#111111] border border-[#FFD21F]/40">
+                        <CheckCircle2 className="w-2.5 h-2.5 text-[#D9A441]" />
                         {statusBadgeText}
                       </span>
                     )}
                     {item.statusType === "approved" && (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#FFD21F]/15 text-[#111111] border border-[#FFD21F]/40">
-                        <CheckCircle2 className="w-3 h-3 text-[#D9A441]" />
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#FFD21F]/15 text-[#111111] border border-[#FFD21F]/40">
+                        <CheckCircle2 className="w-2.5 h-2.5 text-[#D9A441]" />
                         {statusBadgeText}
                       </span>
                     )}

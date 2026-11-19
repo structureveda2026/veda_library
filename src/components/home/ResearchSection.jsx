@@ -8,10 +8,10 @@ export default function ResearchSection({ onNavigateKnowledge }) {
   const { isHindi } = useLanguage();
 
   return (
-    <section id="research" className="py-8 sm:py-10 bg-white border-y border-[#E5E5E5]">
+    <section id="research" className="py-6 sm:py-8 bg-white border-y border-[#E5E5E5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 sm:mb-5 gap-2">
           <div>
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#D9A441]">
               {isHindi ? "शास्त्रीय शोध एवं संदर्भ" : "SCHOLARLY INQUIRY"}
@@ -37,24 +37,24 @@ export default function ResearchSection({ onNavigateKnowledge }) {
         </div>
 
         {/* 6 Research Modules Compact Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
           {RESEARCH_MODULES.map((mod, idx) => (
             <div
               key={idx}
               onClick={onNavigateKnowledge}
-              className="p-4 rounded-xl bg-white border border-[#E5E5E5] shadow-2xs hover:shadow-md hover:border-[#D9A441] transition-all flex items-start gap-3.5 group cursor-pointer"
+              className="p-3.5 sm:p-4 rounded-xl bg-white border border-[#E5E5E5] shadow-2xs hover:shadow-md hover:border-[#D9A441] transition-all flex items-start gap-3 group cursor-pointer"
             >
-              <div className="w-10 h-10 rounded-lg bg-[#FFD21F]/15 text-[#D9A441] flex items-center justify-center flex-shrink-0 group-hover:bg-[#FFD21F] group-hover:text-[#111111] transition-colors">
-                <IconHelper name={mod.icon} className="w-5 h-5" />
+              <div className="w-9 h-9 rounded-lg bg-[#FFD21F]/15 text-[#D9A441] flex items-center justify-center flex-shrink-0 group-hover:bg-[#FFD21F] group-hover:text-[#111111] transition-colors">
+                <IconHelper name={mod.icon} className="w-4.5 h-4.5" />
               </div>
               <div>
-                <h3 className={`font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors ${isHindi ? "font-devanagari" : ""}`}>
+                <h3 className={`font-serif text-sm sm:text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors ${isHindi ? "font-devanagari" : ""}`}>
                   {isHindi ? (mod.titleHi || mod.title) : (mod.titleEn || mod.title)}
                 </h3>
                 <p className={`text-[11px] text-[#555555] mt-0.5 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
                   {isHindi ? (mod.descHi || mod.desc) : (mod.descEn || mod.desc)}
                 </p>
-                <span className="inline-block mt-2 text-[11px] font-semibold text-[#111111] group-hover:text-[#D9A441] transition-colors">
+                <span className="inline-block mt-1.5 text-[10px] sm:text-[11px] font-semibold text-[#111111] group-hover:text-[#D9A441] transition-colors">
                   {isHindi ? "संग्रह देखें →" : "Browse Archive →"}
                 </span>
               </div>

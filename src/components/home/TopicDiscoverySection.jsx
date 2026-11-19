@@ -7,13 +7,13 @@ export default function TopicDiscoverySection({ onNavigateKnowledge }) {
   const { isHindi } = useLanguage();
 
   return (
-    <section id="topics" className="py-8 sm:py-10 bg-white border-b border-[#E5E5E5]">
+    <section id="topics" className="py-6 sm:py-7 bg-white border-b border-[#E5E5E5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Header */}
-        <span className="inline-block text-[11px] font-bold uppercase tracking-widest text-[#555555] bg-white px-3 py-1 rounded-full border border-[#E5E5E5] shadow-xs mb-2">
+        <span className="inline-block text-[11px] font-bold uppercase tracking-widest text-[#555555] bg-white px-2.5 py-0.5 rounded-full border border-[#E5E5E5] shadow-xs mb-1.5">
           {isHindi ? "सहज विषय अन्वेषण" : "INTUITIVE DISCOVERY"}
         </span>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111] mt-1.5">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111] mt-1">
           {isHindi ? "विषय अनुसार अन्वेषण करें" : "Explore by Topic"}
         </h2>
         <p className={`text-xs sm:text-sm text-[#555555] mt-1 max-w-xl mx-auto ${isHindi ? "font-devanagari" : ""}`}>
@@ -23,13 +23,13 @@ export default function TopicDiscoverySection({ onNavigateKnowledge }) {
         </p>
 
         {/* 18 Compact Chips Grid */}
-        <div className="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto mt-6">
+        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 max-w-4xl mx-auto mt-4 sm:mt-5">
           {TOPIC_CHIPS.map((topic) => (
             <button
               key={topic.name}
               type="button"
               onClick={onNavigateKnowledge}
-              className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#E5E5E5] hover:border-[#D9A441] hover:bg-[#FFD21F]/15 shadow-xs transition-all duration-200 cursor-pointer"
+              className="group flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white border border-[#E5E5E5] hover:border-[#D9A441] hover:bg-[#FFD21F]/15 shadow-2xs transition-all duration-200 cursor-pointer"
             >
               <span className={`text-xs font-semibold text-[#111111] group-hover:text-[#111111] transition-colors ${isHindi ? "font-devanagari" : ""}`}>
                 {isHindi ? topic.name : (topic.enName || topic.name)}
@@ -41,7 +41,7 @@ export default function TopicDiscoverySection({ onNavigateKnowledge }) {
           ))}
         </div>
 
-        <div className="mt-6">
+        <div className="mt-4 sm:mt-5">
           <button
             type="button"
             onClick={onNavigateKnowledge}

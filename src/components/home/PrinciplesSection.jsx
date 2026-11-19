@@ -6,9 +6,9 @@ export default function PrinciplesSection() {
   const { isHindi } = useLanguage();
 
   return (
-    <section id="principles" className="py-8 sm:py-10 bg-white border-y border-[#E5E5E5]">
+    <section id="principles" className="py-6 sm:py-7 bg-white border-y border-[#E5E5E5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-8">
+        <div className="text-center max-w-2xl mx-auto mb-4 sm:mb-5">
           <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded-full border border-[#FFD21F]">
             {isHindi ? "शास्त्रीय प्रामाणिकता" : "SCHOLARLY INTEGRITY"}
           </span>
@@ -22,19 +22,19 @@ export default function PrinciplesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
           {PRINCIPLES.map((prin) => (
             <div
               key={prin.num}
-              className="p-4 sm:p-5 rounded-xl bg-white border border-[#E5E5E5] shadow-2xs hover:shadow-md hover:border-[#D9A441] transition-all"
+              className="p-3.5 sm:p-4 rounded-xl bg-white border border-[#E5E5E5] shadow-2xs hover:shadow-md hover:border-[#D9A441] transition-all"
             >
-              <span className="text-xl font-serif font-bold text-[#D9A441]">
+              <span className="text-lg sm:text-xl font-serif font-bold text-[#D9A441]">
                 {prin.num}
               </span>
-              <h3 className={`font-serif text-lg font-bold text-[#111111] mt-1 ${isHindi ? "font-devanagari" : ""}`}>
+              <h3 className={`font-serif text-base sm:text-lg font-bold text-[#111111] mt-1 ${isHindi ? "font-devanagari" : ""}`}>
                 {isHindi ? prin.title : (prin.enTitle || prin.title)}
               </h3>
-              <p className={`text-xs text-[#555555] mt-1.5 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+              <p className={`text-xs text-[#555555] mt-1 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
                 {isHindi ? prin.desc : (prin.enDesc || prin.desc)}
               </p>
             </div>

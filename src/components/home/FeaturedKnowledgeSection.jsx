@@ -109,23 +109,23 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
   return (
     <section
       id="featured"
-      className="py-8 sm:py-10 bg-white border-b border-[#E5E5E5] relative"
+      className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5] relative"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2.5">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#FFD21F]/40 mb-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white border border-[#FFD21F]/40 mb-1.5 shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111]">
                 {isHindi ? "विशिष्ट ज्ञान" : "FEATURED KNOWLEDGE"}
               </span>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111111]">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
               {isHindi ? "प्रमुख ज्ञान सामग्री" : "Featured Knowledge"}
             </h2>
             <p
-              className={`text-xs sm:text-sm text-[#555555] mt-1 ${
+              className={`text-xs sm:text-sm text-[#555555] mt-0.5 ${
                 isHindi ? "font-devanagari" : ""
               }`}
             >
@@ -137,7 +137,7 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
         </div>
 
         {/* Filter Tabs: Shadcn Pill Design */}
-        <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1 no-scrollbar">
+        <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1 no-scrollbar">
           {FEATURED_TABS_CONFIG.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -145,9 +145,9 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? "bg-[#FFD21F] text-[#111111] font-bold border border-[#FFD21F] shadow-xs"
+                    ? "bg-[#FFD21F] text-[#111111] font-bold border border-[#FFD21F] shadow-2xs"
                     : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#FFD21F] hover:bg-[#FFD21F]/15 hover:text-[#111111]"
                 }`}
               >
@@ -158,7 +158,7 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
         </div>
 
         {/* Cards Grid: Crisp 1px border (#E5E5E5), hover golden border (#D9A441), Refined Badges in #FFD21F */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
           {filteredItems.map((item) => {
             const badgeText = isHindi ? item.badgeHi : item.badgeEn;
             const sourceText = isHindi ? item.sourceHi : item.sourceEn;
@@ -170,33 +170,33 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
               <div
                 key={item.id}
                 onClick={onNavigateKnowledge}
-                className="group flex flex-col justify-between bg-white rounded-2xl border border-[#E5E5E5] shadow-xs hover:shadow-md hover:border-[#D9A441] hover:-translate-y-0.5 transition-all duration-300 p-4 sm:p-4.5 cursor-pointer"
+                className="group flex flex-col justify-between bg-white rounded-xl border border-[#E5E5E5] shadow-2xs hover:shadow-md hover:border-[#D9A441] hover:-translate-y-0.5 transition-all duration-300 p-3.5 sm:p-4 cursor-pointer"
               >
                 <div>
                   {/* Refined Card Badge in Brand Yellow #FFD21F with Deep Black #111111 text */}
-                  <div className="flex items-center justify-between gap-2 mb-2.5">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-2xs">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#111111]" />
                       <span>{badgeText}</span>
                     </span>
-                    <span className={`text-[11px] font-semibold text-[#555555] truncate max-w-[50%] text-right ${isHindi ? "font-devanagari" : ""}`}>
+                    <span className={`text-[10px] sm:text-[11px] font-semibold text-[#555555] truncate max-w-[50%] text-right ${isHindi ? "font-devanagari" : ""}`}>
                       {sourceText}
                     </span>
                   </div>
 
                   {/* High-Contrast Title */}
-                  <h3 className={`font-serif text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug mb-1.5 ${isHindi ? "font-devanagari" : ""}`}>
+                  <h3 className={`font-serif text-sm sm:text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug mb-1 ${isHindi ? "font-devanagari" : ""}`}>
                     {titleText}
                   </h3>
 
                   {/* High-Contrast Description */}
-                  <p className={`text-xs text-[#555555] leading-relaxed line-clamp-3 ${isHindi ? "font-devanagari" : ""}`}>
+                  <p className={`text-xs text-[#555555] leading-relaxed line-clamp-2 ${isHindi ? "font-devanagari" : ""}`}>
                     {descText}
                   </p>
                 </div>
 
                 {/* Bottom CTA with arrow slide micro-interaction */}
-                <div className="mt-3.5 pt-2 border-t border-[#E5E5E5] flex items-center justify-between">
+                <div className="mt-3 pt-2 border-t border-[#E5E5E5] flex items-center justify-between">
                   <span className="text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center gap-1.5 transition-colors">
                     <span>{ctaText}</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />

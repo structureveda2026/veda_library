@@ -33,15 +33,15 @@ export default function AboutVedaLibrarySection({ onNavigateKnowledge }) {
   const { isHindi } = useLanguage();
 
   return (
-    <section id="about" className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5]">
+    <section id="about" className="py-5 sm:py-6 bg-white border-b border-[#E5E5E5]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white border border-[#E5E5E5] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#555555] mb-2 shadow-xs">
+        <div className="text-center mb-4 sm:mb-5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white border border-[#E5E5E5] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#555555] mb-1.5 shadow-2xs">
             <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
             <span className="text-[#111111]">VEDA LIBRARY</span>
           </div>
-          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111111] leading-tight mb-2">
+          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-extrabold text-[#111111] leading-tight mb-1.5">
             {isHindi ? "एक स्थान पर भारतीय ज्ञान परंपरा" : "Indian Knowledge Tradition at One Place"}
           </h2>
           <p className={`text-xs sm:text-sm text-[#555555] max-w-2xl mx-auto font-medium leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
@@ -52,23 +52,23 @@ export default function AboutVedaLibrarySection({ onNavigateKnowledge }) {
         </div>
 
         {/* Crisp Modern Feature Cards with Hover Effects */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 mb-4 sm:mb-5">
           {HIGHLIGHTS.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={idx}
-                className="group relative bg-white rounded-2xl p-4 sm:p-5 border border-[#E5E5E5] shadow-xs hover:shadow-md hover:-translate-y-0.5 hover:border-[#D9A441] transition-all duration-300"
+                className="group relative bg-white rounded-xl p-3.5 sm:p-4 border border-[#E5E5E5] shadow-2xs hover:shadow-md hover:-translate-y-0.5 hover:border-[#D9A441] transition-all duration-300"
               >
                 <div
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-105 shadow-xs border border-[#E5E5E5] bg-white"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mb-2.5 transition-transform duration-300 group-hover:scale-105 shadow-2xs border border-[#E5E5E5] bg-white"
                 >
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#D9A441]" />
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#D9A441]" />
                 </div>
-                <h3 className="text-sm sm:text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors mb-1.5">
+                <h3 className="text-sm sm:text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors mb-1">
                   {isHindi ? item.title : item.enTitle}
                 </h3>
-                <p className={`text-xs sm:text-sm text-[#555555] leading-relaxed font-normal ${isHindi ? "font-devanagari" : ""}`}>
+                <p className={`text-xs text-[#555555] leading-relaxed font-normal ${isHindi ? "font-devanagari" : ""}`}>
                   {isHindi ? item.desc : item.enDesc}
                 </p>
               </div>
@@ -77,21 +77,21 @@ export default function AboutVedaLibrarySection({ onNavigateKnowledge }) {
         </div>
 
         {/* Narrative & Navigation Callout */}
-        <div className="max-w-3xl mx-auto text-center space-y-4">
+        <div className="max-w-3xl mx-auto text-center space-y-3">
           <p className={`text-xs sm:text-sm text-[#555555] leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
             {isHindi
               ? "चारों वेद, उपनिषद, पुराण, दर्शन, मंत्र, स्तोत्र, ज्योतिष, वास्तु, संस्कार एवं तीर्थ—समस्त शास्त्रीय विषयों का संदर्भ सहित व्यवस्थित अनुशीलन।"
               : "From the Rigveda to classical Upanishads, Puranas, Mantras, Stotras, Jyotisha and Vastu—explore sacred traditions with canonical clarity."}
           </p>
 
-          <div className="pt-2">
+          <div className="pt-1">
             <button
               type="button"
               onClick={onNavigateKnowledge}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-xs hover:shadow-sm transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-2xs hover:shadow-xs transition-all cursor-pointer"
             >
               <span>{isHindi ? "ज्ञान अन्वेषण करें" : "Explore Knowledge Archive"}</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

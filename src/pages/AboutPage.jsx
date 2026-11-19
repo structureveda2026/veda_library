@@ -179,42 +179,133 @@ export default function AboutPage({ onOpenSearch }) {
           </div>
         </div>
 
-        {/* 3. Archival Architecture Overview */}
-        <div className="p-8 rounded-2xl bg-stone-50 border border-[#E5E5E5] space-y-6">
+        {/* 3. Archival Architecture Overview — 4 Layers of Vedic Canon */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-stone-50 border border-[#E5E5E5] space-y-6">
           <div className="max-w-3xl space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] px-3 py-1 rounded-full border border-[#FFD21F]">
-              {isHindi ? "ज्ञान पदानुक्रम" : "Hierarchical Architecture"}
+              {isHindi ? "चतुर्विध वाङ्मय संरचना" : "The 4 Canonical Strata"}
             </span>
             <h3 className="font-serif text-2xl font-bold text-[#111111]">
-              {isHindi ? "चार वेद और उनकी पूर्ण शास्त्रीय शाखाएँ" : "The Four Vedas & Complete Shakha Subdivisions"}
+              {isHindi ? "संहिता, ब्राह्मण, आरण्यक एवं उपनिषद्" : "Samhita, Brahmana, Aranyaka & Upanishad"}
             </h3>
-            <p className="text-sm text-[#555555] font-devanagari">
+            <p className="text-sm text-[#555555] font-devanagari leading-relaxed">
               {isHindi
-                ? "ऋग्वेद (शाकल), यजुर्वेद (माध्यन्दिन, काण्व, तैत्तिरीय), सामवेद (कौथुम, जैमिनीय) और अथर्ववेद (शौनक, पिप्पलाद) की संहिताओं, ब्राह्मणों, आरण्यकों और उपनिषदों की स्पष्ट संरचना।"
-                : "Rigveda (Shakala), Yajurveda (Shukla Madhyandina/Kanva and Krishna Taittiriya), Samaveda (Kauthuma/Jaiminiya), and Atharvaveda (Shaunaka/Paippalada) structured down to Samhitas, Brahmanas, Aranyakas, and Principal Upanishads."}
+                ? "वैदिक साहित्य केवल मंत्रों का संग्रह नहीं है, बल्कि प्रत्येक शाखा में चार सुव्यवस्थित स्तर विद्यमान हैं। वेद लाइब्रेरी इन चारों स्तरों को उनके मूल स्वरूप में प्रस्तुत करती है।"
+                : "The Vedic canon is structured into four canonical layers across all traditional schools, each fulfilling a vital role from primeval hymns to non-dual realization."}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { title: "ऋग्वेद", sub: "१० मण्डल • १०२८ सूक्त", priest: "होतृ (Hotri)", link: "/library/veda?sub=rigveda" },
-              { title: "यजुर्वेद", sub: "शुक्ल व कृष्ण शाखा", priest: "अध्वर्यु (Adhvaryu)", link: "/library/veda?sub=yajurveda" },
-              { title: "सामवेद", sub: "गान एवं साम ऋचाएँ", priest: "उद्गातृ (Udgatri)", link: "/library/veda?sub=samaveda" },
-              { title: "अथर्ववेद", sub: "२० काण्ड • ७३० सूक्त", priest: "ब्रह्मा (Brahma)", link: "/library/veda?sub=atharvaveda" },
-            ].map((v) => (
-              <Link
-                key={v.title}
-                to={v.link}
-                className="p-4 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] transition-all group"
-              >
-                <h4 className="font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441]">
-                  {v.title}
+              {
+                num: "०१",
+                titleHi: "संहिता (Samhita)",
+                titleEn: "Samhita (Mantra Canon)",
+                descHi: "अपौरुषेय मूल मंत्र, सूक्त एवं ऋचाएँ — विश्वामित्र, वसिष्ठ, अत्रि आदि महर्षियों द्वारा अनुभूत दिव्य चेतना।",
+                descEn: "The primeval mantra collections of sacred hymns, prayers, and invocations revealed to the ancient Rishis."
+              },
+              {
+                num: "०२",
+                titleHi: "ब्राह्मण (Brahmana)",
+                titleEn: "Brahmana (Liturgical Exegesis)",
+                descHi: "मंत्रों का यज्ञीय व अनुष्ठानिक विनियोग, वैज्ञानिक कालक्रम, इतिहास एवं गंभीर दार्शनिक व्याख्याएँ।",
+                descEn: "Prose exegesis explaining the ritual context, sacrificial applications, and liturgical science of mantras."
+              },
+              {
+                num: "०३",
+                titleHi: "आरण्यक (Aranyaka)",
+                titleEn: "Aranyaka (Forest Meditations)",
+                descHi: "यज्ञ का अंतर-रूपांतरण, प्राणोपासना, वानप्रस्थ साधना एवं प्रतीकात्मक आध्यात्मिक चिंतन।",
+                descEn: "Contemplative forest treatises detailing esoteric meditations, prana-vidya, and symbolic inner sacrifices."
+              },
+              {
+                num: "०४",
+                titleHi: "उपनिषद् (Upanishad)",
+                titleEn: "Upanishad (Vedanta Metaphysics)",
+                descHi: "ब्रह्मविद्या, आत्मज्ञान, कैवल्य एवं प्रस्थानत्रयी का परम शिखर — 'अहं ब्रह्मास्मि' और 'तत्त्वमसि' का उद्घोष।",
+                descEn: "The culmination of Vedic wisdom (Vedanta) revealing the non-dual identity of Atman and Supreme Brahman."
+              }
+            ].map((layer) => (
+              <div key={layer.num} className="p-4 rounded-xl bg-white border border-[#E5E5E5] space-y-1.5 shadow-2xs">
+                <span className="text-xs font-mono font-bold text-[#D9A441]">{layer.num}</span>
+                <h4 className="font-serif text-base font-bold text-[#111111]">
+                  {isHindi ? layer.titleHi : layer.titleEn}
                 </h4>
-                <p className="text-xs text-[#555555] mt-1">{v.sub}</p>
-                <span className="inline-block mt-2 text-[11px] font-semibold text-[#111111] bg-[#D9A441]/15 px-2 py-0.5 rounded border border-[#D9A441]/40">
-                  {v.priest}
-                </span>
-              </Link>
+                <p className="text-xs text-[#555555] leading-relaxed">
+                  {isHindi ? layer.descHi : layer.descEn}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Four Holy Vedas Grid */}
+          <div className="pt-4 border-t border-[#E5E5E5]">
+            <h4 className="font-serif text-lg font-bold text-[#111111] mb-3">
+              {isHindi ? "चार प्रमुख वेद एवं उनके ऋत्विक" : "The Four Holy Vedas & Presiding Priests"}
+            </h4>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              {[
+                { title: "ऋग्वेद", enTitle: "Rigveda", subHi: "१० मण्डल • १०२८ सूक्त", subEn: "10 Mandalas • 1,028 Suktas", priest: "होतृ (Hotri)", link: "/library/veda?sub=rigveda" },
+                { title: "यजुर्वेद", enTitle: "Yajurveda", subHi: "शुक्ल व कृष्ण शाखा", subEn: "Shukla & Krishna Recensions", priest: "अध्वर्यु (Adhvaryu)", link: "/library/veda?sub=yajurveda" },
+                { title: "सामवेद", enTitle: "Samaveda", subHi: "गान एवं साम ऋचाएँ", subEn: "1,875 Melodic Samas", priest: "उद्गातृ (Udgatri)", link: "/library/veda?sub=samaveda" },
+                { title: "अथर्ववेद", enTitle: "Atharvaveda", subHi: "२० काण्ड • ७३० सूक्त", subEn: "20 Kandas • 5,977 Mantras", priest: "ब्रह्मा (Brahma)", link: "/library/veda?sub=atharvaveda" },
+              ].map((v) => (
+                <Link
+                  key={v.title}
+                  to={v.link}
+                  className="p-3.5 rounded-xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] transition-all group shadow-2xs"
+                >
+                  <h5 className="font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441]">
+                    {isHindi ? v.title : v.enTitle}
+                  </h5>
+                  <p className="text-xs text-[#555555] mt-0.5">{isHindi ? v.subHi : v.subEn}</p>
+                  <span className="inline-block mt-1.5 text-[10px] font-bold text-[#111111] bg-[#FFD21F] px-2 py-0.5 rounded border border-[#FFD21F]">
+                    {v.priest}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 3.5 The Six Vedangas (षडंग वेदाङ्ग) */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-5">
+          <div className="max-w-3xl space-y-1.5">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] px-3 py-1 rounded-full border border-[#FFD21F]">
+              {isHindi ? "षडंग वेदाङ्ग — वेदों के ६ सहायक अंग" : "The Six Vedangas (Limbs of the Veda)"}
+            </span>
+            <h3 className="font-serif text-2xl font-bold text-[#111111]">
+              {isHindi ? "वेदों के शुद्ध उच्चारण, व्याकरण एवं खगोल विधान" : "Phonetics, Grammar, Ritual & Cosmic Astronomy"}
+            </h3>
+            <p className="text-xs sm:text-sm text-[#555555] font-devanagari leading-relaxed">
+              {isHindi
+                ? "प्राचीन काल से वेदों के अर्थ और पाठ को अक्षुण्ण रखने हेतु ६ वेदाङ्गों की रचना की गई। पाणिनीय शिक्षा के अनुसार ये वेदपुरुष के छह अंग हैं।"
+                : "The six auxiliary disciplines formulated to preserve the phonetic precision, grammar, metre, and cosmic calendar of Vedic recitations."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            {[
+              { limb: isHindi ? "घ्राण (नासिका)" : "Nose", nameHi: "शिक्षा (Shiksha)", nameEn: "Shiksha (Phonetics & Svara)", descHi: "उदात्त, अनुदात्त व स्वरित — शुद्ध उच्चारण विज्ञान और वर्णोच्चारण नियम।", descEn: "Phonetic science detailing vowels, consonants, and 3 Vedic pitch accents." },
+              { limb: isHindi ? "हस्त (हाथ)" : "Hands", nameHi: "कल्प (Kalpa)", nameEn: "Kalpa (Ritual Codes)", descHi: "श्रौत, गृह्य, धर्म एवं शुल्ब सूत्र — यज्ञीय वेदी निर्माण व जीवन संस्कार।", descEn: "Sacred liturgical manuals detailing domestic, solemn, and altar geometry." },
+              { limb: isHindi ? "मुख (मुख)" : "Mouth", nameHi: "व्याकरण (Vyakarana)", nameEn: "Vyakarana (Grammar)", descHi: "महर्षि पाणिनि प्रणीत अष्टाध्यायी — संस्कृत शब्दों की प्रकृति व प्रत्यय सिद्धि।", descEn: "Paninian Sanskrit grammatical rules preserving morphological purity." },
+              { limb: isHindi ? "श्रोत्र (कान)" : "Ears", nameHi: "निरुक्त (Nirukta)", nameEn: "Nirukta (Etymology)", descHi: "महर्षि यास्क प्रणीत वैदिक शब्दकोश — दुरूह वैदिक पदों का मूल निर्वचन।", descEn: "Yaska's classical etymology and semantic derivation of Vedic roots." },
+              { limb: isHindi ? "पाद (चरण)" : "Feet", nameHi: "छन्द (Chhandas)", nameEn: "Chhandas (Vedic Metrics)", descHi: "गायत्री, त्रिष्टुप्, जगती, अनुष्टुप् — वैदिक ऋचाओं का वर्ण-मात्रा आधार।", descEn: "Prosody and metrical science regulating the rhythm of Vedic mantras." },
+              { limb: isHindi ? "नेत्र (आँखें)" : "Eyes", nameHi: "ज्योतिष (Jyotisha)", nameEn: "Jyotisha (Vedic Astronomy)", descHi: "लगध ऋषि प्रणीत वेदांग ज्योतिष — काल, ऋतु, तिथि व यज्ञ मुहूर्त का विज्ञान।", descEn: "Astronomical observation calculating auspicious cosmic time and seasons." },
+            ].map((v, idx) => (
+              <div key={idx} className="p-3.5 rounded-xl bg-stone-50 border border-[#E5E5E5] space-y-1 shadow-2xs">
+                <div className="flex items-center justify-between">
+                  <h5 className="font-serif text-sm font-bold text-[#111111]">
+                    {isHindi ? v.nameHi : v.nameEn}
+                  </h5>
+                  <span className="text-[10px] font-bold text-[#D9A441] bg-white px-2 py-0.5 rounded border border-[#E5E5E5]">
+                    {v.limb}
+                  </span>
+                </div>
+                <p className="text-xs text-[#555555] leading-relaxed">
+                  {isHindi ? v.descHi : v.descEn}
+                </p>
+              </div>
             ))}
           </div>
         </div>

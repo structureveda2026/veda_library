@@ -420,7 +420,7 @@ export const CATEGORIES_DATA = {
         enName: "Navagraha Sciences",
         desc: "सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र, शनि, राहु, केतु का स्वरूप व फल।",
         stats: "९ ग्रह",
-        imageKey: "card-jyotisha.jpg"
+        imageKey: "deity-navagraha.jpg"
       }
     ],
     topics: ["सूर्य", "चंद्र", "नक्षत्र", "लग्न", "राशि", "महादशा", "मुहूर्त"],

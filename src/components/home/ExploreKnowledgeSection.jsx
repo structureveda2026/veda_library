@@ -135,10 +135,10 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
   };
 
   return (
-    <section id="categories" className="py-8 sm:py-10 bg-white border-b border-[#E5E5E5] relative">
+    <section id="categories" className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-5 sm:mb-6 gap-3">
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E5E5E5] text-[#555555] mb-2 shadow-xs">
               <span className="w-2 h-2 rounded-full bg-[#FFD21F]" />
@@ -182,7 +182,7 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
         </div>
 
         {/* 6 Core Hub Bento Cards (Crisp White #FFFFFF, 1px border #E5E5E5, top accent #D9A441, badges #FFD21F) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4.5">
           {CORE_HUB_BENTO_CARDS.map((card) => {
             const IconComponent = SACRED_ICON_MAP[card.iconKey] || BookOpen;
             const title = isHindi ? card.hindiTitle : card.title;
@@ -196,16 +196,16 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
               <div
                 key={card.id}
                 onClick={() => handleCardClick(card)}
-                className={`group relative flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 cursor-pointer overflow-hidden border-t-3 ${card.topBorder}`}
+                className={`group relative flex flex-col justify-between p-3.5 sm:p-4.5 rounded-xl sm:rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 cursor-pointer overflow-hidden border-t-3 ${card.topBorder}`}
               >
                 <div>
                   {/* Card Header: Icon Badge & Pill Counter */}
-                  <div className="flex items-start justify-between gap-2.5 mb-3 relative z-10">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105 border border-[#E5E5E5] bg-white text-[#111111]">
-                      <IconComponent className="w-5 h-5 text-[#111111]" />
+                  <div className="flex items-start justify-between gap-2 mb-2 sm:mb-2.5 relative z-10">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105 border border-[#E5E5E5] bg-white text-[#111111] shadow-2xs">
+                      <IconComponent className="w-4 h-4 sm:w-5 sm:h-5 text-[#111111]" />
                     </div>
 
-                    <span className="text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-[#FFD21F] bg-[#FFD21F] text-[#111111] shadow-xs">
+                    <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full border border-[#FFD21F] bg-[#FFD21F] text-[#111111] shadow-2xs">
                       {pillText}
                     </span>
                   </div>
@@ -213,7 +213,7 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                   {/* Title */}
                   <div className="relative z-10">
                     <h3
-                      className={`text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug ${
+                      className={`text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug ${
                         isHindi ? "font-devanagari" : "font-serif"
                       }`}
                     >
@@ -222,7 +222,7 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
 
                     {/* Description */}
                     <p
-                      className={`mt-1.5 text-xs sm:text-sm text-[#555555] leading-relaxed line-clamp-2 ${
+                      className={`mt-1 text-xs text-[#555555] leading-relaxed line-clamp-2 ${
                         isHindi ? "font-devanagari" : ""
                       }`}
                     >
@@ -230,11 +230,11 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                     </p>
 
                     {/* Key item pills */}
-                    <div className="mt-2.5 flex flex-wrap gap-1.5">
+                    <div className="mt-2 flex flex-wrap gap-1 sm:gap-1.5">
                       {tags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className={`text-[10px] font-medium px-2 py-0.5 rounded-md bg-stone-50 text-[#555555] border border-[#E5E5E5] group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors ${
+                          className={`text-[9px] sm:text-[10px] font-medium px-1.5 sm:px-2 py-0.5 rounded-md bg-stone-50 text-[#555555] border border-[#E5E5E5] group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors ${
                             isHindi ? "font-devanagari" : ""
                           }`}
                         >
@@ -246,15 +246,15 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                 </div>
 
                 {/* Bottom Action Row */}
-                <div className="mt-4 pt-3 border-t border-[#E5E5E5] flex items-center justify-between relative z-10">
+                <div className="mt-3 pt-2.5 border-t border-[#E5E5E5] flex items-center justify-between relative z-10">
                   <span className={`text-xs font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors flex items-center gap-1 ${
                     isHindi ? "font-devanagari" : ""
                   }`}>
                     {isHindi ? "अन्वेषण करें" : "Explore Category"}
                   </span>
 
-                  <div className="w-7 h-7 rounded-full bg-white border border-[#E5E5E5] text-[#111111] flex items-center justify-center transition-all duration-300 group-hover:bg-[#FFD21F] group-hover:border-[#FFD21F] group-hover:text-[#111111] group-hover:translate-x-1 shadow-xs">
-                    <ArrowRight className="w-3.5 h-3.5" />
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border border-[#E5E5E5] text-[#111111] flex items-center justify-center transition-all duration-300 group-hover:bg-[#FFD21F] group-hover:border-[#FFD21F] group-hover:text-[#111111] group-hover:translate-x-1 shadow-2xs">
+                    <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   </div>
                 </div>
               </div>

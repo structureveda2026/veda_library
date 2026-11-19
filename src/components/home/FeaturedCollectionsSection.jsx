@@ -20,10 +20,10 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
   const { isHindi } = useLanguage();
 
   return (
-    <section id="featured-collections" className="py-6 sm:py-8 bg-white border-y border-[#E5E5E5]">
+    <section id="featured-collections" className="py-5 sm:py-7 bg-white border-y border-[#E5E5E5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2">
           <div>
             <div className="flex items-center gap-1.5 mb-1">
               <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
@@ -52,7 +52,7 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
         </div>
 
         {/* 4 Compact Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
           {FEATURED_COLLECTIONS.map((col) => {
             const imgSrc = COLLECTION_IMAGES[col.imageKey] || sanctumImg;
             const title = isHindi ? col.hindiTitle : col.title;

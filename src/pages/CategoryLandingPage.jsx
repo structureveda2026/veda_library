@@ -159,6 +159,7 @@ function resolveCardImage(imageKey, textName = "", badge = "") {
   if (combined.includes("पुरुष") || combined.includes("विष्णु")) return deityVishnuImg;
   if (combined.includes("अग्नि") || combined.includes("हवन") || combined.includes("यज्ञ")) return cardYagyaImg;
   if (combined.includes("पूजा") || combined.includes("उपचार")) return cardPujaImg;
+  if (combined.includes("नवग्रह") || combined.includes("navagraha")) return deityNavagrahaImg;
   if (combined.includes("ज्योतिष") || combined.includes("ग्रह")) return cardAstrologyImg;
   if (combined.includes("संस्कार")) return cardSamskaraImg;
   return cardSamhitaImg;

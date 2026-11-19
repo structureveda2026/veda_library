@@ -180,7 +180,7 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
         </div>
 
         {/* Elegant Bento-Style Layout with 1px border (#E5E5E5) & Golden Accent Hover (#D9A441) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
           {VEDA_CARDS_DATA.map((veda) => {
             const title = isHindi ? veda.name : veda.enName;
             const shakhaPill = isHindi ? veda.shakhaCount : veda.enShakhaCount;
@@ -194,11 +194,11 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
               <div
                 key={veda.id}
                 onClick={() => handleSelectVeda(veda.id)}
-                className="group flex flex-col justify-between bg-white rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden cursor-pointer relative"
+                className="group flex flex-col justify-between bg-white rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-2xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 overflow-hidden cursor-pointer relative"
               >
                 <div>
-                  {/* Bento Compartment 1: Image Frame with Authentic Priest & Shakha Badges */}
-                  <div className="relative aspect-16/10 overflow-hidden bg-[#111111]">
+                  {/* Bento Compartment 1: Compact Image Frame with Authentic Priest & Shakha Badges */}
+                  <div className="relative h-24 sm:h-28 w-full overflow-hidden bg-[#111111]">
                     <img
                       src={veda.image}
                       alt={veda.name}
@@ -206,69 +206,67 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
-                    {/* Shakha Count Badge in Brand Yellow #FFD21F with Deep Black #111111 text */}
-                    <div className="absolute top-2.5 right-2.5">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs font-devanagari">
-                        <Layers className="w-3 h-3 text-[#111111]" />
+                    {/* Shakha Count Badge in Brand Yellow #FFD21F */}
+                    <div className="absolute top-2 right-2">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-2xs font-devanagari">
+                        <Layers className="w-2.5 h-2.5 text-[#111111]" />
                         <span>{shakhaPill}</span>
                       </span>
                     </div>
 
-                    {/* Authentic Priest Badge: हौत्र / आध्वर्यव / औद्गात्र / ब्राह्म */}
-                    <div className="absolute bottom-2.5 left-2.5 right-auto">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-[#111111] border border-[#E5E5E5] backdrop-blur-md shadow-xs font-devanagari">
-                        <Crown className="w-3.5 h-3.5 text-[#D9A441]" />
+                    {/* Authentic Priest Badge */}
+                    <div className="absolute bottom-2 left-2 right-auto">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-white/95 text-[#111111] border border-[#E5E5E5] backdrop-blur-md shadow-2xs font-devanagari">
+                        <Crown className="w-3 h-3 text-[#D9A441]" />
                         <span>{traditionLabel}</span>
                       </span>
                     </div>
                   </div>
 
                   {/* Bento Compartment 2: Title, Liturgy Role & Stats */}
-                  <div className="p-3.5 sm:p-4">
+                  <div className="p-3">
                     {/* Single Clean Title */}
-                    <div className="flex items-center justify-between gap-2">
-                      <h3
-                        className={`text-lg sm:text-xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-tight ${
-                          isHindi ? "font-devanagari" : "font-serif"
-                        }`}
-                      >
-                        {title}
-                      </h3>
-                    </div>
+                    <h3
+                      className={`text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-tight ${
+                        isHindi ? "font-devanagari" : "font-serif"
+                      }`}
+                    >
+                      {title}
+                    </h3>
 
                     {/* Liturgical Role Line */}
-                    <p className={`text-xs text-[#D9A441] font-semibold mt-1 flex items-center gap-1 ${isHindi ? "font-devanagari" : ""}`}>
-                      <Sparkles className="w-3 h-3 text-[#D9A441] shrink-0" />
+                    <p className={`text-[11px] text-[#D9A441] font-semibold mt-0.5 flex items-center gap-1 truncate ${isHindi ? "font-devanagari" : ""}`}>
+                      <Sparkles className="w-2.5 h-2.5 text-[#D9A441] shrink-0" />
                       <span className="truncate">
                         {isHindi ? veda.priestRole : veda.enPriestRole}
                       </span>
                     </p>
 
-                    {/* Bento Compartment: Stats Ribbon */}
-                    <div className={`mt-2 px-2.5 py-1 rounded-lg bg-stone-50 border border-[#E5E5E5] text-[10px] sm:text-[11px] font-medium text-[#111111] flex items-center gap-2 ${isHindi ? "font-devanagari" : ""}`}>
-                      <BookOpen className="w-3.5 h-3.5 text-[#D9A441] shrink-0" />
+                    {/* Stats Ribbon */}
+                    <div className={`mt-1.5 px-2 py-0.5 rounded-md bg-stone-50 border border-[#E5E5E5] text-[10px] font-medium text-[#111111] flex items-center gap-1.5 ${isHindi ? "font-devanagari" : ""}`}>
+                      <BookOpen className="w-3 h-3 text-[#D9A441] shrink-0" />
                       <span className="truncate">{statsText}</span>
                     </div>
 
                     {/* Description */}
                     <p
-                      className={`text-xs text-[#555555] mt-2 leading-relaxed line-clamp-2 ${
+                      className={`text-[11px] text-[#555555] mt-1.5 leading-snug line-clamp-2 ${
                         isHindi ? "font-devanagari" : ""
                       }`}
                     >
                       {description}
                     </p>
 
-                    {/* Bento Compartment 3: Canonical Shakhas & Texts */}
-                    <div className="mt-2.5">
-                      <span className={`text-[10px] font-bold text-[#555555] uppercase tracking-wider block mb-1 ${isHindi ? "font-devanagari" : ""}`}>
-                        {isHindi ? "प्रमुख शाखाएँ व संहिता:" : "Key Shakhas & Texts:"}
+                    {/* Bento Compartment 3: Canonical Shakhas */}
+                    <div className="mt-2">
+                      <span className={`text-[9px] font-bold text-[#666666] uppercase tracking-wider block mb-1 ${isHindi ? "font-devanagari" : ""}`}>
+                        {isHindi ? "प्रमुख शाखाएँ:" : "Key Shakhas:"}
                       </span>
                       <div className="flex flex-wrap gap-1">
                         {(isHindi ? veda.shakhaList : (veda.enShakhaList || veda.shakhaList)).slice(0, 3).map((sh, idx) => (
                           <span
                             key={idx}
-                            className={`text-[10px] font-medium px-2 py-0.5 rounded bg-white text-[#555555] border border-[#E5E5E5] group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors truncate max-w-full ${isHindi ? "font-devanagari" : ""}`}
+                            className={`text-[9px] font-medium px-1.5 py-0.2 rounded bg-white text-[#555555] border border-[#E5E5E5] group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors truncate max-w-full ${isHindi ? "font-devanagari" : ""}`}
                           >
                             {sh}
                           </span>
@@ -278,22 +276,22 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                   </div>
                 </div>
 
-                {/* Bento Compartment 4: Explore Button in Brand Yellow #FFD21F */}
-                <div className="p-3.5 sm:p-4 pt-0">
+                {/* Bento Compartment 4: Explore Button */}
+                <div className="p-3 pt-0">
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectVeda(veda.id);
                     }}
-                    className="w-full py-2 sm:py-2.5 px-3 rounded-xl text-center text-xs sm:text-sm font-bold bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] shadow-xs hover:shadow-sm transition-all flex items-center justify-center gap-2 group/btn cursor-pointer active:scale-[0.98]"
+                    className="w-full py-1.5 px-2.5 rounded-lg text-center text-xs font-bold bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] shadow-2xs hover:shadow-xs transition-all flex items-center justify-center gap-1.5 group/btn cursor-pointer active:scale-[0.98]"
                   >
                     <span>
                       {isHindi
                         ? `${veda.name} मूल पाठ व शाखाएँ`
                         : `Read ${veda.enName} & Shakhas`}
                     </span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform" />
+                    <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </div>
