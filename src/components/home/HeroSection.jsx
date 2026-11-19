@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Search,
-  ArrowRight,
-  BookOpen,
-  Volume2,
-  Flame,
-} from "lucide-react";
+import { Search, ArrowRight, BookOpen, Volume2, Flame } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext.jsx";
 import bannerVedaHero from "../../assets/images/library/banners/banner-veda-hero-clean.jpg";
 
@@ -16,10 +10,7 @@ const FEATURED_TOPICS = [
   { hi: "उपनिषद्", en: "Upanishads" },
 ];
 
-export default function HeroSection({
-  onOpenSearch,
-  onNavigateKnowledge,
-}) {
+export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
   const [localQuery, setLocalQuery] = useState("");
   const searchInputRef = useRef(null);
   const { isHindi } = useLanguage();
@@ -57,10 +48,10 @@ export default function HeroSection({
         <img
           src={bannerVedaHero}
           alt="Sacred Vedic Wisdom Sanctuary"
-          className="w-full h-full object-cover object-center scale-102 transition-transform duration-1000 opacity-80"
+          className="w-full h-full object-cover object-center scale-102 transition-transform duration-1000 opacity-90"
         />
         {/* Rich Atmospheric Overlays for High-Contrast Readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/45 to-black/75" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/35 to-black/65" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_20%,_rgba(0,0,0,0.85)_100%)]" />
       </div>
 
@@ -164,9 +155,7 @@ export default function HeroSection({
             className="flex-1 min-h-[42px] sm:min-h-[46px] px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] group"
           >
             <BookOpen className="w-4 h-4 text-[#111111] shrink-0" />
-            <span>
-              {isHindi ? "पुस्तकालय देखें" : "Browse Library"}
-            </span>
+            <span>{isHindi ? "पुस्तकालय देखें" : "Browse Library"}</span>
             <ArrowRight className="w-4 h-4 shrink-0 hidden sm:inline group-hover:translate-x-0.5 transition-transform" />
           </button>
 
@@ -179,9 +168,7 @@ export default function HeroSection({
             className="flex-1 min-h-[42px] sm:min-h-[46px] px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-white/10 hover:bg-white/15 border border-[#D9A441] hover:border-[#FFD21F] text-white font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] backdrop-blur-md"
           >
             <Volume2 className="w-4 h-4 text-[#FFD21F] shrink-0" />
-            <span>
-              {isHindi ? "पावन मंत्र संग्रह" : "Sacred Mantras"}
-            </span>
+            <span>{isHindi ? "पावन मंत्र संग्रह" : "Sacred Mantras"}</span>
           </button>
         </div>
       </div>
