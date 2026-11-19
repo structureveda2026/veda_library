@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, BookOpen, Home, Sparkles, Search, CheckCircle2, Type, X } from "lucide-react";
 import { EKADASH_SKANDHA_CHAPTERS } from "../data/bhagavataEkadashaData.js";
 import bannerTempleGhat from "../assets/images/library/banners/banner-temple-ghat.jpg";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const LABELS = {
   hindi: {
@@ -45,11 +46,29 @@ const LABELS = {
 
 export default function ScriptureChapterIndexPage() {
   const navigate = useNavigate();
-  const [language, setLanguage] = useState("hindi");
+  const { isHindi, setLanguage: setGlobalLang } = useLanguage();
+  const [localLangOverride, setLocalLangOverride] = useState(null);
+
+  useEffect(() => {
+    setLocalLangOverride(null);
+  }, [isHindi]);
+
+  const language = localLangOverride || (isHindi ? "hindi" : "english");
   const [searchFilter, setSearchFilter] = useState("");
   const [fontSize, setFontSize] = useState("default"); // "small", "default", "large"
-  const labels = LABELS[language];
+  const labels = LABELS[isHindi ? "hindi" : "english"];
   const chapterPath = "/library/purana/shrimad-bhagavata/skandha-11";
+
+  const handleLangSelect = (option) => {
+    if (option === "hinglish") {
+      setLocalLangOverride("hinglish");
+    } else {
+      setLocalLangOverride(null);
+      if (setGlobalLang) {
+        setGlobalLang(option === "english" ? "en" : "hi");
+      }
+    }
+  };
 
   const filteredChapters = useMemo(() => {
     if (!searchFilter.trim()) return EKADASH_SKANDHA_CHAPTERS;
@@ -86,7 +105,9 @@ export default function ScriptureChapterIndexPage() {
             {labels.book}
           </Link>
           <span>›</span>
-          <span className="font-semibold text-[#111111]">Ekadasha Skandha</span>
+          <span className="font-semibold text-[#111111]">
+            {isHindi ? "एकादश स्कन्ध" : "Canto 11"}
+          </span>
         </div>
       </div>
 
@@ -106,13 +127,13 @@ export default function ScriptureChapterIndexPage() {
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFD21F] text-[#111111] text-xs font-bold shadow-xs">
               <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
-              <span>श्रीमद्भागवत महापुराण</span>
+              <span>{isHindi ? "श्रीमद्भागवत महापुराण" : "Srimad Bhagavata Mahapurana"}</span>
             </span>
             <span className="px-3 py-1 rounded-full bg-white/15 border border-white/30 text-white/90 text-xs font-semibold backdrop-blur-xs">
-              स्कन्ध ११ • मुक्ति लीला
+              {isHindi ? "स्कन्ध ११ • मुक्ति लीला" : "Canto 11 • Path to Liberation"}
             </span>
             <span className="px-3 py-1 rounded-full bg-[#C62828] text-white text-xs font-bold shadow-xs">
-              ३१ अध्याय
+              {isHindi ? "३१ अध्याय" : "31 Chapters"}
             </span>
           </div>
 
@@ -143,7 +164,7 @@ export default function ScriptureChapterIndexPage() {
             <div className="inline-flex items-center gap-1 rounded-xl border border-[#E5E5E5] bg-white p-0.5 text-xs font-semibold shadow-2xs">
               <span className="px-2 text-[#555555] font-bold flex items-center gap-1">
                 <Type className="w-3 h-3 text-[#D9A441]" />
-                <span>आकार:</span>
+                <span>{isHindi ? "आकार:" : "Size:"}</span>
               </span>
               {[
                 { id: "small", label: "A-" },
@@ -171,7 +192,7 @@ export default function ScriptureChapterIndexPage() {
                 <button
                   key={option}
                   type="button"
-                  onClick={() => setLanguage(option)}
+                  onClick={() => handleLangSelect(option)}
                   aria-pressed={language === option}
                   className={`rounded-lg px-3 py-1 transition-colors cursor-pointer font-bold ${
                     language === option
@@ -205,7 +226,7 @@ export default function ScriptureChapterIndexPage() {
               type="text"
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
-              placeholder="अध्याय संख्या या शीर्षक खोजें..."
+              placeholder={isHindi ? "अध्याय संख्या या शीर्षक खोजें..." : "Search chapter number or title..."}
               className="w-full pl-9 pr-8 py-2 rounded-xl text-xs border border-[#E5E5E5] bg-white focus:outline-none focus:ring-2 focus:ring-[#FFD21F] focus:border-[#D9A441] font-devanagari transition-all"
             />
             {searchFilter && (
@@ -263,11 +284,11 @@ export default function ScriptureChapterIndexPage() {
             <div className="flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-[#D9A441]" />
               <h3 className="font-serif font-bold text-[#111111] text-base">
-                स्रोत, संस्करण एवं संदर्भ विवरण (Source & Bibliographic Reference)
+                {isHindi ? "स्रोत, संस्करण एवं संदर्भ विवरण" : "Source & Bibliographic Citation"}
               </h3>
             </div>
             <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] border border-[#FFD21F]">
-              महापुराण प्रामाण्य
+              {isHindi ? "महापुराण प्रामाण्य" : "Mahapurana Canonical Evidence"}
             </span>
           </div>
 
@@ -275,34 +296,34 @@ export default function ScriptureChapterIndexPage() {
             <table className="w-full text-xs font-devanagari divide-y divide-[#E5E5E5]">
               <tbody className="divide-y divide-[#E5E5E5]">
                 <tr className="bg-[#F9F9F9]">
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555] w-1/3 shrink-0">मूल महापुराण</td>
-                  <td className="px-3.5 py-2.5 text-[#111111] font-bold">श्रीमद्भागवत महापुराण (१८,००० श्लोक)</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555] w-1/3 shrink-0">{isHindi ? "मूल महापुराण" : "Scriptural Corpus"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111] font-bold">{isHindi ? "श्रीमद्भागवत महापुराण (१८,००० श्लोक)" : "Srimad Bhagavata Mahapurana (18,000 Verses)"}</td>
                 </tr>
                 <tr>
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">स्कन्ध</td>
-                  <td className="px-3.5 py-2.5 text-[#111111]">एकादश स्कन्ध (11th Canto — मुक्ति लीला)</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "स्कन्ध" : "Canto"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111]">{isHindi ? "एकादश स्कन्ध (मुक्ति लीला)" : "11th Canto (Mukti-Lila — Path to Liberation)"}</td>
                 </tr>
                 <tr className="bg-[#F9F9F9]">
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">अध्याय संख्या</td>
-                  <td className="px-3.5 py-2.5 text-[#111111] font-semibold">३१ अध्याय (उद्धव गीता प्रसंग सहित)</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "अध्याय संख्या" : "Total Chapters"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111] font-semibold">{isHindi ? "३१ अध्याय (उद्धव गीता प्रसंग सहित)" : "31 Chapters (including Uddhava Gita)"}</td>
                 </tr>
                 <tr>
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">वक्ता (Narrator)</td>
-                  <td className="px-3.5 py-2.5 text-[#111111]">श्रीशुकदेव जी महाराज / भगवान श्रीकृष्ण</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "वक्ता" : "Narrator"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111]">{isHindi ? "श्रीशुकदेव जी महाराज / भगवान श्रीकृष्ण" : "Sri Sukadeva Gosvami / Lord Sri Krishna"}</td>
                 </tr>
                 <tr className="bg-[#F9F9F9]">
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">श्रोता (Listener)</td>
-                  <td className="px-3.5 py-2.5 text-[#111111]">महाराज परीक्षित / उद्धव जी</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "श्रोता" : "Listener"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111]">{isHindi ? "महाराज परीक्षित / उद्धव जी" : "Maharaja Parikshit / Uddhava"}</td>
                 </tr>
                 <tr>
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">छन्द (Metre)</td>
-                  <td className="px-3.5 py-2.5 text-[#D9A441] font-bold">अनुष्टुप् एवं त्रिष्टुप्</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "छन्द" : "Metre"}</td>
+                  <td className="px-3.5 py-2.5 text-[#D9A441] font-bold">{isHindi ? "अनुष्टुप् एवं त्रिष्टुप्" : "Anushtubh & Trishtubh"}</td>
                 </tr>
                 <tr className="bg-[#F9F9F9]">
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">समीक्षक एवं संपादन</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "समीक्षक एवं संपादन" : "Editorial Review"}</td>
                   <td className="px-3.5 py-2.5 text-[#111111] font-semibold flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>Veda Library Editorial Board (विद्वत परिषद द्वारा सत्यापित)</span>
+                    <span>{isHindi ? "Veda Library Editorial Board (विद्वत परिषद द्वारा सत्यापित)" : "Veda Library Editorial Board (Scholarly Verified)"}</span>
                   </td>
                 </tr>
               </tbody>

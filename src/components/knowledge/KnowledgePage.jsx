@@ -15,9 +15,11 @@ import { KNOWLEDGE_BRANCHES } from "../../data/knowledgePageData.js";
 import { SACRED_ICON_MAP } from "../common/SacredIcons.jsx";
 import { SACRED_QUOTE } from "../../data/libraryHomeData.js";
 import bannerTempleGhat from "../../assets/images/library/banners/banner-temple-ghat.jpg";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 export default function KnowledgePage({ onNavigateHome }) {
   const navigate = useNavigate();
+  const { isHindi } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const queryParam = searchParams.get("q") || "";
 
@@ -118,13 +120,13 @@ export default function KnowledgePage({ onNavigateHome }) {
         {
           "@type": "ListItem",
           position: 1,
-          name: "होम (Home)",
+          name: isHindi ? "होम" : "Home",
           item: "https://library.vedastructure.com/"
         },
         {
           "@type": "ListItem",
           position: 2,
-          name: "ज्ञान अन्वेषण (Browse Knowledge)",
+          name: isHindi ? "ज्ञान अन्वेषण" : "Browse Knowledge",
           item: "https://library.vedastructure.com/search"
         }
       ]
@@ -140,7 +142,7 @@ export default function KnowledgePage({ onNavigateHome }) {
         schema={searchSchema}
       />
       {/* 1. Mobile-First Hero Header with Vivid Image Visibility */}
-      <div className="relative bg-[#111111] text-white py-10 sm:py-14 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] overflow-hidden shadow-sm">
+      <div className="relative bg-[#111111] text-white py-5 sm:py-7 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] overflow-hidden shadow-xs">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerTempleGhat}
@@ -153,33 +155,37 @@ export default function KnowledgePage({ onNavigateHome }) {
         </div>
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs font-medium text-white/80 mb-2">
+          <div className="flex items-center gap-2 text-xs font-medium text-white/80 mb-1.5">
             <Link
               to="/"
               className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
             >
               <Home className="w-3.5 h-3.5 text-[#D9A441]" />
-              <span>Home</span>
+              <span>{isHindi ? "होम" : "Home"}</span>
             </Link>
             <span className="text-[#D9A441]">›</span>
             <Link
               to="/library"
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Veda Library
+              {isHindi ? "वेद लाइब्रेरी" : "Veda Library"}
             </Link>
             <span className="text-[#D9A441]">›</span>
-            <span className="text-[#FFD21F] font-semibold">Knowledge Branches</span>
+            <span className="text-[#FFD21F] font-semibold">
+              {isHindi ? "ज्ञान शाखाएँ" : "Knowledge Branches"}
+            </span>
           </div>
 
-          <span className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full mb-2 shadow-xs">
-            १२ ज्ञान शाखाएँ • VEDIC TAXONOMY
+          <span className="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2.5 py-0.5 rounded-full mb-1.5 shadow-xs">
+            {isHindi ? "१२ ज्ञान शाखाएँ • वैदिक वर्गीकरण" : "12 KNOWLEDGE BRANCHES • VEDIC TAXONOMY"}
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-2">
-            Explore Knowledge Branches
+          <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white mb-1">
+            {isHindi ? "ज्ञान शाखाओं का अन्वेषण" : "Explore Knowledge Branches"}
           </h1>
           <p className="text-xs sm:text-sm text-white/90 font-devanagari max-w-2xl leading-relaxed">
-            वेद, वेदाङ्ग, उपनिषद, दर्शन, धर्म, मंत्र, पूजा, ज्योतिष, आयुर्वेद एवं पारंपरिक ज्ञान का संपूर्ण संरचित संग्रह।
+            {isHindi
+              ? "वेद, वेदाङ्ग, उपनिषद, दर्शन, धर्म, मंत्र, पूजा, ज्योतिष, आयुर्वेद एवं पारंपरिक ज्ञान का संपूर्ण संरचित संग्रह।"
+              : "Comprehensive structured archive of Vedas, Vedangas, Upanishads, Darshanas, Mantras and classical Vedic knowledge."}
           </p>
         </div>
       </div>
@@ -198,11 +204,12 @@ export default function KnowledgePage({ onNavigateHome }) {
                   : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111] hover:bg-stone-50"
               }`}
             >
-              All Branches (सभी १२ शाखाएँ)
+              {isHindi ? "सभी १२ शाखाएँ" : "All 12 Branches"}
             </button>
 
             {KNOWLEDGE_BRANCHES.map((b) => {
               const isSelected = selectedBranchId === b.id;
+              const branchLabel = isHindi ? b.hindiTitle : b.title;
               return (
                 <button
                   key={b.id}
@@ -214,7 +221,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                       : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111] hover:bg-stone-50"
                   }`}
                 >
-                  {b.title} ({b.hindiTitle})
+                  {branchLabel}
                 </button>
               );
             })}
@@ -227,7 +234,7 @@ export default function KnowledgePage({ onNavigateHome }) {
               type="text"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="ज्ञान शाखा या विषय खोजें..."
+              placeholder={isHindi ? "ज्ञान शाखा या विषय खोजें..." : "Search knowledge branch or topic..."}
               className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari shadow-xs text-[#111111]"
             />
             {searchQuery && (
@@ -244,14 +251,14 @@ export default function KnowledgePage({ onNavigateHome }) {
       </div>
 
       {/* 3. Main Content: Flowing Knowledge Sections */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-6">
         {filteredBranches.length === 0 ? (
-          <div className="p-12 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
+          <div className="p-6 sm:p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
             <p className="font-serif text-lg font-bold text-[#111111]">
-              खोजे गए शब्द के अनुसार कोई ज्ञान शाखा अथवा विषय नहीं मिला।
+              {isHindi ? "खोजे गए शब्द के अनुसार कोई ज्ञान शाखा अथवा विषय नहीं मिला।" : "No knowledge branches or topics found matching your search."}
             </p>
             <p className="text-xs text-[#555555] font-devanagari">
-              कृपया भिन्न कीवर्ड टाइप करें या फ़िल्टर रीसेट करें।
+              {isHindi ? "कृपया भिन्न कीवर्ड टाइप करें या फ़िल्टर रीसेट करें।" : "Please try a different keyword or reset the filter."}
             </p>
             <button
               type="button"
@@ -261,118 +268,128 @@ export default function KnowledgePage({ onNavigateHome }) {
               }}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFD21F] text-[#111111] text-xs font-bold shadow-xs hover:bg-[#ffe052] cursor-pointer"
             >
-              फ़िल्टर रीसेट करें (Reset Filter)
+              {isHindi ? "फ़िल्टर रीसेट करें" : "Reset Filter"}
             </button>
           </div>
         ) : (
-          filteredBranches.map((branch) => (
-          <section
-            key={branch.id}
-            id={branch.id}
-            className="bg-white p-5 sm:p-7 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-6"
-          >
-            {/* Branch Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E5E5E5] gap-2">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
-                    {branch.hindiTitle}
-                  </span>
-                  <span className="text-stone-300">•</span>
-                  <span className="text-xs text-[#555555] font-medium">
-                    {branch.subItems?.length || branch.cards.length} Sub-divisions
-                  </span>
-                </div>
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
-                  {branch.title}
-                </h2>
-                <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-0.5">
-                  {branch.subtitle}
-                </p>
-              </div>
+          filteredBranches.map((branch) => {
+            const subItemList = isHindi ? (branch.hindiSubItems || branch.subItems) : branch.subItems;
+            const relatedTagList = isHindi ? (branch.hindiRelatedTags || branch.relatedTags) : branch.relatedTags;
+            const branchSubtitle = isHindi ? (branch.hindiSubtitle || branch.subtitle) : branch.subtitle;
 
-              {branch.subItems && (
-                <div className="flex flex-wrap gap-1.5 self-start sm:self-auto">
-                  {branch.subItems.slice(0, 4).map((sub, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-stone-50 text-[#111111] border border-[#E5E5E5]"
-                    >
-                      {sub}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Cards Grid: 1 col on mobile, 2 col on tablet, 3 or 4 col on desktop */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-              {branch.cards.map((card) => {
-                const IconComponent = SACRED_ICON_MAP[card.icon];
-                return (
-                  <div
-                    key={card.id}
-                    onClick={() => handleCardClick(card.id)}
-                    className="group p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 flex items-start gap-3.5 cursor-pointer"
-                  >
-                    {/* Pastel Circle Icon Badge */}
-                    <div
-                      className={`w-12 h-12 sm:w-13 sm:h-13 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105 ${card.badgeBg}`}
-                    >
-                      {IconComponent ? (
-                        <IconComponent className={`w-6 h-6 ${card.iconColor}`} />
-                      ) : (
-                        <BookOpen className="w-5 h-5 text-[#D9A441]" />
-                      )}
+            return (
+              <section
+                key={branch.id}
+                id={branch.id}
+                className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-4"
+              >
+                {/* Branch Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E5E5E5] gap-2">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
+                        {isHindi ? branch.hindiTitle : branch.title}
+                      </span>
+                      <span className="text-stone-300">•</span>
+                      <span className="text-xs text-[#555555] font-medium">
+                        {branch.subItems?.length || branch.cards.length} {isHindi ? "उप-विभाग" : "Sub-divisions"}
+                      </span>
                     </div>
-
-                    {/* Content Box */}
-                    <div className="flex-1 min-w-0 flex flex-col justify-between min-h-[85px]">
-                      <div>
-                        <div className="flex items-center justify-between gap-1">
-                          <h3 className="font-serif text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors truncate">
-                            {card.title}
-                          </h3>
-                          <span className="text-[10px] font-devanagari text-[#D9A441] font-semibold flex-shrink-0">
-                            {card.hindiTitle}
-                          </span>
-                        </div>
-                        <p className="text-xs text-[#555555] mt-1 leading-relaxed line-clamp-2">
-                          {card.desc}
-                        </p>
-                      </div>
-
-                      <div className="mt-3 pt-2 border-t border-[#E5E5E5] flex items-center justify-between text-xs">
-                        <span className="text-[11px] font-medium text-[#555555]">
-                          {card.sectionsCount}
-                        </span>
-                        <span className="text-[#111111] group-hover:text-[#D9A441] font-bold flex items-center gap-1 transition-colors">
-                          Explore →
-                        </span>
-                      </div>
-                    </div>
+                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
+                      {isHindi ? branch.hindiTitle : branch.title}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-0.5">
+                      {branchSubtitle}
+                    </p>
                   </div>
-                );
-              })}
-            </div>
 
-            {/* Related Tags */}
-            {branch.relatedTags && (
-              <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-[#555555]">
-                <span className="font-semibold text-[#111111] text-[11px]">Related:</span>
-                {branch.relatedTags.map((t) => (
-                  <span
-                    key={t}
-                    onClick={() => navigate("/library/veda")}
-                    className="px-2 py-0.5 rounded-md bg-stone-50 text-[#555555] hover:bg-stone-100 hover:text-[#111111] border border-[#E5E5E5] cursor-pointer transition-colors text-[11px]"
-                  >
-                    #{t}
-                  </span>
-                ))}
-              </div>
-            )}
-          </section>
-        )))}
+                  {subItemList && subItemList.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 self-start sm:self-auto">
+                      {subItemList.slice(0, 4).map((sub, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-stone-50 text-[#111111] border border-[#E5E5E5]"
+                        >
+                          {sub}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Cards Grid: 1 col on mobile, 2 col on tablet, 3 or 4 col on desktop */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                  {branch.cards.map((card) => {
+                    const IconComponent = SACRED_ICON_MAP[card.icon];
+                    const cardTitle = isHindi ? card.hindiTitle : card.title;
+                    const cardDesc = isHindi ? (card.hindiDesc || card.desc) : card.desc;
+                    const cardCount = isHindi ? (card.hindiSectionsCount || card.sectionsCount) : card.sectionsCount;
+
+                    return (
+                      <div
+                        key={card.id}
+                        onClick={() => handleCardClick(card.id)}
+                        className="group p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 flex items-start gap-3.5 cursor-pointer"
+                      >
+                        {/* Pastel Circle Icon Badge */}
+                        <div
+                          className={`w-12 h-12 sm:w-13 sm:h-13 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105 ${card.badgeBg}`}
+                        >
+                          {IconComponent ? (
+                            <IconComponent className={`w-6 h-6 ${card.iconColor}`} />
+                          ) : (
+                            <BookOpen className="w-5 h-5 text-[#D9A441]" />
+                          )}
+                        </div>
+
+                        {/* Content Box */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-between min-h-[85px]">
+                          <div>
+                            <div className="flex items-center justify-between gap-1">
+                              <h3 className="font-serif text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors truncate">
+                                {cardTitle}
+                              </h3>
+                            </div>
+                            <p className="text-xs text-[#555555] mt-1 leading-relaxed line-clamp-2 font-devanagari">
+                              {cardDesc}
+                            </p>
+                          </div>
+
+                          <div className="mt-3 pt-2 border-t border-[#E5E5E5] flex items-center justify-between text-xs">
+                            <span className="text-[11px] font-medium text-[#555555]">
+                              {cardCount}
+                            </span>
+                            <span className="text-[#111111] group-hover:text-[#D9A441] font-bold flex items-center gap-1 transition-colors">
+                              {isHindi ? "अन्वेषण करें →" : "Explore →"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Related Tags */}
+                {relatedTagList && relatedTagList.length > 0 && (
+                  <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-[#555555]">
+                    <span className="font-semibold text-[#111111] text-[11px]">
+                      {isHindi ? "संबंधित विषय:" : "Related:"}
+                    </span>
+                    {relatedTagList.map((t) => (
+                      <span
+                        key={t}
+                        onClick={() => navigate("/library/veda")}
+                        className="px-2 py-0.5 rounded-md bg-stone-50 text-[#555555] hover:bg-stone-100 hover:text-[#111111] border border-[#E5E5E5] cursor-pointer transition-colors text-[11px]"
+                      >
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </section>
+            );
+          })
+        )}
 
         {/* Sacred Quote Card */}
         <div className="relative rounded-2xl overflow-hidden border border-[#D9A441]/50 shadow-xs bg-white p-6 sm:p-8 text-center">

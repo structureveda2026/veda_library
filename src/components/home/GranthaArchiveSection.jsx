@@ -34,11 +34,11 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
   return (
     <section
       id="granthas"
-      className="py-10 sm:py-14 bg-white border-b border-[#E5E5E5] relative"
+      className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5] relative"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-4">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#FFD21F]/40 mb-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#FFD21F]" />

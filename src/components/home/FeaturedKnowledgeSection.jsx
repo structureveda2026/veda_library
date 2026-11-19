@@ -19,6 +19,7 @@ const FEATURED_ITEMS = [
     desc: "वैदिक संदर्भ और महत्व — ऋग्वेद १०.९० से विराट् पुरुष की अवधारणा, सृष्टि प्रक्रिया एवं यज्ञीय चेतना का विस्तृत विश्लेषण।",
     source: "ऋग्वेद १०.९०",
     cta: "Read Article",
+    ctaHi: "लेख पढ़ें",
   },
   {
     id: "gayatri-mantra",
@@ -28,6 +29,7 @@ const FEATURED_ITEMS = [
     desc: "ऋग्वेद ३.६२.१० — विश्वामित्र ऋषि द्वारा द्रष्ट, सवितृ देवता, गायत्री छंद — संपूर्ण सस्वर पदच्छेद, अन्वय व तात्विक अर्थ।",
     source: "ऋग्वेद ३.६२.१०",
     cta: "Explore Mantra",
+    ctaHi: "मंत्र देखें",
   },
   {
     id: "bhagavad-gita",
@@ -37,6 +39,7 @@ const FEATURED_ITEMS = [
     desc: "१८ अध्याय, ७०० श्लोक — कर्मयोग, ज्ञानयोग और भक्तियोग का अमर उपदेश। महाभारत के भीष्मपर्व से उद्धृत सार्वकालिक नीति।",
     source: "महाभारत, भीष्मपर्व",
     cta: "Read Grantha",
+    ctaHi: "ग्रंथ पढ़ें",
   },
   {
     id: "dharma-topic",
@@ -46,6 +49,7 @@ const FEATURED_ITEMS = [
     desc: "वेदों, उपनिषदों और स्मृतियों में धर्म की परिभाषा — धारणाद्धर्म इत्याहुर्धर्मो धारयते प्रजाः। सनातन जीवन दर्शन का सारांश।",
     source: "वैदिक जीवन दर्शन",
     cta: "Explore Topic",
+    ctaHi: "विषय समझें",
   },
   {
     id: "rudra-sukta",
@@ -55,6 +59,7 @@ const FEATURED_ITEMS = [
     desc: "यजुर्वेद के रुद्राध्याय का परिचय — ११ अनुवाक, नमकम् और चमकम् की संरचना, फलश्रुति एवं वैदिक अभिषेक विधि-विधान।",
     source: "कृष्ण यजुर्वेद १६",
     cta: "Read Article",
+    ctaHi: "लेख पढ़ें",
   },
   {
     id: "upanishad-intro",
@@ -64,6 +69,7 @@ const FEATURED_ITEMS = [
     desc: "ईश, केन, कठ, मुण्डक, माण्डूक्य, तैत्तिरीय — आत्मज्ञान, ब्रह्मविद्या व परम सत्य की प्रत्यक्ष अनुभूति का अमूल्य पथ।",
     source: "वेदांत / श्रुति",
     cta: "Explore Upanishads",
+    ctaHi: "उपनिषद देखें",
   },
 ];
 
@@ -79,11 +85,11 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
   return (
     <section
       id="featured"
-      className="py-10 sm:py-14 bg-white border-b border-[#E5E5E5] relative"
+      className="py-8 sm:py-10 bg-white border-b border-[#E5E5E5] relative"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-3">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#FFD21F]/40 mb-2">
               <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
@@ -107,7 +113,7 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
         </div>
 
         {/* Filter Tabs: Shadcn Pill Design */}
-        <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-1 no-scrollbar">
+        <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1 no-scrollbar">
           {FEATURED_TABS_CONFIG.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -115,7 +121,7 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                className={`flex-shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
                   isActive
                     ? "bg-[#FFD21F] text-[#111111] font-bold border border-[#FFD21F] shadow-xs"
                     : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#FFD21F] hover:bg-[#FFD21F]/15 hover:text-[#111111]"
@@ -128,17 +134,17 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
         </div>
 
         {/* Cards Grid: Crisp 1px border (#E5E5E5), hover golden border (#D9A441), Refined Badges in #FFD21F */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {filteredItems.map((item) => (
             <div
               key={item.id}
               onClick={onNavigateKnowledge}
-              className="group flex flex-col justify-between bg-white rounded-2xl border border-[#E5E5E5] shadow-xs hover:shadow-lg hover:border-[#D9A441] hover:-translate-y-1 transition-all duration-300 p-5 sm:p-6 cursor-pointer"
+              className="group flex flex-col justify-between bg-white rounded-2xl border border-[#E5E5E5] shadow-xs hover:shadow-md hover:border-[#D9A441] hover:-translate-y-0.5 transition-all duration-300 p-4 sm:p-4.5 cursor-pointer"
             >
               <div>
                 {/* Refined Card Badge in Brand Yellow #FFD21F with Deep Black #111111 text */}
-                <div className="flex items-center justify-between gap-2 mb-3.5">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs">
+                <div className="flex items-center justify-between gap-2 mb-2.5">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#111111]" />
                     <span>{item.badge}</span>
                   </span>
@@ -148,24 +154,24 @@ export default function FeaturedKnowledgeSection({ onNavigateKnowledge }) {
                 </div>
 
                 {/* High-Contrast Title */}
-                <h3 className="font-serif text-lg sm:text-xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug mb-2 font-devanagari">
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug mb-1.5 font-devanagari">
                   {item.title}
                 </h3>
 
                 {/* High-Contrast Description */}
-                <p className="font-devanagari text-xs sm:text-sm text-[#555555] leading-relaxed line-clamp-3">
+                <p className="font-devanagari text-xs text-[#555555] leading-relaxed line-clamp-3">
                   {item.desc}
                 </p>
               </div>
 
               {/* Bottom CTA with arrow slide micro-interaction */}
-              <div className="mt-5 pt-3.5 border-t border-[#E5E5E5] flex items-center justify-between">
+              <div className="mt-3.5 pt-2 border-t border-[#E5E5E5] flex items-center justify-between">
                 <span className="text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center gap-1.5 transition-colors">
-                  <span>{item.cta}</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
+                  <span>{isHindi ? item.ctaHi : item.cta}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </span>
-                <span className="text-[10px] font-semibold text-[#555555] uppercase tracking-wider">
-                  Read Online
+                <span className="text-[10px] font-semibold text-[#555555] uppercase tracking-wider font-devanagari">
+                  {isHindi ? "ऑनलाइन अध्ययन" : "Read Online"}
                 </span>
               </div>
             </div>

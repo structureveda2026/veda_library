@@ -79,13 +79,13 @@ export default function EditorialPolicyPage() {
           </Link>
           <span className="text-[#D9A441]">›</span>
           <span className="text-[#111111] font-bold">
-            {isHindi ? "संपादकीय नीति (Editorial Policy)" : "Editorial Policy & Classical Standards"}
+            {isHindi ? "संपादकीय नीति" : "Editorial Policy & Classical Standards"}
           </span>
         </div>
       </div>
 
       {/* Header Banner */}
-      <section className="relative bg-[#111111] text-white py-14 sm:py-16 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
+      <section className="relative bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerSanctum}
@@ -115,7 +115,7 @@ export default function EditorialPolicyPage() {
       </section>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* 1. Five Stage Publishing Workflow (Document Section 7) */}
         <section className="space-y-4">
           <div className="border-b border-[#E5E5E5] pb-3">

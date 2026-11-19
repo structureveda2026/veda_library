@@ -29,14 +29,15 @@ import {
 import { FALLBACK_BLOG_CATEGORIES, FALLBACK_BLOGS } from "../data/blogFallbackData.js";
 import AstromantraSidebar from "../components/blog/AstromantraSidebar.jsx";
 import bannerAltar from "../assets/images/library/banners/banner-altar.png";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const DEITIES = [
-  { id: "all", label: "All Deities (समस्त देव)" },
-  { id: "shiva", label: "Lord Shiva (भगवान शिव)" },
-  { id: "vishnu", label: "Lord Vishnu (भगवान विष्णु)" },
-  { id: "devi", label: "Maa Lakshmi & Durga (देवी)" },
-  { id: "surya", label: "Surya Deva (सूर्य देव)" },
-  { id: "vedic", label: "Vedic Rites / Cosmic (वैदिक)" },
+  { id: "all", labelHi: "समस्त देव", labelEn: "All Deities" },
+  { id: "shiva", labelHi: "भगवान शिव", labelEn: "Lord Shiva" },
+  { id: "vishnu", labelHi: "भगवान विष्णु", labelEn: "Lord Vishnu" },
+  { id: "devi", labelHi: "देवी (दुर्गा व लक्ष्मी)", labelEn: "Maa Lakshmi & Durga" },
+  { id: "surya", labelHi: "सूर्य देव", labelEn: "Surya Deva" },
+  { id: "vedic", labelHi: "वैदिक / ब्रह्माण्डीय", labelEn: "Vedic Rites" },
 ];
 
 /**
@@ -81,6 +82,7 @@ function playTempleChime(freq = 528, count = 1) {
 
 export default function MantraStotraHubPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isHindi } = useLanguage();
 
   const currentCategory = searchParams.get("category") || "all";
   const currentDeity = searchParams.get("deity") || "all";
@@ -337,10 +339,10 @@ export default function MantraStotraHubPage() {
               className="hover:text-[#D9A441] transition-colors flex items-center gap-1 cursor-pointer"
             >
               <Home className="w-3.5 h-3.5 text-[#D9A441]" />
-              <span>Library</span>
+              <span>{isHindi ? "पुस्तकालय" : "Library"}</span>
             </Link>
             <span className="text-[#D9A441]">›</span>
-            <span className="text-[#111111] font-bold">Mantra & Stotra Sanctuary (मंत्र एवं स्तोत्र साधना)</span>
+            <span className="text-[#111111] font-bold">{isHindi ? "मंत्र एवं स्तोत्र साधना" : "Mantra & Stotra Sanctuary"}</span>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -355,7 +357,7 @@ export default function MantraStotraHubPage() {
               }`}
             >
               <Bell className="w-3.5 h-3.5 text-[#C62828]" />
-              <span>डिजिटल जप माला {japaCount > 0 ? `(${japaCount}/${japaTarget})` : "(108)"}</span>
+              <span>{isHindi ? "डिजिटल जप माला" : "Digital Japa Mala"} {japaCount > 0 ? `(${japaCount}/${japaTarget})` : "(108)"}</span>
             </button>
           </div>
         </div>
@@ -376,17 +378,19 @@ export default function MantraStotraHubPage() {
         <div className="relative z-10 max-w-7xl mx-auto text-center space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFD21F] text-[#111111] text-xs font-bold shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-[#111111]" />
-            <span className="font-devanagari">षडङ्ग विधान एवं सस्वर पाठ</span>
+            <span className="font-devanagari">{isHindi ? "षडङ्ग विधान एवं सस्वर पाठ" : "6-Fold Vedic Canon & Chanting"}</span>
             <span>•</span>
-            <span>Authentic Chanting Archive</span>
+            <span>{isHindi ? "प्रामाणिक जप संग्रह" : "Authentic Chanting Archive"}</span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
-            Vedic Mantras, Stotras & Suktas
+            {isHindi ? "वैदिक मन्त्र, स्तोत्र एवं सूक्त" : "Vedic Mantras, Stotras & Suktas"}
           </h1>
 
           <p className="max-w-2xl mx-auto text-sm sm:text-base text-white/90 leading-relaxed font-sans drop-shadow-xs">
-            शुद्ध देवनागरी संस्कृत मन्त्र, षडङ्ग विधान (ऋषि, छन्द, देवता, बीज, शक्ति, कीलकम्), सस्वर ध्वनि उच्चारण एवं जप विधि।
+            {isHindi
+              ? "शुद्ध देवनागरी संस्कृत मन्त्र, षडङ्ग विधान (ऋषि, छन्द, देवता, बीज, शक्ति, कीलकम्), सस्वर ध्वनि उच्चारण एवं जप विधि।"
+              : "Pristine Devanagari Sanskrit mantras with 6-fold Shadanga Vidhi, authentic phonetic chanting, and traditional Japa rules."}
           </p>
 
           {/* Search Box */}
@@ -399,7 +403,7 @@ export default function MantraStotraHubPage() {
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="मंत्र या स्तोत्र खोजें (उदा: महामृत्युंजय, गायत्री, शिव ताण्डव, कनकधारा, पुरुष सूक्त)..."
+                placeholder={isHindi ? "मंत्र या स्तोत्र खोजें (उदा: महामृत्युंजय, गायत्री, शिव ताण्डव, पुरुष सूक्त)..." : "Search mantras or stotras (e.g. Mahamrityunjaya, Gayatri, Shiva Tandava)..."}
                 className="w-full pl-12 pr-28 py-3.5 rounded-2xl bg-white/95 backdrop-blur-sm border border-[#E5E5E5] text-sm text-[#111111] placeholder:text-[#555555] focus:outline-none focus:ring-2 focus:ring-[#FFD21F] focus:border-[#D9A441] transition-all shadow-md font-devanagari"
               />
               {searchInput && (
@@ -415,7 +419,7 @@ export default function MantraStotraHubPage() {
                 type="submit"
                 className="absolute right-2 px-5 py-2 rounded-xl bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] font-bold text-xs shadow-md transition-all cursor-pointer border border-[#FFD21F]"
               >
-                खोजें
+                {isHindi ? "खोजें" : "Search"}
               </button>
             </form>
           </div>
@@ -434,7 +438,7 @@ export default function MantraStotraHubPage() {
                       : "bg-[#111111]/80 border border-white/20 text-white/90 hover:bg-white/10 hover:text-white"
                   }`}
                 >
-                  {deity.label}
+                  {isHindi ? deity.labelHi : deity.labelEn}
                 </button>
               );
             })}
@@ -453,10 +457,12 @@ export default function MantraStotraHubPage() {
                 </div>
                 <div>
                   <h3 className="font-serif text-lg sm:text-xl font-bold text-[#111111]">
-                    डिजिटल जप माला काउंटर (Digital Japa Mala • 108 Chants)
+                    {isHindi ? "डिजिटल जप माला काउंटर (१०८ जप)" : "Digital Japa Mala Counter (108 Chants)"}
                   </h3>
                   <p className="text-xs text-[#555555] font-devanagari">
-                    मंत्र का एकाग्रचित्त जप करें। प्रत्येक जप पर टैप करें अथवा कीबोर्ड का Space दबाएँ।
+                    {isHindi
+                      ? "मंत्र का एकाग्रचित्त जप करें। प्रत्येक जप पर टैप करें अथवा कीबोर्ड का Space दबाएँ।"
+                      : "Chant with focused awareness. Tap on each count or press the Spacebar."}
                   </p>
                 </div>
               </div>
@@ -465,7 +471,7 @@ export default function MantraStotraHubPage() {
                 <button
                   type="button"
                   onClick={() => setJapaSound((p) => !p)}
-                  title={japaSound ? "मंदिर घंटी ध्वनि चालू है" : "ध्वनि म्यूट है"}
+                  title={japaSound ? (isHindi ? "मंदिर घंटी ध्वनि चालू है" : "Bell chime enabled") : (isHindi ? "ध्वनि म्यूट है" : "Chime muted")}
                   className="p-2 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-[#111111] transition-colors cursor-pointer shadow-2xs"
                 >
                   {japaSound ? <Volume2 className="w-4 h-4 text-[#D9A441]" /> : <VolumeX className="w-4 h-4 text-[#555555]" />}
@@ -473,7 +479,7 @@ export default function MantraStotraHubPage() {
                 <button
                   type="button"
                   onClick={handleResetJapa}
-                  title="माला रीसेट करें"
+                  title={isHindi ? "माला रीसेट करें" : "Reset Mala"}
                   className="p-2 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-[#111111] transition-colors cursor-pointer shadow-2xs"
                 >
                   <RotateCcw className="w-4 h-4 text-[#555555]" />
@@ -491,7 +497,7 @@ export default function MantraStotraHubPage() {
             {/* Target Presets & Stats */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-xs font-bold text-[#555555]">संकल्प लक्ष्य:</span>
+                <span className="text-xs font-bold text-[#555555]">{isHindi ? "संकल्प लक्ष्य:" : "Sankalpa Target:"}</span>
                 {[11, 21, 54, 108].map((target) => (
                   <button
                     key={target}
@@ -506,17 +512,17 @@ export default function MantraStotraHubPage() {
                         : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441]"
                     }`}
                   >
-                    {target} जप
+                    {target} {isHindi ? "जप" : "chants"}
                   </button>
                 ))}
               </div>
 
               <div className="flex items-center gap-3 text-xs font-bold">
                 <span className="px-3 py-1 rounded-xl bg-stone-50 border border-[#E5E5E5] text-[#111111]">
-                  पूर्ण माला: <strong className="text-[#D9A441]">{malasDone}</strong>
+                  {isHindi ? "पूर्ण माला:" : "Completed Malas:"} <strong className="text-[#D9A441]">{malasDone}</strong>
                 </span>
                 <span className="px-3 py-1 rounded-xl bg-stone-50 border border-[#E5E5E5] text-[#111111]">
-                  प्रगति: <strong className="text-[#C62828]">{japaProgress}%</strong>
+                  {isHindi ? "प्रगति:" : "Progress:"} <strong className="text-[#C62828]">{japaProgress}%</strong>
                 </span>
               </div>
             </div>
@@ -560,13 +566,17 @@ export default function MantraStotraHubPage() {
                     / {japaTarget}
                   </span>
                   <span className="text-[10px] font-bold text-[#C62828] mt-0.5">
-                    ॐ जपें
+                    {isHindi ? "ॐ जपें" : "Chant Om"}
                   </span>
                 </button>
               </div>
 
               <p className="text-xs text-[#555555] font-devanagari mt-3">
-                टैप करें अथवा कीबोर्ड का <strong>Spacebar</strong> दबाएँ
+                {isHindi ? (
+                  <>टैप करें अथवा कीबोर्ड का <strong>Spacebar</strong> दबाएँ</>
+                ) : (
+                  <>Tap or press <strong>Spacebar</strong> on keyboard</>
+                )}
               </p>
             </div>
           </div>
@@ -594,7 +604,7 @@ export default function MantraStotraHubPage() {
                           : "bg-white text-[#555555] hover:text-[#111111] hover:border-[#D9A441] border-[#E5E5E5]"
                       }`}
                     >
-                      <span>{cat.nameHi}</span>
+                      <span>{isHindi ? cat.nameHi : cat.nameEn}</span>
                     </button>
                   );
                 })}
@@ -602,9 +612,9 @@ export default function MantraStotraHubPage() {
 
               {/* Count Indicator */}
               <div className="text-xs font-semibold text-[#555555] shrink-0">
-                <span>उपलब्ध: </span>
+                <span>{isHindi ? "उपलब्ध: " : "Available: "}</span>
                 <strong className="text-[#111111] font-bold">{filteredMantras.length}</strong>
-                <span> पावन मंत्र व स्तोत्र</span>
+                <span>{isHindi ? " पावन मंत्र व स्तोत्र" : " Mantras & Stotras"}</span>
               </div>
             </div>
 
@@ -612,7 +622,7 @@ export default function MantraStotraHubPage() {
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
               <span className="text-[#555555] font-bold mr-1 shrink-0 flex items-center gap-1">
                 <Flame className="w-3.5 h-3.5 text-[#C62828]" />
-                <span>देवता:</span>
+                <span>{isHindi ? "देवता:" : "Deity:"}</span>
               </span>
               {DEITIES.map((deity) => {
                 const isActive = currentDeity === deity.id;
@@ -626,7 +636,7 @@ export default function MantraStotraHubPage() {
                         : "bg-white text-[#555555] hover:text-[#111111] hover:border-[#D9A441] border-[#E5E5E5]"
                     }`}
                   >
-                    <span>{deity.label}</span>
+                    <span>{isHindi ? deity.labelHi : deity.labelEn}</span>
                   </button>
                 );
               })}
@@ -637,12 +647,16 @@ export default function MantraStotraHubPage() {
               <div className="flex flex-wrap items-center gap-2 p-3 rounded-xl bg-stone-50 border border-[#E5E5E5] text-xs">
                 <span className="font-bold text-[#111111] flex items-center gap-1">
                   <Filter className="w-3.5 h-3.5 text-[#D9A441]" />
-                  Active Filters:
+                  {isHindi ? "सक्रिय फ़िल्टर:" : "Active Filters:"}
                 </span>
 
                 {currentCategory !== "all" && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white border border-[#E5E5E5] font-semibold text-[#111111]">
-                    Category: {MANTRA_CATEGORIES.find((c) => c.id === currentCategory)?.nameHi || currentCategory}
+                    {isHindi ? "श्रेणी: " : "Category: "}
+                    {(() => {
+                      const cat = MANTRA_CATEGORIES.find((c) => c.id === currentCategory);
+                      return isHindi ? (cat?.nameHi || currentCategory) : (cat?.nameEn || cat?.nameHi || currentCategory);
+                    })()}
                     <button onClick={() => updateParams({ category: "all" })} className="text-stone-400 hover:text-stone-800 ml-1">
                       <X className="w-3 h-3" />
                     </button>
@@ -651,7 +665,11 @@ export default function MantraStotraHubPage() {
 
                 {currentDeity !== "all" && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white border border-[#E5E5E5] font-semibold text-[#111111]">
-                    Deity: {DEITIES.find((d) => d.id === currentDeity)?.label || currentDeity}
+                    {isHindi ? "देवता: " : "Deity: "}
+                    {(() => {
+                      const deity = DEITIES.find((d) => d.id === currentDeity);
+                      return isHindi ? (deity?.labelHi || currentDeity) : (deity?.labelEn || deity?.labelHi || currentDeity);
+                    })()}
                     <button onClick={() => updateParams({ deity: "all" })} className="text-stone-400 hover:text-stone-800 ml-1">
                       <X className="w-3 h-3" />
                     </button>
@@ -660,7 +678,7 @@ export default function MantraStotraHubPage() {
 
                 {currentSearch && (
                   <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white border border-[#E5E5E5] font-semibold text-[#111111]">
-                    Search: "{currentSearch}"
+                    {isHindi ? "खोज: " : "Search: "} "{currentSearch}"
                     <button onClick={handleClearSearch} className="text-stone-400 hover:text-stone-800 ml-1">
                       <X className="w-3 h-3" />
                     </button>
@@ -671,26 +689,26 @@ export default function MantraStotraHubPage() {
                   onClick={() => setSearchParams({})}
                   className="text-xs font-bold text-[#111111] hover:text-[#D9A441] underline ml-auto cursor-pointer"
                 >
-                  रीसेट करें (Reset All)
+                  {isHindi ? "सभी फ़िल्टर रीसेट करें" : "Reset All Filters"}
                 </button>
               </div>
             )}
 
             {/* Mantras & Stotras Stream Cards */}
             {filteredMantras.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-[#E5E5E5] p-10 text-center space-y-3">
+              <div className="bg-white rounded-2xl border border-[#E5E5E5] p-6 sm:p-8 text-center space-y-3">
                 <BookOpen className="w-10 h-10 text-[#D9A441] mx-auto opacity-70" />
                 <h3 className="font-serif text-lg font-bold text-[#111111]">
-                  कोई मंत्र या स्तोत्र नहीं मिला (No Mantras Found)
+                  {isHindi ? "कोई मंत्र या स्तोत्र नहीं मिला" : "No Mantras or Stotras Found"}
                 </h3>
                 <p className="text-xs text-[#555555] max-w-sm mx-auto">
-                  कृपया भिन्न कीवर्ड अथवा श्रेणी का चयन करें।
+                  {isHindi ? "कृपया भिन्न कीवर्ड अथवा श्रेणी का चयन करें।" : "Please select a different keyword or category."}
                 </p>
                 <button
                   onClick={() => setSearchParams({})}
                   className="px-4 py-2 rounded-xl bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] font-bold text-xs shadow-xs cursor-pointer transition-colors border border-[#FFD21F]"
                 >
-                  सभी मंत्र देखें
+                  {isHindi ? "सभी मंत्र देखें" : "View All Mantras"}
                 </button>
               </div>
             ) : (
@@ -711,12 +729,12 @@ export default function MantraStotraHubPage() {
                       <div className="bg-stone-50 px-5 py-3 border-b border-[#E5E5E5] flex flex-wrap items-center justify-between gap-2 text-xs">
                         <div className="flex items-center gap-2">
                           <span className="px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] font-bold text-[10px] uppercase tracking-wider border border-[#FFD21F]">
-                            {mantra.categoryLabel?.hi || mantra.category}
+                            {isHindi ? (mantra.categoryLabel?.hi || mantra.category) : (mantra.categoryLabel?.en || mantra.categoryLabel?.hi || mantra.category)}
                           </span>
                           <span className="text-[#E5E5E5]">•</span>
                           <span className="font-bold text-[#C62828] flex items-center gap-1 text-[11px]">
                             <Flame className="w-3.5 h-3.5 text-[#C62828]" />
-                            {mantra.deity?.hi || mantra.deity?.en}
+                            {isHindi ? (mantra.deity?.hi || mantra.deity?.en) : (mantra.deity?.en || mantra.deity?.hi)}
                           </span>
                         </div>
 
@@ -727,7 +745,7 @@ export default function MantraStotraHubPage() {
                           </span>
                           <span className="flex items-center gap-1">
                             <Eye className="w-3 h-3 text-[#D9A441]" />
-                            {mantra.viewsCount?.toLocaleString()} पाठ
+                            {mantra.viewsCount?.toLocaleString()} {isHindi ? "पाठ" : "chants"}
                           </span>
                         </div>
                       </div>
@@ -741,14 +759,14 @@ export default function MantraStotraHubPage() {
                             className="group-hover:text-[#D9A441] transition-colors"
                           >
                             <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#111111] leading-snug">
-                              {mantra.title.hi}
+                              {isHindi ? mantra.title.hi : (mantra.title.en || mantra.title.hi)}
                             </h2>
                             <p className="font-sans text-xs sm:text-sm font-semibold text-[#555555] mt-1">
-                              {mantra.title.en}
+                              {isHindi ? mantra.title.en : mantra.title.hi}
                             </p>
                           </Link>
                           <p className="text-xs text-[#555555] mt-1 line-clamp-2">
-                            {mantra.subtitle.hi}
+                            {isHindi ? mantra.subtitle.hi : (mantra.subtitle.en || mantra.subtitle.hi)}
                           </p>
                         </div>
 
@@ -760,14 +778,14 @@ export default function MantraStotraHubPage() {
                               <span className="w-5 h-5 rounded-full bg-[#FFD21F] text-[#111111] flex items-center justify-center text-[10px] font-bold border border-[#FFD21F]">
                                 ॐ
                               </span>
-                              <span>मूल संस्कृत मंत्र एवं सस्वर पाठ</span>
+                              <span>{isHindi ? "मूल संस्कृत मंत्र एवं सस्वर पाठ" : "Original Sanskrit Verse & Chanting"}</span>
                             </span>
 
                             <div className="flex items-center gap-1.5">
                               {/* Web Speech API Audio Recitation Button */}
                               <button
                                 onClick={(e) => handleToggleAudio(mantra, e)}
-                                title="सस्वर वैदिक उच्चारण सुनें"
+                                title={isHindi ? "सस्वर वैदिक उच्चारण सुनें" : "Listen to Vedic Recitation"}
                                 className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition-all cursor-pointer shadow-2xs ${
                                   isAudioPlaying
                                     ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] animate-pulse"
@@ -777,12 +795,12 @@ export default function MantraStotraHubPage() {
                                 {isAudioPlaying ? (
                                   <>
                                     <VolumeX className="w-3.5 h-3.5 text-[#C62828]" />
-                                    <span>ध्वनि चल रही...</span>
+                                    <span>{isHindi ? "ध्वनि चल रही..." : "Playing..."}</span>
                                   </>
                                 ) : (
                                   <>
                                     <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
-                                    <span>सस्वर पाठ</span>
+                                    <span>{isHindi ? "सस्वर पाठ" : "Audio Chanting"}</span>
                                   </>
                                 )}
                               </button>
@@ -790,7 +808,7 @@ export default function MantraStotraHubPage() {
                               {/* 1-Click Copy Shloka Button */}
                               <button
                                 onClick={(e) => handleCopyShloka(mantra, e)}
-                                title="श्लोक व अर्थ कॉपी करें"
+                                title={isHindi ? "श्लोक व अर्थ कॉपी करें" : "Copy Shloka & Meaning"}
                                 className="p-1.5 rounded-xl bg-white hover:bg-stone-50 text-[#555555] hover:text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] transition-colors cursor-pointer shadow-2xs"
                               >
                                 {isCopied ? (
@@ -803,7 +821,7 @@ export default function MantraStotraHubPage() {
                               {/* Native Share Button */}
                               <button
                                 onClick={(e) => handleShareShloka(mantra, e)}
-                                title="श्लोक साझा करें"
+                                title={isHindi ? "श्लोक साझा करें" : "Share Shloka"}
                                 className="p-1.5 rounded-xl bg-white hover:bg-stone-50 text-[#555555] hover:text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] transition-colors cursor-pointer shadow-2xs"
                               >
                                 <Share2 className="w-3.5 h-3.5 text-[#D9A441]" />
@@ -837,7 +855,7 @@ export default function MantraStotraHubPage() {
                             {/* Hindi Meaning */}
                             <div className="text-[#111111] font-devanagari leading-relaxed">
                               <span className="px-2 py-0.5 rounded-md bg-[#FFD21F] text-[#111111] font-bold text-[10px] mr-1.5">
-                                हिन्दी भावार्थ:
+                                {isHindi ? "हिन्दी भावार्थ:" : "Hindi Meaning:"}
                               </span>
                               {mantra.keyVerse.meaningHi}
                             </div>
@@ -846,7 +864,7 @@ export default function MantraStotraHubPage() {
                             {mantra.keyVerse.meaningEn && (
                               <div className="text-[#555555] font-serif italic leading-relaxed pt-1 border-t border-[#E5E5E5]/60">
                                 <span className="not-italic font-sans px-2 py-0.5 rounded-md bg-stone-100 text-[#111111] font-bold text-[10px] mr-1.5">
-                                  English:
+                                  {isHindi ? "अंग्रेजी अनुवाद:" : "English:"}
                                 </span>
                                 "{mantra.keyVerse.meaningEn}"
                               </div>
@@ -858,20 +876,20 @@ export default function MantraStotraHubPage() {
                         {mantra.canonAnga && (
                           <div className="bg-stone-50 rounded-xl p-3 border border-[#E5E5E5] flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
                             <span className="font-bold text-[#111111] flex items-center gap-1 text-[11px]">
-                              <Sparkles className="w-3 h-3 text-[#D9A441]" />
-                              षडङ्ग विधान:
+                              <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
+                              {isHindi ? "षडङ्ग विधान:" : "6-Fold Vedic Canon:"}
                             </span>
                             <span className="text-[#555555]">
-                              <strong className="text-[#111111] font-semibold">ऋषि:</strong>{" "}
-                              {mantra.canonAnga.rishi?.hi}
+                              <strong className="text-[#111111] font-semibold">{isHindi ? "ऋषि:" : "Rishi:"}</strong>{" "}
+                              {isHindi ? mantra.canonAnga.rishi?.hi : (mantra.canonAnga.rishi?.en || mantra.canonAnga.rishi?.hi)}
                             </span>
                             <span className="text-[#555555]">
-                              <strong className="text-[#111111] font-semibold">छन्द:</strong>{" "}
-                              {mantra.canonAnga.chhandas?.hi}
+                              <strong className="text-[#111111] font-semibold">{isHindi ? "छन्द:" : "Chhandas:"}</strong>{" "}
+                              {isHindi ? mantra.canonAnga.chhandas?.hi : (mantra.canonAnga.chhandas?.en || mantra.canonAnga.chhandas?.hi)}
                             </span>
                             <span className="text-[#555555]">
-                              <strong className="text-[#111111] font-semibold">देवता:</strong>{" "}
-                              {mantra.canonAnga.devata?.hi}
+                              <strong className="text-[#111111] font-semibold">{isHindi ? "देवता:" : "Devata:"}</strong>{" "}
+                              {isHindi ? mantra.canonAnga.devata?.hi : (mantra.canonAnga.devata?.en || mantra.canonAnga.devata?.hi)}
                             </span>
                           </div>
                         )}
@@ -880,18 +898,18 @@ export default function MantraStotraHubPage() {
                         {mantra.vidhi && (
                           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-[#555555]">
                             <span>
-                              <strong className="text-[#111111] font-semibold">मुहूर्त:</strong>{" "}
-                              {mantra.vidhi.muhurat?.hi}
+                              <strong className="text-[#111111] font-semibold">{isHindi ? "मुहूर्त:" : "Auspicious Timing:"}</strong>{" "}
+                              {isHindi ? mantra.vidhi.muhurat?.hi : (mantra.vidhi.muhurat?.en || mantra.vidhi.muhurat?.hi)}
                             </span>
                             <span>•</span>
                             <span>
-                              <strong className="text-[#111111] font-semibold">माला:</strong>{" "}
-                              {mantra.vidhi.mala?.hi}
+                              <strong className="text-[#111111] font-semibold">{isHindi ? "माला:" : "Rosary:"}</strong>{" "}
+                              {isHindi ? mantra.vidhi.mala?.hi : (mantra.vidhi.mala?.en || mantra.vidhi.mala?.hi)}
                             </span>
                             <span>•</span>
                             <span>
-                              <strong className="text-[#111111] font-semibold">जप संख्या:</strong>{" "}
-                              {mantra.vidhi.sankhya?.hi}
+                              <strong className="text-[#111111] font-semibold">{isHindi ? "जप संख्या:" : "Chant Count:"}</strong>{" "}
+                              {isHindi ? mantra.vidhi.sankhya?.hi : (mantra.vidhi.sankhya?.en || mantra.vidhi.sankhya?.hi)}
                             </span>
                           </div>
                         )}
@@ -914,7 +932,7 @@ export default function MantraStotraHubPage() {
                             to={`/library/mantra-stotra/${mantra.slug}`}
                             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] shadow-xs hover:shadow-md transition-all group-hover:translate-x-0.5 cursor-pointer border border-[#FFD21F]"
                           >
-                            <span>पूर्ण पाठ, विधि एवं फलश्रुति</span>
+                            <span>{isHindi ? "पूर्ण पाठ, विधि एवं फलश्रुति" : "Full Text, Vidhi & Benefits"}</span>
                             <ArrowRight className="w-3.5 h-3.5 text-[#111111]" />
                           </Link>
                         </div>

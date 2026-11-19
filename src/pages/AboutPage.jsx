@@ -78,13 +78,13 @@ export default function AboutPage({ onOpenSearch }) {
           </Link>
           <span className="text-[#D9A441]">›</span>
           <span className="text-[#111111] font-bold">
-            {isHindi ? "परिचय (About Veda Library)" : "About Veda Library"}
+            {isHindi ? "परिचय" : "About Veda Library"}
           </span>
         </div>
       </div>
 
       {/* 1. Scholarly Hero Banner — Luminous Sanctum Artwork with Balanced Light Overlay */}
-      <section className="relative bg-[#111111] text-white py-16 sm:py-22 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
+      <section className="relative bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerSanctum}
@@ -134,7 +134,7 @@ export default function AboutPage({ onOpenSearch }) {
       </section>
 
       {/* 2. Core Mission & Vision */}
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+      <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-3">
             <div className="w-10 h-10 rounded-xl bg-[#FFD21F]/20 border border-[#FFD21F] flex items-center justify-center text-[#111111]">

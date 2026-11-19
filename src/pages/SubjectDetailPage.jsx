@@ -28,7 +28,7 @@ import {
   SUBJECTS_DATA,
   CATEGORIES_DATA,
 } from "../data/categoryTemplatesData.js";
-import { VEDA_HIERARCHY_TREE } from "../data/vedaHierarchyTree.js";
+import { VEDA_HIERARCHY_TREE, findNodeById } from "../data/vedaHierarchyTree.js";
 import { ALL_CATEGORY_HIERARCHY_TREES } from "../data/granthaHierarchyTree.js";
 import VedicLibraryService from "../services/vedicLibraryService.js";
 import {
@@ -957,6 +957,142 @@ function collectMantraIdsFromNode(node, idSet) {
   }
 }
 
+const BADGE_MAP = {
+  "प्रधान श्रुति": "Primary Shruti",
+  "वेद • प्रधान श्रुति": "Veda • Primary Shruti",
+  "संहिता ग्रंथ": "Samhita Text",
+  "संहिता": "Samhita",
+  "ब्राह्मण ग्रंथ": "Brahmana Text",
+  "ब्राह्मण": "Brahmana",
+  "आरण्यक ग्रंथ": "Aranyaka Text",
+  "आरण्यक": "Aranyaka",
+  "मुख्य उपनिषद": "Principal Upanishad",
+  "उपनिषद": "Upanishad",
+  "वैदिक शाखा": "Vedic Shakha",
+  "शाखा": "Shakha",
+  "वैदिक सूक्त": "Vedic Sukta",
+  "सूक्त": "Sukta",
+  "वेदमंत्र": "Vedic Mantra",
+  "महामंत्र": "Sacred Mantra",
+  "मंत्र": "Mantra",
+  "सूत्र व वेदांग": "Sutra & Vedanga",
+  "सूत्र ग्रंथ": "Sutra Text",
+  "कल्पसूत्र": "Kalpasutra",
+  "प्रातिशाख्य": "Pratishakhya",
+  "पर्व": "Parva",
+  "वांग्मय": "Corpus Literature",
+  "विशेष संदर्भ": "Special Reference",
+  "सूत्र व गान": "Sutras & Chants",
+  "कर्मकाण्ड एवं ज्ञान": "Ritual & Knowledge",
+  "संगीत एवं उपासना": "Chanting & Worship",
+  "ब्रह्मवेद एवं विज्ञान": "Brahmaveda & Wisdom",
+  "मुख्य परंपरा": "Primary Tradition",
+  "दार्शनिक सूक्त": "Philosophical Sukta",
+  "उप-विभाग": "Sub-division",
+  "वैदिक ग्रंथ": "Vedic Text",
+  "मूल श्रुति": "Primary Shruti",
+  "यजुर्वेद वांग्मय": "Yajurveda Corpus",
+  "प्रस्थानत्रयी": "Prasthanatrayi",
+  "वेदों के ६ अंग": "6 Limbs of Vedas",
+  "आत्मविद्या": "Self Knowledge",
+  "सत्य मीमांसा": "Philosophical Inquiry",
+  "वैदिक आख्यान": "Vedic Narratives",
+  "उपासना संग्रह": "Worship Compendium",
+  "काण्ड": "Kanda",
+  "अध्याय": "Chapter",
+  "रुद्राध्याय": "Rudradhyaya",
+  "शुल्बसूत्र": "Shulbasutra",
+  "गृह्यसूत्र": "Grihyasutra",
+  "श्रौतसूत्र": "Shrautasutra",
+  "भाष्य": "Commentary",
+  "प्रधान शाखा": "Primary Recension",
+  "प्राचीन शाखा": "Ancient Recension",
+  "परम दार्शनिक सूक्त": "Supreme Philosophical Sukta",
+  "विश्व एकता सूक्त": "Universal Unity Sukta",
+  "कुल मण्डल": "Clan Mandala",
+  "सृष्टि सूक्त": "Cosmological Sukta",
+  "संजीवनी महामंत्र": "Life-Giving Mahamantra",
+  "प्रथम मण्डल": "Mandala 1",
+  "दार्शनिक मण्डल": "Philosophical Mandala",
+  "प्रथम सूक्त": "First Sukta",
+  "विराट् पुरुष": "Virat Purusha",
+  "पराशक्ति सूक्त": "Parashakti Sukta",
+  "सूक्त / अध्याय": "Sukta / Chapter",
+  "पूर्वार्चिक": "Purvarchika",
+  "उत्तरार्चिक": "Uttararchika",
+  "उपनिषद्": "Upanishad",
+  "राष्ट्रीय सूक्त": "National Sukta",
+  "शांति सूक्त": "Peace Hymn (Shanti Sukta)",
+  "मेधा सूक्त": "Medha Sukta (Wisdom Hymn)",
+  "भैषज्य सूक्त": "Bhaishajya Sukta (Healing Hymn)",
+  "ब्रह्मविद्या सूक्त": "Brahmavidya Sukta",
+  "तप एवं ज्ञान सूक्त": "Tapas & Knowledge Sukta",
+  "राष्ट्र व पर्यावरण सूक्त": "Ecology & Nation Hymn",
+  "गायत्री महामंत्र": "Gayatri Mahamantra"
+};
+
+const TYPE_TRANSLATIONS = {
+  "संहिता": { hi: "संहिता", en: "Samhita" },
+  "संहिता ग्रंथ": { hi: "संहिता ग्रंथ", en: "Samhita Texts" },
+  "ब्राह्मण": { hi: "ब्राह्मण", en: "Brahmana" },
+  "ब्राह्मण ग्रंथ": { hi: "ब्राह्मण ग्रंथ", en: "Brahmana Texts" },
+  "आरण्यक": { hi: "आरण्यक", en: "Aranyaka" },
+  "आरण्यक ग्रंथ": { hi: "आरण्यक ग्रंथ", en: "Aranyaka Texts" },
+  "उपनिषद": { hi: "उपनिषद", en: "Upanishad" },
+  "मुख्य उपनिषद": { hi: "मुख्य उपनिषद", en: "Principal Upanishads" },
+  "सूत्र व वेदांग": { hi: "सूत्र व वेदांग", en: "Sutras & Vedanga" },
+  "सूत्र ग्रंथ": { hi: "सूत्र ग्रंथ", en: "Sutra Texts" },
+  "कल्पसूत्र": { hi: "कल्पसूत्र", en: "Kalpasutras" },
+  "प्रातिशाख्य": { hi: "प्रातिशाख्य", en: "Pratishakhya" },
+  "सूक्त": { hi: "सूक्त", en: "Suktas" },
+  "दार्शनिक सूक्त": { hi: "दार्शनिक सूक्त", en: "Philosophical Suktas" },
+  "वेदमंत्र": { hi: "वेदमंत्र", en: "Mantras" },
+  "वेद": { hi: "वेद", en: "Vedas" },
+  "प्रधान श्रुति": { hi: "प्रधान श्रुति", en: "Primary Shruti" },
+  "वेद • प्रधान श्रुति": { hi: "वेद • प्रधान श्रुति", en: "Veda • Shruti" },
+  "शाखा": { hi: "शाखा", en: "Recensions" },
+  "प्रधान शाखा": { hi: "प्रधान शाखा", en: "Primary Recension" },
+  "प्राचीन शाखा": { hi: "प्राचीन शाखा", en: "Ancient Recension" },
+  "परम दार्शनिक सूक्त": { hi: "परम दार्शनिक सूक्त", en: "Supreme Philosophical Suktas" },
+  "विश्व एकता सूक्त": { hi: "विश्व एकता सूक्त", en: "Universal Unity Suktas" },
+  "कर्मकाण्ड एवं ज्ञान": { hi: "कर्मकाण्ड एवं ज्ञान", en: "Ritual & Knowledge" },
+  "संगीत एवं उपासना": { hi: "संगीत एवं उपासना", en: "Chanting & Worship" },
+  "ब्रह्मवेद एवं विज्ञान": { hi: "ब्रह्मवेद एवं विज्ञान", en: "Brahmaveda & Wisdom" },
+  "मुख्य परंपरा": { hi: "मुख्य परंपरा", en: "Primary Tradition" },
+  "पर्व": { hi: "पर्व", en: "Parva" },
+  "वांग्मय": { hi: "वांग्मय", en: "Corpus Literature" },
+  "विशेष संदर्भ": { hi: "विशेष संदर्भ", en: "Special Reference" },
+  "सूत्र व गान": { hi: "सूत्र व गान", en: "Sutras & Chants" },
+  "काण्ड": { hi: "काण्ड", en: "Kandas" },
+  "अध्याय": { hi: "अध्याय", en: "Chapters" },
+  "रुद्राध्याय": { hi: "रुद्राध्याय", en: "Rudradhyaya" },
+  "शुल्बसूत्र": { hi: "शुल्बसूत्र", en: "Shulbasutras" },
+  "गृह्यसूत्र": { hi: "गृह्यसूत्र", en: "Grihyasutras" },
+  "श्रौतसूत्र": { hi: "श्रौतसूत्र", en: "Shrautasutras" },
+  "भाष्य": { hi: "भाष्य", en: "Commentaries" },
+  "कुल मण्डल": { hi: "कुल मण्डल", en: "Clan Mandalas" },
+  "सृष्टि सूक्त": { hi: "सृष्टि सूक्त", en: "Cosmological Suktas" },
+  "संजीवनी महामंत्र": { hi: "संजीवनी महामंत्र", en: "Life-Giving Mahamantras" },
+  "महामंत्र": { hi: "महामंत्र", en: "Sacred Mantra" },
+  "गायत्री महामंत्र": { hi: "गायत्री महामंत्र", en: "Gayatri Mahamantra" },
+  "प्रथम मण्डल": { hi: "प्रथम मण्डल", en: "Mandala 1" },
+  "दार्शनिक मण्डल": { hi: "दार्शनिक मण्डल", en: "Philosophical Mandala" },
+  "प्रथम सूक्त": { hi: "प्रथम सूक्त", en: "First Sukta" },
+  "विराट् पुरुष": { hi: "विराट् पुरुष", en: "Virat Purusha" },
+  "पराशक्ति सूक्त": { hi: "पराशक्ति सूक्त", en: "Parashakti Sukta" },
+  "सूक्त / अध्याय": { hi: "सूक्त / अध्याय", en: "Sukta / Chapter" },
+  "पूर्वार्चिक": { hi: "पूर्वार्चिक", en: "Purvarchika" },
+  "उत्तरार्चिक": { hi: "उत्तरार्चिक", en: "Uttararchika" },
+  "उपनिषद्": { hi: "उपनिषद्", en: "Upanishad" },
+  "राष्ट्रीय सूक्त": { hi: "राष्ट्रीय सूक्त", en: "National Sukta" },
+  "शांति सूक्त": { hi: "शांति सूक्त", en: "Peace Hymn (Shanti Sukta)" },
+  "मेधा सूक्त": { hi: "मेधा सूक्त", en: "Medha Sukta (Wisdom Hymn)" },
+  "भैषज्य सूक्त": { hi: "भैषज्य सूक्त", en: "Bhaishajya Sukta (Healing Hymn)" },
+  "ब्रह्मविद्या सूक्त": { hi: "ब्रह्मविद्या सूक्त", en: "Brahmavidya Sukta" },
+  "तप एवं ज्ञान सूक्त": { hi: "तप एवं ज्ञान सूक्त", en: "Tapas & Knowledge Sukta" },
+  "राष्ट्र व पर्यावरण सूक्त": { hi: "राष्ट्र व पर्यावरण सूक्त", en: "Ecology & Nation Hymn" }
+};
+
 /**
  * Canonical 5-Pillar Metadata Resolver
  * Extracts or synthesizes the 5 foundational Vedic pillars:
@@ -966,68 +1102,71 @@ function collectMantraIdsFromNode(node, idSet) {
  * 4. Chhandas (छन्द / Sacred Metre)
  * 5. Devata (देवता / Presiding Deity)
  */
-function resolve5Pillars(subject = "", category = "", subjectData = {}) {
+function resolve5Pillars(subject = "", category = "", subjectData = {}, isHindi = true) {
   const s = (subject || "").toLowerCase();
   const q = subjectData?.quickInfo || {};
 
-  let veda = q.type || q.veda || "वैदिक श्रुति परंपरा";
-  let shakha = q.shakha || "प्रामाणिक शाखा";
-  let rishi = q.chiefRishis || "परंपरागत वैदिक महर्षि";
-  let chhandas = q.chhandas || "गायत्री, त्रिष्टुप्, अनुष्टुप्";
-  let devata = q.devata || "अग्नि, इन्द्र, सविता";
+  let veda = isHindi ? (q.type || q.veda || "वैदिक श्रुति परंपरा") : (q.enType || q.enVeda || "Vedic Shruti Tradition");
+  let shakha = isHindi ? (q.shakha || "प्रामाणिक शाखा") : (q.enShakha || "Canonical Recension");
+  let rishi = isHindi ? (q.chiefRishis || "परंपरागत वैदिक महर्षि") : (q.enChiefRishis || "Traditional Vedic Seers");
+  let chhandas = isHindi ? (q.chhandas || "गायत्री, त्रिष्टुप्, अनुष्टुप्") : (q.enChhandas || "Gayatri, Trishtup, Anushtup");
+  let devata = isHindi ? (q.devata || "अग्नि, इन्द्र, सविता") : (q.enDevata || "Agni, Indra, Savita");
 
   if (s.includes("rigveda")) {
-    veda = "ऋग्वेद संहिता (प्रधान श्रुति)";
-    shakha = "शाकल शाखा (२१ शाखाओं में मुख्य पाठ)";
-    rishi = "मधुच्छन्दा, विश्वामित्र, वसिष्ठ, अत्रि, भारद्वाज";
-    chhandas = "गायत्री, त्रिष्टुप्, जगती, अनुष्टुप्";
-    devata = "अग्नि (प्रथम सूक्त), इन्द्र, सोम, वरुण, सविता";
+    veda = isHindi ? "ऋग्वेद संहिता (प्रधान श्रुति)" : "Rigveda Samhita (Primary Shruti)";
+    shakha = isHindi ? "शाकल शाखा (२१ शाखाओं में मुख्य पाठ)" : "Shakala Shakha (Primary recension of 21 shakhas)";
+    rishi = isHindi ? "मधुच्छन्दा, विश्वामित्र, वसिष्ठ, अत्रि, भारद्वाज" : "Madhuchhanda, Vishvamitra, Vasishtha, Atri, Bharadvaja";
+    chhandas = isHindi ? "गायत्री, त्रिष्टुप्, जगती, अनुष्टुप्" : "Gayatri, Trishtup, Jagati, Anushtup";
+    devata = isHindi ? "अग्नि (प्रथम सूक्त), इन्द्र, सोम, वरुण, सविता" : "Agni (1st Sukta), Indra, Soma, Varuna, Savita";
   } else if (s.includes("yajurveda")) {
-    veda = "यजुर्वेद संहिता (यज्ञीय कर्मकाण्ड)";
-    shakha = "माध्यन्दिन वाजसनेयी (शुक्ल) व तैत्तिरीय (कृष्ण)";
-    rishi = "महर्षि याज्ञवल्क्य, वैशम्पायन, तित्तिरि";
-    chhandas = "त्रिष्टुप्, बृहती, गायत्री, पंक्ति";
-    devata = "प्रजापति, अग्नि, वायु, सूर्य, रुद्र";
+    veda = isHindi ? "यजुर्वेद संहिता (यज्ञीय कर्मकाण्ड)" : "Yajurveda Samhita (Liturgical Corpus)";
+    shakha = isHindi ? "माध्यन्दिन वाजसनेयी (शुक्ल) व तैत्तिरीय (कृष्ण)" : "Madhyandina Vajasaneyi (Shukla) & Taittiriya (Krishna)";
+    rishi = isHindi ? "महर्षि याज्ञवल्क्य, वैशम्पायन, तित्तिरि" : "Maharshi Yajnavalkya, Vaishampayana, Tittiri";
+    chhandas = isHindi ? "त्रिष्टुप्, बृहती, गायत्री, पंक्ति" : "Trishtup, Brihati, Gayatri, Pankti";
+    devata = isHindi ? "प्रजापति, अग्नि, वायु, सूर्य, रुद्र" : "Prajapati, Agni, Vayu, Surya, Rudra";
   } else if (s.includes("samaveda")) {
-    veda = "सामवेद संहिता (गान व उपासना परंपरा)";
-    shakha = "कौथुम, राणायनीय, जैमिनीय (तलवकार)";
-    rishi = "महर्षि जैमिनि, सुधन्वा, सुकर्मा";
-    chhandas = "गायत्री, बृहती, जगती (सामगान छंद)";
-    devata = "इन्द्र, सविता, अग्नि, सोम देव";
+    veda = isHindi ? "सामवेद संहिता (गान व उपासना परंपरा)" : "Samaveda Samhita (Liturgical Chanting)";
+    shakha = isHindi ? "कौथुम, राणायनीय, जैमिनीय (तलवकार)" : "Kauthuma, Ranayaniya, Jaiminiya (Talavakara)";
+    rishi = isHindi ? "महर्षि जैमिनि, सुधन्वा, सुकर्मा" : "Maharshi Jaimini, Sudhanva, Sukarma";
+    chhandas = isHindi ? "गायत्री, बृहती, जगती (सामगान छंद)" : "Gayatri, Brihati, Jagati (Samachhandas)";
+    devata = isHindi ? "इन्द्र, सविता, अग्नि, सोम देव" : "Indra, Savita, Agni, Soma";
   } else if (s.includes("atharvaveda")) {
-    veda = "अथर्ववेद संहिता (ब्रह्मवेद व जीवन विज्ञान)";
-    shakha = "शौनक शाखा एवं पैप्पलाद शाखा";
-    rishi = "महर्षि अथर्वा, अङ्गिरा, भृगु";
-    chhandas = "अनुष्टुप्, त्रिष्टुप्, जगती, विराट्";
-    devata = "परब्रह्म, काल, पृथिवी, रुद्र, व्रात्य";
+    veda = isHindi ? "अथर्ववेद संहिता (ब्रह्मवेद व जीवन विज्ञान)" : "Atharvaveda Samhita (Brahmaveda & Wisdom)";
+    shakha = isHindi ? "शौनक शाखा एवं पैप्पलाद शाखा" : "Shaunaka & Paippalada Shakhas";
+    rishi = isHindi ? "महर्षि अथर्वा, अङ्गिरा, भृगु" : "Maharshi Atharva, Angiras, Bhrigu";
+    chhandas = isHindi ? "अनुष्टुप्, त्रिष्टुप्, जगती, विराट्" : "Anushtup, Trishtup, Jagati, Virat";
+    devata = isHindi ? "परब्रह्म, काल, पृथिवी, रुद्र, व्रात्य" : "Supreme Brahman, Kala, Prithvi, Rudra, Vratya";
   } else if (s.includes("gita") || s.includes("bhagavad")) {
-    veda = "महाभारत भीष्मपर्व (स्मृति-प्रस्थान)";
-    shakha = "श्रीमद्भगवद्गीता (१८ अध्याय, ७०० श्लोक)";
-    rishi = "महर्षि कृष्ण द्वैपायन वेदव्यास";
-    chhandas = "अनुष्टुप् (प्रधान) एवं त्रिष्टुप्";
-    devata = "श्रीकृष्ण (पुरुषोत्तम परब्रह्म)";
+    veda = isHindi ? "महाभारत भीष्मपर्व (स्मृति-प्रस्थान)" : "Mahabharata Bhishma Parva (Smriti-Prasthana)";
+    shakha = isHindi ? "श्रीमद्भगवद्गीता (१८ अध्याय, ७०० श्लोक)" : "Shrimad Bhagavad Gita (18 Chapters, 700 Verses)";
+    rishi = isHindi ? "महर्षि कृष्ण द्वैपायन वेदव्यास" : "Maharshi Krishna Dvaipayana Vedavyasa";
+    chhandas = isHindi ? "अनुष्टुप् (प्रधान) एवं त्रिष्टुप्" : "Anushtup (Primary) & Trishtup";
+    devata = isHindi ? "श्रीकृष्ण (पुरुषोत्तम परब्रह्म)" : "Lord Krishna (Purushottama Parabrahman)";
   } else if (s.includes("bhagavata")) {
-    veda = "श्रीमद्भागवत महापुराण (पुराण-संहिता)";
-    shakha = "द्वादश स्कन्ध (३३५ अध्याय, १८,००० श्लोक)";
-    rishi = "महर्षि वेदव्यास (वक्ता: शुकदेव जी)";
-    chhandas = "अनुष्टुप्, त्रिष्टुप्, वसन्ततिलका";
-    devata = "भगवान् श्रीकृष्ण / श्रीहरि नारायण";
+    veda = isHindi ? "श्रीमद्भागवत महापुराण (पुराण-संहिता)" : "Shrimad Bhagavata Mahapurana (Purana Samhita)";
+    shakha = isHindi ? "द्वादश स्कन्ध (३३५ अध्याय, १८,००० श्लोक)" : "12 Skandhas (335 Chapters, 18,000 Verses)";
+    rishi = isHindi ? "महर्षि वेदव्यास (वक्ता: शुकदेव जी)" : "Maharshi Vedavyasa (Speaker: Shukadeva)";
+    chhandas = isHindi ? "अनुष्टुप्, त्रिष्टुप्, वसन्ततिलका" : "Anushtup, Trishtup, Vasantatilaka";
+    devata = isHindi ? "भगवान् श्रीकृष्ण / श्रीहरि नारायण" : "Lord Krishna / Shri Hari Narayana";
   } else if (s.includes("ramayana")) {
-    veda = "वाल्मीकीय रामायण (आदिकाव्य)";
-    shakha = "सप्तकाण्ड (२४,००० श्लोक)";
-    rishi = "आदिकवि महर्षि वाल्मीकि";
-    chhandas = "अनुष्टुप् (मा निषाद प्रतिष्ठां...)";
-    devata = "मर्यादा पुरुषोत्तम प्रभु श्रीराम";
+    veda = isHindi ? "वाल्मीकीय रामायण (आदिकाव्य)" : "Valmiki Ramayana (Adikavya)";
+    shakha = isHindi ? "सप्तकाण्ड (२४,००० श्लोक)" : "7 Kandas (24,000 Verses)";
+    rishi = isHindi ? "आदिकवि महर्षि वाल्मीकि" : "Adikavi Maharshi Valmiki";
+    chhandas = isHindi ? "अनुष्टुप् (मा निषाद प्रतिष्ठां...)" : "Anushtup (Ma Nishada Pratishtham...)";
+    devata = isHindi ? "मर्यादा पुरुषोत्तम प्रभु श्रीराम" : "Maryada Purushottama Lord Shri Rama";
   } else if (s.includes("upanishad") || category === "upanishad") {
-    veda = q.veda || "वेदान्त श्रुति (ज्ञानकाण्ड)";
-    shakha = q.shakha || "संहिता-ब्राह्मण शाखा";
-    rishi = q.chiefRishis || "याज्ञवल्क्य, पिप्पलाद, उद्दालक आरुणि";
-    chhandas = "अनुष्टुप्, त्रिष्टुप् एवं गद्यात्मक मन्त्र";
-    devata = "निर्गुण-सगुण परब्रह्म परमात्मा";
+    veda = isHindi ? (q.veda || "वेदान्त श्रुति (ज्ञानकाण्ड)") : (q.enVeda || "Vedanta Shruti (Jnanakanda)");
+    shakha = isHindi ? (q.shakha || "संहिता-ब्राह्मण शाखा") : (q.enShakha || "Samhita-Brahmana Shakha");
+    rishi = isHindi ? (q.chiefRishis || "याज्ञवल्क्य, पिप्पलाद, उद्दालक आरुणि") : (q.enChiefRishis || "Yajnavalkya, Pippalada, Uddalaka Aruni");
+    chhandas = isHindi ? "अनुष्टुप्, त्रिष्टुप् एवं गद्यात्मक मन्त्र" : "Anushtup, Trishtup & Prose Mantras";
+    devata = isHindi ? "निर्गुण-सगुण परब्रह्म परमात्मा" : "Nirguna-Saguna Supreme Brahman";
   } else if (subjectData?.rishis && Array.isArray(subjectData.rishis)) {
-    rishi = subjectData.rishis
+    const rList = (!isHindi && subjectData.enRishis && subjectData.enRishis.length === subjectData.rishis.length)
+      ? subjectData.enRishis
+      : subjectData.rishis;
+    rishi = rList
       .slice(0, 3)
-      .map((r) => (typeof r === "string" ? r : r.name))
+      .map((r) => (typeof r === "string" ? r : (isHindi ? r.name : (r.enName || r.name))))
       .join(", ");
   }
 
@@ -1040,6 +1179,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
   let category = params.category || params.categorySlug || "veda";
   let subject = slug;
   const navigate = useNavigate();
+  const { isHindi, isEnglish } = useLanguage();
   const [activeTab, setActiveTab] = useState("Overview");
   const [drillPath, setDrillPath] = useState([]);
   const [filterType, setFilterType] = useState("all");
@@ -1106,8 +1246,8 @@ export default function SubjectDetailPage({ onOpenSearch }) {
   }
 
   const pillars = useMemo(
-    () => resolve5Pillars(subject, category, subjectData),
-    [subject, category, subjectData],
+    () => resolve5Pillars(subject, category, subjectData, isHindi),
+    [subject, category, subjectData, isHindi],
   );
 
   const catData = CATEGORIES_DATA[category] || CATEGORIES_DATA["veda"];
@@ -1223,9 +1363,13 @@ export default function SubjectDetailPage({ onOpenSearch }) {
       const q = granthaSearch.toLowerCase().trim();
       const matches =
         (g.name && g.name.toLowerCase().includes(q)) ||
+        (g.enName && g.enName.toLowerCase().includes(q)) ||
         (g.type && g.type.toLowerCase().includes(q)) ||
+        (g.enType && g.enType.toLowerCase().includes(q)) ||
         (g.author && g.author.toLowerCase().includes(q)) ||
-        (g.desc && g.desc.toLowerCase().includes(q));
+        (g.enAuthor && g.enAuthor.toLowerCase().includes(q)) ||
+        (g.desc && g.desc.toLowerCase().includes(q)) ||
+        (g.enDesc && g.enDesc.toLowerCase().includes(q));
       if (!matches) return false;
     }
     return true;
@@ -1237,7 +1381,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
       const q = textSearch.toLowerCase().trim();
       return (
         (t.title && t.title.toLowerCase().includes(q)) ||
-        (t.desc && t.desc.toLowerCase().includes(q))
+        (t.enTitle && t.enTitle.toLowerCase().includes(q)) ||
+        (t.desc && t.desc.toLowerCase().includes(q)) ||
+        (t.enDesc && t.enDesc.toLowerCase().includes(q))
       );
     }
     return true;
@@ -1271,14 +1417,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
   }, [subject, currentVedaNode, subjectData]);
 
   const handleBranchCardClick = (branch) => {
-    if (branch.mantraId) {
-      navigate(`/library/mantra/${branch.mantraId}`);
-    } else if (branch.children && branch.children.length > 0) {
+    if (branch.children && branch.children.length > 0) {
       setDrillPath((prev) => [...prev, branch.id]);
       const el = document.getElementById("structure");
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
+    } else if (branch.mantraId) {
+      navigate(`/library/mantra/${branch.mantraId}`);
     } else {
       const targetSlug = branch.slug || branch.id;
       navigate(`/library/${category}/${subject}/${targetSlug}`);
@@ -1305,25 +1451,25 @@ export default function SubjectDetailPage({ onOpenSearch }) {
     {
       "@type": "ListItem",
       position: 1,
-      name: "होम (Home)",
+      name: isHindi ? "होम" : "Home",
       item: "https://library.vedastructure.com/",
     },
     {
       "@type": "ListItem",
       position: 2,
-      name: "वेद लाइब्रेरी (Veda Library)",
+      name: isHindi ? "वेद लाइब्रेरी" : "Veda Library",
       item: "https://library.vedastructure.com/library",
     },
     {
       "@type": "ListItem",
       position: 3,
-      name: `${catData.name} (${catData.enName})`,
+      name: isHindi ? catData.name : (catData.enName || catData.name),
       item: `https://library.vedastructure.com/library/${category}`,
     },
     {
       "@type": "ListItem",
       position: 4,
-      name: `${subjectData.name} (${subjectData.enName})`,
+      name: isHindi ? subjectData.name : (subjectData.enName || subjectData.name),
       item: `https://library.vedastructure.com/library/${category}/${subject}`,
     },
   ];
@@ -1333,7 +1479,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
       breadcrumbElements.push({
         "@type": "ListItem",
         position: 5 + index,
-        name: `${node.name} (${node.enName || ""})`,
+        name: isHindi ? node.name : (node.enName || node.name),
         item: `https://library.vedastructure.com/library/${category}/${subject}?sub=${node.id || node.slug}`,
       });
     });
@@ -1400,28 +1546,26 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             className="hover:text-[#111111] transition-colors flex items-center gap-1"
           >
             <Home className="w-3.5 h-3.5 text-[#D9A441]" />
-            <span>Home</span>
+            <span>{isHindi ? "होम" : "Home"}</span>
           </Link>
           <span className="text-[#D9A441]">›</span>
           <Link
             to="/library"
             className="hover:text-[#111111] transition-colors"
           >
-            Veda Library
+            {isHindi ? "वेद लाइब्रेरी" : "Veda Library"}
           </Link>
           <span className="text-[#D9A441]">›</span>
           <Link
             to={`/library/${category}`}
             className="hover:text-[#111111] transition-colors"
           >
-            {catData.name}
+            {isHindi ? catData.name : catData.enName}
           </Link>
           <span className="text-[#D9A441]">›</span>
           {drillPath.length === 0 ? (
             <span className="text-[#111111] font-bold">
-              {subjectData.name && subjectData.enName && subjectData.name !== subjectData.enName
-                ? `${subjectData.name} (${subjectData.enName})`
-                : subjectData.name || subjectData.enName}
+              {isHindi ? subjectData.name : (subjectData.enName || subjectData.name)}
             </span>
           ) : (
             <>
@@ -1430,7 +1574,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                 onClick={() => setDrillPath([])}
                 className="text-[#555555] hover:text-[#111111] hover:underline cursor-pointer"
               >
-                {subjectData.name}
+                {isHindi ? subjectData.name : (subjectData.enName || subjectData.name)}
               </button>
               {drillNodesPath.map((node, index) => {
                 const isLast = index === drillNodesPath.length - 1;
@@ -1439,7 +1583,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     <span className="text-[#D9A441]">›</span>
                     {isLast ? (
                       <span className="text-[#111111] font-bold bg-[#FFD21F] px-2.5 py-0.5 rounded-md border border-[#FFD21F]">
-                        {node.name}
+                        {isHindi ? node.name : (node.enName || node.name)}
                       </span>
                     ) : (
                       <button
@@ -1449,7 +1593,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         }
                         className="text-[#555555] hover:text-[#111111] hover:underline cursor-pointer"
                       >
-                        {node.name}
+                        {isHindi ? node.name : (node.enName || node.name)}
                       </button>
                     )}
                   </React.Fragment>
@@ -1461,7 +1605,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
       </div>
 
       {/* Subject Hero (Matching Page 3 Section 3) */}
-      <section className="relative overflow-hidden bg-[#111111] text-white py-14 sm:py-18 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] shadow-sm">
+      <section className="relative overflow-hidden bg-[#111111] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] shadow-sm">
         <div className="absolute inset-0 z-0">
           <img
             src={resolveSubjectBanner(subject, category, subjectData)}
@@ -1475,16 +1619,16 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         <div className="relative z-10 max-w-5xl mx-auto text-center space-y-3">
           <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3.5 py-1.5 rounded-full shadow-xs">
             <Sparkles className="w-3 h-3 text-[#111111]" />
-            <span>{subjectData.eyebrow}</span>
+            <span>{isHindi ? (subjectData.eyebrow || "वेद") : (subjectData.enEyebrow || subjectData.eyebrow || "VEDA")}</span>
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight drop-shadow-md">
-            {subjectData.name}
+            {isHindi ? subjectData.name : (subjectData.enName || subjectData.name)}
           </h1>
           <p className="font-serif text-lg sm:text-2xl text-[#FFD21F] font-medium tracking-wide">
-            {subjectData.enName}
+            {isHindi ? subjectData.enName : subjectData.name}
           </p>
           <p className="text-xs sm:text-sm text-white/90 font-devanagari max-w-2xl mx-auto leading-relaxed drop-shadow-xs">
-            {subjectData.intro}
+            {isHindi ? subjectData.intro : (subjectData.enIntro || subjectData.intro)}
           </p>
 
           <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 max-w-2xl mx-auto">
@@ -1492,7 +1636,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               href="#structure"
               className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] font-bold text-xs sm:text-sm shadow-xs transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer border border-[#FFD21F]"
             >
-              <span>Explore Types & Branches →</span>
+              <span>{isHindi ? "प्रकार एवं शाखाएँ देखें →" : "Explore Types & Branches →"}</span>
             </a>
             {associatedMantras.length > 0 && (
               <a
@@ -1500,14 +1644,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                 className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold text-xs sm:text-sm backdrop-blur-md transition-all transform hover:-translate-y-0.5 cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
               >
                 <Sparkles className="w-3.5 h-3.5 text-[#FFD21F]" />
-                <span>प्रमुख मंत्र व श्लोक ({associatedMantras.length}) →</span>
+                <span>{isHindi ? `प्रमुख मंत्र व श्लोक (${associatedMantras.length}) →` : `Key Mantras & Verses (${associatedMantras.length}) →`}</span>
               </a>
             )}
             <a
               href="#articles"
               className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold text-xs sm:text-sm backdrop-blur-md transition-all cursor-pointer shadow-xs flex items-center justify-center"
             >
-              <span>Explore Articles →</span>
+              <span>{isHindi ? "आलेख पढ़ें →" : "Explore Articles →"}</span>
             </a>
           </div>
         </div>
@@ -1521,7 +1665,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
-                  १. वेद • Veda
+                  {isHindi ? "१. वेद • Veda" : "1. Veda • Shruti"}
                 </span>
                 <BookOpen className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
               </div>
@@ -1530,7 +1674,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               </span>
             </div>
             <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
-              मूल श्रुति वांग्मय
+              {isHindi ? "मूल श्रुति वांग्मय" : "Primary Shruti Corpus"}
             </span>
           </div>
 
@@ -1539,7 +1683,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
-                  २. शाखा • Shakha
+                  {isHindi ? "२. शाखा • Shakha" : "2. Shakha • Recension"}
                 </span>
                 <Layers className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
               </div>
@@ -1548,7 +1692,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               </span>
             </div>
             <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
-              प्रामाणिक परम्परा पाठ
+              {isHindi ? "प्रामाणिक परम्परा पाठ" : "Canonical Recension Text"}
             </span>
           </div>
 
@@ -1557,7 +1701,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
-                  ३. ऋषि • Rishi
+                  {isHindi ? "३. ऋषि • Rishi" : "3. Rishi • Seer-Sage"}
                 </span>
                 <User className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
               </div>
@@ -1566,7 +1710,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               </span>
             </div>
             <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
-              मन्त्रदृष्टा आचार्य
+              {isHindi ? "मन्त्रदृष्टा आचार्य" : "Seer-Sage & Masters"}
             </span>
           </div>
 
@@ -1575,7 +1719,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
-                  ४. छन्द • Chhandas
+                  {isHindi ? "४. छन्द • Chhandas" : "4. Chhandas • Metre"}
                 </span>
                 <Feather className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
               </div>
@@ -1584,7 +1728,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               </span>
             </div>
             <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
-              स्वर-मात्रा छन्दोबद्ध
+              {isHindi ? "स्वर-मात्रा छन्दोबद्ध" : "Metrical & Tonal Form"}
             </span>
           </div>
 
@@ -1593,7 +1737,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555]">
-                  ५. देवता • Devata
+                  {isHindi ? "५. देवता • Devata" : "5. Devata • Presiding Deity"}
                 </span>
                 <Sun className="w-3.5 h-3.5 text-[#D9A441] group-hover:scale-110 transition-transform" />
               </div>
@@ -1602,7 +1746,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               </span>
             </div>
             <span className="text-[10px] text-[#555555] mt-1 font-devanagari">
-              उपास्य देव सत्ता
+              {isHindi ? "उपास्य देव सत्ता" : "Presiding Divinity"}
             </span>
           </div>
         </div>
@@ -1612,47 +1756,47 @@ export default function SubjectDetailPage({ onOpenSearch }) {
       <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto scrollbar-none touch-pan-x shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs font-semibold">
           {[
-            "Overview",
-            "Structure",
-            ...(associatedMantras.length > 0 ? ["Key Mantras"] : []),
-            "Browse Texts",
-            "Rishi & Devata",
-            "Articles",
-            "Related Grantha",
+            { id: "overview", en: "Overview", hi: "अवलोकन" },
+            { id: "structure", en: "Structure", hi: "संरचना" },
+            ...(associatedMantras.length > 0 ? [{ id: "key-mantras", en: "Key Mantras", hi: "प्रमुख मंत्र" }] : []),
+            { id: "browse-texts", en: "Browse Texts", hi: "ग्रंथ देखें" },
+            { id: "rishi-&-devata", en: "Rishi & Devata", hi: "ऋषि एवं देवता" },
+            { id: "articles", en: "Articles", hi: "आलेख" },
+            { id: "related-grantha", en: "Related Grantha", hi: "संबंधित ग्रंथ" },
           ].map((tab) => (
             <a
-              key={tab}
-              href={`#${tab.toLowerCase().replace(/\s+/g, "-")}`}
+              key={tab.id}
+              href={`#${tab.id}`}
               className={`min-h-[38px] px-3.5 py-1.5 rounded-lg whitespace-nowrap transition-colors flex items-center justify-center ${
-                tab === "Key Mantras"
+                tab.id === "key-mantras"
                   ? "text-[#111111] bg-[#FFD21F] font-bold border border-[#FFD21F] inline-flex items-center gap-1.5 shadow-xs"
                   : "text-[#555555] hover:text-[#111111] hover:bg-stone-50"
               }`}
             >
-              {tab === "Key Mantras" ? (
+              {tab.id === "key-mantras" ? (
                 <>
                   <Sparkles className="w-3.5 h-3.5 text-[#111111] inline" />
-                  <span>प्रमुख मंत्र व श्लोक ({associatedMantras.length})</span>
+                  <span>{isHindi ? `प्रमुख मंत्र (${associatedMantras.length})` : `Key Mantras (${associatedMantras.length})`}</span>
                 </>
               ) : (
-                tab
+                isHindi ? tab.hi : tab.en
               )}
             </a>
           ))}
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10">
         {/* 6. Overview (Section 6) */}
         <section
           id="overview"
           className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
         >
           <h2 className="font-serif text-2xl font-bold text-[#111111] mb-3">
-            {subjectData.name} के बारे में
+            {isHindi ? `${subjectData.name} के बारे में` : `About ${subjectData.enName || subjectData.name}`}
           </h2>
           <p className="text-sm text-[#555555] font-devanagari leading-relaxed">
-            {subjectData.overviewText}
+            {isHindi ? subjectData.overviewText : (subjectData.enOverviewText || subjectData.overviewText)}
           </p>
         </section>
 
@@ -1663,13 +1807,19 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               <div>
                 <h2 className="font-serif text-2xl font-bold text-[#111111]">
                   {drillPath.length === 0
-                    ? `${subjectData.name} के प्रमुख प्रकार, शाखाएँ एवं वांग्मय`
-                    : activeNode.name}
+                    ? (isHindi
+                        ? `${subjectData.name} के प्रमुख प्रकार, शाखाएँ एवं वांग्मय`
+                        : `Key Types, Branches & Literature of ${subjectData.enName || subjectData.name}`)
+                    : (isHindi ? activeNode.name : (activeNode.enName || activeNode.name))}
                 </h2>
                 <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-1">
                   {drillPath.length === 0
-                    ? `क्लाइंट द्वारा निर्धारित प्रामाणिक विभाजन के अनुसार किसी भी शाखा या प्रकार पर क्लिक करें (${displayBranchCards.length} प्रकार उपलब्ध)`
-                    : `${activeNode.enName || ""} — नीचे दिए गए उप-प्रकार व ग्रंथ (${displayBranchCards.length} उपलब्ध)`}
+                    ? (isHindi
+                        ? `क्लाइंट द्वारा निर्धारित प्रामाणिक विभाजन के अनुसार किसी भी शाखा या प्रकार पर क्लिक करें (${displayBranchCards.length} प्रकार उपलब्ध)`
+                        : `Browse branches and canonical divisions (${displayBranchCards.length} available)`)
+                    : (isHindi
+                        ? `${activeNode.name} — नीचे दिए गए उप-प्रकार व ग्रंथ (${displayBranchCards.length} उपलब्ध)`
+                        : `${activeNode.enName || activeNode.name} — Sub-divisions and texts (${displayBranchCards.length} available)`)}
                 </p>
               </div>
 
@@ -1680,7 +1830,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     onClick={() => setDrillPath([])}
                     className="text-xs font-bold text-[#111111] hover:text-[#D9A441] underline cursor-pointer"
                   >
-                    मूल प्रकारों पर लौटें (Reset)
+                    {isHindi ? "मूल प्रकारों पर लौटें" : "Reset to main branches"}
                   </button>
                 </div>
               )}
@@ -1696,7 +1846,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-stone-100 text-[#111111] font-bold text-xs border border-[#E5E5E5] shadow-xs transition-colors cursor-pointer"
                   >
                     <ArrowLeft className="w-3.5 h-3.5 text-[#D9A441]" />
-                    <span>पीछे जाएं (Back)</span>
+                    <span>{isHindi ? "पीछे जाएं" : "Back"}</span>
                   </button>
 
                   <span className="text-stone-300">|</span>
@@ -1706,7 +1856,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     onClick={() => setDrillPath([])}
                     className="font-bold text-[#111111] hover:text-[#D9A441] hover:underline cursor-pointer"
                   >
-                    {currentVedaNode.name} (मुख्य प्रकार)
+                    {isHindi ? `${currentVedaNode.name} (मुख्य प्रकार)` : `${currentVedaNode.enName || currentVedaNode.name} (Main Types)`}
                   </button>
 
                   {drillNodesPath.map((node, index) => {
@@ -1716,7 +1866,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         <span className="text-[#D9A441]">›</span>
                         {isLast ? (
                           <span className="font-bold text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded-md border border-[#FFD21F]">
-                            {node.name}
+                            {isHindi ? node.name : (node.enName || node.name)}
                           </span>
                         ) : (
                           <button
@@ -1726,7 +1876,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                             }
                             className="text-[#555555] hover:text-[#111111] hover:underline cursor-pointer"
                           >
-                            {node.name}
+                            {isHindi ? node.name : (node.enName || node.name)}
                           </button>
                         )}
                       </React.Fragment>
@@ -1736,8 +1886,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] font-semibold text-[#555555]">
-                    स्तर {drillPath.length + 1} • {displayBranchCards.length}{" "}
-                    उपलब्ध
+                    {isHindi
+                      ? `स्तर ${drillPath.length + 1} • ${displayBranchCards.length} उपलब्ध`
+                      : `Level ${drillPath.length + 1} • ${displayBranchCards.length} available`}
                   </span>
                 </div>
               </div>
@@ -1750,7 +1901,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
                   <span className="text-[#555555] mr-1 flex items-center gap-1 text-[11px] font-semibold">
                     <Filter className="w-3.5 h-3.5 text-[#D9A441]" />
-                    <span>फ़िल्टर:</span>
+                    <span>{isHindi ? "फ़िल्टर:" : "Filter:"}</span>
                   </span>
                   <button
                     type="button"
@@ -1761,7 +1912,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         : "bg-stone-50 text-[#555555] hover:bg-stone-100 border border-[#E5E5E5]"
                     }`}
                   >
-                    सभी ({allCurrentCards.length})
+                    {isHindi ? `सभी (${allCurrentCards.length})` : `All (${allCurrentCards.length})`}
                   </button>
                   {availableTypes.map((t) => (
                     <button
@@ -1774,7 +1925,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                           : "bg-stone-50 text-[#555555] hover:bg-stone-100 border border-[#E5E5E5]"
                       }`}
                     >
-                      {t}
+                      {TYPE_TRANSLATIONS[t]
+                        ? (isHindi ? TYPE_TRANSLATIONS[t].hi : TYPE_TRANSLATIONS[t].en)
+                        : (!isHindi && BADGE_MAP[t] ? BADGE_MAP[t] : t)}
                     </button>
                   ))}
                 </div>
@@ -1786,7 +1939,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     type="text"
                     value={localSearch}
                     onChange={(e) => setLocalSearch(e.target.value)}
-                    placeholder="इस स्तर में खोजें..."
+                    placeholder={isHindi ? "इस स्तर में खोजें..." : "Search in this level..."}
                     className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari text-[#111111]"
                   />
                   {localSearch && (
@@ -1804,12 +1957,16 @@ export default function SubjectDetailPage({ onOpenSearch }) {
 
             {/* If zero results matched the filter */}
             {displayBranchCards.length === 0 ? (
-              <div className="p-12 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
+              <div className="p-6 sm:p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
                 <p className="font-serif text-lg font-bold text-[#111111]">
-                  चयनित फ़िल्टर के अनुसार कोई ग्रंथ या मंत्र नहीं मिला।
+                  {isHindi
+                    ? "चयनित फ़िल्टर के अनुसार कोई ग्रंथ या मंत्र नहीं मिला।"
+                    : "No scripture or text found matching the selected filter."}
                 </p>
                 <p className="text-xs text-[#555555] font-devanagari">
-                  कृपया फ़िल्टर रीसेट करें या भिन्न कीवर्ड द्वारा खोजें।
+                  {isHindi
+                    ? "कृपया फ़िल्टर रीसेट करें या भिन्न कीवर्ड द्वारा खोजें।"
+                    : "Please reset filter or try a different keyword."}
                 </p>
                 <button
                   type="button"
@@ -1819,13 +1976,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                   }}
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFD21F] text-[#111111] text-xs font-bold shadow-xs hover:bg-[#ffe052] cursor-pointer"
                 >
-                  फ़िल्टर रीसेट करें (Reset Filter)
+                  {isHindi ? "फ़िल्टर रीसेट करें" : "Reset Filter"}
                 </button>
               </div>
             ) : (
               /* Hierarchical Branch Cards Grid */
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {displayBranchCards.map((branch, idx) => {
+                  const localFallback = findNodeById(branch.id || branch.slug)?.node;
                   const imgSrc = resolveCardImage(
                     branch.imageKey,
                     branch.name,
@@ -1833,6 +1991,21 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                   );
                   const hasChildren =
                     branch.children && branch.children.length > 0;
+                  const displayPriest = isHindi
+                    ? branch.priest
+                    : (branch.enPriest || localFallback?.enPriest || branch.priest);
+                  const displayBadge = isHindi
+                    ? branch.badge
+                    : (BADGE_MAP[branch.badge] || (localFallback?.badge && BADGE_MAP[localFallback.badge]) || branch.badge);
+                  const displayName = isHindi
+                    ? branch.name
+                    : (branch.enName || localFallback?.enName || branch.name);
+                  const displayDesc = isHindi
+                    ? branch.desc
+                    : (branch.enDesc || localFallback?.enDesc || branch.desc);
+                  const displayStats = isHindi
+                    ? branch.stats
+                    : (branch.enStats || localFallback?.enStats || branch.stats);
 
                   return (
                     <div
@@ -1847,14 +2020,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                           className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-                        {branch.priest && (
+                        {displayPriest && (
                           <span className="absolute bottom-2 left-2.5 text-[10px] font-bold text-white bg-black/50 px-2 py-0.5 rounded backdrop-blur-xs">
-                            {branch.priest}
+                            {displayPriest}
                           </span>
                         )}
                         {branch.badge ? (
                           <span className="absolute top-2.5 right-2.5 text-[10px] font-bold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
-                            <span>{branch.badge}</span>
+                            <span>{displayBadge}</span>
                             {hasChildren && (
                               <span>({branch.children.length})</span>
                             )}
@@ -1863,7 +2036,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                           <span className="absolute top-2.5 right-2.5 text-[10px] font-bold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
                             <Layers className="w-3 h-3 text-[#111111]" />
                             <span>
-                              {branch.children.length} उप-प्रकार / शाखाएँ
+                              {isHindi
+                                ? `${branch.children.length} उप-प्रकार / शाखाएँ`
+                                : `${branch.children.length} Sub-branches`}
                             </span>
                           </span>
                         ) : null}
@@ -1872,22 +2047,27 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         <div>
                           <div className="flex items-start justify-between gap-2">
                             <h3 className="font-serif text-base sm:text-lg font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug">
-                              {branch.name}
+                              {displayName}
                             </h3>
-                            {branch.enName && (
+                            {branch.enName && isHindi && !branch.name.toLowerCase().includes(branch.enName.toLowerCase()) && (
                               <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-stone-50 text-[#555555] border border-[#E5E5E5] shrink-0 max-w-[130px] truncate text-right">
                                 {branch.enName}
                               </span>
                             )}
+                            {!isHindi && branch.name && branch.name !== branch.enName && !(branch.enName || "").toLowerCase().includes(branch.name.toLowerCase()) && (
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-stone-50 text-[#555555] border border-[#E5E5E5] shrink-0 max-w-[130px] truncate text-right font-devanagari">
+                                {branch.name}
+                              </span>
+                            )}
                           </div>
-                          {branch.desc && (
+                          {displayDesc && (
                             <p className="text-xs text-[#555555] font-devanagari mt-2 line-clamp-2 leading-relaxed">
-                              {branch.desc}
+                              {displayDesc}
                             </p>
                           )}
-                          {branch.stats && (
+                          {displayStats && (
                             <p className="text-[10px] text-[#D9A441] mt-2 font-medium">
-                              {branch.stats}
+                              {displayStats}
                             </p>
                           )}
                         </div>
@@ -1895,12 +2075,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         <div className="mt-4 pt-2.5 border-t border-[#E5E5E5] flex items-center justify-between text-xs font-bold text-[#111111] group-hover:text-[#D9A441]">
                           <span>
                             {branch.mantraId
-                              ? "मंत्र पढ़ें (Read Mantra)"
+                              ? (isHindi ? "मंत्र पढ़ें" : "Read Mantra")
                               : hasChildren
-                                ? `इसके उप-प्रकार व अध्याय देखें (${branch.children.length})`
-                                : branch.enName
-                                  ? `Explore ${branch.enName}`
-                                  : "ग्रंथ का विवरण देखें"}
+                                ? (isHindi
+                                    ? `इसके उप-प्रकार व अध्याय देखें (${branch.children.length})`
+                                    : `Explore Sub-types (${branch.children.length})`)
+                                : (isHindi
+                                    ? (branch.name ? `${branch.name} का विवरण देखें` : "ग्रंथ का विवरण देखें")
+                                    : `Explore ${branch.enName || localFallback?.enName || branch.name || "Text"}`)}
                           </span>
                           <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 text-[#D9A441]" />
                         </div>
@@ -1915,7 +2097,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
           subjectData.structureCards && (
             <section id="structure">
               <h2 className="font-serif text-2xl font-bold text-[#111111] mb-4">
-                {subjectData.name} की संरचना एवं मुख्य विभाजन
+                {isHindi ? `${subjectData.name} की संरचना एवं मुख्य विभाजन` : `Structure & Canonical Divisions of ${subjectData.enName || subjectData.name}`}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 {subjectData.structureCards.map((st, idx) =>
@@ -1923,20 +2105,20 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     <a
                       key={idx}
                       href={idx === 2 ? "#scripture-reader" : "#browse-texts"}
-                      aria-label={`${st.title}: ${st.desc}`}
+                      aria-label={`${isHindi ? st.title : (st.enTitle || st.title)}: ${isHindi ? st.desc : (st.enDesc || st.desc)}`}
                       className="group rounded-2xl border border-[#E5E5E5] bg-white p-5 text-center shadow-xs transition-all hover:-translate-y-0.5 hover:border-[#D9A441] hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD21F] focus-visible:ring-offset-2"
                     >
                       <span className="mb-1 block font-serif text-3xl font-bold text-[#D9A441]">
-                        {st.num}
+                        {isHindi ? st.num : (st.enNum || st.num)}
                       </span>
                       <h3 className="font-serif text-lg font-bold text-[#111111] group-hover:text-[#D9A441]">
-                        {st.title}
+                        {isHindi ? st.title : (st.enTitle || st.title)}
                       </h3>
                       <p className="mt-1 font-devanagari text-xs text-[#555555]">
-                        {st.desc}
+                        {isHindi ? st.desc : (st.enDesc || st.desc)}
                       </p>
                       <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#111111] group-hover:text-[#D9A441]">
-                        विवरण देखें{" "}
+                        {isHindi ? "विवरण देखें" : "View Details"}{" "}
                         <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 text-[#D9A441]" />
                       </span>
                     </a>
@@ -1946,13 +2128,13 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                       className="rounded-2xl border border-[#E5E5E5] bg-white p-5 text-center shadow-xs"
                     >
                       <span className="mb-1 block font-serif text-3xl font-bold text-[#D9A441]">
-                        {st.num}
+                        {isHindi ? st.num : (st.enNum || st.num)}
                       </span>
                       <h3 className="font-serif text-lg font-bold text-[#111111]">
-                        {st.title}
+                        {isHindi ? st.title : (st.enTitle || st.title)}
                       </h3>
                       <p className="mt-1 font-devanagari text-xs text-[#555555]">
-                        {st.desc}
+                        {isHindi ? st.desc : (st.enDesc || st.desc)}
                       </p>
                     </div>
                   ),
@@ -2017,26 +2199,28 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2.5 py-0.5 rounded-full shadow-xs">
                     <Flame className="w-3 h-3 text-[#111111]" />
-                    <span>पावन वैदिक वांग्मय</span>
+                    <span>{isHindi ? "पावन वैदिक वांग्मय" : "Sacred Vedic Corpus"}</span>
                   </span>
                   <span className="text-xs font-semibold text-[#555555]">
-                    {associatedMantras.length} प्रमुख मंत्र व श्लोक
+                    {isHindi
+                      ? `${associatedMantras.length} प्रमुख मंत्र व श्लोक`
+                      : `${associatedMantras.length} Key Mantras & Verses`}
                   </span>
                 </div>
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
-                  प्रमुख मंत्र व श्लोक (Key Mantras & Shlokas)
+                  {isHindi ? "प्रमुख मंत्र व श्लोक" : "Key Mantras & Verses"}
                 </h2>
                 <p className="text-xs sm:text-sm text-[#555555] font-devanagari mt-1 max-w-2xl leading-relaxed">
-                  {subjectData.name} के सर्वाधिक पवित्र, प्रामाणिक एवं नित्य
-                  पठनीय मंत्र। किसी भी मंत्र पर क्लिक करके उसका शुद्ध पाठ, सस्वर
-                  उच्चारण व सरल भावार्थ तुरंत पढ़ें।
+                  {isHindi
+                    ? `${subjectData.name} के सर्वाधिक पवित्र, प्रामाणिक एवं नित्य पठनीय मंत्र। किसी भी मंत्र पर क्लिक करके उसका शुद्ध पाठ, सस्वर उच्चारण व सरल भावार्थ तुरंत पढ़ें।`
+                    : `Most sacred, canonical and daily chanted mantras of ${subjectData.enName || subjectData.name}. Click on any mantra to read text, pronunciation and meaning.`}
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold text-[#111111] bg-stone-50 border border-[#E5E5E5] px-3 py-1.5 rounded-xl shadow-xs inline-flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
-                  <span>एक क्लिक में सस्वर पाठ</span>
+                  <span>{isHindi ? "एक क्लिक में सस्वर पाठ" : "1-Click Audio Chanting"}</span>
                 </span>
               </div>
             </div>
@@ -2053,7 +2237,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     {/* Top reference tags */}
                     <div className="flex items-center justify-between gap-2 mb-3">
                       <span className="text-[10px] font-bold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2.5 py-0.5 rounded-full">
-                        {m.textName ? m.textName.split(" ")[0] : "वेदमंत्र"} •{" "}
+                        {m.textName ? m.textName.split(" ")[0] : (isHindi ? "वेदमंत्र" : "Veda Mantra")} •{" "}
                         {m.mantraNumber || m.sectionRef}
                       </span>
                       {m.devata && (
@@ -2070,13 +2254,13 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                       </p>
                     </div>
 
-                    {/* Hindi translation preview */}
-                    {m.hindiTranslation && (
+                    {/* Translation preview (Hindi / English) */}
+                    {(isHindi ? m.hindiTranslation : (m.englishTranslation || m.hindiTranslation)) && (
                       <p className="font-devanagari text-xs text-[#555555] line-clamp-2 mt-2 leading-relaxed">
                         <span className="font-bold text-[#D9A441]">
-                          भावार्थ:{" "}
+                          {isHindi ? "भावार्थ: " : "Meaning: "}
                         </span>
-                        {m.hindiTranslation}
+                        {isHindi ? m.hindiTranslation : (m.englishTranslation || m.hindiTranslation)}
                       </p>
                     )}
                   </div>
@@ -2092,11 +2276,11 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] shadow-xs transition-colors cursor-pointer border border-[#FFD21F]"
                     >
                       <BookOpen className="w-3.5 h-3.5" />
-                      <span>मंत्र पढ़ें (Read Mantra)</span>
+                      <span>{isHindi ? "मंत्र पढ़ें" : "Read Mantra"}</span>
                     </button>
 
                     <span className="text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center gap-1">
-                      <span>विस्तार</span>
+                      <span>{isHindi ? "विस्तार" : "Details"}</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[#D9A441]" />
                     </span>
                   </div>
@@ -2112,10 +2296,10 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
               <div>
                 <h2 className="font-serif text-2xl font-bold text-[#111111]">
-                  Browse {subjectData.enName} Texts
+                  {isHindi ? `${subjectData.name} के प्रमुख ग्रंथ व सूक्त` : `Browse ${subjectData.enName || subjectData.name} Texts`}
                 </h2>
                 <p className="text-xs text-[#555555] font-devanagari mt-0.5">
-                  प्रमुख सूक्त, ऋचाएँ एवं प्रामाणिक संदर्भ
+                  {isHindi ? "प्रमुख सूक्त, ऋचाएँ एवं प्रामाणिक संदर्भ" : "Key suktas, verses and canonical references"}
                 </p>
               </div>
 
@@ -2126,7 +2310,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     type="text"
                     value={textSearch}
                     onChange={(e) => setTextSearch(e.target.value)}
-                    placeholder="सूक्त या पाठ खोजें..."
+                    placeholder={isHindi ? "सूक्त या पाठ खोजें..." : "Search suktas or texts..."}
                     className="w-full pl-8 pr-7 py-1.5 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari shadow-xs text-[#111111]"
                   />
                   {textSearch && (
@@ -2145,14 +2329,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             {displayAvailableTexts.length === 0 ? (
               <div className="p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-2">
                 <p className="text-sm font-semibold text-[#555555]">
-                  कोई सूक्त नहीं मिला।
+                  {isHindi ? "कोई सूक्त नहीं मिला।" : "No text found."}
                 </p>
                 <button
                   type="button"
                   onClick={() => setTextSearch("")}
                   className="text-xs text-[#111111] hover:text-[#D9A441] underline font-bold cursor-pointer"
                 >
-                  खोज साफ़ करें
+                  {isHindi ? "खोज साफ़ करें" : "Clear Search"}
                 </button>
               </div>
             ) : (
@@ -2175,10 +2359,10 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                   >
                     <div>
                       <h4 className="font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors">
-                        {text.title}
+                        {isHindi ? text.title : (text.enTitle || text.title)}
                       </h4>
                       <p className="text-xs text-[#555555] font-devanagari mt-0.5 leading-relaxed">
-                        {text.desc}
+                        {isHindi ? text.desc : (text.enDesc || text.desc)}
                       </p>
                     </div>
                     <ArrowRight className="w-4 h-4 text-[#D9A441] flex-shrink-0 ml-2 group-hover:translate-x-0.5 transition-transform" />
@@ -2199,13 +2383,16 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               <div className="bg-white p-6 rounded-2xl border border-[#E5E5E5] shadow-xs">
                 <h3 className="font-serif text-xl font-bold text-[#111111] mb-3 flex items-center gap-2">
                   <User className="w-5 h-5 text-emerald-700" />
-                  <span>प्रमुख ऋषि (Vedic Rishis)</span>
+                  <span>{isHindi ? "प्रमुख ऋषि" : "Vedic Rishis"}</span>
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {subjectData.rishis.map((r, idx) => {
+                  {((!isHindi && subjectData.enRishis && subjectData.enRishis.length === subjectData.rishis.length)
+                    ? subjectData.enRishis
+                    : subjectData.rishis
+                  ).map((r, idx) => {
                     const isObj = typeof r === "object" && r !== null;
-                    const name = isObj ? r.name : r;
-                    const role = isObj ? r.role : null;
+                    const name = isObj ? (isHindi ? r.name : (r.enName || r.name)) : r;
+                    const role = isObj ? (isHindi ? r.role : (r.enRole || r.role)) : null;
                     return (
                       <span
                         key={isObj ? `${r.name || idx}-${idx}` : `${r}-${idx}`}
@@ -2228,29 +2415,30 @@ export default function SubjectDetailPage({ onOpenSearch }) {
               <div className="bg-white p-6 rounded-2xl border border-[#E5E5E5] shadow-xs">
                 <h3 className="font-serif text-xl font-bold text-[#111111] mb-3 flex items-center gap-2">
                   <Sun className="w-5 h-5 text-[#D9A441]" />
-                  <span>उपास्य देवता (Devatas)</span>
+                  <span>{isHindi ? "उपास्य देवता" : "Vedic Devatas"}</span>
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {(subjectData.devatas || subjectData.deities || []).map(
-                    (d, idx) => {
-                      const isObj = typeof d === "object" && d !== null;
-                      const name = isObj ? d.name || d.title : d;
-                      const title = isObj && d.name && d.title ? d.title : null;
-                      return (
-                        <span
-                          key={isObj ? `${name || idx}-${idx}` : `${d}-${idx}`}
-                          className="px-3 py-1.5 rounded-lg bg-stone-50 border border-[#E5E5E5] text-xs font-semibold text-[#111111] inline-flex items-center gap-1.5"
-                        >
-                          <span>{name}</span>
-                          {title && (
-                            <span className="text-[10px] text-[#555555] font-normal">
-                              ({title})
-                            </span>
-                          )}
-                        </span>
-                      );
-                    },
-                  )}
+                  {((!isHindi && subjectData.enDevatas && subjectData.enDevatas.length === (subjectData.devatas || subjectData.deities || []).length)
+                    ? subjectData.enDevatas
+                    : (subjectData.devatas || subjectData.deities || [])
+                  ).map((d, idx) => {
+                    const isObj = typeof d === "object" && d !== null;
+                    const name = isObj ? (isHindi ? (d.name || d.title) : (d.enName || d.enTitle || d.name || d.title)) : d;
+                    const title = isObj && d.name && d.title ? (isHindi ? d.title : (d.enTitle || d.title)) : null;
+                    return (
+                      <span
+                        key={isObj ? `${name || idx}-${idx}` : `${d}-${idx}`}
+                        className="px-3 py-1.5 rounded-lg bg-stone-50 border border-[#E5E5E5] text-xs font-semibold text-[#111111] inline-flex items-center gap-1.5"
+                      >
+                        <span>{name}</span>
+                        {title && (
+                          <span className="text-[10px] text-[#555555] font-normal">
+                            ({title})
+                          </span>
+                        )}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -2261,7 +2449,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         {subjectData.articles && (
           <section id="articles">
             <h2 className="font-serif text-2xl font-bold text-[#111111] mb-4">
-              Learn More About {subjectData.enName}
+              {isHindi ? `${subjectData.name} के विषय में आलेख` : `Learn More About ${subjectData.enName || subjectData.name}`}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {subjectData.articles.map((art) => (
@@ -2274,14 +2462,14 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                 >
                   <div>
                     <h3 className="font-serif text-lg font-bold text-[#111111] group-hover:text-[#D9A441]">
-                      {art.title}
+                      {isHindi ? art.title : (art.enTitle || art.title)}
                     </h3>
                     <p className="text-xs text-[#555555] font-devanagari mt-2 leading-relaxed">
-                      {art.desc}
+                      {isHindi ? art.desc : (art.enDesc || art.desc)}
                     </p>
                   </div>
                   <div className="mt-4 pt-2.5 border-t border-[#E5E5E5] text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center justify-between">
-                    <span>Read Article</span>
+                    <span>{isHindi ? "आलेख पढ़ें" : "Read Article"}</span>
                     <ArrowRight className="w-3.5 h-3.5 text-[#D9A441]" />
                   </div>
                 </div>
@@ -2299,16 +2487,18 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
               <div>
                 <h2 className="font-serif text-2xl font-bold text-[#111111]">
-                  Related Grantha & Commentaries
+                  {isHindi ? "सम्बद्ध ग्रंथ एवं भाष्य" : "Related Grantha & Commentaries"}
                 </h2>
                 <p className="text-xs text-[#555555] font-devanagari mt-0.5">
-                  {subjectData.name} से संबंधित प्रामाणिक संहिताएँ, ब्राह्मण,
-                  आरण्यक, उपनिषद एवं सायण भाष्य
+                  {isHindi
+                    ? `${subjectData.name} से संबंधित प्रामाणिक संहिताएँ, ब्राह्मण, आरण्यक, उपनिषद एवं सायण भाष्य`
+                    : `Canonical Samhitas, Brahmanas, Aranyakas, Upanishads & commentaries related to ${subjectData.enName || subjectData.name}`}
                 </p>
               </div>
               <span className="text-xs font-semibold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full">
-                {displayRelatedGranthas.length} / {allRelatedGranthas.length}{" "}
-                उपलब्ध ग्रंथ
+                {isHindi
+                  ? `${displayRelatedGranthas.length} / ${allRelatedGranthas.length} उपलब्ध ग्रंथ`
+                  : `${displayRelatedGranthas.length} / ${allRelatedGranthas.length} available texts`}
               </span>
             </div>
 
@@ -2326,7 +2516,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                         : "bg-white text-[#555555] hover:text-[#111111] border border-[#E5E5E5]"
                     }`}
                   >
-                    सभी ({allRelatedGranthas.length})
+                    {isHindi ? `सभी (${allRelatedGranthas.length})` : `All (${allRelatedGranthas.length})`}
                   </button>
                   {availableGranthaTypes.map((gt) => (
                     <button
@@ -2339,7 +2529,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                           : "bg-white text-[#555555] hover:text-[#111111] border border-[#E5E5E5]"
                       }`}
                     >
-                      {gt}
+                      {TYPE_TRANSLATIONS[gt]
+                        ? (isHindi ? TYPE_TRANSLATIONS[gt].hi : TYPE_TRANSLATIONS[gt].en)
+                        : (!isHindi && BADGE_MAP[gt] ? BADGE_MAP[gt] : gt)}
                     </button>
                   ))}
                 </div>
@@ -2351,7 +2543,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     type="text"
                     value={granthaSearch}
                     onChange={(e) => setGranthaSearch(e.target.value)}
-                    placeholder="ग्रंथ या भाष्य खोजें..."
+                    placeholder={isHindi ? "ग्रंथ या भाष्य खोजें..." : "Search text or commentary..."}
                     className="w-full pl-8 pr-7 py-1 rounded-lg text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari text-[#111111]"
                   />
                   {granthaSearch && (
@@ -2370,7 +2562,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             {displayRelatedGranthas.length === 0 ? (
               <div className="p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-2">
                 <p className="text-sm font-semibold text-[#555555]">
-                  चयनित फ़िल्टर के अनुसार कोई ग्रंथ नहीं मिला।
+                  {isHindi ? "चयनित फ़िल्टर के अनुसार कोई ग्रंथ नहीं मिला।" : "No text found matching the selected filter."}
                 </p>
                 <button
                   type="button"
@@ -2380,7 +2572,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                   }}
                   className="text-xs text-[#111111] hover:text-[#D9A441] underline font-bold cursor-pointer"
                 >
-                  फ़िल्टर रीसेट करें
+                  {isHindi ? "फ़िल्टर रीसेट करें" : "Reset Filter"}
                 </button>
               </div>
             ) : (
@@ -2404,21 +2596,21 @@ export default function SubjectDetailPage({ onOpenSearch }) {
                     <div>
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-[10px] font-bold text-[#111111] uppercase px-2.5 py-0.5 rounded-full bg-[#FFD21F] border border-[#FFD21F]">
-                          {g.type}
+                          {isHindi ? g.type : (BADGE_MAP[g.type] || g.enType || g.type)}
                         </span>
                         <ArrowRight className="w-3.5 h-3.5 text-[#D9A441] group-hover:translate-x-0.5 transition-all" />
                       </div>
                       <h4 className="font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors mt-2 leading-snug">
-                        {g.name}
+                        {isHindi ? g.name : (g.enName || g.name)}
                       </h4>
                       <p className="text-xs text-[#555555] font-devanagari mt-1">
                         {g.author
-                          ? `रचयिता / परंपरा: ${g.author}`
-                          : g.desc || "वैदिक परंपरा"}
+                          ? `${isHindi ? "रचयिता / परंपरा: " : "Author / Tradition: "}${isHindi ? g.author : (g.enAuthor || g.author)}`
+                          : (isHindi ? (g.desc || "वैदिक परंपरा") : (g.enDesc || g.desc || "Vedic tradition"))}
                       </p>
                     </div>
                     <div className="mt-3.5 pt-2 border-t border-[#E5E5E5] flex items-center justify-between text-xs font-bold text-[#111111] group-hover:text-[#D9A441]">
-                      <span>ग्रंथ का अध्ययन करें (Explore)</span>
+                      <span>{isHindi ? "ग्रंथ का अध्ययन करें" : "Explore Text"}</span>
                       <span>→</span>
                     </div>
                   </div>

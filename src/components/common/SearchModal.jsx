@@ -17,21 +17,23 @@ import { MASTER_CATEGORIES } from "../../data/megaMenuData.js";
 import { FOUR_VEDAS, TOPIC_CHIPS, GRANTHA_ARCHIVE } from "../../data/libraryHomeData.js";
 import { ALL_VEDIC_MANTRAS, searchMantras } from "../../data/vedicMantrasData.js";
 import { VEDA_HIERARCHY_TREE } from "../../data/vedaHierarchyTree.js";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 const POPULAR_SUGGESTIONS = [
-  { name: "अग्नि सूक्त (1.1.1)", path: "/library/mantra/rv-1-1-1" },
-  { name: "गायत्री महामंत्र (3.62.10)", path: "/library/mantra/rv-3-62-10" },
-  { name: "रुद्राष्टाध्यायी (16.1)", path: "/library/mantra/vs-16-1" },
-  { name: "शिवसंकल्प सूक्त (34.1)", path: "/library/mantra/vs-34-1" },
-  { name: "ईशावास्योपनिषद (40.1)", path: "/library/mantra/vs-40-1" },
-  { name: "पुरुष सूक्त (10.90.1)", path: "/library/mantra/rv-10-90-1" },
-  { name: "Rigveda", path: "/library/veda/rigveda" },
-  { name: "Yajurveda", path: "/library/veda/yajurveda" },
-  { name: "Samaveda", path: "/library/veda/samaveda" },
-  { name: "Atharvaveda", path: "/library/veda/atharvaveda" }
+  { name: { hi: "अग्नि सूक्त (1.1.1)", en: "Agni Sukta (1.1.1)" }, path: "/library/mantra/rv-1-1-1" },
+  { name: { hi: "गायत्री महामंत्र (3.62.10)", en: "Gayatri Mahamantra (3.62.10)" }, path: "/library/mantra/rv-3-62-10" },
+  { name: { hi: "रुद्राष्टाध्यायी (16.1)", en: "Rudrashtadhyayi (16.1)" }, path: "/library/mantra/vs-16-1" },
+  { name: { hi: "शिवसंकल्प सूक्त (34.1)", en: "Shivasankalpa Sukta (34.1)" }, path: "/library/mantra/vs-34-1" },
+  { name: { hi: "ईशावास्योपनिषद (40.1)", en: "Isha Upanishad (40.1)" }, path: "/library/mantra/vs-40-1" },
+  { name: { hi: "पुरुष सूक्त (10.90.1)", en: "Purusha Sukta (10.90.1)" }, path: "/library/mantra/rv-10-90-1" },
+  { name: { hi: "ऋग्वेद", en: "Rigveda" }, path: "/library/veda/rigveda" },
+  { name: { hi: "यजुर्वेद", en: "Yajurveda" }, path: "/library/veda/yajurveda" },
+  { name: { hi: "सामवेद", en: "Samaveda" }, path: "/library/veda/samaveda" },
+  { name: { hi: "अथर्ववेद", en: "Atharvaveda" }, path: "/library/veda/atharvaveda" }
 ];
 
 export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
+  const { isHindi, isEnglish } = useLanguage();
   const [query, setQuery] = useState(initialQuery);
   const [selectedFilter, setSelectedFilter] = useState("all"); // 'all', 'mantras', 'vedas', 'granthas', 'categories'
   const inputRef = useRef(null);
@@ -109,7 +111,11 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search Veda, Shakha, Grantha, Mantra No. (1.1.1), Shloka..."
+            placeholder={
+              isHindi
+                ? "वेद, शाखा, ग्रंथ, मंत्र संख्या (१.१.१), श्लोक खोजें..."
+                : "Search Veda, Shakha, Grantha, Mantra No. (1.1.1), Shloka..."
+            }
             className="w-full bg-transparent text-[#111111] placeholder:text-[#888888] focus:outline-none text-sm sm:text-base font-medium"
           />
           {query && (
@@ -132,13 +138,13 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
         <div className="px-4 py-2 border-b border-[#E5E5E5] bg-white flex items-center gap-1.5 overflow-x-auto text-xs font-medium scrollbar-none">
           <span className="text-[#888888] mr-1 flex items-center gap-1">
             <Filter className="w-3 h-3 text-[#555555]" />
-            <span>फ़िल्टर:</span>
+            <span>{isHindi ? "फ़िल्टर:" : "Filter:"}</span>
           </span>
           {[
-            { id: "all", label: "सभी (All)" },
-            { id: "mantras", label: `वेदमंत्र (${matchedMantras.length})` },
-            { id: "vedas", label: "वेद व शाखाएँ" },
-            { id: "granthas", label: "ग्रंथ व संग्रह" }
+            { id: "all", label: isHindi ? "सभी" : "All" },
+            { id: "mantras", label: isHindi ? `वेदमंत्र (${matchedMantras.length})` : `Mantras (${matchedMantras.length})` },
+            { id: "vedas", label: isHindi ? "वेद व शाखाएँ" : "Vedas & Shakhas" },
+            { id: "granthas", label: isHindi ? "ग्रंथ व संग्रह" : "Granthas & Archives" }
           ].map((flt) => {
             const isActive = selectedFilter === flt.id;
             return (
@@ -164,26 +170,35 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-[#555555] mb-2.5 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
-                <span>लोकप्रिय खोज (Popular Search Suggestions)</span>
+                <span>{isHindi ? "लोकप्रिय खोज सुझाव" : "Popular Search Suggestions"}</span>
               </p>
               <div className="flex flex-wrap gap-2">
-                {POPULAR_SUGGESTIONS.map((sug) => (
-                  <button
-                    key={sug.name}
-                    onClick={() => handleSelectResult(sug.path)}
-                    className="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] hover:bg-[#FFD21F]/15 transition-all cursor-pointer shadow-xs"
-                  >
-                    {sug.name}
-                  </button>
-                ))}
+                {POPULAR_SUGGESTIONS.map((sug) => {
+                  const sugName = isHindi ? sug.name.hi : sug.name.en;
+                  return (
+                    <button
+                      key={sug.name.en}
+                      onClick={() => handleSelectResult(sug.path)}
+                      className="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] hover:bg-[#FFD21F]/15 transition-all cursor-pointer shadow-xs"
+                    >
+                      {sugName}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ) : !hasResults ? (
             <div className="py-8 text-center text-[#555555] space-y-4">
               <div>
-                <p className="text-sm font-semibold text-[#111111]">"{query}" के लिए कोई परिणाम नहीं मिला।</p>
+                <p className="text-sm font-semibold text-[#111111]">
+                  {isHindi
+                    ? `"${query}" के लिए कोई परिणाम नहीं मिला।`
+                    : `No results found for "${query}".`}
+                </p>
                 <p className="text-xs text-[#555555] mt-1">
-                  कृपया अन्य कीवर्ड, वेद, सूक्त, मंत्र संख्या (उदा. 1.1.1, Agni, Rudra, Gayatri) खोजें।
+                  {isHindi
+                    ? "कृपया अन्य कीवर्ड, वेद, सूक्त, मंत्र संख्या (उदा. 1.1.1, Agni, Rudra, Gayatri) खोजें।"
+                    : "Please try other keywords, Veda, Sukta, or mantra numbers (e.g. 1.1.1, Agni, Rudra, Gayatri)."}
                 </p>
               </div>
 
@@ -191,18 +206,21 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
               <div className="pt-3 border-t border-[#E5E5E5] text-left">
                 <p className="text-xs font-bold text-[#111111] uppercase tracking-wider mb-2 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
-                  <span>सुझाए गए प्रमुख ग्रंथ एवं मंत्र:</span>
+                  <span>{isHindi ? "सुझाए गए प्रमुख ग्रंथ एवं मंत्र:" : "Suggested Scriptures & Mantras:"}</span>
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {POPULAR_SUGGESTIONS.slice(0, 6).map((rec) => (
-                    <button
-                      key={rec.name}
-                      onClick={() => handleSelectResult(rec.path)}
-                      className="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] hover:bg-[#FFD21F]/20 transition-all cursor-pointer"
-                    >
-                      {rec.name}
-                    </button>
-                  ))}
+                  {POPULAR_SUGGESTIONS.slice(0, 6).map((rec) => {
+                    const recName = isHindi ? rec.name.hi : rec.name.en;
+                    return (
+                      <button
+                        key={rec.name.en}
+                        onClick={() => handleSelectResult(rec.path)}
+                        className="px-3 py-1.5 rounded-full text-xs font-medium bg-white text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] hover:bg-[#FFD21F]/20 transition-all cursor-pointer"
+                      >
+                        {recName}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -215,10 +233,10 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#111111] mb-2 flex items-center justify-between">
                       <span className="flex items-center gap-1.5">
                         <Flame className="w-3.5 h-3.5 text-[#C62828]" />
-                        <span>प्रामाणिक वेदमंत्र (Vedic Mantras)</span>
+                        <span>{isHindi ? "प्रामाणिक वेदमंत्र" : "Authentic Vedic Mantras"}</span>
                       </span>
                       <span className="text-[10px] text-[#111111] bg-[#FFD21F] font-bold px-2 py-0.5 rounded-full">
-                        {matchedMantras.length} मिले
+                        {matchedMantras.length} {isHindi ? "मिले" : "found"}
                       </span>
                     </h4>
                     <div className="space-y-2">
@@ -230,7 +248,7 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                         >
                           <div className="flex items-center justify-between gap-2 mb-1.5">
                             <span className="text-xs font-bold text-[#111111] bg-[#F9F9F9] px-2 py-0.5 rounded border border-[#E5E5E5]">
-                              {m.textName} • मंत्र {m.mantraNumber}
+                              {m.textName} • {isHindi ? `मंत्र ${m.mantraNumber}` : `Mantra ${m.mantraNumber}`}
                             </span>
                             <span className="text-[10px] text-[#555555]">
                               {m.shakha} • {m.rishi}
@@ -240,7 +258,7 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                             {m.sanskrit}
                           </p>
                           <p className="text-xs text-[#555555] font-devanagari mt-1 line-clamp-1">
-                            {m.hindiTranslation}
+                            {isHindi ? m.hindiTranslation : (m.englishTranslation || m.hindiTranslation)}
                           </p>
                         </div>
                       ))}
@@ -254,7 +272,7 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#111111] mb-2 flex items-center gap-1.5">
                       <Scroll className="w-3.5 h-3.5 text-[#D9A441]" />
-                      <span>वेद एवं शाखाएँ (The Vedas)</span>
+                      <span>{isHindi ? "वेद एवं शाखाएँ" : "The Vedas & Shakhas"}</span>
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {matchedVedas.map((v) => (
@@ -266,7 +284,7 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                           <BookOpen className="w-4 h-4 text-[#D9A441] mt-0.5 flex-shrink-0" />
                           <div>
                             <p className="text-sm font-bold text-[#111111] group-hover:text-[#D9A441]">
-                              {v.name} <span className="text-xs text-[#555555] font-normal">({v.enName})</span>
+                              {isHindi ? v.name : (v.enName || v.name)}
                             </p>
                             <p className="text-xs text-[#555555] line-clamp-1">{v.desc}</p>
                           </div>
@@ -282,7 +300,7 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#111111] mb-2 flex items-center gap-1.5">
                       <BookOpen className="w-3.5 h-3.5 text-[#D9A441]" />
-                      <span>ग्रंथ संग्रह (Grantha Archive)</span>
+                      <span>{isHindi ? "ग्रंथ संग्रह" : "Grantha Archive"}</span>
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {matchedGranthas.map((g) => (
@@ -308,7 +326,7 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#111111] mb-2 flex items-center gap-1.5">
                       <Layers className="w-3.5 h-3.5 text-[#D9A441]" />
-                      <span>ज्ञान श्रेणियाँ (Knowledge Taxonomy)</span>
+                      <span>{isHindi ? "ज्ञान श्रेणियाँ" : "Knowledge Taxonomy"}</span>
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {matchedCategories.map((c) => (
@@ -335,7 +353,11 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
 
         {/* Footer Quick Info */}
         <div className="p-3 bg-white border-t border-[#E5E5E5] text-center text-[11px] text-[#555555] flex items-center justify-between px-4">
-          <span>वेदों के मूल मंत्रों, शाखाओं और ग्रंथों को खोजने के लिए कीवर्ड टाइप करें</span>
+          <span>
+            {isHindi
+              ? "वेदों के मूल मंत्रों, शाखाओं और ग्रंथों को खोजने के लिए कीवर्ड टाइप करें"
+              : "Type keywords to search root Vedic mantras, shakhas, and scriptures"}
+          </span>
           <span className="font-mono text-[10px] text-[#888888] bg-stone-100 px-2 py-0.5 rounded border border-[#E5E5E5]">Ctrl+K / ⌘K</span>
         </div>
       </div>

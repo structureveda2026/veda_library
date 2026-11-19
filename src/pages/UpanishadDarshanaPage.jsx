@@ -43,6 +43,7 @@ import {
   UPANISHADS_SCRIPTURE_DATA,
   DARSHANA_SCRIPTURE_DATA,
 } from "../data/scriptures/index.js";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import ScriptureReaderView from "../components/common/ScriptureReaderView.jsx";
 import DarshanaTaxonomyView from "../components/knowledge/DarshanaTaxonomyView.jsx";
 import bannerKashiGhat from "../assets/images/library/banners/banner-kashi-ghat.png";
@@ -180,6 +181,7 @@ export const READER_DARSHANAS = [
 export default function UpanishadDarshanaPage({ onOpenSearch }) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isHindi } = useLanguage();
 
   // Tab state: 'reader', 'taxonomy', 'upanishad', 'darshana', 'mahavakya', 'muktika'
   const initialTab = searchParams.get("tab") || "reader";
@@ -315,7 +317,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
   return (
     <div className="bg-white min-h-screen text-[#111111] pb-24">
       {/* 1. Scholarly Royal Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
         {/* Sacred Kashi Ganga Ghat Authentic Real Banner with 80-85% Opacity and Luminous Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -331,15 +333,15 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-xs text-amber-200/90 mb-4 font-serif">
             <Link to="/" className="hover:text-[#FFD21F] transition-colors">
-              होम
+              {isHindi ? "होम" : "Home"}
             </Link>
             <span>/</span>
             <Link to="/library" className="hover:text-[#FFD21F] transition-colors">
-              वैदिक ज्ञानकोष
+              {isHindi ? "वैदिक ज्ञानकोष" : "Veda Library"}
             </Link>
             <span>/</span>
             <span className="text-white font-semibold">
-              उपनिषद् एवं दर्शन
+              {isHindi ? "उपनिषद् एवं दर्शन" : "Upanishad & Darshana"}
             </span>
           </div>
 
@@ -348,18 +350,20 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
             <div className="lg:col-span-8 space-y-4">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs">
                 <Brain className="w-3.5 h-3.5 text-[#D9A441]" />
-                <span>UPANISHAD & DARSHANA PHILOSOPHY • वेदान्त एवं षड्दर्शन</span>
+                <span>{isHindi ? "वेदान्त एवं षड्दर्शन दर्शनशास्त्र" : "Upanishad & Darshana Philosophy"}</span>
               </span>
 
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
-                उपनिषद् एवं दर्शन
+                {isHindi ? "उपनिषद् एवं दर्शन" : "Upanishad & Darshana"}
                 <span className="block text-xl sm:text-2xl font-normal text-amber-200/95 mt-1 font-sans">
                   The Pinnacle of Vedic Non-Dual Realization & The Six Astika Systems
                 </span>
               </h1>
 
               <p className="text-amber-100/90 text-sm sm:text-base font-devanagari leading-relaxed max-w-3xl drop-shadow-xs">
-                वेदों का ज्ञानकाण्ड (वेदान्त) और भारतीय मेधा के ६ सर्वोच्च दार्शनिक तंत्र — आत्मा, परमात्मा, संसार और मुक्ति के परम सत्य का वैज्ञानिक, तार्किक एवं अपरोक्षानुभूतिपरक निरूपण।
+                {isHindi
+                  ? "वेदों का ज्ञानकाण्ड (वेदान्त) और भारतीय मेधा के ६ सर्वोच्च दार्शनिक तंत्र — आत्मा, परमात्मा, संसार और मुक्ति के परम सत्य का वैज्ञानिक, तार्किक एवं अपरोक्षानुभूतिपरक निरूपण।"
+                  : "The pinnacle of Vedic wisdom (Vedanta) and the 6 classical Astika systems — scientific, logical, and direct experiential inquiry into the Self, Supreme Reality, and Liberation."}
               </p>
 
               {/* Shanti Invocation Royal Banner with Audio & Copy */}
@@ -367,14 +371,14 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                 <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-[#E5E5E5]">
                   <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111]">
                     <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
-                    ईशावास्य एवं बृहदारण्यक उपनिषद् शांति पाठ
+                    {isHindi ? "ईशावास्य एवं बृहदारण्यक उपनिषद् शांति पाठ" : "Isha & Brihadaranyaka Upanishad Shanti Patha"}
                   </span>
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={(e) =>
                         handleToggleSound("hero-shanti", e)
                       }
-                      title="ध्वनि श्रवण"
+                      title={isHindi ? "ध्वनि श्रवण" : "Listen Audio"}
                       className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
                         playingId === "hero-shanti"
                           ? "bg-[#FFD21F] text-[#111111] shadow-xs animate-pulse font-bold"
@@ -384,12 +388,12 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       {playingId === "hero-shanti" ? (
                         <>
                           <VolumeX className="w-3.5 h-3.5" />
-                          <span>ध्वनि तरंग...</span>
+                          <span>{isHindi ? "ध्वनि तरंग..." : "Playing..."}</span>
                         </>
                       ) : (
                         <>
                           <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
-                          <span>सस्वर पाठ</span>
+                          <span>{isHindi ? "सस्वर पाठ" : "Recitation"}</span>
                         </>
                       )}
                     </button>
@@ -401,7 +405,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                           e
                         )
                       }
-                      title="मंत्र कॉपी करें"
+                      title={isHindi ? "मंत्र कॉपी करें" : "Copy Mantra"}
                       className="p-1.5 rounded-lg bg-white hover:bg-stone-50 text-[#111111] border border-[#E5E5E5] transition-colors cursor-pointer"
                     >
                       {copiedId === "hero-shanti" ? (
@@ -417,7 +421,9 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                   ॐ पूर्णमदः पूर्णमिदं पूर्णात्पूर्णमुदच्यते। पूर्णस्य पूर्णमादाय पूर्णमेवावशिष्यते॥
                 </p>
                 <p className="text-[#555555] text-xs mt-1.5 font-sans">
-                  "परब्रह्म पूर्ण है, यह जगत भी पूर्ण है; पूर्ण से पूर्ण ही प्रकट होता है। पूर्ण में से पूर्ण निकाल लेने पर भी पूर्ण ही शेष रहता है।"
+                  {isHindi
+                    ? '"परब्रह्म पूर्ण है, यह जगत भी पूर्ण है; पूर्ण से पूर्ण ही प्रकट होता है। पूर्ण में से पूर्ण निकाल लेने पर भी पूर्ण ही शेष रहता है।"'
+                    : '"The Supreme Brahman is infinite, and this world is infinite. The infinite proceeds from the infinite. Even taking the infinite from the infinite, the infinite alone remains."'}
                 </p>
               </div>
             </div>
@@ -435,10 +441,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute bottom-2.5 left-3 right-3 text-white">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-950/70 px-2 py-0.5 rounded backdrop-blur-xs">
-                      ब्रह्मविद्या एवं ध्यान
+                      {isHindi ? "ब्रह्मविद्या एवं ध्यान" : "Brahmavidya & Meditation"}
                     </span>
                     <p className="font-serif text-xs font-semibold text-amber-100 mt-1 line-clamp-1">
-                      श्रीमद् आद्य शंकराचार्य अद्वैत परम्परा
+                      {isHindi ? "श्रीमद् आद्य शंकराचार्य अद्वैत परम्परा" : "Adi Shankaracharya Advaita Tradition"}
                     </p>
                   </div>
                 </div>
@@ -451,10 +457,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                     ११
                   </div>
                   <div className="text-[11px] text-[#1E293B] font-bold uppercase tracking-wider">
-                    मुख्य उपनिषद्
+                    {isHindi ? "मुख्य उपनिषद्" : "Principal Upanishads"}
                   </div>
                   <div className="text-[10px] text-stone-600 mt-0.5 font-medium">
-                    शंकर भाष्य युक्त
+                    {isHindi ? "शंकर भाष्य युक्त" : "With Shankara Bhashya"}
                   </div>
                 </div>
                 <div className="bg-white/95 backdrop-blur-md border border-amber-200/90 rounded-2xl p-3.5 shadow-sm hover:border-amber-400 hover:shadow-md transition-all">
@@ -462,10 +468,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                     ४
                   </div>
                   <div className="text-[11px] text-[#1E293B] font-bold uppercase tracking-wider">
-                    महावाक्य
+                    {isHindi ? "महावाक्य" : "Mahavakyas"}
                   </div>
                   <div className="text-[10px] text-stone-600 mt-0.5 font-medium">
-                    चार वेदों के सूत्र
+                    {isHindi ? "चार वेदों के सूत्र" : "Sutras of 4 Vedas"}
                   </div>
                 </div>
                 <div className="bg-white/95 backdrop-blur-md border border-amber-200/90 rounded-2xl p-3.5 shadow-sm hover:border-amber-400 hover:shadow-md transition-all">
@@ -473,10 +479,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                     ६
                   </div>
                   <div className="text-[11px] text-[#1E293B] font-bold uppercase tracking-wider">
-                    षड्दर्शन
+                    {isHindi ? "षड्दर्शन" : "Shad-Darshanas"}
                   </div>
                   <div className="text-[10px] text-stone-600 mt-0.5 font-medium">
-                    आस्तिक दर्शन परंपरा
+                    {isHindi ? "आस्तिक दर्शन परंपरा" : "Astika Traditions"}
                   </div>
                 </div>
                 <div className="bg-white/95 backdrop-blur-md border border-amber-200/90 rounded-2xl p-3.5 shadow-sm hover:border-amber-400 hover:shadow-md transition-all">
@@ -484,10 +490,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                     १०८
                   </div>
                   <div className="text-[11px] text-[#1E293B] font-bold uppercase tracking-wider">
-                    मुक्तिक कोष
+                    {isHindi ? "मुक्तिक कोष" : "Muktika Canon"}
                   </div>
                   <div className="text-[10px] text-stone-600 mt-0.5 font-medium">
-                    कल्याणकारी उपनिषद
+                    {isHindi ? "कल्याणकारी उपनिषद" : "108 Upanishads"}
                   </div>
                 </div>
               </div>
@@ -553,7 +559,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                   <Icon
                     className={`w-4 h-4 ${isActive ? "text-[#111111]" : "text-[#D9A441]"}`}
                   />
-                  <span>{t.label}</span>
+                  <span>{isHindi ? t.label : t.en}</span>
                 </button>
               );
             })}
@@ -564,7 +570,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-200/80 text-stone-600 hover:text-[#1E293B] text-xs bg-white hover:bg-amber-50/60 transition-all cursor-pointer shadow-2xs"
           >
             <Search className="w-3.5 h-3.5 text-amber-700" />
-            <span>त्वरित खोज (Ctrl+K)</span>
+            <span>{isHindi ? "त्वरित खोज (Ctrl+K)" : "Quick Search (Ctrl+K)"}</span>
           </button>
         </div>
       </div>
@@ -581,13 +587,15 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-[#78350F] border border-amber-200/80 mb-2 shadow-2xs">
                   <BookOpen className="w-3.5 h-3.5 text-amber-700" />
-                  <span>AUTHENTIC SCRIPTURE & SUTRA PAGINATED READER</span>
+                  <span>{isHindi ? "प्रामाणिक उपनिषद् एवं दर्शन सूत्र वाचन" : "Authentic Scripture & Sutra Paginated Reader"}</span>
                 </div>
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#1E293B]">
-                  मूल ग्रंथ श्लोक एवं सूत्र वाचन
+                  {isHindi ? "मूल ग्रंथ श्लोक एवं सूत्र वाचन" : "Scripture & Sutra Reader"}
                 </h2>
                 <p className="text-stone-600 text-xs sm:text-sm font-devanagari mt-1 max-w-2xl leading-relaxed">
-                  उपनिषदों के प्रामाणिक मन्त्र एवं षड्दर्शनों के मूल सूत्र — १० या २० प्रति पृष्ठ क्रमबद्ध वाचन, देवनागरी पाठ, हिन्दी भावार्थ, English अनुवाद, सरल हिंग्लिश व्याख्या एवं शास्त्राधारित भाष्य।
+                  {isHindi
+                    ? "उपनिषदों के प्रामाणिक मन्त्र एवं षड्दर्शनों के मूल सूत्र — १० या २० प्रति पृष्ठ क्रमबद्ध वाचन, देवनागरी पाठ, हिन्दी भावार्थ, English अनुवाद, सरल हिंग्लिश व्याख्या एवं शास्त्राधारित भाष्य।"
+                    : "Authentic Upanishadic mantras & classical Shad-Darshana sutras with original Devanagari, Hindi meaning, English translation, and scholarly commentary."}
                 </p>
               </div>
 
@@ -605,7 +613,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       : "text-stone-700 hover:text-[#78350F] hover:bg-white"
                   }`}
                 >
-                  उपनिषद् (९ ग्रंथ)
+                  {isHindi ? "उपनिषद् (९ ग्रंथ)" : "Upanishads (9 Texts)"}
                 </button>
                 <button
                   type="button"
@@ -619,7 +627,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       : "text-stone-700 hover:text-[#78350F] hover:bg-white"
                   }`}
                 >
-                  षड्दर्शन सूत्र (६ दर्शन)
+                  {isHindi ? "षड्दर्शन सूत्र (६ दर्शन)" : "Shad-Darshana Sutras (6 Schools)"}
                 </button>
               </div>
             </div>
@@ -628,10 +636,12 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
             <div className="bg-white p-4 sm:p-5 rounded-2xl border border-amber-200/70 shadow-xs space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-stone-500 font-devanagari">
-                  {readerCategory === "upanishads" ? "वाचन हेतु उपनिषद् चुनें:" : "वाचन हेतु दर्शन सूत्र चुनें:"}
+                  {readerCategory === "upanishads"
+                    ? (isHindi ? "वाचन हेतु उपनिषद् चुनें:" : "Select Upanishad to Read:")
+                    : (isHindi ? "वाचन हेतु दर्शन सूत्र चुनें:" : "Select Darshana Sutras to Read:")}
                 </span>
                 <span className="text-[11px] text-[#78350F] font-bold">
-                  चयनित: {currentReaderScripture?.label}
+                  {isHindi ? "चयनित:" : "Selected:"} {currentReaderScripture?.label}
                 </span>
               </div>
 
@@ -655,7 +665,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                           isSelected ? "bg-amber-900/60 text-amber-100" : "bg-amber-100/70 text-[#78350F]"
                         }`}
                       >
-                        {item.totalItems} {readerCategory === "upanishads" ? "मन्त्र" : "सूत्र"}
+                        {item.totalItems} {readerCategory === "upanishads" ? (isHindi ? "मन्त्र" : "mantras") : (isHindi ? "सूत्र" : "sutras")}
                       </span>
                       {item.isComplete && (
                         <span
@@ -663,7 +673,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                             isSelected ? "bg-emerald-700 text-white" : "bg-emerald-100 text-emerald-800"
                           }`}
                         >
-                          पूर्ण पाठ
+                          {isHindi ? "पूर्ण पाठ" : "Complete"}
                         </span>
                       )}
                     </button>
@@ -701,14 +711,16 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="w-2 h-2 rounded-full bg-[#D9A441]" />
                   <span className="text-[11px] font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
-                    प्रस्थानत्रयी • वेदान्त ज्ञानकाण्ड
+                    {isHindi ? "प्रस्थानत्रयी • वेदान्त ज्ञानकाण्ड" : "Prasthanatrayi • Vedanta Jnana-Kanda"}
                   </span>
                 </div>
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
-                  एकादश मुख्योपनिषद् (11 Principal Upanishads)
+                  {isHindi ? "एकादश मुख्योपनिषद्" : "11 Principal Upanishads"}
                 </h2>
                 <p className="text-xs text-[#555555] font-devanagari mt-1">
-                  आदि शंकराचार्य भाष्य युक्त — ईश, केन, कठ, प्रश्न, मुण्डक, माण्डूक्य, तैत्तिरीय, ऐतरेय, छान्दोग्य, बृहदारण्यक एवं श्वेताश्वतर
+                  {isHindi
+                    ? "आदि शंकराचार्य भाष्य युक्त — ईश, केन, कठ, प्रश्न, मुण्डक, माण्डूक्य, तैत्तिरीय, ऐतरेय, छान्दोग्य, बृहदारण्यक एवं श्वेताश्वतर"
+                    : "Commented upon by Adi Shankaracharya — Isha, Kena, Katha, Prashna, Mundaka, Mandukya, Taittiriya, Aitareya, Chandogya, Brihadaranyaka & Shvetashvatara"}
                 </p>
               </div>
 
@@ -719,7 +731,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="उपनिषद, वेद या सूत्र खोजें..."
+                  placeholder={isHindi ? "उपनिषद, वेद या सूत्र खोजें..." : "Search Upanishads, Vedas or Sutras..."}
                   className="w-full pl-8 pr-7 py-2 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:ring-1 focus:ring-[#FFD21F] focus:outline-none placeholder:text-[#555555] font-devanagari text-[#111111]"
                 />
                 {searchQuery && (
@@ -738,28 +750,34 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
               <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
                   <Brain className="w-4 h-4 text-[#D9A441]" />
-                  <span>दार्शनिक जिज्ञासा (Core Inquiry)</span>
+                  <span>{isHindi ? "दार्शनिक जिज्ञासा (Core Inquiry)" : "Core Philosophical Inquiry"}</span>
                 </div>
                 <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
-                  उपनिषदों का मूल अनुसंधान: “अहं कौन हूँ?”, “चेतना का अधिष्ठान क्या है?”, और “संसार के परे नित्य अमृत पद क्या है?”
+                  {isHindi
+                    ? "उपनिषदों का मूल अनुसंधान: “अहं कौन हूँ?”, “चेतना का अधिष्ठान क्या है?”, और “संसार के परे नित्य अमृत पद क्या है?”"
+                    : "The Upanishadic quest: 'Who am I?', 'What is the ground of consciousness?', and 'What is the immortal truth beyond worldliness?'"}
                 </p>
               </div>
               <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
                   <Sparkles className="w-4 h-4 text-[#D9A441]" />
-                  <span>साक्षी चेतना (Transcendence)</span>
+                  <span>{isHindi ? "साक्षी चेतना (Transcendence)" : "Witness Consciousness (Sakshi)"}</span>
                 </div>
                 <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
-                  ईश, कठ, माण्डूक्य और बृहदारण्यक आत्मा, ब्रह्म, अविद्या, विवेक एवं तुरीय साक्षी-चेतना के अमर सत्य को उद्घाटित करते हैं।
+                  {isHindi
+                    ? "ईश, कठ, माण्डूक्य और बृहदारण्यक आत्मा, ब्रह्म, अविद्या, विवेक एवं तुरीय साक्षी-चेतना के अमर सत्य को उद्घाटित करते हैं।"
+                    : "Isha, Katha, Mandukya & Brihadaranyaka reveal the eternal truth of Atman, Brahman, Viveka, and Turiya witness awareness."}
                 </p>
               </div>
               <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
                   <CheckCircle2 className="w-4 h-4 text-[#D9A441]" />
-                  <span>जीवन-मुक्ति साधना (Living Realization)</span>
+                  <span>{isHindi ? "जीवन-मुक्ति साधना (Living Realization)" : "Living Realization (Jivanmukti)"}</span>
                 </div>
                 <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
-                  नैतिक आचरण (सत्यं वद धर्मं चर), पञ्चकोश विवेक, ॐकार ध्यान एवं अनासक्ति से इसी जीवन में आत्म-साक्षात्कार।
+                  {isHindi
+                    ? "नैतिक आचरण (सत्यं वद धर्मं चर), पञ्चकोश विवेक, ॐकार ध्यान एवं अनासक्ति से इसी जीवन में आत्म-साक्षात्कार।"
+                    : "Self-realization in this very life through ethical living, Panchakosha discernment, Omkara meditation, and detachment."}
                 </p>
               </div>
             </div>
@@ -810,11 +828,11 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       <div className="mt-3 p-3.5 rounded-xl bg-stone-50/80 border border-[#E5E5E5] text-xs font-devanagari text-[#111111] relative group/shanti">
                         <div className="flex items-center justify-between gap-2 mb-1">
                           <span className="text-[10px] font-bold uppercase tracking-wider text-[#D9A441]">
-                            शान्ति पाठ:
+                            {isHindi ? "शान्ति पाठ:" : "Shanti Patha:"}
                           </span>
                           <button
                             onClick={(e) => handleCopyVerse(u.id, u.shantiMantra, e)}
-                            title="शान्ति पाठ कॉपी करें"
+                            title={isHindi ? "शान्ति पाठ कॉपी करें" : "Copy Shanti Patha"}
                             className="p-1 rounded bg-white hover:bg-stone-100 text-[#111111] border border-[#E5E5E5] transition-colors cursor-pointer"
                           >
                             {copiedId === u.id ? (
@@ -841,7 +859,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                         className="text-xs font-bold text-[#555555] hover:text-[#111111] flex items-center gap-1 cursor-pointer transition-colors"
                       >
                         <Info className="w-3.5 h-3.5 text-[#D9A441]" />
-                        <span>दार्शनिक सार</span>
+                        <span>{isHindi ? "दार्शनिक सार" : "Philosophical Essence"}</span>
                       </button>
 
                       <div className="flex items-center gap-1.5">
@@ -854,18 +872,18 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                             handleTabChange("reader", u.slug);
                           }}
                           className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs transition-colors shadow-2xs cursor-pointer border border-[#FFD21F] hover:border-[#D9A441]"
-                          title="मूल मन्त्र एवं अनुवाद पढ़ें"
+                          title={isHindi ? "मूल मन्त्र एवं अनुवाद पढ़ें" : "Read Verses & Translation"}
                         >
                           <BookOpen className="w-3 h-3 text-[#111111]" />
-                          <span>मन्त्र वाचन</span>
+                          <span>{isHindi ? "मन्त्र वाचन" : "Read Verses"}</span>
                         </button>
                         <Link
                           to={`/library/upanishad/${u.slug}`}
                           onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white text-[#111111] hover:border-[#D9A441] border border-[#E5E5E5] font-bold text-xs transition-colors"
-                          title="विस्तृत उपनिषद संरचना"
+                          title={isHindi ? "विस्तृत उपनिषद संरचना" : "Detailed Structure"}
                         >
-                          <span>संरचना</span>
+                          <span>{isHindi ? "संरचना" : "Structure"}</span>
                           <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform text-[#D9A441]" />
                         </Link>
                       </div>
@@ -884,13 +902,15 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
           <div className="space-y-8 animate-fadeIn">
             <div className="bg-white rounded-3xl border border-amber-200/70 shadow-xs p-6 sm:p-8">
               <span className="text-xs font-bold uppercase tracking-wider text-[#78350F] bg-amber-50 px-3 py-1 rounded-full border border-amber-200/70">
-                VEDIC FOUNDATION • चार वेदों के सार-सूत्र
+                {isHindi ? "VEDIC FOUNDATION • चार वेदों के सार-सूत्र" : "VEDIC FOUNDATION • 4 Vedas Quintessence"}
               </span>
               <h2 className="font-serif text-3xl font-bold text-[#1E293B] mt-2 mb-2">
-                चार वेदों के चार महावाक्य (The 4 Great Mahavakyas)
+                {isHindi ? "चार वेदों के चार महावाक्य" : "The 4 Great Mahavakyas of the Vedas"}
               </h2>
               <p className="text-sm text-stone-600 font-devanagari leading-relaxed max-w-3xl">
-                वेदों के ज्ञानकाण्ड का सार चार महावाक्यों में संघनित है। ये केवल विचार नहीं हैं, बल्कि लक्षण, उपदेश, अनुभव और साक्षात्कार के रूप में साधक की अंतःचेतना को ब्रह्ममय बनाने वाले महामंत्र हैं।
+                {isHindi
+                  ? "वेदों के ज्ञानकाण्ड का सार चार महावाक्यों में संघनित है। ये केवल विचार नहीं हैं, बल्कि लक्षण, उपदेश, अनुभव और साक्षात्कार के रूप में साधक की अंतःचेतना को ब्रह्ममय बनाने वाले महामंत्र हैं।"
+                  : "The essence of the Vedic Jnana-Kanda distilled into four great aphorisms, elevating the seeker's consciousness to non-dual Brahman."}
               </p>
             </div>
 
@@ -917,7 +937,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       <div className="flex items-center gap-1.5 shrink-0">
                         <button
                           onClick={(e) => handleToggleSound(mv.id, e)}
-                          title="महावाक्य श्रवण"
+                          title={isHindi ? "महावाक्य श्रवण" : "Listen Mahavakya"}
                           className={`p-1.5 rounded-lg border text-xs transition-colors cursor-pointer ${
                             playingId === mv.id
                               ? "bg-amber-700 text-white border-amber-700 animate-pulse"
@@ -932,7 +952,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                         </button>
                         <button
                           onClick={(e) => handleCopyVerse(mv.id, `${mv.text} — ${mv.meaning} (${mv.upanishad})`, e)}
-                          title="महावाक्य कॉपी करें"
+                          title={isHindi ? "महावाक्य कॉपी करें" : "Copy Mahavakya"}
                           className="p-1.5 rounded-lg bg-amber-50 text-[#78350F] border border-amber-200/80 hover:bg-amber-100 transition-colors cursor-pointer"
                         >
                           {copiedId === mv.id ? (
@@ -955,10 +975,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
 
                   <div className="pt-3 border-t border-amber-100 flex items-center justify-between text-xs text-stone-500 font-devanagari">
                     <span>
-                      स्रोत: <strong className="text-[#1E293B]">{mv.upanishad}</strong>
+                      {isHindi ? "स्रोत:" : "Source:"} <strong className="text-[#1E293B]">{mv.upanishad}</strong>
                     </span>
                     <span className="text-[#78350F] font-bold flex items-center gap-1">
-                      <span>अपरोक्षानुभूति</span>
+                      <span>{isHindi ? "अपरोक्षानुभूति" : "Direct Realization"}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -978,22 +998,26 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
               <div className="space-y-3 max-w-3xl">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-[#78350F] border border-amber-200/70">
                   <Brain className="w-3.5 h-3.5 text-amber-700" />
-                  <span>भारतीय दर्शन • षड्दर्शन (Six Astika Systems)</span>
+                  <span>{isHindi ? "भारतीय दर्शन • षड्दर्शन (Six Astika Systems)" : "Indian Philosophy • Six Astika Systems"}</span>
                 </span>
                 <h2 className="font-serif text-3xl font-bold text-[#1E293B]">
-                  षड्दर्शन: सत्य के छह शाश्वत दृष्टिकोण
+                  {isHindi ? "षड्दर्शन: सत्य के छह शाश्वत दृष्टिकोण" : "Six Systems: The Eternal Perspectives of Truth"}
                 </h2>
                 <p className="text-sm text-stone-600 font-devanagari leading-relaxed">
-                  "दृश्यते यथार्थतत्त्वं अनेनेति दर्शनम्" — सत्य का यथार्थ साक्षात्कार ही दर्शन है। न्याय-वैशेषिक, सांख्य-योग और मीमांसा-वेदान्त — ये तीन युग्म परस्पर विरोधी नहीं, बल्कि बुद्धि की सूक्ष्मता के अनुसार साधक को स्थूल तर्क से सर्वोच्च अद्वैत ब्रह्मज्ञान तक ले जाने वाली सुव्यवस्थित सोपान हैं।
+                  {isHindi
+                    ? '"दृश्यते यथार्थतत्त्वं अनेनेति दर्शनम्" — सत्य का यथार्थ साक्षात्कार ही दर्शन है। न्याय-वैशेषिक, सांख्य-योग और मीमांसा-वेदान्त — ये तीन युग्म परस्पर विरोधी नहीं, बल्कि बुद्धि की सूक्ष्मता के अनुसार साधक को स्थूल तर्क से सर्वोच्च अद्वैत ब्रह्मज्ञान तक ले जाने वाली सुव्यवस्थित सोपान हैं।'
+                    : '"That by which truth is perceived is Darshana." Nyaya-Vaisheshika, Samkhya-Yoga, and Mimamsa-Vedanta form complementary steps leading the intellect from empirical logic to non-dual supreme realization.'}
                 </p>
               </div>
 
               {/* Astika Definition Box */}
               <div className="bg-[#FBF9F5] p-4 rounded-2xl border border-amber-200/80 text-xs font-devanagari text-[#1E293B] max-w-xs shrink-0 shadow-2xs">
                 <strong className="block text-[#78350F] mb-1 font-bold">
-                  आस्तिक दर्शन की परिभाषा:
+                  {isHindi ? "आस्तिक दर्शन की परिभाषा:" : "Definition of Astika Darshana:"}
                 </strong>
-                वेदों की परम प्रामाणिकता को स्वीकार कर मोक्ष एवं आत्म-साक्षात्कार की ओर ले जाने वाले ६ प्रमुख सनातन दर्शन।
+                {isHindi
+                  ? "वेदों की परम प्रामाणिकता को स्वीकार कर मोक्ष एवं आत्म-साक्षात्कार की ओर ले जाने वाले ६ प्रमुख सनातन दर्शन।"
+                  : "The six classical orthodox schools accepting Vedic epistemic authority, guiding towards liberation and Self-realization."}
               </div>
             </div>
 
@@ -1008,10 +1032,10 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <span className="text-xs font-bold text-stone-500">
-                        युग्म: {d.pairedWith}
+                        {isHindi ? "युग्म:" : "Paired with:"} {d.pairedWith}
                       </span>
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-[#78350F] border border-amber-200/70">
-                        {d.pramanas.length} प्रमाण
+                        {d.pramanas.length} {isHindi ? "प्रमाण" : "pramanas"}
                       </span>
                     </div>
 
@@ -1023,16 +1047,16 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                     </h3>
 
                     <div className="text-xs text-stone-600 font-devanagari mt-1">
-                      <strong>प्रवर्तक:</strong> {d.founder} •{" "}
-                      <strong>मूल ग्रंथ:</strong> {d.foundationalText}
+                      <strong>{isHindi ? "प्रवर्तक:" : "Founder:"}</strong> {d.founder} •{" "}
+                      <strong>{isHindi ? "मूल ग्रंथ:" : "Root Text:"}</strong> {d.foundationalText}
                     </div>
 
                     <div className="mt-3 p-2.5 rounded-xl bg-[#FBF9F5] border border-amber-200/70 text-xs font-devanagari text-stone-700 leading-relaxed">
-                      <strong>स्वरूप:</strong> {d.nature}
+                      <strong>{isHindi ? "स्वरूप:" : "Nature:"}</strong> {d.nature}
                     </div>
 
                     <div className="mt-3 text-xs text-stone-600 font-devanagari">
-                      <strong>स्वीकृत प्रमाण:</strong> {d.pramanas.join(", ")}
+                      <strong>{isHindi ? "स्वीकृत प्रमाण:" : "Epistemic Means (Pramanas):"}</strong> {d.pramanas.join(", ")}
                     </div>
                   </div>
 
@@ -1046,7 +1070,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       className="text-xs font-bold text-stone-600 hover:text-[#1E293B] flex items-center gap-1 cursor-pointer"
                     >
                       <Info className="w-3.5 h-3.5 text-amber-700" />
-                      <span>सिद्धांत</span>
+                      <span>{isHindi ? "सिद्धांत" : "Principles"}</span>
                     </button>
                     <div className="flex items-center gap-1.5">
                       <button
@@ -1058,18 +1082,18 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                           handleTabChange("reader", d.id);
                         }}
                         className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-800 text-white hover:from-amber-800 hover:to-amber-900 font-bold text-xs transition-colors shadow-2xs cursor-pointer"
-                        title="मूल सूत्र वाचन"
+                        title={isHindi ? "मूल सूत्र वाचन" : "Read Root Sutras"}
                       >
                         <BookOpen className="w-3.5 h-3.5 text-amber-200" />
-                        <span>सूत्र वाचन</span>
+                        <span>{isHindi ? "सूत्र वाचन" : "Read Sutras"}</span>
                       </button>
                       <Link
                         to={`/library/darshana/${d.id}`}
                         onClick={(e) => e.stopPropagation()}
                         className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-amber-50 text-[#78350F] hover:bg-amber-100 border border-amber-200/70 font-bold text-xs transition-colors"
-                        title="विस्तृत सूत्र संरचना"
+                        title={isHindi ? "विस्तृत सूत्र संरचना" : "Detailed Structure"}
                       >
-                        <span>विस्तृत संरचना</span>
+                        <span>{isHindi ? "विस्तृत संरचना" : "Detailed Structure"}</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
                     </div>
@@ -1081,17 +1105,17 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
             {/* Comparison Matrix Table */}
             <div className="bg-white rounded-3xl border border-amber-200/70 shadow-xs p-6 overflow-x-auto">
               <h3 className="font-serif text-xl font-bold text-[#1E293B] mb-3">
-                षड्दर्शन तुलनात्मक सारणी (Comparative Philosophical Matrix)
+                {isHindi ? "षड्दर्शन तुलनात्मक सारणी" : "Comparative Philosophical Matrix of Shad-Darshanas"}
               </h3>
               <table className="w-full text-xs font-devanagari text-left border-collapse">
                 <thead>
                   <tr className="border-b border-amber-200/70 bg-[#FBF9F5] text-[#1E293B]">
-                    <th className="py-2.5 px-3 font-bold">दर्शन</th>
-                    <th className="py-2.5 px-3 font-bold">आचार्य</th>
-                    <th className="py-2.5 px-3 font-bold">प्रमाण</th>
-                    <th className="py-2.5 px-3 font-bold">परमतत्व का स्वरूप</th>
-                    <th className="py-2.5 px-3 font-bold">बंधन का कारण</th>
-                    <th className="py-2.5 px-3 font-bold">मुक्ति का साधन</th>
+                    <th className="py-2.5 px-3 font-bold">{isHindi ? "दर्शन" : "Philosophy"}</th>
+                    <th className="py-2.5 px-3 font-bold">{isHindi ? "आचार्य" : "Founder"}</th>
+                    <th className="py-2.5 px-3 font-bold">{isHindi ? "प्रमाण" : "Epistemology"}</th>
+                    <th className="py-2.5 px-3 font-bold">{isHindi ? "परमतत्व का स्वरूप" : "Supreme Reality"}</th>
+                    <th className="py-2.5 px-3 font-bold">{isHindi ? "बंधन का कारण" : "Cause of Bondage"}</th>
+                    <th className="py-2.5 px-3 font-bold">{isHindi ? "मुक्ति का साधन" : "Means of Liberation"}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1107,7 +1131,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                         {row.founder}
                       </td>
                       <td className="py-2.5 px-3 text-stone-700">
-                        {row.pramanasCount} प्रमाण
+                        {row.pramanasCount} {isHindi ? "प्रमाण" : "pramanas"}
                       </td>
                       <td className="py-2.5 px-3 text-stone-700">
                         {row.reality}
@@ -1135,17 +1159,19 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
             <div className="bg-white rounded-3xl border border-[#E5E5E5] shadow-xs p-6 sm:p-8 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] px-3.5 py-1 rounded-full shadow-2xs border border-[#FFD21F]">
-                  108 MUKTIKA CANON • भगवान श्रीराम-हनुमान संवाद
+                  108 MUKTIKA CANON • {isHindi ? "भगवान श्रीराम-हनुमान संवाद" : "Lord Rama & Hanuman Dialogue"}
                 </span>
                 <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-stone-50 border border-[#E5E5E5] text-[#111111]">
-                  कुल १०८ उपनिषद संगणना
+                  {isHindi ? "कुल १०८ उपनिषद संगणना" : "Total 108 Upanishads Canon"}
                 </span>
               </div>
               <h2 className="font-serif text-3xl font-bold text-[#111111]">
-                १०८ मुक्तिक उपनिषद् कोष (The 108 Muktika Canon)
+                {isHindi ? "१०८ मुक्तिक उपनिषद् कोष" : "The 108 Muktika Canon"}
               </h2>
               <p className="text-sm text-[#555555] font-devanagari leading-relaxed">
-                मुक्तिक उपनिषद में मर्यादा पुरुषोत्तम भगवान श्रीराम ने पवनपुत्र श्री हनुमान जी को समस्त १०८ उपनिषदों का प्रामाणिक क्रम एवं मुक्ति-मार्ग का उपदेश दिया। वेदों (ऋक्, यजुष्, साम, अथर्व) एवं साधना-परंपराओं (सामान्य वेदान्त, संन्यास, शाक्त, वैष्णव, शैव, योग) के अनुसार इनका सुव्यवस्थित विभाजन।
+                {isHindi
+                  ? "मुक्तिक उपनिषद में मर्यादा पुरुषोत्तम भगवान श्रीराम ने पवनपुत्र श्री हनुमान जी को समस्त १०८ उपनिषदों का प्रामाणिक क्रम एवं मुक्ति-मार्ग का उपदेश दिया। वेदों (ऋक्, यजुष्, साम, अथर्व) एवं साधना-परंपराओं (सामान्य वेदान्त, संन्यास, शाक्त, वैष्णव, शैव, योग) के अनुसार इनका सुव्यवस्थित विभाजन।"
+                  : "In the Muktika Upanishad, Lord Rama imparts to Hanuman the canonical order of the 108 Upanishads and the path to liberation, organized across the four Vedas and seven traditions."}
               </p>
 
               {/* By Veda Bento Bar */}
@@ -1188,7 +1214,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                     type="text"
                     value={muktikaSearch}
                     onChange={(e) => setMuktikaSearch(e.target.value)}
-                    placeholder="१०८ उपनिषदों में नाम, वेद या विषय खोजें..."
+                    placeholder={isHindi ? "१०८ उपनिषदों में नाम, वेद या विषय खोजें..." : "Search name, Veda or theme in 108 Upanishads..."}
                     className="w-full pl-8 pr-7 py-2 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:ring-1 focus:ring-[#FFD21F] focus:outline-none placeholder:text-[#555555] font-devanagari text-[#111111]"
                   />
                   {muktikaSearch && (
@@ -1204,7 +1230,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                 {/* Counter */}
                 <div className="text-xs font-bold text-[#111111] self-start md:self-auto flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#D9A441]" />
-                  <span>प्रदर्शित: {filtered108Upanishads.length} / १०८ उपनिषद</span>
+                  <span>{isHindi ? `प्रदर्शित: ${filtered108Upanishads.length} / १०८ उपनिषद` : `Showing: ${filtered108Upanishads.length} / 108 Upanishads`}</span>
                   {(muktikaVedaFilter !== "all" || muktikaCategoryFilter !== "all" || muktikaSearch) && (
                     <button
                       type="button"
@@ -1215,7 +1241,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                       }}
                       className="text-[11px] text-[#D9A441] hover:underline font-semibold cursor-pointer ml-1"
                     >
-                      फ़िल्टर रीसेट
+                      {isHindi ? "फ़िल्टर रीसेट" : "Reset Filter"}
                     </button>
                   )}
                 </div>
@@ -1224,25 +1250,25 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
               {/* 7 Tradition Filter Chips */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
                 <span className="text-[11px] font-bold text-[#555555] whitespace-nowrap mr-1">
-                  परंपरा:
+                  {isHindi ? "परंपरा:" : "Tradition:"}
                 </span>
                 {[
-                  "all",
-                  "दशोपनिषद् / मुख्योपनिषद्",
-                  "सामान्य वेदान्त",
-                  "संन्यास उपनिषद्",
-                  "शाक्त उपनिषद्",
-                  "वैष्णव उपनिषद्",
-                  "शैव उपनिषद्",
-                  "योग उपनिषद्",
-                ].map((catName) => {
-                  const isSelected = muktikaCategoryFilter === catName;
-                  const label = catName === "all" ? "समस्त ७ परंपराएँ" : catName;
+                  { id: "all", labelHi: "समस्त ७ परंपराएँ", labelEn: "All 7 Traditions" },
+                  { id: "दशोपनिषद् / मुख्योपनिषद्", labelHi: "दशोपनिषद् / मुख्योपनिषद्", labelEn: "Principal / Mukhya" },
+                  { id: "सामान्य वेदान्त", labelHi: "सामान्य वेदान्त", labelEn: "Samanya Vedanta" },
+                  { id: "संन्यास उपनिषद्", labelHi: "संन्यास उपनिषद्", labelEn: "Sannyasa Upanishads" },
+                  { id: "शाक्त उपनिषद्", labelHi: "शाक्त उपनिषद्", labelEn: "Shakta Upanishads" },
+                  { id: "वैष्णव उपनिषद्", labelHi: "वैष्णव उपनिषद्", labelEn: "Vaishnava Upanishads" },
+                  { id: "शैव उपनिषद्", labelHi: "शैव उपनिषद्", labelEn: "Shaiva Upanishads" },
+                  { id: "योग उपनिषद्", labelHi: "योग उपनिषद्", labelEn: "Yoga Upanishads" },
+                ].map((cat) => {
+                  const isSelected = muktikaCategoryFilter === cat.id;
+                  const label = isHindi ? cat.labelHi : cat.labelEn;
                   return (
                     <button
-                      key={catName}
+                      key={cat.id}
                       type="button"
-                      onClick={() => setMuktikaCategoryFilter(catName)}
+                      onClick={() => setMuktikaCategoryFilter(cat.id)}
                       className={`px-3 py-1 rounded-full whitespace-nowrap font-medium text-[11px] border transition-all cursor-pointer ${
                         isSelected
                           ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F] font-bold shadow-2xs"
@@ -1306,7 +1332,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                     {/* Bottom Actions */}
                     <div className="mt-4 pt-2.5 border-t border-[#E5E5E5] flex items-center justify-between gap-1 text-[11px]">
                       <span className="text-[#555555] font-devanagari text-[10px]">
-                        मुक्तिक क्रम #{u.order}
+                        {isHindi ? `मुक्तिक क्रम #${u.order}` : `Muktika #${u.order}`}
                       </span>
 
                       {readerMatch ? (
@@ -1321,11 +1347,11 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
                           className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-[10px] shadow-2xs border border-[#FFD21F] cursor-pointer"
                         >
                           <BookOpen className="w-3 h-3 text-[#111111]" />
-                          <span>मूल पाठ</span>
+                          <span>{isHindi ? "मूल पाठ" : "Root Text"}</span>
                         </button>
                       ) : (
                         <span className="text-[10px] font-semibold text-[#D9A441] group-hover:underline flex items-center gap-0.5">
-                          <span>संरचना</span>
+                          <span>{isHindi ? "संरचना" : "Structure"}</span>
                           <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
                         </span>
                       )}
@@ -1336,8 +1362,8 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
             </div>
 
             {filtered108Upanishads.length === 0 && (
-              <div className="p-12 text-center bg-white rounded-2xl border border-[#E5E5E5] text-[#555555]">
-                <p className="text-sm font-devanagari">कोई उपनिषद नहीं मिला। कृपया अन्य शब्द या श्रेणी चुनें।</p>
+              <div className="p-6 sm:p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] text-[#555555]">
+                <p className="text-sm font-devanagari">{isHindi ? "कोई उपनिषद नहीं मिला। कृपया अन्य शब्द या श्रेणी चुनें।" : "No Upanishad found. Please try another keyword or category."}</p>
               </div>
             )}
           </div>

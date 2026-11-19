@@ -110,15 +110,15 @@ const CATEGORY_TOPICS = [
 ];
 
 const POPULAR_TAGS = [
-  "Lord Shiva",
-  "Rudrabhishek",
-  "Navgrah",
-  "Vedic Astrology",
-  "Mantras",
-  "Vastu Tips",
-  "Ayurveda",
-  "Daily Sadhana",
-  "Rigveda",
+  { key: "Lord Shiva", hi: "भगवान शिव" },
+  { key: "Rudrabhishek", hi: "रुद्राभिषेक" },
+  { key: "Navgrah", hi: "नवग्रह" },
+  { key: "Vedic Astrology", hi: "वैदिक ज्योतिष" },
+  { key: "Mantras", hi: "मंत्र साधना" },
+  { key: "Vastu Tips", hi: "वास्तु शास्त्र" },
+  { key: "Ayurveda", hi: "आयुर्वेद" },
+  { key: "Daily Sadhana", hi: "दैनिक साधना" },
+  { key: "Rigveda", hi: "ऋग्वेद" },
 ];
 
 export default function BlogListPage() {
@@ -423,9 +423,9 @@ export default function BlogListPage() {
         </div>
       </nav>
 
-      {/* 2. Hero Header Section with Authentic Vedic Panoramic Banner Strictly Preserved (Opacity 0.85 with subtle luminous overlay) */}
-      <section className="relative overflow-hidden bg-white border-b border-[#E5E5E5] py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-        {/* Real Panoramic Banner Background - Clearly visible (0.80 - 0.85 opacity with luminous overlay) */}
+      {/* 2. Hero Header Section with Authentic Vedic Panoramic Banner Strictly Preserved */}
+      <section className="relative overflow-hidden bg-white border-b border-[#E5E5E5] py-5 sm:py-7 px-4 sm:px-6 lg:px-8">
+        {/* Real Panoramic Banner Background */}
         <div className="absolute inset-0">
           <img
             src={bannerArticlesHero}
@@ -433,35 +433,33 @@ export default function BlogListPage() {
             className="w-full h-full object-cover object-center opacity-85 filter brightness-95"
           />
           {/* Subtle luminous spiritual overlay preserving banner details */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/70 backdrop-blur-[0.5px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/45 to-black/75 backdrop-blur-[0.5px]" />
         </div>
 
         {/* Content Container on top */}
-        <div className="relative z-10 max-w-7xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFD21F] text-[#111111] text-xs font-bold shadow-md">
-            <Sparkles className="w-3.5 h-3.5 text-[#111111]" />
+        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-2.5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFD21F] text-[#111111] text-[11px] font-bold shadow-xs">
+            <Sparkles className="w-3 h-3 text-[#111111]" />
             <span className="font-devanagari">
               {isHindi ? "वेद व्याख्या एवं शास्त्रीय आलेख" : "Vedic Insights & Commentary"}
             </span>
-            <span>•</span>
-            <span className="tracking-wide">{isHindi ? "विद्वत विमर्श" : "Scholarly Insights"}</span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight drop-shadow-md">
+          <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight drop-shadow-md">
             {isHindi ? "वेद पुस्तकालय आलेख एवं शोध संग्रह" : "Veda Library Blogs & Articles"}
           </h1>
 
-          <p className="max-w-2xl mx-auto text-sm sm:text-base text-white/90 leading-relaxed font-sans drop-shadow-xs">
+          <p className="max-w-xl mx-auto text-xs sm:text-sm text-white/90 leading-snug font-sans drop-shadow-xs">
             {isHindi
-              ? "विद्वानों एवं आचार्यों द्वारा रचित प्रामाणिक वैदिक अनुसंधान, पूजा-अनुष्ठान विधान, ज्योतिषीय मार्गदर्शन एवं शास्त्रीय विश्लेषण।"
-              : "Authentic commentary, Vedic research, ritual explanations, astrology guides, and shastric wisdom authored by seasoned scholars and practitioners."}
+              ? "विद्वानों द्वारा रचित प्रामाणिक वैदिक अनुसंधान, पूजा विधान एवं शास्त्रीय विश्लेषण।"
+              : "Authentic commentary, Vedic research, ritual guides, and classical shastric analysis."}
           </p>
 
           {/* Search Bar & Instant Filter */}
-          <div className="max-w-2xl mx-auto pt-3">
-            <form onSubmit={handleSearchSubmit} className="relative flex items-center shadow-lg rounded-2xl">
-              <div className="absolute left-4 text-[#D9A441] pointer-events-none">
-                <Search className="w-5 h-5" />
+          <div className="max-w-xl mx-auto pt-1">
+            <form onSubmit={handleSearchSubmit} className="relative flex items-center shadow-md rounded-xl">
+              <div className="absolute left-3.5 text-[#D9A441] pointer-events-none">
+                <Search className="w-4 h-4" />
               </div>
               <input
                 type="text"
@@ -469,23 +467,23 @@ export default function BlogListPage() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder={
                   isHindi
-                    ? "लेख, मंत्र, श्लोक, विषय अथवा रचयिता खोजें..."
-                    : "Search articles, mantras, shlokas, topics or authors..."
+                    ? "लेख, मंत्र, श्लोक, विषय खोजें..."
+                    : "Search articles, mantras, shlokas, topics..."
                 }
-                className="w-full pl-12 pr-28 py-3.5 rounded-2xl bg-white border border-[#E5E5E5] text-sm text-[#111111] placeholder:text-[#555555] focus:outline-none focus:ring-2 focus:ring-[#FFD21F] focus:border-[#FFD21F] transition-all shadow-md"
+                className="w-full pl-10 pr-24 py-2.5 rounded-xl bg-white border border-[#E5E5E5] text-xs sm:text-sm text-[#111111] placeholder:text-[#555555] focus:outline-none focus:ring-2 focus:ring-[#FFD21F] focus:border-[#FFD21F] transition-all"
               />
               {searchInput && (
                 <button
                   type="button"
                   onClick={handleClearSearch}
-                  className="absolute right-24 p-1.5 rounded-full text-[#555555] hover:text-[#111111] transition-colors cursor-pointer"
+                  className="absolute right-20 p-1 rounded-full text-[#555555] hover:text-[#111111] transition-colors cursor-pointer"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
               <button
                 type="submit"
-                className="absolute right-2 px-5 py-2 rounded-xl bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs shadow-xs transition-all cursor-pointer border border-[#FFD21F] hover:border-[#D9A441]"
+                className="absolute right-1.5 px-4 py-1.5 rounded-lg bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs shadow-2xs transition-all cursor-pointer border border-[#FFD21F]"
               >
                 {isHindi ? "खोजें" : "Search"}
               </button>
@@ -493,24 +491,26 @@ export default function BlogListPage() {
           </div>
 
           {/* Popular Tag Chips */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-3">
-            <span className="text-xs font-semibold text-white/90 flex items-center gap-1 mr-1">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1">
+            <span className="text-[11px] font-semibold text-white/90 flex items-center gap-1 mr-0.5">
               <Tag className="w-3 h-3 text-[#FFD21F]" />
-              {isHindi ? "प्रमुख विषय:" : "Trending Topics:"}
+              {isHindi ? "प्रमुख विषय:" : "Trending:"}
             </span>
-            {POPULAR_TAGS.map((tag) => {
-              const isActive = currentTag.toLowerCase() === tag.toLowerCase();
+            {POPULAR_TAGS.map((t, idx) => {
+              const isActive = currentTag.toLowerCase() === t.key.toLowerCase();
               return (
                 <button
-                  key={tag}
-                  onClick={() => updateParams({ tag: isActive ? "" : tag })}
-                  className={`text-[11px] font-semibold px-2.5 py-1 rounded-full transition-all cursor-pointer backdrop-blur-xs ${
+                  key={t.key}
+                  onClick={() => updateParams({ tag: isActive ? "" : t.key })}
+                  className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full transition-all cursor-pointer ${
+                    idx >= 4 ? "hidden sm:inline-block" : "inline-block"
+                  } ${
                     isActive
                       ? "bg-[#FFD21F] text-[#111111] font-extrabold shadow-sm ring-1 ring-white"
-                      : "bg-black/50 hover:bg-black/70 text-white border border-white/30 hover:border-[#FFD21F]"
+                      : "bg-black/50 hover:bg-black/70 text-white border border-white/20 hover:border-[#FFD21F]"
                   }`}
                 >
-                  #{tag}
+                  #{isHindi ? t.hi : t.key}
                 </button>
               );
             })}
@@ -618,21 +618,14 @@ export default function BlogListPage() {
                     </div>
                   </div>
 
-                  {/* Title & Hindi Subtitle */}
+                  {/* Title */}
                   <div className="p-2 sm:p-2.5 flex-1 flex flex-col justify-center bg-white">
                     <div
-                      className={`font-serif font-bold text-xs sm:text-[13px] leading-tight line-clamp-1 transition-colors ${
+                      className={`font-serif font-bold text-xs sm:text-[13px] leading-tight line-clamp-1 transition-colors text-center ${
                         isActive ? "text-[#D9A441]" : "text-[#111111] group-hover:text-[#D9A441]"
                       }`}
                     >
                       {isHindi ? topic.labelHi : topic.label}
-                    </div>
-                    <div
-                      className={`text-[10px] ${isHindi ? "font-sans" : "font-devanagari"} mt-0.5 line-clamp-1 font-medium ${
-                        isActive ? "text-[#111111] font-semibold" : "text-[#555555]"
-                      }`}
-                    >
-                      {isHindi ? topic.label : topic.labelHi}
                     </div>
                   </div>
                 </button>
@@ -753,7 +746,7 @@ export default function BlogListPage() {
                 ))}
               </div>
             ) : blogs.length === 0 ? (
-              <div className="py-16 text-center bg-white rounded-3xl border border-[#E5E5E5] p-8 space-y-4 shadow-sm max-w-xl mx-auto">
+              <div className="py-8 text-center bg-white rounded-3xl border border-[#E5E5E5] p-6 sm:p-8 space-y-4 shadow-sm max-w-xl mx-auto">
                 <div className="w-16 h-16 rounded-full bg-stone-50 border border-[#E5E5E5] flex items-center justify-center text-[#D9A441] mx-auto">
                   <BookOpen className="w-8 h-8" />
                 </div>
@@ -859,33 +852,35 @@ export default function BlogListPage() {
                 <div className="text-center sm:text-left space-y-2 flex-1">
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                     <h3 className="font-serif text-xl font-bold text-[#111111]">
-                      डॉ. आचार्य विद्याधर शर्मा (Dr. Vidyadhar Sharma)
+                      {isHindi ? "डॉ. आचार्य विद्याधर शर्मा" : "Dr. Acharya Vidyadhar Sharma"}
                     </h3>
                     <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] border border-[#FFD21F] flex items-center gap-1 shadow-2xs">
                       <Award className="w-3 h-3 text-[#111111]" />
-                      मुख्य संपादक एवं शोध अध्यक्ष
+                      {isHindi ? "मुख्य संपादक एवं शोध अध्यक्ष" : "Chief Editor & Research Head"}
                     </span>
                     <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-stone-50 text-[#555555] border border-[#E5E5E5]">
-                      विद्वत समीक्षा परिषद
+                      {isHindi ? "विद्वत समीक्षा परिषद" : "Scholarly Review Council"}
                     </span>
                   </div>
 
                   <p className="text-xs text-[#555555] leading-relaxed font-sans">
-                    काशी हिन्दू विश्वविद्यालय एवं संपूर्णानंद संस्कृत विश्वविद्यालय के पूर्व शोधार्थी। चारों वेदों की संहिताओं, वैदिक स्वर विज्ञान एवं यजुर्वेद माध्यन्दिन शाखा के भाष्य संरक्षण में ३०+ वर्षों का अकादमिक व पारंपरिक अनुभव।
+                    {isHindi
+                      ? "काशी हिन्दू विश्वविद्यालय एवं संपूर्णानंद संस्कृत विश्वविद्यालय के पूर्व शोधार्थी। चारों वेदों की संहिताओं, वैदिक स्वर विज्ञान एवं यजुर्वेद माध्यन्दिन शाखा के भाष्य संरक्षण में ३०+ वर्षों का अकादमिक व पारंपरिक अनुभव।"
+                      : "Alumnus of Banaras Hindu University and Sampurnanand Sanskrit University. 30+ years of scholarly experience in Vedic accent preservation and Madhyandina commentary."}
                   </p>
 
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-[11px] font-medium text-[#111111]">
                     <span className="px-2.5 py-1 rounded-md bg-stone-50 border border-[#E5E5E5]">
-                      परंपरा: शुक्ल यजुर्वेद वाजसनेयी
+                      {isHindi ? "परंपरा: शुक्ल यजुर्वेद वाजसनेयी" : "Tradition: Shukla Yajurveda Vajasaneyi"}
                     </span>
                     <span className="px-2.5 py-1 rounded-md bg-stone-50 border border-[#E5E5E5]">
-                      प्रकाशित शोध: ३ प्रमुख ग्रन्थ, ४८ समीक्षाएँ
+                      {isHindi ? "प्रकाशित शोध: ३ प्रमुख ग्रन्थ, ४८ समीक्षाएँ" : "Publications: 3 Treatises, 48 Reviews"}
                     </span>
                     <Link
                       to="/scholars/vidyadhar-sharma"
                       className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-[11px] border border-[#FFD21F] hover:border-[#D9A441] transition-all ml-auto"
                     >
-                      <span>समस्त विद्वान मंडल देखें (View Scholars)</span>
+                      <span>{isHindi ? "समस्त विद्वान मंडल देखें" : "View All Scholars"}</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
@@ -901,8 +896,9 @@ export default function BlogListPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E5E5E5]">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm">
                   <BookOpen className="w-4 h-4 text-[#D9A441]" />
-                  <span className="font-devanagari">शास्त्रीय उद्धरण एवं संदर्भ प्रमाण</span>
-                  <span className="text-xs text-[#555555] font-normal">(Canonical Citation Guide)</span>
+                  <span className="font-devanagari">
+                    {isHindi ? "शास्त्रीय उद्धरण एवं संदर्भ प्रमाण" : "Canonical Citation & Reference Standards"}
+                  </span>
                 </div>
 
                 {/* Citation Style Switcher */}

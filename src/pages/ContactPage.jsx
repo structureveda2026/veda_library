@@ -134,13 +134,13 @@ export default function ContactPage() {
           </Link>
           <span className="text-[#D9A441]">›</span>
           <span className="text-[#111111] font-bold">
-            {isHindi ? "संपर्क (Contact Us)" : "Contact Us"}
+            {isHindi ? "संपर्क" : "Contact Us"}
           </span>
         </div>
       </div>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#111111] text-[#FFFFFF] py-14 sm:py-18 border-b-2 border-[#D9A441]">
+      <section className="relative overflow-hidden bg-[#111111] text-[#FFFFFF] py-8 sm:py-10 border-b-2 border-[#D9A441]">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
             src={bannerKashiGhat}
@@ -170,7 +170,7 @@ export default function ContactPage() {
       </section>
 
       {/* Main Grid: Form + Contact Cards */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
 
           {/* Left Column: Interactive Contact Form (lg:col-span-7) */}

@@ -59,6 +59,9 @@ coverage/
 
 # Agent Internal Guidelines & Memory
 .dev_docs/
+.agents/
+*.md
+**/*.md
 .veda_project_guidelines.md
 VEDA_PROJECT_RULES.md
 VEDA_LIBRARY_MASTER_GUIDELINES.md

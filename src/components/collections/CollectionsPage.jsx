@@ -24,6 +24,7 @@ import {
 
 import { COLLECTIONS_LIST, getCollectionById } from "../../data/collectionsData";
 import kashiAartiImg from "../../assets/images/library/banners/banner-kashi-ghat.png";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 
 const CATEGORY_TABS = [
   { id: "all", label: "All Collections", hindiLabel: "सभी संग्रह" },
@@ -39,6 +40,7 @@ const CATEGORY_TABS = [
 export default function CollectionsPage({ onSelectArticle }) {
   const navigate = useNavigate();
   const { collectionId } = useParams();
+  const { isHindi } = useLanguage();
 
   const [activeTab, setActiveTab] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -105,7 +107,7 @@ export default function CollectionsPage({ onSelectArticle }) {
     return (
       <div className="bg-[#FFFFFF] min-h-screen text-[#111111]">
         {/* Deep Dive Header Banner */}
-        <div className="relative bg-[#111111] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] overflow-hidden shadow-sm">
+        <div className="relative bg-[#111111] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] overflow-hidden shadow-sm">
           <div className="absolute inset-0 z-0">
             <img
               src={currentCollection.image}
@@ -126,25 +128,25 @@ export default function CollectionsPage({ onSelectArticle }) {
                 className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
               >
                 <Home className="w-3.5 h-3.5 text-[#D9A441]" />
-                <span>Home</span>
+                <span>{isHindi ? "होम" : "Home"}</span>
               </Link>
               <span className="text-[#D9A441]">›</span>
               <Link
                 to="/library"
                 className="hover:text-white transition-colors cursor-pointer"
               >
-                Veda Library
+                {isHindi ? "वेद पुस्तकालय" : "Veda Library"}
               </Link>
               <span className="text-[#D9A441]">›</span>
               <Link
                 to="/library/collections"
                 className="hover:text-white transition-colors cursor-pointer"
               >
-                Curated Collections
+                {isHindi ? "विशिष्ट संग्रह" : "Curated Collections"}
               </Link>
               <span className="text-[#D9A441]">›</span>
               <span className="text-[#FFD21F] font-semibold">
-                {currentCollection.title}
+                {isHindi ? (currentCollection.hindiTitle || currentCollection.title) : currentCollection.title}
               </span>
             </div>
 
@@ -155,7 +157,7 @@ export default function CollectionsPage({ onSelectArticle }) {
                 className="inline-flex items-center gap-2 text-xs font-semibold text-[#111111] bg-[#FFD21F] hover:bg-[#ffe052] transition-colors cursor-pointer px-3.5 py-1.5 rounded-full border border-[#FFD21F] shadow-xs"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span>← All Curated Collections</span>
+                <span>{isHindi ? "← सभी विशिष्ट संग्रह" : "← All Curated Collections"}</span>
               </Link>
             </div>
 
@@ -181,7 +183,7 @@ export default function CollectionsPage({ onSelectArticle }) {
                 to={`/library/${currentCollection.targetCategorySlug}`}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] font-bold text-xs tracking-wide shadow-xs transition-all cursor-pointer border border-[#FFD21F]"
               >
-                <span>Browse Full Category Hub</span>
+                <span>{isHindi ? "सम्पूर्ण श्रेणी हब देखें" : "Browse Full Category Hub"}</span>
                 <ArrowRight className="w-4 h-4 text-[#111111]" />
               </Link>
 
@@ -191,28 +193,28 @@ export default function CollectionsPage({ onSelectArticle }) {
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-xs border border-white/30 backdrop-blur-xs transition-all cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5 text-[#FFD21F]" />
-                <span>{copiedNotification ? "Link Copied!" : "Share Collection"}</span>
+                <span>{copiedNotification ? (isHindi ? "लिंक कॉपी हुआ!" : "Link Copied!") : (isHindi ? "संग्रह साझा करें" : "Share Collection")}</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* Deep Dive Content Body */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column: Articles & Featured Items */}
             <div className="lg:col-span-2 space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#E5E5E5] pb-3 gap-2">
                 <div>
                   <h2 className="font-serif text-2xl font-bold text-[#111111]">
-                    Included Scriptures & Articles
+                    {isHindi ? "सम्मिलित ग्रंथ एवं आलेख" : "Included Scriptures & Articles"}
                   </h2>
                   <p className="text-xs font-devanagari text-[#555555] mt-0.5">
-                    इस संग्रह के अंतर्गत उपलब्ध प्रामाणिक ग्रंथ, सूक्त, मंत्र एवं आलेख
+                    {isHindi ? "इस संग्रह के अंतर्गत उपलब्ध प्रामाणिक ग्रंथ, सूक्त, मंत्र एवं आलेख" : "Authentic scriptures, suktas, mantras & articles in this collection"}
                   </p>
                 </div>
                 <span className="text-xs font-bold text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full shrink-0 self-start sm:self-auto shadow-xs">
-                  {filteredCollectionItems.length} / {currentCollection.items.length} Texts
+                  {filteredCollectionItems.length} / {currentCollection.items.length} {isHindi ? "ग्रंथ" : "Texts"}
                 </span>
               </div>
 
@@ -231,7 +233,7 @@ export default function CollectionsPage({ onSelectArticle }) {
                             : "bg-white text-[#555555] hover:text-[#111111] border border-[#E5E5E5]"
                         }`}
                       >
-                        सभी ({currentCollection.items.length})
+                        {isHindi ? "सभी" : "All"} ({currentCollection.items.length})
                       </button>
                       {availableItemTypes.map((t) => (
                         <button
@@ -257,7 +259,7 @@ export default function CollectionsPage({ onSelectArticle }) {
                       type="text"
                       value={itemSearchQuery}
                       onChange={(e) => setItemSearchQuery(e.target.value)}
-                      placeholder="संग्रह में खोजें..."
+                      placeholder={isHindi ? "संग्रह में खोजें..." : "Search in collection..."}
                       className="w-full pl-8 pr-7 py-1 rounded-lg text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:outline-none placeholder:text-[#555555]/60 font-devanagari text-[#111111]"
                     />
                     {itemSearchQuery && (
@@ -276,7 +278,7 @@ export default function CollectionsPage({ onSelectArticle }) {
               {/* Items Cards */}
               {filteredCollectionItems.length === 0 ? (
                 <div className="p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-2">
-                  <p className="text-sm font-semibold text-[#555555]">कोई ग्रंथ अथवा आलेख नहीं मिला।</p>
+                  <p className="text-sm font-semibold text-[#555555]">{isHindi ? "कोई ग्रंथ अथवा आलेख नहीं मिला।" : "No texts or articles found."}</p>
                   <button
                     type="button"
                     onClick={() => {
@@ -285,7 +287,7 @@ export default function CollectionsPage({ onSelectArticle }) {
                     }}
                     className="text-xs text-[#111111] hover:text-[#D9A441] underline font-bold cursor-pointer"
                   >
-                    फ़िल्टर रीसेट करें
+                    {isHindi ? "फ़िल्टर रीसेट करें" : "Reset filter"}
                   </button>
                 </div>
               ) : (
@@ -332,12 +334,12 @@ export default function CollectionsPage({ onSelectArticle }) {
                         to={item.route}
                         className="inline-flex items-center gap-1 text-xs font-bold text-[#111111] group-hover:text-[#D9A441] hover:underline cursor-pointer"
                       >
-                        <span>Read Full Text & Commentary</span>
+                        <span>{isHindi ? "संपूर्ण पाठ एवं भाष्य पढ़ें" : "Read Full Text & Commentary"}</span>
                         <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#D9A441]" />
                       </Link>
                       <span className="text-[10px] text-stone-500 font-medium flex items-center gap-1">
                         <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                        <span>Source Verified</span>
+                        <span>{isHindi ? "प्रमाणित स्रोत" : "Source Verified"}</span>
                       </span>
                     </div>
                   </div>
@@ -353,10 +355,10 @@ export default function CollectionsPage({ onSelectArticle }) {
                 <div className="bg-white rounded-2xl p-6 border border-[#E5E5E5] shadow-xs">
                   <h3 className="font-serif text-lg font-bold text-[#111111] mb-3 flex items-center gap-2">
                     <Layers className="w-4 h-4 text-[#D9A441]" />
-                    <span>Hierarchy & Divisions</span>
+                    <span>{isHindi ? "संरचना एवं शाखाएं" : "Hierarchy & Divisions"}</span>
                   </h3>
                   <p className="text-xs font-devanagari text-[#555555] mb-4">
-                    इस संग्रह की संरचनात्मक शाखाएँ एवं अनुभाग:
+                    {isHindi ? "इस संग्रह की संरचनात्मक शाखाएँ एवं अनुभाग:" : "Structural branches and sections of this collection:"}
                   </p>
                   <ul className="space-y-2.5">
                     {currentCollection.divisions.map((div, i) => (
@@ -379,7 +381,7 @@ export default function CollectionsPage({ onSelectArticle }) {
                 <div className="bg-white rounded-2xl p-6 border border-[#E5E5E5] shadow-xs">
                   <h3 className="font-serif text-lg font-bold text-[#111111] mb-3 flex items-center gap-2">
                     <Tag className="w-4 h-4 text-[#D9A441]" />
-                    <span>Related Topics & Tags</span>
+                    <span>{isHindi ? "सम्बद्ध विषय एवं टैग" : "Related Topics & Tags"}</span>
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
                     {currentCollection.relatedTags.map((tag, i) => (
@@ -397,16 +399,16 @@ export default function CollectionsPage({ onSelectArticle }) {
               {/* Browse Other Collections Link */}
               <div className="bg-stone-50 rounded-2xl p-6 border border-[#E5E5E5] shadow-xs">
                 <h4 className="font-serif font-bold text-[#111111] text-sm mb-1">
-                  Explore More Collections
+                  {isHindi ? "अन्य संग्रह देखें" : "Explore More Collections"}
                 </h4>
                 <p className="text-xs font-devanagari text-[#555555] mb-4">
-                  अन्य वैदिक, दार्शनिक एवं पौराणिक संग्रहों को explore करें।
+                  {isHindi ? "अन्य वैदिक, दार्शनिक एवं पौराणिक संग्रहों को explore करें।" : "Explore more Vedic, philosophical and epic collections."}
                 </p>
                 <Link
                   to="/library/collections"
                   className="block text-center py-2.5 px-4 rounded-xl bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] font-bold text-xs shadow-xs transition-colors cursor-pointer border border-[#FFD21F]"
                 >
-                  View All 9 Curated Collections
+                  {isHindi ? "सभी ९ संग्रह देखें" : "View All 9 Curated Collections"}
                 </Link>
               </div>
             </div>
@@ -422,7 +424,7 @@ export default function CollectionsPage({ onSelectArticle }) {
   return (
     <div className="bg-[#FFFFFF] min-h-screen text-[#111111]">
       {/* Royal Bhaktilok-Grade Hero Banner */}
-      <div className="relative bg-[#111111] text-white py-14 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] overflow-hidden shadow-sm">
+      <div className="relative bg-[#111111] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] overflow-hidden shadow-sm">
         {/* Background Kashi Ganga Aarti Image with Vivid 85% Visibility */}
         <div className="absolute inset-0 z-0">
           <img
@@ -443,29 +445,31 @@ export default function CollectionsPage({ onSelectArticle }) {
               className="hover:text-white transition-colors cursor-pointer flex items-center gap-1"
             >
               <Home className="w-3.5 h-3.5 text-[#D9A441]" />
-              <span>Home</span>
+              <span>{isHindi ? "होम" : "Home"}</span>
             </Link>
             <span className="text-[#D9A441]">›</span>
             <Link
               to="/library"
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Veda Library
+              {isHindi ? "वेद पुस्तकालय" : "Veda Library"}
             </Link>
             <span className="text-[#D9A441]">›</span>
-            <span className="text-[#FFD21F] font-semibold">Curated Archives</span>
+            <span className="text-[#FFD21F] font-semibold">{isHindi ? "विशिष्ट संग्रह" : "Curated Archives"}</span>
           </div>
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFD21F] border border-[#FFD21F] text-[#111111] text-[11px] font-bold tracking-widest uppercase mb-3 shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-[#111111]" />
-            <span>CURATED ARCHIVES • FEATURED COLLECTIONS</span>
+            <span>{isHindi ? "विशिष्ट संग्रह • प्रमुख संकलन" : "CURATED ARCHIVES • FEATURED COLLECTIONS"}</span>
           </div>
 
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-2 leading-tight">
-            Curated Knowledge Collections
+            {isHindi ? "विशिष्ट ज्ञान संग्रह" : "Curated Knowledge Collections"}
           </h1>
           <p className="text-sm sm:text-base text-white/90 font-devanagari max-w-3xl leading-relaxed mb-6">
-            इस समय Veda Library में सर्वाधिक पढ़े और explore किए जा रहे प्रमुख वैदिक, मंत्र, पूजा, यज्ञ, संस्कार, दर्शन, इतिहास एवं तीर्थ संग्रह।
+            {isHindi
+              ? "इस समय पुस्तकालय में सर्वाधिक अध्ययन किए जा रहे प्रमुख वैदिक, मंत्र, पूजा, यज्ञ, संस्कार, दर्शन एवं इतिहास संग्रह।"
+              : "The most explored canonical collections across Vedic scriptures, mantras, pujas, yagyas, samskaras, darshana, and sacred history."}
           </p>
 
           {/* Search Bar inside Collections */}
@@ -475,7 +479,11 @@ export default function CollectionsPage({ onSelectArticle }) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search collections (e.g. Rigveda, Gayatri, Rudrabhisheka, Samskara, Gita)..."
+              placeholder={
+                isHindi
+                  ? "संग्रह में खोजें (जैसे ऋग्वेद, गायत्री, रुद्राभिषेक, संस्कार, गीता)..."
+                  : "Search collections (e.g. Rigveda, Gayatri, Rudrabhisheka, Samskara, Gita)..."
+              }
               className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white text-[#111111] placeholder:text-[#555555] text-xs sm:text-sm font-medium border border-[#E5E5E5] shadow-xs focus:outline-none focus:border-[#D9A441]"
             />
           </div>
@@ -483,9 +491,9 @@ export default function CollectionsPage({ onSelectArticle }) {
       </div>
 
       {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         {/* Category Tabs Strip */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar scroll-smooth">
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 no-scrollbar scroll-smooth">
           {CATEGORY_TABS.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -498,10 +506,7 @@ export default function CollectionsPage({ onSelectArticle }) {
                     : "bg-white text-[#555555] border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111] hover:bg-stone-50"
                 }`}
               >
-                <span>{tab.label}</span>
-                <span className="ml-1.5 opacity-75 font-devanagari text-[11px]">
-                  ({tab.hindiLabel})
-                </span>
+                <span>{isHindi ? tab.hindiLabel : tab.label}</span>
               </button>
             );
           })}
@@ -510,14 +515,17 @@ export default function CollectionsPage({ onSelectArticle }) {
         {/* Collections Count & Filter Summary */}
         <div className="flex items-center justify-between mb-6">
           <p className="text-xs font-devanagari text-[#555555] font-medium">
-            दिखाए जा रहे हैं: <span className="font-bold text-[#111111]">{filteredCollections.length} संग्रह</span>
+            {isHindi ? "दिखाए जा रहे हैं:" : "Showing:"}{" "}
+            <span className="font-bold text-[#111111]">
+              {filteredCollections.length} {isHindi ? "संग्रह" : "collections"}
+            </span>
           </p>
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
               className="text-xs text-[#111111] hover:text-[#D9A441] underline cursor-pointer"
             >
-              Clear search filter
+              {isHindi ? "फ़िल्टर हटाएं" : "Clear filter"}
             </button>
           )}
         </div>
@@ -573,7 +581,7 @@ export default function CollectionsPage({ onSelectArticle }) {
                   {col.divisions && (
                     <div className="mt-3 pt-3 border-t border-[#E5E5E5]">
                       <p className="text-[10px] font-bold text-[#555555] uppercase tracking-wider mb-1.5">
-                        Key Sections & Scriptures:
+                        {isHindi ? "प्रमुख अनुभाग एवं ग्रंथ:" : "Key Sections & Scriptures:"}
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {col.divisions.slice(0, 3).map((d, idx) => (
@@ -592,12 +600,12 @@ export default function CollectionsPage({ onSelectArticle }) {
                 {/* Footer Actions */}
                 <div className="pt-4 mt-4 border-t border-[#E5E5E5] flex items-center justify-between">
                   <span className="text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center gap-1 transition-colors">
-                    <span>Explore Collection</span>
+                    <span>{isHindi ? "संग्रह देखें" : "Explore Collection"}</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 text-[#D9A441]" />
                   </span>
                   <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
                     <CheckCircle2 className="w-2.5 h-2.5" />
-                    <span>Verified Source</span>
+                    <span>{isHindi ? "प्रमाणित स्रोत" : "Verified Source"}</span>
                   </span>
                 </div>
               </div>

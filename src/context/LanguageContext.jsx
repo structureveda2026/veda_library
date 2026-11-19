@@ -59,8 +59,21 @@ export function LanguageProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem("veda_language", language);
+      if (typeof document !== "undefined") {
+        document.documentElement.lang = language === "hi" ? "hi" : "en";
+      }
     } catch {}
   }, [language]);
+
+  useEffect(() => {
+    const handleStorage = (e) => {
+      if (e.key === "veda_language" && (e.newValue === "hi" || e.newValue === "en")) {
+        setLanguage(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === "hi" ? "en" : "hi"));

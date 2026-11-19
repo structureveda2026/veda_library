@@ -16,7 +16,8 @@ const VEDA_CARDS_DATA = [
     enName: "Rigveda",
     tradition: "हौत्र",
     enTradition: "Hautra",
-    priest: "होता (Hotri)",
+    priest: "होतृ",
+    enPriest: "Hotri",
     priestRole: "ऋचाओं का सस्वर पाठ व देव-आवाहन",
     enPriestRole: "Invocation of Devas through sacred hymns",
     shakhaCount: "२१ शाखाएँ (मुख्य: शाकल)",
@@ -39,7 +40,8 @@ const VEDA_CARDS_DATA = [
     enName: "Yajurveda",
     tradition: "आध्वर्यव",
     enTradition: "Adhvaryava",
-    priest: "अध्वर्यु (Adhvaryu)",
+    priest: "अध्वर्यु",
+    enPriest: "Adhvaryu",
     priestRole: "यज्ञ विधि व आहुति कर्म के मुख्य ऋत्विक",
     enPriestRole: "Master of ritual action & sacred oblations",
     shakhaCount: "१०१ शाखाएँ (शुक्ल व कृष्ण)",
@@ -62,7 +64,8 @@ const VEDA_CARDS_DATA = [
     enName: "Samaveda",
     tradition: "औद्गात्र",
     enTradition: "Audgatra",
-    priest: "उद्गाता (Udgatri)",
+    priest: "उद्गातृ",
+    enPriest: "Udgatri",
     priestRole: "साम ऋचाओं के मधुर संगीतकार",
     enPriestRole: "Singer of melodious liturgical chants",
     shakhaCount: "१,००० शाखाएँ (उपलब्ध: ३ प्रमुख)",
@@ -85,7 +88,8 @@ const VEDA_CARDS_DATA = [
     enName: "Atharvaveda",
     tradition: "ब्राह्म",
     enTradition: "Brahma",
-    priest: "ब्रह्मा (Brahma)",
+    priest: "ब्रह्मा",
+    enPriest: "Brahma",
     priestRole: "सर्वयज्ञ अधीक्षक एवं दोष परिहारक",
     enPriestRole: "Supreme overseer of rites & cosmic balance",
     shakhaCount: "९ शाखाएँ (शौनक व पैप्पलाद)",
@@ -121,11 +125,11 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
   return (
     <section
       id="four-vedas"
-      className="py-10 sm:py-14 bg-white border-b border-[#E5E5E5] relative"
+      className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5] relative"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#FFD21F]/40 text-[#111111] mb-2.5 shadow-xs">
             <Flame className="w-3.5 h-3.5 text-[#C62828]" />
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111]">
@@ -155,13 +159,12 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {VEDA_CARDS_DATA.map((veda) => {
             const title = isHindi ? veda.name : veda.enName;
-            const subtitleTag = isHindi ? veda.enName : veda.name;
             const shakhaPill = isHindi ? veda.shakhaCount : veda.enShakhaCount;
             const statsText = isHindi ? veda.stats : veda.enStats;
             const description = isHindi ? veda.desc : veda.enDesc;
             const traditionLabel = isHindi
               ? `${veda.tradition} • ${veda.priest}`
-              : `${veda.enTradition} • ${veda.priest}`;
+              : `${veda.enTradition} • ${veda.enPriest || veda.priest}`;
 
             return (
               <div
@@ -197,23 +200,20 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                   </div>
 
                   {/* Bento Compartment 2: Title, Liturgy Role & Stats */}
-                  <div className="p-4 sm:p-5">
-                    {/* Title & English Subtitle Tag */}
+                  <div className="p-3.5 sm:p-4">
+                    {/* Single Clean Title */}
                     <div className="flex items-center justify-between gap-2">
                       <h3
-                        className={`text-xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-tight ${
+                        className={`text-lg sm:text-xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-tight ${
                           isHindi ? "font-devanagari" : "font-serif"
                         }`}
                       >
                         {title}
                       </h3>
-                      <span className="text-[11px] font-serif font-bold px-2.5 py-0.5 rounded-full bg-white text-[#555555] border border-[#E5E5E5] uppercase tracking-wider">
-                        {subtitleTag}
-                      </span>
                     </div>
 
                     {/* Liturgical Role Line */}
-                    <p className="text-xs text-[#D9A441] font-semibold mt-1.5 flex items-center gap-1 font-devanagari">
+                    <p className="text-xs text-[#D9A441] font-semibold mt-1 flex items-center gap-1 font-devanagari">
                       <Sparkles className="w-3 h-3 text-[#D9A441] shrink-0" />
                       <span className="truncate">
                         {isHindi ? veda.priestRole : veda.enPriestRole}
@@ -221,14 +221,14 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                     </p>
 
                     {/* Bento Compartment: Stats Ribbon */}
-                    <div className="mt-3 px-3 py-1.5 rounded-xl bg-white border border-[#E5E5E5] text-[11px] font-medium text-[#111111] font-devanagari flex items-center gap-2">
+                    <div className="mt-2 px-2.5 py-1 rounded-lg bg-stone-50 border border-[#E5E5E5] text-[10px] sm:text-[11px] font-medium text-[#111111] font-devanagari flex items-center gap-2">
                       <BookOpen className="w-3.5 h-3.5 text-[#D9A441] shrink-0" />
                       <span className="truncate">{statsText}</span>
                     </div>
 
                     {/* Description */}
                     <p
-                      className={`text-xs text-[#555555] mt-2.5 leading-relaxed line-clamp-2 ${
+                      className={`text-xs text-[#555555] mt-2 leading-relaxed line-clamp-2 ${
                         isHindi ? "font-devanagari" : ""
                       }`}
                     >
@@ -236,8 +236,8 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                     </p>
 
                     {/* Bento Compartment 3: Canonical Shakhas & Texts */}
-                    <div className="mt-3.5">
-                      <span className="text-[10px] font-bold text-[#555555] uppercase tracking-wider block mb-1.5 font-devanagari">
+                    <div className="mt-2.5">
+                      <span className="text-[10px] font-bold text-[#555555] uppercase tracking-wider block mb-1 font-devanagari">
                         {isHindi ? "प्रमुख शाखाएँ व संहिता:" : "Key Shakhas & Texts:"}
                       </span>
                       <div className="flex flex-wrap gap-1">
@@ -255,18 +255,18 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                 </div>
 
                 {/* Bento Compartment 4: Explore Button in Brand Yellow #FFD21F */}
-                <div className="p-4 sm:p-5 pt-0">
+                <div className="p-3.5 sm:p-4 pt-0">
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSelectVeda(veda.id);
                     }}
-                    className="w-full py-2.5 sm:py-3 px-3 rounded-xl text-center text-xs sm:text-sm font-bold bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] shadow-xs hover:shadow-md transition-all flex items-center justify-center gap-2 group/btn cursor-pointer active:scale-[0.98]"
+                    className="w-full py-2 sm:py-2.5 px-3 rounded-xl text-center text-xs sm:text-sm font-bold bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] shadow-xs hover:shadow-sm transition-all flex items-center justify-center gap-2 group/btn cursor-pointer active:scale-[0.98]"
                   >
                     <span>
                       {isHindi
-                        ? `${veda.name} मूल पाठ व शाखाएँ पढ़ें`
+                        ? `${veda.name} मूल पाठ व शाखाएँ`
                         : `Read ${veda.enName} & Shakhas`}
                     </span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform" />

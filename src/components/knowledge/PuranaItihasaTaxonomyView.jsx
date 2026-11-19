@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 import {
   Layers,
   Crown,
@@ -37,6 +38,7 @@ import {
  * 6. Major Akhyanas & Epical Jewels (Gita, Vidura Niti, Yaksha Prashna, Vishnu Sahasranama, Durga Saptashati, etc.)
  */
 export default function PuranaItihasaTaxonomyView({ onSelectReaderText }) {
+  const { isHindi } = useLanguage();
   // Sub-tabs: 'purana_khandas', 'lakshanas_upapuranas', 'ramayana_kandas', 'mahabharata_parvas', 'major_akhyanas'
   const [activeSubTab, setActiveSubTab] = useState("purana_khandas");
   const [expandedPuranaId, setExpandedPuranaId] = useState("padma-purana");

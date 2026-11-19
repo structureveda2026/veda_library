@@ -38,6 +38,7 @@ import { getScriptureReaderData } from "../data/scriptures/index.js";
 import bannerTempleGhat from "../assets/images/library/banners/banner-temple-ghat.jpg";
 import cardPuranaImg from "../assets/images/library/cards/card-purana.jpg";
 import cardRamayanaImg from "../assets/images/library/cards/card-ramayana.jpg";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import cardMahabharataImg from "../assets/images/library/cards/card-mahabharata.jpg";
 import cardGitaImg from "../assets/images/library/cards/card-gita.jpg";
 
@@ -80,6 +81,7 @@ const READER_ITIHASAS_LIST = [
 export default function PuranaItihasaPage({ onOpenSearch }) {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isHindi } = useLanguage();
 
   // Tab state: 'reader', 'taxonomy', 'purana', 'ramayana', 'mahabharata', 'panchalakshana'
   const initialTab = searchParams.get("tab") || "purana";
@@ -176,7 +178,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
   return (
     <div className="bg-white min-h-screen text-[#111111] pb-24">
       {/* 1. Scholarly Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
         {/* Sacred Entity-Matched Purana / Itihasa Banner with 80-85% Opacity and Luminous Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -192,15 +194,15 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-xs text-amber-200/90 mb-4 font-serif">
             <Link to="/" className="hover:text-[#FFD21F] transition-colors">
-              होम
+              {isHindi ? "होम" : "Home"}
             </Link>
             <span>/</span>
             <Link to="/library" className="hover:text-[#FFD21F] transition-colors">
-              वैदिक ज्ञानकोष
+              {isHindi ? "वैदिक ज्ञानकोष" : "Veda Library"}
             </Link>
             <span>/</span>
             <span className="text-white font-semibold">
-              पुराण एवं इतिहास
+              {isHindi ? "पुराण एवं इतिहास" : "Purana & Itihasa"}
             </span>
           </div>
 
@@ -209,18 +211,20 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
             <div className="lg:col-span-8 space-y-4">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
-                <span>PURANA & ITIHASA ARCHIVE • पुराण एवं इतिहास सागर</span>
+                <span>{isHindi ? "पुराण एवं इतिहास सागर" : "Purana & Itihasa Archive"}</span>
               </span>
 
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
-                पुराण एवं इतिहास
+                {isHindi ? "पुराण एवं इतिहास" : "Purana & Itihasa"}
                 <span className="block text-xl sm:text-2xl font-normal text-amber-200/95 mt-1 font-sans">
                   The Sacred Chronologies, Epics & Cosmic Histories
                 </span>
               </h1>
 
               <p className="text-amber-100/90 text-sm sm:text-base font-devanagari leading-relaxed max-w-3xl drop-shadow-xs">
-                १८ महापुराण, वाल्मीकि रामायण, महाभारत एवं श्रीमद्भगवद्गीता — वेदों के अमूर्त ज्ञान को प्रत्यक्ष जीवन, आख्यान, अवतार लीला और धर्म की कसौटी पर कसने वाली भारत की सनातन ज्ञान परंपरा।
+                {isHindi
+                  ? "१८ महापुराण, वाल्मीकि रामायण, महाभारत एवं श्रीमद्भगवद्गीता — वेदों के अमूर्त ज्ञान को प्रत्यक्ष जीवन, आख्यान, अवतार लीला और धर्म की कसौटी पर कसने वाली भारत की सनातन ज्ञान परंपरा।"
+                  : "18 Mahapuranas, Valmiki Ramayana, Mahabharata & Bhagavad Gita — the eternal Sanatana traditions embodying Vedic wisdom into living narratives, divine epics, and righteousness."}
               </p>
 
               {/* Classical Sanskrit Aphorism Banner with Audio & Copy */}
@@ -228,12 +232,12 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                 <div className="flex items-center justify-between gap-3 pb-2 mb-2 border-b border-[#E5E5E5]">
                   <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111]">
                     <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
-                    पुराण-इतिहास प्रामाण्य श्लोक
+                    {isHindi ? "पुराण-इतिहास प्रामाण्य श्लोक" : "Purana & Itihasa Epistemic Verse"}
                   </span>
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={(e) => handleToggleSound("hero-itihasa-quote", e)}
-                      title="सस्वर पाठ"
+                      title={isHindi ? "सस्वर पाठ" : "Recitation"}
                       className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
                         playingId === "hero-itihasa-quote"
                           ? "bg-[#FFD21F] text-[#111111] shadow-xs animate-pulse font-bold"
@@ -243,12 +247,12 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                       {playingId === "hero-itihasa-quote" ? (
                         <>
                           <VolumeX className="w-3.5 h-3.5" />
-                          <span>ध्वनि तरंग...</span>
+                          <span>{isHindi ? "ध्वनि तरंग..." : "Playing..."}</span>
                         </>
                       ) : (
                         <>
                           <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
-                          <span>सस्वर पाठ</span>
+                          <span>{isHindi ? "सस्वर पाठ" : "Recitation"}</span>
                         </>
                       )}
                     </button>
@@ -260,7 +264,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                           e
                         )
                       }
-                      title="श्लोक कॉपी करें"
+                      title={isHindi ? "श्लोक कॉपी करें" : "Copy Verse"}
                       className="p-1.5 rounded-lg bg-white hover:bg-stone-50 text-[#111111] border border-[#E5E5E5] transition-colors cursor-pointer"
                     >
                       {copiedId === "hero-itihasa-quote" ? (
@@ -294,10 +298,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute bottom-2.5 left-3 right-3 text-white">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300 bg-amber-950/70 px-2 py-0.5 rounded backdrop-blur-xs">
-                      सनातन ज्ञान-विरासत
+                      {isHindi ? "सनातन ज्ञान-विरासत" : "Sanatana Heritage"}
                     </span>
                     <p className="font-serif text-xs font-semibold text-amber-100 mt-1 line-clamp-1">
-                      वेदव्यास एवं वाल्मीकि विरचित महाग्रंथ
+                      {isHindi ? "वेदव्यास एवं वाल्मीकि विरचित महाग्रंथ" : "Epics composed by Vedavyasa & Valmiki"}
                     </p>
                   </div>
                 </div>
@@ -310,10 +314,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     १८
                   </div>
                   <div className="text-[11px] text-[#1E293B] font-bold uppercase tracking-wider">
-                    महापुराण
+                    {isHindi ? "महापुराण" : "Mahapuranas"}
                   </div>
                   <div className="text-[10px] text-stone-600 mt-0.5 font-medium">
-                    ~४,००,००० श्लोक
+                    {isHindi ? "~४,००,००० श्लोक" : "~400,000 Verses"}
                   </div>
                 </div>
                 <div className="bg-white/95 backdrop-blur-md border border-amber-200/90 rounded-2xl p-3.5 shadow-sm hover:border-amber-400 hover:shadow-md transition-all">
@@ -321,10 +325,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     २४,०००
                   </div>
                   <div className="text-[11px] text-[#1E293B] font-bold uppercase tracking-wider">
-                    रामायण श्लोक
+                    {isHindi ? "रामायण श्लोक" : "Ramayana Verses"}
                   </div>
                   <div className="text-[10px] text-stone-600 mt-0.5 font-medium">
-                    ७ काण्ड • ५०० सर्ग
+                    {isHindi ? "७ काण्ड • ५०० सर्ग" : "7 Kandas • 500 Sargas"}
                   </div>
                 </div>
                 <div className="bg-white/95 backdrop-blur-md border border-amber-200/90 rounded-2xl p-3.5 shadow-sm hover:border-amber-400 hover:shadow-md transition-all">
@@ -332,10 +336,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     १,००,०००
                   </div>
                   <div className="text-[11px] text-[#1E293B] font-bold uppercase tracking-wider">
-                    महाभारत श्लोक
+                    {isHindi ? "महाभारत श्लोक" : "Mahabharata Verses"}
                   </div>
                   <div className="text-[10px] text-stone-600 mt-0.5 font-medium">
-                    १८ पर्व + हरिवंश
+                    {isHindi ? "१८ पर्व + हरिवंश" : "18 Parvas + Harivamsa"}
                   </div>
                 </div>
                 <div className="bg-white/95 backdrop-blur-md border border-amber-200/90 rounded-2xl p-3.5 shadow-sm hover:border-amber-400 hover:shadow-md transition-all">
@@ -343,10 +347,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     ५
                   </div>
                   <div className="text-[11px] text-[#1E293B] font-bold uppercase tracking-wider">
-                    पंच लक्षण
+                    {isHindi ? "पंच लक्षण" : "Pancha Lakshana"}
                   </div>
                   <div className="text-[10px] text-stone-600 mt-0.5 font-medium">
-                    सृष्टि व वंशावली
+                    {isHindi ? "सृष्टि व वंशावली" : "Cosmology & Dynasties"}
                   </div>
                 </div>
               </div>
@@ -412,7 +416,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                   <Icon
                     className={`w-4 h-4 ${isActive ? "text-[#111111]" : "text-[#D9A441]"}`}
                   />
-                  <span>{t.label}</span>
+                  <span>{isHindi ? t.label : t.en}</span>
                 </button>
               );
             })}
@@ -423,7 +427,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-200/80 text-stone-600 hover:text-[#1E293B] text-xs bg-white hover:bg-amber-50/60 transition-all cursor-pointer shadow-2xs"
           >
             <Search className="w-3.5 h-3.5 text-amber-700" />
-            <span>त्वरित खोज (Ctrl+K)</span>
+            <span>{isHindi ? "त्वरित खोज (Ctrl+K)" : "Quick Search (Ctrl+K)"}</span>
           </button>
         </div>
       </div>
@@ -441,13 +445,13 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                 <div>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-[#78350F] border border-amber-200/80 mb-2 shadow-2xs">
                     <Sparkles className="w-3.5 h-3.5 text-amber-700" />
-                    <span>AUTHENTIC SCRIPTURE READER • प्रामाणिक श्लोक वाचन</span>
+                    <span>AUTHENTIC SCRIPTURE READER • {isHindi ? "प्रामाणिक श्लोक वाचन" : "Original Verse Reader"}</span>
                   </div>
                   <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1E293B]">
-                    {currentReaderScripture?.label || "पुराण एवं इतिहास मूल श्लोक पाठ"}
+                    {currentReaderScripture?.label || (isHindi ? "पुराण एवं इतिहास मूल श्लोक पाठ" : "Purana & Itihasa Root Verses")}
                   </h2>
                   <p className="text-xs text-stone-600 font-devanagari mt-1">
-                    {currentReaderScripture?.editionNote || "गीताप्रेस गोरखपुर एवं बीओआरआई पुणे प्रामाणिक मूल पाठ"}
+                    {currentReaderScripture?.editionNote || (isHindi ? "गीताप्रेस गोरखपुर एवं बीओआरआई पुणे प्रामाणिक मूल पाठ" : "Gita Press Gorakhpur & BORI Pune authentic root text")}
                   </p>
                 </div>
 
@@ -466,7 +470,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         : "text-stone-700 hover:text-[#78350F] hover:bg-white"
                     }`}
                   >
-                    १८ महापुराण ({READER_PURANAS_LIST.length})
+                    {isHindi ? `१८ महापुराण (${READER_PURANAS_LIST.length})` : `18 Mahapuranas (${READER_PURANAS_LIST.length})`}
                   </button>
                   <button
                     type="button"
@@ -481,7 +485,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         : "text-stone-700 hover:text-[#78350F] hover:bg-white"
                     }`}
                   >
-                    इतिहास एवं महाकाव्य ({READER_ITIHASAS_LIST.length})
+                    {isHindi ? `इतिहास एवं महाकाव्य (${READER_ITIHASAS_LIST.length})` : `Epics & Itihasas (${READER_ITIHASAS_LIST.length})`}
                   </button>
                 </div>
               </div>
@@ -489,7 +493,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               {/* Quick Pills Selector */}
               <div className="pt-4">
                 <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider block mb-2 font-devanagari">
-                  {readerCategory === "purana" ? "महापुराण चुनें (Click to Read):" : "इतिहास व आख्यान चुनें (Click to Read):"}
+                  {readerCategory === "purana" ? (isHindi ? "महापुराण चुनें (Click to Read):" : "Select Mahapurana (Click to Read):") : (isHindi ? "इतिहास व आख्यान चुनें (Click to Read):" : "Select Epic & Narrative (Click to Read):")}
                 </span>
                 <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
                   {(readerCategory === "purana" ? READER_PURANAS_LIST : READER_ITIHASAS_LIST).map((item) => {
@@ -527,7 +531,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               />
             ) : (
               <div className="bg-white rounded-3xl border border-amber-200/70 p-8 text-center shadow-xs">
-                <p className="text-stone-600 font-devanagari">चयनित ग्रंथ का विवरण उपलब्ध नहीं है।</p>
+                <p className="text-stone-600 font-devanagari">{isHindi ? "चयनित ग्रंथ का विवरण उपलब्ध नहीं है।" : "Details not available for the selected scripture."}</p>
               </div>
             )}
           </div>
@@ -553,14 +557,14 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="w-2 h-2 rounded-full bg-[#D9A441]" />
                   <span className="text-[11px] font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
-                    पद्म पुराण • उत्तरखण्ड वर्गीकरण
+                    {isHindi ? "पद्म पुराण • उत्तरखण्ड वर्गीकरण" : "Padma Purana • Uttara Khanda Classification"}
                   </span>
                 </div>
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#111111]">
-                  अष्टादश महापुराण (The 18 Mahapuranas)
+                  {isHindi ? "अष्टादश महापुराण" : "The 18 Mahapuranas"}
                 </h2>
                 <p className="text-xs text-[#555555] font-devanagari mt-1">
-                  सात्त्विक, राजस एवं तामस त्रिगुणानुसार १८ महापुराणों का सुव्यवस्थित बेन्टो ग्रिड संग्रह
+                  {isHindi ? "सात्त्विक, राजस एवं तामस त्रिगुणानुसार १८ महापुराणों का सुव्यवस्थित बेन्टो ग्रिड संग्रह" : "Systematic Bento grid collection of the 18 Mahapuranas according to Sattvika, Rajasa, and Tamasa gunas"}
                 </p>
               </div>
 
@@ -569,10 +573,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                 {/* Canonical Guna Filter Chips */}
                 <div className="flex items-center gap-1 bg-stone-50 p-1 rounded-xl border border-[#E5E5E5] text-xs">
                   {[
-                    { id: "all", label: "सभी महापुराण (१८)" },
-                    { id: "sattvika", label: "सात्त्विक (६)" },
-                    { id: "rajasa", label: "राजस (६)" },
-                    { id: "tamasa", label: "तामस (६)" },
+                    { id: "all", label: isHindi ? "सभी महापुराण (१८)" : "All Mahapuranas (18)" },
+                    { id: "sattvika", label: isHindi ? "सात्त्विक (६)" : "Sattvika (6)" },
+                    { id: "rajasa", label: isHindi ? "राजस (६)" : "Rajasa (6)" },
+                    { id: "tamasa", label: isHindi ? "तामस (६)" : "Tamasa (6)" },
                   ].map((gf) => (
                     <button
                       key={gf.id}
@@ -595,7 +599,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="पुराण, देवता या कथा खोजें..."
+                    placeholder={isHindi ? "पुराण, देवता या कथा खोजें..." : "Search Purana, deity or narrative..."}
                     className="w-full pl-8 pr-7 py-2 rounded-xl text-xs bg-white border border-[#E5E5E5] focus:border-[#D9A441] focus:ring-1 focus:ring-[#FFD21F] focus:outline-none placeholder:text-[#555555] font-devanagari text-[#111111]"
                   />
                   {searchQuery && (
@@ -615,28 +619,34 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
                   <Crown className="w-4 h-4 text-[#D9A441]" />
-                  <span>वैष्णव / सात्त्विक पुराण (विष्णु महिमा)</span>
+                  <span>{isHindi ? "वैष्णव / सात्त्विक पुराण (विष्णु महिमा)" : "Vaishnava / Sattvika Puranas (Vishnu Glory)"}</span>
                 </div>
                 <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
-                  भागवत, विष्णु, पद्म, वराह, गरुड़ एवं नारद पुराण — भक्ति, अवतार-चरित्र, मोक्ष-मार्ग और चित्त-शुद्धि के सात्त्विक आयाम।
+                  {isHindi
+                    ? "भागवत, विष्णु, पद्म, वराह, गरुड़ एवं नारद पुराण — भक्ति, अवतार-चरित्र, मोक्ष-मार्ग और चित्त-शुद्धि के सात्त्विक आयाम।"
+                    : "Bhagavata, Vishnu, Padma, Varaha, Garuda & Narada Puranas — Sattvic paths of devotion, incarnations, and spiritual liberation."}
                 </p>
               </div>
               <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
                   <Sparkles className="w-4 h-4 text-[#D9A441]" />
-                  <span>ब्राह्म / राजस पुराण (सृष्टि व तीर्थ)</span>
+                  <span>{isHindi ? "ब्राह्म / राजस पुराण (सृष्टि व तीर्थ)" : "Brahma / Rajasa Puranas (Creation & Tirthas)"}</span>
                 </div>
                 <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
-                  ब्रह्म, ब्रह्माण्ड, ब्रह्मवैवर्त, मार्कण्डेय, भविष्य एवं वामन — सृष्टि-क्रम, मन्वन्तर, सूर्य व राजवंश तथा शक्ति महात्म्य।
+                  {isHindi
+                    ? "ब्रह्म, ब्रह्माण्ड, ब्रह्मवैवर्त, मार्कण्डेय, भविष्य एवं वामन — सृष्टि-क्रम, मन्वन्तर, सूर्य व राजवंश तथा शक्ति महात्म्य।"
+                    : "Brahma, Brahmanda, Brahmavaivarta, Markandeya, Bhavishya & Vamana — creation cycles, manvantaras, solar dynasties & Shakti wisdom."}
                 </p>
               </div>
               <div className="bg-white border border-[#E5E5E5] hover:border-[#D9A441] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm mb-2">
                   <Flame className="w-4 h-4 text-[#C62828]" />
-                  <span>शैव / तामस पुराण (लय व तपश्चर्या)</span>
+                  <span>{isHindi ? "शैव / तामस पुराण (लय व तपश्चर्या)" : "Shaiva / Tamasa Puranas (Dissolution & Austerities)"}</span>
                 </div>
                 <p className="text-xs text-[#555555] leading-relaxed font-devanagari">
-                  शिव, लिंग, स्कन्द, अग्नि, मत्स्य एवं कूर्म — संहार, ज्योतिर्लिंग, योग-साधना, ज्ञान-तप एवं शिव-शक्ति का तात्विक रहस्य।
+                  {isHindi
+                    ? "शिव, लिंग, स्कन्द, अग्नि, मत्स्य एवं कूर्म — संहार, ज्योतिर्लिंग, योग-साधना, ज्ञान-तप एवं शिव-शक्ति का तात्विक रहस्य।"
+                    : "Shiva, Linga, Skanda, Agni, Matsya & Kurma — dissolution, Jyotirlingas, yoga sadhana, esoteric wisdom of Shiva-Shakti."}
                 </p>
               </div>
             </div>
@@ -664,7 +674,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                   >
                     {isFeaturedBhagavata && (
                       <div className="absolute top-0 right-0 bg-[#FFD21F] text-[#111111] text-[10px] font-bold px-3 py-1 rounded-bl-xl shadow-2xs">
-                        मुकुटमणि महापुराण • Featured
+                        {isHindi ? "मुकुटमणि महापुराण • विशेष" : "Crown Jewel Mahapurana • Featured"}
                       </div>
                     )}
 
@@ -696,7 +706,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                       <div className="mt-2.5 flex items-center gap-1.5 text-xs text-[#555555] font-devanagari">
                         <Crown className="w-3.5 h-3.5 text-[#D9A441] flex-shrink-0" />
                         <span>
-                          उपास्य देव: <strong className="text-[#111111]">{p.presidingDeity}</strong>
+                          {isHindi ? "उपास्य देव:" : "Presiding Deity:"} <strong className="text-[#111111]">{p.presidingDeity}</strong>
                         </span>
                       </div>
 
@@ -709,7 +719,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                       <div className="mt-4 pt-3 border-t border-[#E5E5E5] space-y-2">
                         <div>
                           <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555] block mb-1">
-                            प्रमुख खण्ड / संहिता:
+                            {isHindi ? "प्रमुख खण्ड / संहिता:" : "Major Khandas / Samhitas:"}
                           </span>
                           <div className="flex flex-wrap gap-1">
                             {p.majorKhandas.slice(0, isFeaturedBhagavata ? 5 : 3).map((kh, kidx) => (
@@ -731,7 +741,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         {p.keyNarratives && p.keyNarratives.length > 0 && (
                           <div>
                             <span className="text-[10px] font-bold uppercase tracking-wider text-[#555555] block mb-1">
-                              मुख्य आख्यान:
+                              {isHindi ? "मुख्य आख्यान:" : "Key Narratives:"}
                             </span>
                             <div className="flex flex-wrap gap-1">
                               {p.keyNarratives.slice(0, 3).map((kn, knidx) => (
@@ -759,7 +769,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         className="text-xs font-bold text-[#555555] hover:text-[#111111] flex items-center gap-1 cursor-pointer transition-colors"
                       >
                         <Info className="w-3.5 h-3.5 text-[#D9A441]" />
-                        <span>शास्त्रीय विवरण</span>
+                        <span>{isHindi ? "शास्त्रीय विवरण" : "Scholarly Details"}</span>
                       </button>
 
                       <div className="flex items-center gap-1.5">
@@ -770,19 +780,19 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                             handleSelectReaderText(p.slug);
                           }}
                           className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-xs transition-colors cursor-pointer shadow-2xs border border-[#FFD21F] hover:border-[#D9A441]"
-                          title="मूल श्लोक एवं पाठ पढ़ें"
+                          title={isHindi ? "मूल श्लोक एवं पाठ पढ़ें" : "Read Verses & Text"}
                         >
                           <BookOpen className="w-3 h-3 text-[#111111]" />
-                          <span>श्लोक वाचन</span>
+                          <span>{isHindi ? "श्लोक वाचन" : "Read Verses"}</span>
                         </button>
 
                         <Link
                           to={`/library/purana/${p.slug}`}
                           onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white text-[#111111] hover:border-[#D9A441] border border-[#E5E5E5] font-bold text-xs transition-colors"
-                          title="विस्तृत अध्ययन करें"
+                          title={isHindi ? "विस्तृत अध्ययन करें" : "Explore Structure"}
                         >
-                          <span>संरचना</span>
+                          <span>{isHindi ? "संरचना" : "Structure"}</span>
                           <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform text-[#D9A441]" />
                         </Link>
                       </div>
@@ -804,20 +814,22 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               <div className="space-y-3 max-w-3xl">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-[#78350F] border border-amber-200/70">
                   <Heart className="w-3.5 h-3.5 text-amber-700" />
-                  <span>आदिकाव्य • महर्षि वाल्मीकि विरचित</span>
+                  <span>{isHindi ? "आदिकाव्य • महर्षि वाल्मीकि विरचित" : "Adi Kavya • Composed by Maharshi Valmiki"}</span>
                 </span>
                 <h2 className="font-serif text-3xl font-bold text-[#1E293B]">
-                  श्रीमद्वाल्मीकि रामायण (Valmiki Ramayana)
+                  {isHindi ? "श्रीमद्वाल्मीकि रामायण" : "Srimad Valmiki Ramayana"}
                 </h2>
                 <p className="text-sm text-stone-600 font-devanagari leading-relaxed">
-                  २४,००० पावन श्लोकों में निबद्ध यह महाकाव्य 'मर्यादा पुरुषोत्तम' भगवान श्रीराम के दिव्य चरित्र, सत्यनिष्ठा, भ्रातृ-प्रेम, धर्म-पालन और शरणागति का अमर आलोक है।
+                  {isHindi
+                    ? "२४,००० पावन श्लोकों में निबद्ध यह महाकाव्य 'मर्यादा पुरुषोत्तम' भगवान श्रीराम के दिव्य चरित्र, सत्यनिष्ठा, भ्रातृ-प्रेम, धर्म-पालन और शरणागति का अमर आलोक है।"
+                    : "Composed in 24,000 sacred verses, this epic depicts Maryada Purushottama Lord Rama's righteousness, truthful conduct, devotion, and compassion."}
                 </p>
 
                 {/* Gayatri Ramayana Connection Highlight with Copy */}
                 <div className="p-3.5 rounded-xl bg-[#FBF9F5] border border-amber-200/80 text-xs font-devanagari text-[#1E293B]">
                   <div className="flex items-center justify-between gap-2 mb-1">
                     <strong className="text-[#78350F] block">
-                      गायत्री रामायण का पावन रहस्य:
+                      {isHindi ? "गायत्री रामायण का पावन रहस्य:" : "Sacred Mystery of Gayatri Ramayana:"}
                     </strong>
                     <button
                       onClick={(e) =>
@@ -827,7 +839,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                           e
                         )
                       }
-                      title="कॉपी करें"
+                      title={isHindi ? "कॉपी करें" : "Copy"}
                       className="p-1 rounded bg-white hover:bg-amber-100 text-stone-600 border border-amber-200/60 transition-colors cursor-pointer"
                     >
                       {copiedId === "gayatri-ramayana" ? (
@@ -848,7 +860,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     ७
                   </div>
                   <div className="text-xs font-bold text-[#1E293B]">
-                    काण्ड (Books)
+                    {isHindi ? "काण्ड (Books)" : "Kandas (Books)"}
                   </div>
                 </div>
                 <div className="bg-[#FBF9F5] p-4 rounded-2xl border border-amber-200/80 text-center min-w-[140px] shadow-2xs">
@@ -856,14 +868,14 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     ~५००
                   </div>
                   <div className="text-xs font-bold text-[#1E293B]">
-                    सर्ग (Cantos)
+                    {isHindi ? "सर्ग (Cantos)" : "Sargas (Cantos)"}
                   </div>
                 </div>
                 <Link
                   to="/library/itihasa/valmiki-ramayana"
                   className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-700 to-amber-800 text-white text-xs font-bold hover:from-amber-800 hover:to-amber-900 transition-colors shadow-2xs"
                 >
-                  <span>विस्तृत रामायण संरचना</span>
+                  <span>{isHindi ? "विस्तृत रामायण संरचना" : "Detailed Ramayana Structure"}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -873,7 +885,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
             <div>
               <h3 className="font-serif text-2xl font-bold text-[#1E293B] mb-4 flex items-center gap-2">
                 <Scroll className="w-5 h-5 text-amber-700" />
-                <span>रामायण के सात काण्ड (The 7 Kandas Journey)</span>
+                <span>{isHindi ? "रामायण के सात काण्ड (The 7 Kandas Journey)" : "The 7 Kandas of Ramayana"}</span>
               </h3>
 
               <div className="space-y-4">
@@ -886,10 +898,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                       <div>
                         <div className="flex items-center gap-2 mb-1.5">
                           <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-amber-50 text-[#78350F] border border-amber-200/60">
-                            काण्ड #{kd.order}
+                            {isHindi ? `काण्ड #${kd.order}` : `Kanda #${kd.order}`}
                           </span>
                           <span className="text-xs text-stone-500 font-semibold font-devanagari">
-                            {kd.sargas} सर्ग • {kd.shlokas.toLocaleString()} श्लोक
+                            {kd.sargas} {isHindi ? "सर्ग" : "Sargas"} • {kd.shlokas.toLocaleString()} {isHindi ? "श्लोक" : "Verses"}
                           </span>
                         </div>
                         <h4 className="font-serif text-xl font-bold text-[#1E293B]">
@@ -904,14 +916,14 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                       </div>
 
                       <div className="text-xs font-semibold text-[#78350F] bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200/80 self-start lg:self-center whitespace-nowrap">
-                        संदेश: {kd.centralMessage}
+                        {isHindi ? "संदेश:" : "Message:"} {kd.centralMessage}
                       </div>
                     </div>
 
                     {/* Key Episodes List */}
                     <div className="mt-4 pt-3.5 border-t border-amber-100">
                       <span className="text-[11px] font-bold uppercase tracking-wider text-stone-400 block mb-2">
-                        प्रमुख ऐतिहासिक घटनाक्रम एवं आख्यान:
+                        {isHindi ? "प्रमुख ऐतिहासिक घटनाक्रम एवं आख्यान:" : "Key Historical Episodes & Narratives:"}
                       </span>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                         {kd.keyEpisodes.map((ep, epIdx) => (
@@ -934,13 +946,13 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-700 to-amber-800 text-white hover:from-amber-800 hover:to-amber-900 font-bold text-xs transition-colors cursor-pointer shadow-2xs"
                       >
                         <BookOpen className="w-3.5 h-3.5 text-amber-200" />
-                        <span>काण्ड श्लोक वाचन</span>
+                        <span>{isHindi ? "काण्ड श्लोक वाचन" : "Read Kanda Verses"}</span>
                       </button>
                       <Link
                         to="/library/itihasa/valmiki-ramayana"
                         className="text-xs font-bold text-[#78350F] hover:text-amber-950 flex items-center gap-1"
                       >
-                        <span>संपूर्ण काण्ड विवरण</span>
+                        <span>{isHindi ? "संपूर्ण काण्ड विवरण" : "Complete Kanda Details"}</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
@@ -961,13 +973,15 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               <div className="space-y-3 max-w-3xl">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-[#78350F] border border-amber-200/70">
                   <Shield className="w-3.5 h-3.5 text-amber-700" />
-                  <span>पञ्चम वेद • शतसाहस्री संहिता (१,००,००० श्लोक)</span>
+                  <span>{isHindi ? "पञ्चम वेद • शतसाहस्री संहिता (१,००,००० श्लोक)" : "Fifth Veda • Shata-sahasri Samhita (100,000 Verses)"}</span>
                 </span>
                 <h2 className="font-serif text-3xl font-bold text-[#1E293B]">
-                  महाभारत एवं श्रीमद्भगवद्गीता (The Mahabharata & Gita)
+                  {isHindi ? "महाभारत एवं श्रीमद्भगवद्गीता" : "The Mahabharata & Srimad Bhagavad Gita"}
                 </h2>
                 <p className="text-sm text-stone-600 font-devanagari leading-relaxed">
-                  महर्षि वेदव्यास रचित एवं भगवान श्रीगणेश द्वारा लिपिबद्ध विश्व का सबसे विशाल महाकाव्य। धर्म, अर्थ, काम और मोक्ष—मानव जीवन का ऐसा कोई रहस्य नहीं जो महाभारत में समाहित न हो।
+                  {isHindi
+                    ? "महर्षि वेदव्यास रचित एवं भगवान श्रीगणेश द्वारा लिपिबद्ध विश्व का सबसे विशाल महाकाव्य। धर्म, अर्थ, काम और मोक्ष—मानव जीवन का ऐसा कोई रहस्य नहीं जो महाभारत में समाहित न हो।"
+                    : "Composed by Maharshi Vedavyasa and scribed by Lord Ganesha, the world's largest epic embodying Dharma, Artha, Kama, and Moksha."}
                 </p>
 
                 {/* Evolutionary Stages */}
@@ -988,7 +1002,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               <div className="flex flex-col gap-3 w-full lg:w-auto min-w-[220px]">
                 <div className="bg-[#FBF9F5] p-5 rounded-2xl border border-amber-200/80 text-xs font-devanagari text-[#1E293B] max-w-xs shadow-2xs">
                   <strong className="block text-[#78350F] mb-1 font-bold">
-                    महाभारत का अमर उद्घोष:
+                    {isHindi ? "महाभारत का अमर उद्घोष:" : "Immortal Maxim of Mahabharata:"}
                   </strong>
                   "{MAHABHARATA_DATA.famousMaxim}"
                 </div>
@@ -999,7 +1013,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 text-white text-xs font-bold hover:from-amber-800 hover:to-amber-900 transition-colors shadow-2xs cursor-pointer"
                   >
                     <BookOpen className="w-3.5 h-3.5 text-amber-200" />
-                    <span>श्रीमद्भगवद्गीता (७०० श्लोक वाचन)</span>
+                    <span>{isHindi ? "श्रीमद्भगवद्गीता (७०० श्लोक वाचन)" : "Bhagavad Gita (700 Verses Reader)"}</span>
                   </button>
                   <button
                     type="button"
@@ -1007,13 +1021,13 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-amber-200/80 text-[#78350F] hover:bg-amber-50 text-xs font-bold transition-colors shadow-2xs cursor-pointer"
                   >
                     <BookOpen className="w-3.5 h-3.5 text-amber-700" />
-                    <span>महाभारत मूल श्लोक वाचन</span>
+                    <span>{isHindi ? "महाभारत मूल श्लोक वाचन" : "Mahabharata Root Verses Reader"}</span>
                   </button>
                   <Link
                     to="/library/itihasa/mahabharata"
                     className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs font-bold hover:bg-stone-200 transition-colors"
                   >
-                    <span>महाभारत १८ पर्व संरचना</span>
+                    <span>{isHindi ? "महाभारत १८ पर्व संरचना" : "Mahabharata 18 Parvas Structure"}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -1025,10 +1039,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-serif text-2xl font-bold text-[#1E293B]">
-                    महाभारत के पाँच दार्शनिक रत्न (5 Philosophical Jewels)
+                    {isHindi ? "महाभारत के पाँच दार्शनिक रत्न (5 Philosophical Jewels)" : "5 Philosophical Jewels of Mahabharata"}
                   </h3>
                   <p className="text-xs text-stone-600 font-devanagari">
-                    कुरुक्षेत्र के महायुद्ध के भीतर छुपे अध्यात्म, आत्मविद्या और नीति के अनमोल शिखर
+                    {isHindi ? "कुरुक्षेत्र के महायुद्ध के भीतर छुपे अध्यात्म, आत्मविद्या और नीति के अनमोल शिखर" : "Sublime pinnacles of spirituality, self-realization, and wisdom woven into the epic"}
                   </p>
                 </div>
               </div>
@@ -1053,7 +1067,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         {j.title}
                       </h4>
                       <p className="text-xs text-[#78350F] font-semibold mt-0.5">
-                        वक्ता: {j.speaker}
+                        {isHindi ? "वक्ता:" : "Speaker:"} {j.speaker}
                       </p>
 
                       <div className="mt-3.5 space-y-1.5 pt-3 border-t border-amber-100">
@@ -1079,7 +1093,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         className="text-xs font-bold text-stone-600 hover:text-[#1E293B] flex items-center gap-1 cursor-pointer"
                       >
                         <Info className="w-3.5 h-3.5 text-amber-700" />
-                        <span>शास्त्रीय अध्ययन</span>
+                        <span>{isHindi ? "शास्त्रीय अध्ययन" : "Scholarly Study"}</span>
                       </button>
 
                       <button
@@ -1094,7 +1108,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-700 to-amber-800 text-white hover:from-amber-800 hover:to-amber-900 font-bold text-xs transition-colors cursor-pointer shadow-2xs"
                       >
                         <BookOpen className="w-3 h-3 text-amber-200" />
-                        <span>मूल श्लोक</span>
+                        <span>{isHindi ? "मूल श्लोक" : "Root Verses"}</span>
                       </button>
                     </div>
                   </div>
@@ -1106,7 +1120,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
             <div>
               <h3 className="font-serif text-2xl font-bold text-[#1E293B] mb-4 flex items-center gap-2">
                 <Layers className="w-5 h-5 text-amber-700" />
-                <span>महाभारत के अठारह पर्व (The 18 Parvas Timeline)</span>
+                <span>{isHindi ? "महाभारत के अठारह पर्व (The 18 Parvas Timeline)" : "The 18 Parvas of Mahabharata"}</span>
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1117,10 +1131,10 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                   >
                     <div className="flex items-center justify-between gap-2 mb-1.5">
                       <span className="text-xs font-bold text-[#78350F] bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
-                        पर्व #{pv.order}
+                        {isHindi ? `पर्व #${pv.order}` : `Parva #${pv.order}`}
                       </span>
                       <span className="text-[11px] text-stone-500 font-semibold font-devanagari">
-                        {pv.adhyayas} अध्याय • {pv.shlokas.toLocaleString()} श्लोक
+                        {pv.adhyayas} {isHindi ? "अध्याय" : "Chapters"} • {pv.shlokas.toLocaleString()} {isHindi ? "श्लोक" : "Verses"}
                       </span>
                     </div>
                     <h4 className="font-serif text-base font-bold text-[#1E293B]">
@@ -1146,7 +1160,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                     >
                       <span className="flex items-center gap-1">
                         <BookOpen className="w-3 h-3 text-amber-700" />
-                        <span>पर्व श्लोक वाचन</span>
+                        <span>{isHindi ? "पर्व श्लोक वाचन" : "Read Parva Verses"}</span>
                       </span>
                       <ArrowRight className="w-3 h-3" />
                     </button>
@@ -1168,7 +1182,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                 CLASSICAL DEFINITION • पुराण पंचलक्षणम्
               </span>
               <h2 className="font-serif text-3xl font-bold text-[#1E293B] mt-2 mb-1">
-                पुराण के पंच लक्षण (Pancha Lakshana)
+                {isHindi ? "पुराण के पंच लक्षण" : "Five Characteristics of Puranas (Pancha Lakshana)"}
               </h2>
               <p className="text-xs text-stone-500 mb-4 font-serif italic">
                 {PANCHA_LAKSHANA.source}
@@ -1180,7 +1194,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                   onClick={(e) =>
                     handleCopyVerse("pancha-lakshana-verse", PANCHA_LAKSHANA.sanskritVerse, e)
                   }
-                  title="श्लोक कॉपी करें"
+                  title={isHindi ? "श्लोक कॉपी करें" : "Copy Verse"}
                   className="p-1.5 rounded-lg bg-white hover:bg-amber-100 text-[#78350F] border border-amber-200/80 transition-colors cursor-pointer"
                 >
                   {copiedId === "pancha-lakshana-verse" ? (
@@ -1201,7 +1215,7 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 text-white font-bold text-xs hover:from-amber-800 hover:to-amber-900 transition-colors shadow-2xs cursor-pointer"
                 >
                   <Layers className="w-3.5 h-3.5 text-amber-200" />
-                  <span>दश लक्षण (भागवत १२.७) एवं संपूर्ण १८ उपपुराण विभाजन देखें</span>
+                  <span>{isHindi ? "दश लक्षण (भागवत १२.७) एवं संपूर्ण १८ उपपुराण विभाजन देखें" : "View 10 Lakshanas (Bhagavata 12.7) & 18 Upapuranas Divisions"}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -1235,14 +1249,14 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="font-serif text-2xl font-bold text-[#1E293B]">
-                    प्रमुख १८ उपपुराण (The 18 Upapuranas)
+                    {isHindi ? "प्रमुख १८ उपपुराण (The 18 Upapuranas)" : "The 18 Upapuranas"}
                   </h3>
                   <p className="text-xs text-stone-600 font-devanagari">
-                    कूर्म पुराण एवं बृहद्धर्म पुराण अनुसार विशिष्ट ऋषि व सम्प्रदाय परम्परा के ग्रंथ
+                    {isHindi ? "कूर्म पुराण एवं बृहद्धर्म पुराण अनुसार विशिष्ट ऋषि व सम्प्रदाय परम्परा के ग्रंथ" : "Scriptures of specific lineages and traditions according to Kurma & Brihaddharma Puranas"}
                   </p>
                 </div>
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-50 text-[#78350F] border border-amber-200/70">
-                  १८ उपलब्ध उपपुराण
+                  {isHindi ? "१८ उपलब्ध उपपुराण" : "18 Available Upapuranas"}
                 </span>
               </div>
 

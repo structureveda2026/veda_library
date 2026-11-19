@@ -139,9 +139,9 @@ export default function VedaNavbar({
                   VEDA LIBRARY
                 </span>
               </div>
-              {/* Document-specified Hindi subtitle */}
-              <span className="hidden md:block text-[10px] font-devanagari font-semibold text-[#555555] mt-1 leading-tight whitespace-nowrap">
-                वैदिक एवं भारतीय ज्ञान परंपरा का डिजिटल संग्रह
+              {/* Document-specified Hindi/English subtitle */}
+              <span className="hidden md:block text-[10px] font-semibold text-[#555555] mt-1 leading-tight whitespace-nowrap">
+                {isHindi ? "वैदिक एवं भारतीय ज्ञान परंपरा का डिजिटल संग्रह" : "Digital Archive of Vedic & Indian Wisdom"}
               </span>
             </div>
           </Link>
@@ -244,7 +244,7 @@ export default function VedaNavbar({
           <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#F9F9F9] border border-[#E5E5E5]">
             <span className="text-xs font-bold text-[#111111] flex items-center gap-1.5">
               <Globe className="w-4 h-4 text-[#D9A441]" />
-              <span>{isHindi ? "भाषा (Language):" : "Language:"}</span>
+              <span>{isHindi ? "भाषा चयन:" : "Language:"}</span>
             </span>
             <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-lg border border-[#E5E5E5]">
               <button

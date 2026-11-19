@@ -309,32 +309,40 @@ export const FEATURED_COLLECTIONS = [
     title: "Vedic Collection",
     hindiTitle: "वैदिक संग्रह",
     articlesCount: "124 Articles",
+    hindiArticlesCount: "१२४ आलेख",
     imageKey: "banner-sanctum.png",
-    description: "ऋचाओं, संहिताओं, आरण्यकों और ऋषियों के प्रामाणिक संदर्भों का महासंग्रह।"
+    description: "ऋचाओं, संहिताओं, आरण्यकों और ऋषियों के प्रामाणिक संदर्भों का महासंग्रह।",
+    enDescription: "Grand archive of verses, Samhitas, Aranyakas and canonical seer references."
   },
   {
     id: "mantra-collection",
     title: "Mantra Collection",
     hindiTitle: "मंत्र संग्रह",
     articlesCount: "86 Articles",
+    hindiArticlesCount: "८६ आलेख",
     imageKey: "banner-sacred-details.png",
-    description: "शुद्ध स्वर, पदच्छेद, छंद, ऋषि एवं देवता युक्त कल्याणकारी वैदिक मंत्र।"
+    description: "शुद्ध स्वर, पदच्छेद, छंद, ऋषि एवं देवता युक्त कल्याणकारी वैदिक मंत्र।",
+    enDescription: "Vedic hymns with precise swaras, padapatha, chhandas, rishi, and presiding deities."
   },
   {
     id: "puja-collection",
     title: "Puja Collection",
     hindiTitle: "पूजा व अनुष्ठान संग्रह",
     articlesCount: "72 Articles",
+    hindiArticlesCount: "७२ आलेख",
     imageKey: "banner-fire-ritual.png",
-    description: "शास्त्रोक्त पूजन विधि, कलश स्थापन, आवाहन व षोडशोपचार आराधना।"
+    description: "शास्त्रोक्त पूजन विधि, कलश स्थापन, आवाहन व षोडशोपचार आराधना।",
+    enDescription: "Scriptural worship procedures, kalash sthapana, and Shodashopachara rituals."
   },
   {
     id: "samskara-collection",
     title: "Samskara Collection",
     hindiTitle: "संस्कार परंपरा",
     articlesCount: "45 Articles",
+    hindiArticlesCount: "४५ आलेख",
     imageKey: "banner-kashi-ghat.png",
-    description: "गर्भाधान से विवाह एवं अन्त्येष्टि तक १६ पवित्र वैदिक संस्कारों का विवरण।"
+    description: "गर्भाधान से विवाह एवं अन्त्येष्टि तक १६ पवित्र वैदिक संस्कारों का विवरण।",
+    enDescription: "Comprehensive guide to the 16 sacred Vedic Samskaras from birth to sacred rites."
   }
 ];
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 import {
   ChevronLeft,
   ChevronRight,
@@ -33,15 +34,18 @@ import {
  * - Chapters Table with crisp 1px borders, subtle hover row highlight, and jump-to-verse actions
  */
 export default function ScriptureReaderView({ scripture, initialChapterId = null }) {
+  const { isHindi, isEnglish } = useLanguage();
+
   if (!scripture || !scripture.chapters || scripture.chapters.length === 0) {
     return (
       <div className="rounded-2xl border border-[#E5E5E5] bg-white p-8 text-center text-[#555555] font-devanagari">
         <BookOpen className="w-8 h-8 text-[#D9A441] mx-auto mb-2" />
-        <p className="text-base font-bold text-[#111111]">इस ग्रंथ का पाठ संकलन लोड हो रहा है...</p>
+        <p className="text-base font-bold text-[#111111]">
+          {isHindi ? "इस ग्रंथ का पाठ संकलन लोड हो रहा है..." : "Loading scripture text compilation..."}
+        </p>
       </div>
     );
   }
-
   const [selectedChapterId, setSelectedChapterId] = useState(
     initialChapterId && scripture.chapters.some((c) => c.id === initialChapterId)
       ? initialChapterId
@@ -52,8 +56,16 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
   const [currentPage, setCurrentPage] = useState(1);
   const [jumpTo, setJumpTo] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [readerLanguage, setReaderLanguage] = useState("all"); // "all" | "hindi" | "english" | "hinglish"
+  const [readerLanguage, setReaderLanguage] = useState(isEnglish ? "english" : "all"); // "all" | "hindi" | "english" | "hinglish"
   const [fontSize, setFontSize] = useState("default"); // "small" | "default" | "large"
+
+  useEffect(() => {
+    if (isEnglish) {
+      setReaderLanguage("english");
+    } else {
+      setReaderLanguage("all");
+    }
+  }, [isEnglish]);
   const [copiedNumber, setCopiedNumber] = useState(null);
   const [playingNumber, setPlayingNumber] = useState(null);
   const [tableSearch, setTableSearch] = useState("");
@@ -269,7 +281,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
               }`}
             >
               <BookOpen className="w-3.5 h-3.5 text-[#111111]" />
-              <span>पाठांश वाचन (Reader)</span>
+              <span>{isHindi ? "पाठांश वाचन" : "Text Reader"}</span>
             </button>
             <button
               type="button"
@@ -281,14 +293,14 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
               }`}
             >
               <List className="w-3.5 h-3.5 text-[#D9A441]" />
-              <span>अध्याय सारणी ({scripture.chapters.length})</span>
+              <span>{isHindi ? "अध्याय सारणी" : "Chapter Index"} ({scripture.chapters.length})</span>
             </button>
           </div>
 
           {viewMode === "reader" && (
             <div className="flex items-center gap-2 flex-wrap">
               <label className="text-xs font-bold uppercase tracking-wider text-[#555555]">
-                अध्याय:
+                {isHindi ? "अध्याय:" : "Chapter:"}
               </label>
               <select
                 value={selectedChapterId}
@@ -297,7 +309,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
               >
                 {scripture.chapters.map((chapter) => (
                   <option key={chapter.id} value={chapter.id}>
-                    {chapter.title} ({chapter.items.length} श्लोक/सूत्र)
+                    {chapter.title} ({chapter.items.length} {isHindi ? "श्लोक/सूत्र" : "verses/sutras"})
                   </option>
                 ))}
               </select>
@@ -313,12 +325,12 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
               <div className="flex items-center gap-1 bg-stone-50 border border-[#E5E5E5] rounded-xl p-1 shadow-2xs">
                 <span className="text-[11px] font-bold text-[#555555] px-1.5 flex items-center gap-1">
                   <Type className="w-3.5 h-3.5 text-[#D9A441]" />
-                  <span>अक्षर:</span>
+                  <span>{isHindi ? "अक्षर:" : "Font:"}</span>
                 </span>
                 <button
                   type="button"
                   onClick={() => setFontSize("small")}
-                  title="छोटा अक्षर (Small Font)"
+                  title={isHindi ? "छोटा अक्षर" : "Small Font"}
                   className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all duration-200 cursor-pointer ${
                     fontSize === "small"
                       ? "bg-[#FFD21F] text-[#111111] shadow-2xs border border-[#FFD21F]"
@@ -330,7 +342,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                 <button
                   type="button"
                   onClick={() => setFontSize("default")}
-                  title="सामान्य अक्षर (Default Font)"
+                  title={isHindi ? "सामान्य अक्षर" : "Default Font"}
                   className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all duration-200 cursor-pointer ${
                     fontSize === "default"
                       ? "bg-[#FFD21F] text-[#111111] shadow-2xs border border-[#FFD21F]"
@@ -342,7 +354,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                 <button
                   type="button"
                   onClick={() => setFontSize("large")}
-                  title="बड़ा अक्षर (Large Font)"
+                  title={isHindi ? "बड़ा अक्षर" : "Large Font"}
                   className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all duration-200 cursor-pointer ${
                     fontSize === "large"
                       ? "bg-[#FFD21F] text-[#111111] shadow-2xs border border-[#FFD21F]"
@@ -360,8 +372,8 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                     onChange={(e) => setPageSize(Number(e.target.value))}
                     className="rounded-xl border border-[#E5E5E5] bg-white px-3 py-2 text-xs font-semibold text-[#111111] focus:border-[#D9A441] outline-none shadow-2xs"
                   >
-                    <option value={10}>10 प्रति पृष्ठ</option>
-                    <option value={20}>20 प्रति पृष्ठ</option>
+                    <option value={10}>{isHindi ? "10 प्रति पृष्ठ" : "10 per page"}</option>
+                    <option value={20}>{isHindi ? "20 प्रति पृष्ठ" : "20 per page"}</option>
                   </select>
                 </div>
               )}
@@ -379,10 +391,12 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
             <div>
               <h3 className="font-serif text-lg font-bold text-[#111111] flex items-center gap-2">
                 <List className="w-4 h-4 text-[#D9A441]" />
-                <span>समस्त अध्याय सारणी एवं त्वरित श्लोक चयन</span>
+                <span>{isHindi ? "समस्त अध्याय सारणी एवं त्वरित श्लोक चयन" : "Chapter Index & Direct Verse Selection"}</span>
               </h3>
               <p className="text-xs text-[#555555] font-devanagari mt-0.5">
-                किसी भी अध्याय पर क्लिक करके तुरंत उसका पाठ आरंभ करें अथवा सीधे अभीष्ट श्लोक संख्या पर जाएँ।
+                {isHindi
+                  ? "किसी भी अध्याय पर क्लिक करके तुरंत उसका पाठ आरंभ करें अथवा सीधे अभीष्ट श्लोक संख्या पर जाएँ।"
+                  : "Click any chapter to begin reading or jump directly to desired verse number."}
               </p>
             </div>
 
@@ -392,7 +406,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                 type="text"
                 value={tableSearch}
                 onChange={(e) => setTableSearch(e.target.value)}
-                placeholder="अध्याय खोजें..."
+                placeholder={isHindi ? "अध्याय खोजें..." : "Search chapter..."}
                 className="w-full pl-8 pr-7 py-2 rounded-xl border border-[#E5E5E5] bg-white text-xs focus:border-[#D9A441] outline-none text-[#111111] shadow-2xs"
               />
               {tableSearch && (
@@ -414,10 +428,10 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                 <thead>
                   <tr className="bg-stone-50 border-b border-[#E5E5E5] text-[#555555] font-bold uppercase tracking-wider text-[11px]">
                     <th className="py-3 px-4 w-14 text-center">#</th>
-                    <th className="py-3 px-4">अध्याय शीर्षक / सूक्त</th>
-                    <th className="py-3 px-4 w-32 text-center">श्लोक परिमाण</th>
-                    <th className="py-3 px-4 w-44 text-center">त्वरित श्लोक चयन</th>
-                    <th className="py-3 px-4 w-36 text-right">पठन क्रिया</th>
+                    <th className="py-3 px-4">{isHindi ? "अध्याय शीर्षक / सूक्त" : "Chapter Title / Sukta"}</th>
+                    <th className="py-3 px-4 w-32 text-center">{isHindi ? "श्लोक परिमाण" : "Verse Count"}</th>
+                    <th className="py-3 px-4 w-44 text-center">{isHindi ? "त्वरित श्लोक चयन" : "Direct Verse Jump"}</th>
+                    <th className="py-3 px-4 w-36 text-right">{isHindi ? "पठन क्रिया" : "Action"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#E5E5E5]">
@@ -454,7 +468,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                             <span>{chapter.title}</span>
                             {isCurrent && (
                               <span className="px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] text-[10px] font-bold border border-[#FFD21F]">
-                                सक्रिय
+                                {isHindi ? "सक्रिय" : "Active"}
                               </span>
                             )}
                           </div>
@@ -464,7 +478,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                         <td className="py-3.5 px-4 text-center text-[#555555] font-semibold">
                           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-50 border border-[#E5E5E5] text-[11px]">
                             <BookOpen className="w-3 h-3 text-[#D9A441]" />
-                            <span>{chapter.items.length} श्लोक</span>
+                            <span>{chapter.items.length} {isHindi ? "श्लोक" : "verses"}</span>
                           </span>
                         </td>
 
@@ -478,7 +492,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                               type="number"
                               min="1"
                               max={chapter.items.length}
-                              placeholder="श्लोक #"
+                              placeholder={isHindi ? "श्लोक #" : "Verse #"}
                               value={verseInput}
                               onChange={(e) =>
                                 setTableJumpVerse((prev) => ({
@@ -502,7 +516,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                               }}
                               className="px-2.5 py-1 rounded-lg bg-[#FFD21F] hover:bg-[#ffe052] text-[#111111] font-bold text-xs shadow-2xs border border-[#FFD21F] cursor-pointer"
                             >
-                              जाएँ
+                              {isHindi ? "जाएँ" : "Go"}
                             </button>
                           </div>
                         </td>
@@ -514,7 +528,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                             onClick={() => handleChapterTableSelect(chapter.id)}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#FFD21F] text-[#111111] font-bold text-xs border border-[#E5E5E5] hover:border-[#FFD21F] shadow-2xs transition-all cursor-pointer"
                           >
-                            <span>पाठ पढ़ें</span>
+                            <span>{isHindi ? "पाठ पढ़ें" : "Read"}</span>
                             <ArrowRight className="w-3.5 h-3.5 text-[#D9A441]" />
                           </button>
                         </td>
@@ -536,18 +550,18 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
             <div className="rounded-xl border border-[#E5E5E5] bg-stone-50/70 p-3.5 text-xs sm:text-sm text-[#111111] flex flex-col md:flex-row md:items-center justify-between gap-2.5 w-full shadow-2xs">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <div>
-                  <span className="font-bold text-[#111111]">पारंपरिक कुल परिमाण:</span>{" "}
+                  <span className="font-bold text-[#111111]">{isHindi ? "पारंपरिक कुल परिमाण:" : "Traditional Total Corpus:"}</span>{" "}
                   <span className="font-semibold text-[#555555]">{scripture.sourceTotal}</span>
                 </div>
                 <span className="hidden md:inline text-[#D9A441]">•</span>
                 <div>
-                  <span className="font-bold text-[#111111]">अध्याय में उपलब्ध:</span>{" "}
-                  <span className="font-bold text-[#D9A441]">{availableCount} श्लोक/सूत्र</span>
+                  <span className="font-bold text-[#111111]">{isHindi ? "अध्याय में उपलब्ध:" : "Available in Chapter:"}</span>{" "}
+                  <span className="font-bold text-[#D9A441]">{availableCount} {isHindi ? "श्लोक/सूत्र" : "verses/sutras"}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-bold text-[#111111] bg-[#FFD21F] px-2.5 py-1 rounded-md border border-[#FFD21F]">
-                  {isPaginated ? "क्रमबद्ध पृष्ठीय वाचन" : "सम्पूर्ण पाठांश दृश्य"}
+                  {isPaginated ? (isHindi ? "क्रमबद्ध पृष्ठीय वाचन" : "Paginated View") : (isHindi ? "सम्पूर्ण पाठांश दृश्य" : "Complete Chapter View")}
                 </span>
               </div>
             </div>
@@ -559,7 +573,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                   type="text"
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
-                  placeholder="श्लोक, अनुवाद या सूत्र खोजें..."
+                  placeholder={isHindi ? "श्लोक, अनुवाद या सूत्र खोजें..." : "Search verse, translation or sutra..."}
                   className="w-full pl-8 pr-7 py-2 rounded-xl border border-[#E5E5E5] bg-white text-xs focus:border-[#D9A441] outline-none font-devanagari text-[#111111] shadow-2xs"
                 />
               </div>
@@ -569,7 +583,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                   onClick={() => setSearchText("")}
                   className="rounded-xl border border-[#E5E5E5] bg-white px-2.5 py-2 text-xs font-bold text-[#555555] hover:bg-stone-50 cursor-pointer shadow-2xs"
                 >
-                  Clear
+                  {isHindi ? "हटाएँ" : "Clear"}
                 </button>
               )}
             </div>
@@ -579,14 +593,14 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
           <div className="mt-4 flex items-center justify-between flex-wrap gap-2.5 p-3 rounded-2xl bg-[#FFFFFF] border border-[#E5E5E5] shadow-xs">
             <div className="flex items-center gap-1.5 text-xs font-bold text-[#111111]">
               <Sparkles className="w-4 h-4 text-[#D9A441]" />
-              <span>व्याख्या एवं भावार्थ भाषा (Translation Mode):</span>
+              <span>{isHindi ? "व्याख्या एवं भावार्थ भाषा:" : "Translation & Meaning Mode:"}</span>
             </div>
             <div className="flex items-center gap-1 overflow-x-auto text-xs font-bold p-1 rounded-xl bg-stone-50 border border-[#E5E5E5]">
               {[
-                { id: "all", label: "त्रिभाषी दृश्य (All 3)" },
-                { id: "hindi", label: "हिन्दी भावार्थ" },
-                { id: "english", label: "English Translation" },
-                { id: "hinglish", label: "सरल हिंग्लिश" },
+                { id: "all", label: isHindi ? "त्रिभाषी दृश्य" : "All 3 Languages" },
+                { id: "hindi", label: isHindi ? "हिन्दी भावार्थ" : "Hindi Meaning" },
+                { id: "english", label: isHindi ? "English अनुवाद" : "English Translation" },
+                { id: "hinglish", label: isHindi ? "सरल हिंग्लिश" : "Hinglish Guide" },
               ].map((lang) => (
                 <button
                   key={lang.id}
@@ -615,7 +629,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                   className="inline-flex items-center gap-1 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white px-3 py-2 text-xs font-bold text-[#111111] disabled:opacity-40 hover:bg-stone-50 cursor-pointer disabled:cursor-not-allowed shadow-2xs transition-all"
                 >
                   <ChevronLeft className="w-3.5 h-3.5 text-[#D9A441]" />
-                  <span>पिछला</span>
+                  <span>{isHindi ? "पिछला" : "Previous"}</span>
                 </button>
                 <button
                   type="button"
@@ -623,23 +637,23 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                   onClick={() => navigatePage(1)}
                   className="inline-flex items-center gap-1 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white px-3 py-2 text-xs font-bold text-[#111111] disabled:opacity-40 hover:bg-stone-50 cursor-pointer disabled:cursor-not-allowed shadow-2xs transition-all"
                 >
-                  <span>अगला</span>
+                  <span>{isHindi ? "अगला" : "Next"}</span>
                   <ChevronRight className="w-3.5 h-3.5 text-[#D9A441]" />
                 </button>
                 <span className="text-xs text-[#555555]">
-                  पृष्ठ <strong className="text-[#111111]">{safePage}</strong> of {totalPages}
+                  {isHindi ? `पृष्ठ ${safePage} / ${totalPages}` : `Page ${safePage} of ${totalPages}`}
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs text-[#555555]">श्लोक संख्या:</span>
+                <span className="text-xs text-[#555555]">{isHindi ? "श्लोक संख्या:" : "Jump to verse:"}</span>
                 <input
                   type="number"
                   min="1"
                   value={jumpTo}
                   onChange={(e) => setJumpTo(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleJump()}
-                  placeholder="संख्या..."
+                  placeholder={isHindi ? "संख्या..." : "Verse #..."}
                   className="w-20 rounded-xl border border-[#E5E5E5] bg-white px-2.5 py-1.5 text-xs text-[#111111] outline-none focus:border-[#D9A441]"
                 />
                 <button
@@ -647,7 +661,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                   onClick={handleJump}
                   className="rounded-xl bg-[#FFD21F] hover:bg-[#ffe052] px-3 py-1.5 text-xs font-bold text-[#111111] cursor-pointer shadow-2xs border border-[#FFD21F] transition-colors"
                 >
-                  जाएँ
+                  {isHindi ? "जाएँ" : "Go"}
                 </button>
               </div>
             </div>
@@ -658,7 +672,9 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
             {visibleItems.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-[#E5E5E5] p-8 text-center text-[#555555]">
                 <p className="text-sm font-bold text-[#111111]">
-                  इस खोज अथवा अध्याय में कोई श्लोक/सूत्र उपलब्ध नहीं है।
+                  {isHindi
+                    ? "इस खोज अथवा अध्याय में कोई श्लोक/सूत्र उपलब्ध नहीं है।"
+                    : "No verses or sutras available in this search/chapter."}
                 </p>
               </div>
             ) : (
@@ -679,7 +695,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                       <div className="flex items-center gap-2">
                         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FFD21F] text-[#111111] text-xs font-bold border border-[#FFD21F] shadow-2xs">
                           <Flame className="w-3 h-3 text-[#C62828]" />
-                          <span>श्लोक / सूत्र {item.number}</span>
+                          <span>{isHindi ? `श्लोक / सूत्र ${item.number}` : `Verse / Sutra ${item.number}`}</span>
                         </span>
                         <span className="text-xs text-[#555555] font-serif hidden sm:inline">
                           {selectedChapter.title.split("•")[0]?.trim()}
@@ -692,7 +708,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                         <button
                           type="button"
                           onClick={() => handleToggleSpeech(item)}
-                          title={isPlayingThis ? "सस्वर उच्चारण रोकें" : "सस्वर वैदिक उच्चारण सुनें"}
+                          title={isPlayingThis ? (isHindi ? "सस्वर उच्चारण रोकें" : "Stop chanting") : (isHindi ? "सस्वर वैदिक उच्चारण सुनें" : "Listen to Vedic recitation")}
                           className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-2xs ${
                             isPlayingThis
                               ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] animate-pulse"
@@ -702,12 +718,12 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                           {isPlayingThis ? (
                             <>
                               <VolumeX className="w-3.5 h-3.5 text-[#C62828]" />
-                              <span className="hidden sm:inline">रोकें</span>
+                              <span className="hidden sm:inline">{isHindi ? "रोकें" : "Stop"}</span>
                             </>
                           ) : (
                             <>
                               <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
-                              <span className="hidden sm:inline">सस्वर पाठ</span>
+                              <span className="hidden sm:inline">{isHindi ? "सस्वर पाठ" : "Recitation"}</span>
                             </>
                           )}
                         </button>
@@ -716,18 +732,18 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                         <button
                           type="button"
                           onClick={() => handleCopyVerse(item)}
-                          title="श्लोक एवं अनुवाद कॉपी करें"
+                          title={isHindi ? "श्लोक एवं अनुवाद कॉपी करें" : "Copy verse & translation"}
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-[#555555] hover:text-[#111111] transition-colors cursor-pointer shadow-2xs"
                         >
                           {isCopiedThis ? (
                             <>
                               <Check className="w-3.5 h-3.5 text-emerald-600" />
-                              <span className="text-[11px] font-bold text-emerald-600 hidden sm:inline">कॉपी हुआ</span>
+                              <span className="text-[11px] font-bold text-emerald-600 hidden sm:inline">{isHindi ? "कॉपी हुआ" : "Copied"}</span>
                             </>
                           ) : (
                             <>
                               <Copy className="w-3.5 h-3.5 text-[#555555]" />
-                              <span className="text-[11px] font-semibold text-[#555555] hidden sm:inline">कॉपी</span>
+                              <span className="text-[11px] font-semibold text-[#555555] hidden sm:inline">{isHindi ? "कॉपी" : "Copy"}</span>
                             </>
                           )}
                         </button>
@@ -736,7 +752,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                         <button
                           type="button"
                           onClick={() => handleShareVerse(item)}
-                          title="श्लोक साझा करें"
+                          title={isHindi ? "श्लोक साझा करें" : "Share verse"}
                           className="p-1.5 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-[#555555] hover:text-[#111111] transition-colors cursor-pointer shadow-2xs"
                         >
                           <Share2 className="w-3.5 h-3.5 text-[#D9A441]" />
@@ -777,7 +793,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                         <div className="p-4 rounded-xl bg-stone-50/70 border border-[#E5E5E5] text-xs sm:text-sm text-[#111111] font-devanagari leading-relaxed shadow-2xs">
                           <div className="flex items-center gap-1.5 mb-1.5">
                             <span className="px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] font-bold text-[10px] border border-[#FFD21F]">
-                              हिन्दी भावार्थ
+                              {isHindi ? "हिन्दी भावार्थ" : "Hindi Meaning"}
                             </span>
                           </div>
                           <p>{item.hindi}</p>
@@ -789,7 +805,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                         <div className="p-4 rounded-xl bg-stone-50/70 border border-[#E5E5E5] text-xs sm:text-sm text-[#111111] leading-relaxed shadow-2xs font-serif">
                           <div className="flex items-center gap-1.5 mb-1.5">
                             <span className="px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] font-bold text-[10px] border border-[#FFD21F] font-sans">
-                              English Translation
+                              {isHindi ? "English अनुवाद" : "English Translation"}
                             </span>
                           </div>
                           <p className="italic text-[#111111]">"{item.english}"</p>
@@ -801,7 +817,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                         <div className="p-4 rounded-xl bg-stone-50/70 border border-[#E5E5E5] text-xs sm:text-sm text-[#111111] leading-relaxed font-sans shadow-2xs">
                           <div className="flex items-center gap-1.5 mb-1.5">
                             <span className="px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] font-bold text-[10px] border border-[#FFD21F]">
-                              सरल हिंग्लिश व्याख्या
+                              {isHindi ? "सरल हिंग्लिश व्याख्या" : "Hinglish Guide"}
                             </span>
                           </div>
                           <p className="text-[#555555]">{item.hinglish || item.hindi}</p>
@@ -813,7 +829,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                         <div className="rounded-xl border border-[#E5E5E5] bg-stone-50 p-4 text-xs sm:text-sm leading-relaxed text-[#555555] font-devanagari">
                           <div className="flex items-center gap-1.5 font-bold text-[#111111] mb-1">
                             <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
-                            <span>शास्त्रीय भाष्य एवं दार्शनिक रहस्य:</span>
+                            <span>{isHindi ? "शास्त्रीय भाष्य एवं दार्शनिक रहस्य:" : "Shastric Commentary & Philosophical Insight:"}</span>
                           </div>
                           <p>{item.commentary}</p>
                         </div>
@@ -838,7 +854,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                 className="inline-flex items-center gap-1 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white px-3 py-2 text-xs font-bold text-[#111111] disabled:opacity-40 hover:bg-stone-50 cursor-pointer disabled:cursor-not-allowed shadow-2xs transition-all"
               >
                 <ChevronLeft className="w-3.5 h-3.5 text-[#D9A441]" />
-                <span>पिछला पृष्ठ</span>
+                <span>{isHindi ? "पिछला पृष्ठ" : "Previous Page"}</span>
               </button>
 
               <div className="flex flex-wrap items-center justify-center gap-1.5">
@@ -880,7 +896,7 @@ export default function ScriptureReaderView({ scripture, initialChapterId = null
                 }}
                 className="inline-flex items-center gap-1 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white px-3 py-2 text-xs font-bold text-[#111111] disabled:opacity-40 hover:bg-stone-50 cursor-pointer disabled:cursor-not-allowed shadow-2xs transition-all"
               >
-                <span>अगला पृष्ठ</span>
+                <span>{isHindi ? "अगला पृष्ठ" : "Next Page"}</span>
                 <ChevronRight className="w-3.5 h-3.5 text-[#D9A441]" />
               </button>
             </div>

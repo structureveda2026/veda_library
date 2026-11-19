@@ -40,6 +40,33 @@ const DAILY_SUKTIS = [
   }
 ];
 
+const CATEGORY_MAP = {
+  "Vedic Astrology": "वैदिक ज्योतिष",
+  "Mantras & Stotrams": "मंत्र एवं स्तोत्र",
+  "Vastu Shastra": "वास्तु शास्त्र",
+  "Puja & Rituals": "पूजा एवं अनुष्ठान",
+  "Vrat & Katha": "व्रत एवं कथा",
+  "Rudraksha & Gemstones": "रुद्राक्ष एवं रत्न",
+  "Ayurveda & Health": "आयुर्वेद एवं स्वास्थ्य",
+  "Vedic Wisdom": "वैदिक ज्ञान",
+  "All": "समस्त लेख",
+};
+
+const TAG_MAP = {
+  "ShaniSadeSati": "शनि साढ़ेसाती",
+  "Navgrah": "नवग्रह",
+  "VastuTips": "वास्तु उपाय",
+  "Rudraksha": "रुद्राक्ष",
+  "Mahamrityunjaya": "महामृत्युंजय",
+  "Gayatri": "गायत्री",
+  "SolarEclipse": "सूर्य ग्रहण",
+  "SatyanarayanKatha": "सत्यनारायण कथा",
+  "VedicAstrology": "वैदिक ज्योतिष",
+  "Mantras": "मंत्र साधना",
+  "Lord Shiva": "भगवान शिव",
+  "Rudrabhishek": "रुद्राभिषेक",
+};
+
 // Auspicious Temple Bell Chime using Web Audio API
 function playChantBell() {
   try {
@@ -329,7 +356,7 @@ export default function AstromantraSidebar({
           >
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#111111]" />
-              {isHindi ? "समस्त लेख (All Articles)" : "All Articles (समस्त लेख)"}
+              {isHindi ? "समस्त लेख" : "All Articles"}
             </span>
             <ChevronRight className="w-3.5 h-3.5 opacity-60" />
           </button>
@@ -339,6 +366,7 @@ export default function AstromantraSidebar({
             if (!catName || catName === "All") return null;
             const count = typeof cat === "object" ? cat.count : null;
             const isActive = currentCategory.toLowerCase() === catName.toLowerCase();
+            const displayCatName = isHindi ? (CATEGORY_MAP[catName] || catName) : catName;
 
             return (
               <button
@@ -352,7 +380,7 @@ export default function AstromantraSidebar({
               >
                 <span className="flex items-center gap-2 text-left truncate mr-2">
                   <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-[#111111]" : "bg-[#D9A441]"}`} />
-                  <span className="truncate">{catName}</span>
+                  <span className="truncate">{displayCatName}</span>
                 </span>
                 {count !== null && (
                   <span
@@ -418,13 +446,14 @@ export default function AstromantraSidebar({
         <div className="flex items-center justify-between pb-2 border-b border-[#E5E5E5]">
           <h3 className="font-serif font-bold text-[#111111] text-sm flex items-center gap-1.5">
             <Tag className="w-4 h-4 text-[#D9A441]" />
-            <span>{isHindi ? "पवित्र विषय सूत्र (Tags)" : "Sacred Topic Tags"}</span>
+            <span>{isHindi ? "पवित्र विषय सूत्र" : "Sacred Topic Tags"}</span>
           </h3>
         </div>
 
         <div className="flex flex-wrap gap-1.5">
           {popularTags.map((tag) => {
             const isActive = currentTag.toLowerCase() === tag.toLowerCase();
+            const displayTag = isHindi ? (TAG_MAP[tag] || tag) : tag;
             return (
               <button
                 key={tag}
@@ -435,7 +464,7 @@ export default function AstromantraSidebar({
                     : "bg-white hover:bg-stone-50 text-[#555555] hover:text-[#111111] border-[#E5E5E5] hover:border-[#D9A441]"
                 }`}
               >
-                #{tag}
+                #{displayTag}
               </button>
             );
           })}

@@ -20,7 +20,7 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
   const { isHindi } = useLanguage();
 
   return (
-    <section id="featured-collections" className="py-8 sm:py-10 bg-white border-y border-[#E5E5E5]">
+    <section id="featured-collections" className="py-6 sm:py-8 bg-white border-y border-[#E5E5E5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-2">
@@ -36,7 +36,7 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
             </h2>
             <p className={`text-xs sm:text-sm text-[#555555] mt-0.5 ${isHindi ? "font-devanagari" : ""}`}>
               {isHindi
-                ? "इस समय Library में सर्वाधिक पढ़े और explore किए जा रहे प्रमुख संग्रह।"
+                ? "पुस्तकालय में सर्वाधिक अध्ययन किए जा रहे विशिष्ट वैदिक संग्रह।"
                 : "Most explored and studied curated collections in the library."}
             </p>
           </div>
@@ -56,7 +56,8 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
           {FEATURED_COLLECTIONS.map((col) => {
             const imgSrc = COLLECTION_IMAGES[col.imageKey] || sanctumImg;
             const title = isHindi ? col.hindiTitle : col.title;
-            const subtitle = isHindi ? col.title : col.hindiTitle;
+            const count = isHindi ? (col.hindiArticlesCount || col.articlesCount) : col.articlesCount;
+            const desc = isHindi ? col.description : (col.enDescription || col.description);
 
             return (
               <div
@@ -68,12 +69,12 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
                 <div className="relative aspect-16/9 overflow-hidden bg-[#111111]">
                   <img
                     src={imgSrc}
-                    alt={col.title}
+                    alt={title}
                     className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-103"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs">
-                    {col.articlesCount}
+                    {count}
                   </span>
                 </div>
 
@@ -83,11 +84,8 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
                     <h3 className={`font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors ${isHindi ? "font-devanagari" : ""}`}>
                       {title}
                     </h3>
-                    <p className={`text-[11px] text-[#555555] font-medium mt-0.5 ${isHindi ? "" : "font-devanagari"}`}>
-                      {subtitle}
-                    </p>
                     <p className="text-[11px] text-[#555555] mt-1.5 line-clamp-2 leading-relaxed">
-                      {col.description}
+                      {desc}
                     </p>
                   </div>
 

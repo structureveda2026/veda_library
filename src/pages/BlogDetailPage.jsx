@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import SEO from "../components/common/SEO.jsx";
 import {
   Home,
@@ -33,6 +34,7 @@ import { FALLBACK_BLOG_CATEGORIES, FALLBACK_BLOGS } from "../data/blogFallbackDa
 import bannerFireRitualImg from "../assets/images/library/banners/banner-fire-ritual.png";
 
 export default function BlogDetailPage() {
+  const { isHindi, isEnglish } = useLanguage();
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -43,7 +45,12 @@ export default function BlogDetailPage() {
   const [error, setError] = useState(null);
 
   // UI state: language mode ("both", "en", "hi")
-  const [langMode, setLangMode] = useState("both");
+  const [langMode, setLangMode] = useState(() => (isHindi ? "hi" : "en"));
+
+  useEffect(() => {
+    setLangMode(isHindi ? "hi" : "en");
+  }, [isHindi]);
+
   // UI state: font size multiplier
   const [fontSize, setFontSize] = useState("normal"); // "normal", "large", "xlarge"
   const [copied, setCopied] = useState(false);
@@ -389,7 +396,7 @@ export default function BlogDetailPage() {
 
   if (loading) {
     return (
-      <div className="bg-white min-h-screen py-16">
+      <div className="bg-white min-h-screen py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 animate-pulse space-y-6">
           <div className="h-6 bg-stone-100 rounded w-1/4" />
           <div className="h-10 bg-stone-200 rounded w-3/4" />
@@ -402,16 +409,18 @@ export default function BlogDetailPage() {
 
   if (error || !blog) {
     return (
-      <div className="bg-white min-h-screen py-20 px-4">
-        <div className="max-w-md mx-auto text-center bg-white p-8 rounded-3xl border border-[#E5E5E5] shadow-xs space-y-4">
+      <div className="bg-white min-h-screen py-10 px-4">
+        <div className="max-w-md mx-auto text-center bg-white p-6 sm:p-8 rounded-3xl border border-[#E5E5E5] shadow-xs space-y-4">
           <div className="w-16 h-16 rounded-full bg-stone-50 text-[#D9A441] flex items-center justify-center mx-auto border border-[#E5E5E5]">
             <BookOpen className="w-8 h-8" />
           </div>
           <h2 className="font-serif text-2xl font-bold text-[#111111]">
-            Article Not Found (लेख उपलब्ध नहीं है)
+            {isHindi ? "लेख उपलब्ध नहीं है" : "Article Not Found"}
           </h2>
           <p className="text-sm text-[#555555]">
-            The article you are looking for might have been moved or unpublished.
+            {isHindi
+              ? "यह लेख स्थानांतरित अथवा अनुपलब्ध हो सकता है।"
+              : "The article you are looking for might have been moved or unpublished."}
           </p>
           <Link
             to="/library/articles"
@@ -539,18 +548,18 @@ export default function BlogDetailPage() {
               className="hover:text-[#111111] transition-colors flex items-center gap-1 flex-shrink-0 cursor-pointer"
             >
               <Home className="w-3.5 h-3.5 text-[#D9A441]" />
-              <span>Library</span>
+              <span>{isHindi ? "लाइब्रेरी" : "Library"}</span>
             </Link>
             <span className="text-[#D9A441]">›</span>
             <Link
               to="/library/articles"
               className="hover:text-[#111111] transition-colors flex-shrink-0 cursor-pointer"
             >
-              Articles
+              {isHindi ? "आलेख" : "Articles"}
             </Link>
             <span className="text-[#D9A441]">›</span>
             <span className="text-[#111111] font-bold truncate max-w-[200px] sm:max-w-xs">
-              {blog.title}
+              {isHindi ? (blog.titleHi || blog.title) : blog.title}
             </span>
           </nav>
 
@@ -580,7 +589,7 @@ export default function BlogDetailPage() {
                     langMode === "both" ? "bg-[#FFD21F] text-[#111111] font-bold shadow-xs" : "text-[#555555] hover:text-[#111111]"
                   }`}
                 >
-                  Both
+                  {isHindi ? "दोनों" : "Both"}
                 </button>
               </div>
             )}
@@ -628,14 +637,14 @@ export default function BlogDetailPage() {
 
                 {blog.isFeatured && (
                   <span className="px-2.5 py-1 rounded-full bg-[#D9A441] text-[#111111] text-xs font-bold shadow-2xs">
-                    Featured Insight
+                    {isHindi ? "विशिष्ट शोध" : "Featured Insight"}
                   </span>
                 )}
 
                 {/* Editorial Verification Badge */}
                 <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-stone-100 text-[#111111] border border-[#E5E5E5]">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  Source Verified
+                  {isHindi ? "प्रमाणित स्रोत" : "Source Verified"}
                 </span>
               </div>
 
@@ -690,14 +699,14 @@ export default function BlogDetailPage() {
                       <span>•</span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5 text-[#D9A441]" />
-                        {blog.readTime || "5 min read"}
+                        {blog.readTime || (isHindi ? "५ मिनट पठन" : "5 min read")}
                       </span>
                       {typeof blog.viewsCount !== "undefined" && (
                         <>
                           <span>•</span>
                           <span className="flex items-center gap-1">
                             <Eye className="w-3.5 h-3.5 text-[#555555]" />
-                            {blog.viewsCount?.toLocaleString()} views
+                            {blog.viewsCount?.toLocaleString()} {isHindi ? "पाठक" : "views"}
                           </span>
                         </>
                       )}
@@ -710,17 +719,17 @@ export default function BlogDetailPage() {
                   <button
                     onClick={handleCopyLink}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#E5E5E5] hover:border-[#D9A441] text-[#111111] text-xs font-semibold shadow-2xs transition-all cursor-pointer"
-                    title="Copy Link"
+                    title={isHindi ? "लिंक कॉपी करें" : "Copy Link"}
                   >
                     {copied ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        <span className="text-emerald-700 font-bold">Copied!</span>
+                        <span className="text-emerald-700 font-bold">{isHindi ? "कॉपी हो गया!" : "Copied!"}</span>
                       </>
                     ) : (
                       <>
                         <Share2 className="w-3.5 h-3.5 text-[#D9A441]" />
-                        <span>Share</span>
+                        <span>{isHindi ? "साझा करें" : "Share"}</span>
                       </>
                     )}
                   </button>
@@ -728,7 +737,7 @@ export default function BlogDetailPage() {
                   <button
                     onClick={() => handleShare("whatsapp")}
                     className="p-2 rounded-full bg-stone-50 text-emerald-700 border border-[#E5E5E5] hover:border-emerald-500 transition-colors cursor-pointer"
-                    title="Share on WhatsApp"
+                    title={isHindi ? "व्हाट्सएप पर साझा करें" : "Share on WhatsApp"}
                   >
                     <MessageCircle className="w-4 h-4" />
                   </button>
@@ -740,7 +749,7 @@ export default function BlogDetailPage() {
                         ? "bg-[#FFD21F] text-[#111111] border-[#FFD21F]"
                         : "bg-white text-[#555555] border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111]"
                     }`}
-                    title="Bookmark"
+                    title={isHindi ? "सहेजें" : "Bookmark"}
                   >
                     <Bookmark className="w-4 h-4" />
                   </button>
@@ -748,7 +757,7 @@ export default function BlogDetailPage() {
                   <button
                     onClick={() => window.print()}
                     className="p-2 rounded-full bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441] hover:text-[#111111] transition-colors cursor-pointer hidden sm:flex"
-                    title="Print Article"
+                    title={isHindi ? "प्रिंट करें" : "Print Article"}
                   >
                     <Printer className="w-4 h-4" />
                   </button>
@@ -768,7 +777,7 @@ export default function BlogDetailPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-white/10 opacity-70" />
               <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-white font-devanagari font-semibold bg-black/65 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20">
-                <span>वेद पुस्तकालय प्रामाणिक शोध प्रपत्र</span>
+                <span>{isHindi ? "वेद पुस्तकालय प्रामाणिक शोध प्रपत्र" : "Veda Library Canonical Research Paper"}</span>
                 <span className="font-serif text-[#FFD21F]">ॐ शांतिः शांतिः शांतिः</span>
               </div>
             </div>
@@ -779,10 +788,10 @@ export default function BlogDetailPage() {
                 <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E5E5E5]">
                   <div className="flex items-center gap-2 text-sm font-bold text-[#111111]">
                     <BookOpen className="w-4 h-4 text-[#D9A441]" />
-                    <span className="font-devanagari">विषय सूची (Table of Contents)</span>
+                    <span>{isHindi ? "विषय सूची" : "Table of Contents"}</span>
                   </div>
                   <span className="text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] shadow-2xs">
-                    {tocItems.length} अनुभाग
+                    {tocItems.length} {isHindi ? "अनुभाग" : "sections"}
                   </span>
                 </div>
                 <ul className="space-y-1 text-xs sm:text-sm font-sans">
@@ -851,8 +860,7 @@ export default function BlogDetailPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E5E5E5]">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm">
                   <BookOpen className="w-4 h-4 text-[#D9A441]" />
-                  <span className="font-devanagari">शास्त्रीय संदर्भ एवं प्रमाणिक स्रोत</span>
-                  <span className="text-xs text-[#555555] font-normal">(Verified Shastric Citation)</span>
+                  <span>{isHindi ? "शास्त्रीय संदर्भ एवं प्रमाणिक स्रोत" : "Verified Shastric Citation & Sources"}</span>
                 </div>
 
                 {/* Citation Style Switcher */}
@@ -866,7 +874,7 @@ export default function BlogDetailPage() {
                         : "text-[#555555] hover:text-[#111111]"
                     }`}
                   >
-                    शास्त्रीय
+                    {isHindi ? "शास्त्रीय" : "Shastric"}
                   </button>
                   <button
                     type="button"
@@ -900,17 +908,17 @@ export default function BlogDetailPage() {
                   type="button"
                   onClick={handleCopyCitation}
                   className="absolute top-2 right-2 flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-[11px] shadow-2xs transition-all cursor-pointer border border-[#FFD21F]"
-                  title="Copy Citation"
+                  title={isHindi ? "संदर्भ कॉपी करें" : "Copy Citation"}
                 >
                   {citationCopied ? (
                     <>
                       <Check className="w-3 h-3 text-emerald-700" />
-                      <span className="text-emerald-800">Copied!</span>
+                      <span className="text-emerald-800">{isHindi ? "कॉपी हो गया!" : "Copied!"}</span>
                     </>
                   ) : (
                     <>
                       <Copy className="w-3 h-3 text-[#111111]" />
-                      <span>Copy</span>
+                      <span>{isHindi ? "कॉपी" : "Copy"}</span>
                     </>
                   )}
                 </button>
@@ -919,13 +927,13 @@ export default function BlogDetailPage() {
               {/* Scholarly Accreditations Strip */}
               <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-semibold text-[#111111]">
                 <span className="px-2.5 py-1 rounded-full bg-stone-50 border border-[#E5E5E5]">
-                  Corpus: Veda Library Canonical Archive
+                  {isHindi ? "ग्रंथ: वेद पुस्तकालय डिजिटल संग्रह" : "Corpus: Veda Library Canonical Archive"}
                 </span>
                 <span className="px-2.5 py-1 rounded-full bg-stone-50 border border-[#E5E5E5]">
                   Identifier: DOI 10.VEDA/CANON.{(blog.id || "001").toUpperCase()}
                 </span>
                 <span className="px-2.5 py-1 rounded-full bg-[#FFD21F] text-[#111111] font-bold">
-                  Editorial Approved
+                  {isHindi ? "विद्वत परिषद द्वारा अनुमोदित" : "Editorial Approved"}
                 </span>
               </div>
             </div>
@@ -935,7 +943,7 @@ export default function BlogDetailPage() {
               <div className="pt-2 flex flex-wrap items-center gap-2">
                 <span className="text-xs font-bold text-[#555555] flex items-center gap-1 mr-1">
                   <Tag className="w-3.5 h-3.5 text-[#D9A441]" />
-                  Related Tags:
+                  {isHindi ? "संबंधित विषय:" : "Related Tags:"}
                 </span>
                 {blog.tags.map((tag, idx) => (
                   <Link
@@ -970,29 +978,31 @@ export default function BlogDetailPage() {
                     </h3>
                     <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] border border-[#FFD21F] flex items-center gap-1">
                       <Award className="w-3 h-3 text-[#111111]" />
-                      Verified Vedic Scholar
+                      {isHindi ? "प्रमाणित वैदिक विद्वान" : "Verified Vedic Scholar"}
                     </span>
                     <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-stone-50 text-[#555555] border border-[#E5E5E5]">
-                      विद्वत समीक्षा परिषद
+                      {isHindi ? "विद्वत समीक्षा परिषद" : "Editorial Review Council"}
                     </span>
                   </div>
 
                   <p className="text-xs text-[#555555] leading-relaxed font-sans">
-                    वरिष्ठ वैदिक शोधकर्ता एवं मुख्य संपादक। संपूर्णानंद संस्कृत विश्वविद्यालय एवं काशी हिन्दू विश्वविद्यालय से शास्त्रीय भाष्य व यजुर्वेद संहिता शोध में दीक्षित।
+                    {isHindi
+                      ? "वरिष्ठ वैदिक शोधकर्ता एवं मुख्य संपादक। संपूर्णानंद संस्कृत विश्वविद्यालय एवं काशी हिन्दू विश्वविद्यालय से शास्त्रीय भाष्य व यजुर्वेद संहिता शोध में दीक्षित।"
+                      : "Senior Vedic Researcher & Chief Editor. Trained in classical commentaries and Yajurveda Samhita research at Sampurnanand Sanskrit University and BHU."}
                   </p>
 
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-[11px] font-medium text-[#111111]">
                     <span className="px-2 py-0.5 rounded-md bg-stone-50 border border-[#E5E5E5]">
-                      परंपरा: शुक्ल यजुर्वेद माध्यन्दिन
+                      {isHindi ? "परंपरा: शुक्ल यजुर्वेद माध्यन्दिन" : "Tradition: Shukla Yajurveda Madhyandina"}
                     </span>
                     <span className="px-2 py-0.5 rounded-md bg-stone-50 border border-[#E5E5E5]">
-                      शोध क्षेत्र: संहिता भाष्य व स्वर विज्ञान
+                      {isHindi ? "शोध क्षेत्र: संहिता भाष्य व स्वर विज्ञान" : "Research: Samhita Bhashya & Swara Science"}
                     </span>
                     <Link
                       to="/scholars/vidyadhar-sharma"
                       className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FFD21F] hover:bg-[#FFD21F]/90 text-[#111111] font-bold text-[11px] border border-[#FFD21F] hover:border-[#D9A441] transition-all ml-auto"
                     >
-                      <span>विद्वान विवरण देखें (View Dossier)</span>
+                      <span>{isHindi ? "विद्वान विवरण देखें" : "View Scholar Dossier"}</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
@@ -1006,10 +1016,12 @@ export default function BlogDetailPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-serif text-2xl font-bold text-[#111111]">
-                      Related Articles & Insights (संबंधित लेख)
+                      {isHindi ? "संबंधित लेख एवं शोध" : "Related Articles & Insights"}
                     </h3>
                     <p className="text-xs text-[#555555] mt-0.5">
-                      Continue your exploration of {blog.category || "Vedic Wisdom"}
+                      {isHindi
+                        ? `${blog.category || "वैदिक ज्ञान"} का अन्वेषण जारी रखें`
+                        : `Continue your exploration of ${blog.category || "Vedic Wisdom"}`}
                     </p>
                   </div>
 
@@ -1017,7 +1029,7 @@ export default function BlogDetailPage() {
                     to="/library/articles"
                     className="text-xs font-bold text-[#111111] hover:text-[#D9A441] flex items-center gap-1 cursor-pointer"
                   >
-                    <span>View All Articles</span>
+                    <span>{isHindi ? "सभी लेख देखें" : "View All Articles"}</span>
                     <ChevronRight className="w-4 h-4 text-[#D9A441]" />
                   </Link>
                 </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import SEO from "../components/common/SEO.jsx";
 import {
   Home,
@@ -96,6 +97,7 @@ function resolveMantraBanner(mantra) {
 }
 
 export default function MantraStotraDetailPage() {
+  const { isHindi, isEnglish } = useLanguage();
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -231,7 +233,7 @@ export default function MantraStotraDetailPage() {
         <div className="text-center space-y-3">
           <div className="w-12 h-12 border-3 border-[#FFD21F] border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="font-serif text-sm font-bold text-[#111111]">
-            पावन मंत्र एवं स्तोत्र लोड हो रहा है...
+            {isHindi ? "पावन मंत्र एवं स्तोत्र लोड हो रहा है..." : "Loading Sacred Mantra & Stotra..."}
           </p>
         </div>
       </div>
@@ -244,17 +246,19 @@ export default function MantraStotraDetailPage() {
         <div className="bg-white rounded-2xl border border-[#E5E5E5] p-8 text-center max-w-md space-y-4 shadow-sm">
           <BookOpen className="w-12 h-12 text-[#D9A441] mx-auto opacity-60" />
           <h2 className="font-serif text-xl font-bold text-[#111111]">
-            मंत्र या स्तोत्र नहीं मिला (Mantra Not Found)
+            {isHindi ? "मंत्र या स्तोत्र नहीं मिला" : "Mantra Not Found"}
           </h2>
           <p className="text-xs text-[#555555]">
-            संभवतः यह लिंक अमान्य है अथवा इसे किसी अन्य स्थान पर स्थानांतरित किया गया है।
+            {isHindi
+              ? "संभवतः यह लिंक अमान्य है अथवा इसे किसी अन्य स्थान पर स्थानांतरित किया गया है।"
+              : "This link may be invalid or the mantra may have been moved."}
           </p>
           <Link
             to="/library/mantra-stotra"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs shadow-xs cursor-pointer transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>समस्त मंत्र व स्तोत्र संग्रह देखें</span>
+            <span>{isHindi ? "समस्त मंत्र व स्तोत्र संग्रह देखें" : "View All Mantras & Stotras"}</span>
           </Link>
         </div>
       </div>
@@ -343,18 +347,18 @@ export default function MantraStotraDetailPage() {
               className="hover:text-[#D9A441] transition-colors flex items-center gap-1 cursor-pointer flex-shrink-0"
             >
               <Home className="w-3.5 h-3.5" />
-              <span>Library</span>
+              <span>{isHindi ? "होम" : "Home"}</span>
             </Link>
             <span>›</span>
             <Link
               to="/library/mantra-stotra"
               className="hover:text-[#D9A441] transition-colors cursor-pointer flex-shrink-0"
             >
-              Mantra & Stotra
+              {isHindi ? "मंत्र व स्तोत्र" : "Mantra & Stotra"}
             </Link>
             <span>›</span>
             <span className="text-[#111111] font-bold truncate">
-              {mantra.title.hi}
+              {isHindi ? mantra.title.hi : (mantra.title.en || mantra.title.hi)}
             </span>
           </nav>
 
@@ -363,7 +367,7 @@ export default function MantraStotraDetailPage() {
             className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#111111] hover:text-[#D9A441] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>संग्रह सूची (Back to Hub)</span>
+            <span>{isHindi ? "संग्रह सूची" : "Back to Hub"}</span>
           </Link>
         </div>
       </div>
@@ -385,11 +389,11 @@ export default function MantraStotraDetailPage() {
           {/* Metadata Badges */}
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <span className="px-3 py-1 rounded-full bg-[#FFD21F] text-[#111111] font-bold text-[11px] uppercase tracking-wider shadow-xs">
-              {mantra.categoryLabel?.hi || mantra.category}
+              {isHindi ? (mantra.categoryLabel?.hi || mantra.category) : (mantra.categoryLabel?.en || mantra.categoryLabel?.hi || mantra.category)}
             </span>
             <span className="px-3 py-1 rounded-full bg-[#C62828] text-white font-bold text-[11px] flex items-center gap-1 shadow-xs">
               <Flame className="w-3.5 h-3.5 text-white" />
-              {mantra.deity?.hi}
+              {isHindi ? (mantra.deity?.hi || mantra.deity?.en) : (mantra.deity?.en || mantra.deity?.hi)}
             </span>
             <span className="text-white/40">•</span>
             <span className="text-amber-200/90 text-xs flex items-center gap-1">
@@ -398,20 +402,20 @@ export default function MantraStotraDetailPage() {
             </span>
             <span className="text-amber-200/90 text-xs flex items-center gap-1">
               <Eye className="w-3 h-3 text-[#FFD21F]" />
-              {mantra.viewsCount?.toLocaleString()} साधक
+              {mantra.viewsCount?.toLocaleString()} {isHindi ? "साधक" : "practitioners"}
             </span>
           </div>
 
           {/* Titles */}
           <div>
             <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight drop-shadow-md">
-              {mantra.title.hi}
+              {isHindi ? mantra.title.hi : (mantra.title.en || mantra.title.hi)}
             </h1>
             <p className="font-sans text-base sm:text-lg font-medium text-amber-200 mt-2">
-              {mantra.title.en}
+              {isHindi ? mantra.title.en : mantra.title.hi}
             </p>
             <p className="text-xs sm:text-sm text-amber-100/90 max-w-3xl mt-2 leading-relaxed">
-              {mantra.subtitle.hi}
+              {isHindi ? mantra.subtitle.hi : (mantra.subtitle.en || mantra.subtitle.hi)}
             </p>
           </div>
 
@@ -419,7 +423,7 @@ export default function MantraStotraDetailPage() {
           <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/20">
             {/* Font Size Controls */}
             <div className="flex items-center gap-2 text-xs text-white/90">
-              <span className="font-semibold text-white">फॉन्ट (Text Size):</span>
+              <span className="font-semibold text-white">{isHindi ? "फॉन्ट (Text Size):" : "Font Size:"}</span>
               <div className="inline-flex bg-white border border-[#E5E5E5] rounded-xl p-0.5 shadow-2xs">
                 {[
                   { id: "normal", label: "A-" },
@@ -442,10 +446,10 @@ export default function MantraStotraDetailPage() {
             {/* Language Mode Toggle: 3 Mandatory Languages */}
             <div className="flex items-center gap-1.5 bg-white border border-[#E5E5E5] rounded-xl p-0.5 text-xs shadow-2xs">
               {[
-                { id: "both", label: "त्रिविध (All)" },
-                { id: "hi", label: "हिन्दी" },
+                { id: "both", label: isHindi ? "त्रिविध (All)" : "All Views" },
+                { id: "hi", label: isHindi ? "हिन्दी" : "Hindi" },
                 { id: "en", label: "English" },
-                { id: "hinglish", label: "सरल हिंग्लिश" }
+                { id: "hinglish", label: isHindi ? "सरल हिंग्लिश" : "Hinglish" }
               ].map((opt) => (
                 <button
                   key={opt.id}
@@ -472,12 +476,12 @@ export default function MantraStotraDetailPage() {
                 {isPlayingAudio ? (
                   <>
                     <VolumeX className="w-3.5 h-3.5" />
-                    <span>ध्वनि तरंग...</span>
+                    <span>{isHindi ? "ध्वनि तरंग..." : "Playing..."}</span>
                   </>
                 ) : (
                   <>
                     <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
-                    <span>सस्वर पाठ</span>
+                    <span>{isHindi ? "सस्वर पाठ" : "Audio Chanting"}</span>
                   </>
                 )}
               </button>
@@ -489,12 +493,12 @@ export default function MantraStotraDetailPage() {
                 {copied ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-emerald-700">कॉपी हो गया!</span>
+                    <span className="text-emerald-700">{isHindi ? "कॉपी हो गया!" : "Copied!"}</span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5 text-[#D9A441]" />
-                    <span>कॉपी करें</span>
+                    <span>{isHindi ? "कॉपी करें" : "Copy"}</span>
                   </>
                 )}
               </button>
@@ -502,7 +506,7 @@ export default function MantraStotraDetailPage() {
               <button
                 onClick={handleShare}
                 className="p-2 rounded-xl bg-white border border-[#E5E5E5] text-[#111111] hover:bg-stone-50 transition-colors cursor-pointer"
-                title="Share Mantra"
+                title={isHindi ? "मंत्र साझा करें" : "Share Mantra"}
               >
                 <Share2 className="w-4 h-4 text-[#D9A441]" />
               </button>
@@ -526,88 +530,90 @@ export default function MantraStotraDetailPage() {
                     </span>
                     <div>
                       <h2 className="font-serif font-bold text-[#111111] text-base">
-                        मंत्र षडङ्ग विधान (6-Fold Vedic Canon)
+                        {isHindi ? "मंत्र षडङ्ग विधान" : "6-Fold Vedic Canon (Shadanga Vidhana)"}
                       </h2>
                       <p className="text-[11px] text-[#555555] font-sans">
-                        किसी भी वैदिक मंत्र की साधना से पूर्व षडंग विनियोग का स्मरण अनिवार्य है
+                        {isHindi
+                          ? "किसी भी वैदिक मंत्र की साधना से पूर्व षडंग विनियोग का स्मरण अनिवार्य है"
+                          : "Remembering the 6-Fold Vedic Canon is essential prior to mantra practice"}
                       </p>
                     </div>
                   </div>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111]">
-                    षडङ्ग न्यास
+                    {isHindi ? "षडङ्ग न्यास" : "Shadanga Nyasa"}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-2xs">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-[#D9A441] block">
-                      १. ऋषि (Sage / Revealer)
+                      {isHindi ? "१. ऋषि (Sage / Revealer)" : "1. Sage (Rishi)"}
                     </span>
                     <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
-                      {mantra.canonAnga.rishi?.hi}
+                      {isHindi ? mantra.canonAnga.rishi?.hi : (mantra.canonAnga.rishi?.en || mantra.canonAnga.rishi?.hi)}
                     </strong>
                     <span className="text-[10px] text-[#555555] font-sans">
-                      {mantra.canonAnga.rishi?.en}
+                      {isHindi ? mantra.canonAnga.rishi?.en : mantra.canonAnga.rishi?.hi}
                     </span>
                   </div>
 
                   <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#FFD21F] shadow-2xs">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-[#555555] block">
-                      २. छन्द (Metre / Rhythm)
+                      {isHindi ? "२. छन्द (Metre / Rhythm)" : "2. Metre (Chhandas)"}
                     </span>
                     <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
-                      {mantra.canonAnga.chhandas?.hi}
+                      {isHindi ? mantra.canonAnga.chhandas?.hi : (mantra.canonAnga.chhandas?.en || mantra.canonAnga.chhandas?.hi)}
                     </strong>
                     <span className="text-[10px] text-[#555555] font-sans">
-                      {mantra.canonAnga.chhandas?.en}
+                      {isHindi ? mantra.canonAnga.chhandas?.en : mantra.canonAnga.chhandas?.hi}
                     </span>
                   </div>
 
                   <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-2xs">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-[#D9A441] block">
-                      ३. देवता (Presiding Deity)
+                      {isHindi ? "३. देवता (Presiding Deity)" : "3. Deity (Devata)"}
                     </span>
                     <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
-                      {mantra.canonAnga.devata?.hi}
+                      {isHindi ? mantra.canonAnga.devata?.hi : (mantra.canonAnga.devata?.en || mantra.canonAnga.devata?.hi)}
                     </strong>
                     <span className="text-[10px] text-[#555555] font-sans">
-                      {mantra.canonAnga.devata?.en}
+                      {isHindi ? mantra.canonAnga.devata?.en : mantra.canonAnga.devata?.hi}
                     </span>
                   </div>
 
                   <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#FFD21F] shadow-2xs">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-[#555555] block">
-                      ४. बीजम् (Sonic Seed)
+                      {isHindi ? "४. बीजम् (Sonic Seed)" : "4. Sonic Seed (Beejam)"}
                     </span>
                     <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
-                      {mantra.canonAnga.beejam?.hi}
+                      {isHindi ? mantra.canonAnga.beejam?.hi : (mantra.canonAnga.beejam?.en || mantra.canonAnga.beejam?.hi)}
                     </strong>
                     <span className="text-[10px] text-[#555555] font-sans">
-                      {mantra.canonAnga.beejam?.en}
+                      {isHindi ? mantra.canonAnga.beejam?.en : mantra.canonAnga.beejam?.hi}
                     </span>
                   </div>
 
                   <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#D9A441] shadow-2xs">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-[#D9A441] block">
-                      ५. शक्ति (Primal Energy)
+                      {isHindi ? "५. शक्ति (Primal Energy)" : "5. Primal Energy (Shakti)"}
                     </span>
                     <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
-                      {mantra.canonAnga.shakti?.hi}
+                      {isHindi ? mantra.canonAnga.shakti?.hi : (mantra.canonAnga.shakti?.en || mantra.canonAnga.shakti?.hi)}
                     </strong>
                     <span className="text-[10px] text-[#555555] font-sans">
-                      {mantra.canonAnga.shakti?.en}
+                      {isHindi ? mantra.canonAnga.shakti?.en : mantra.canonAnga.shakti?.hi}
                     </span>
                   </div>
 
                   <div className="bg-white p-3.5 rounded-xl border border-[#E5E5E5] border-t-2 border-t-[#FFD21F] shadow-2xs">
                     <span className="text-[10px] uppercase font-bold tracking-wider text-[#555555] block">
-                      ६. कीलकम् (Auspicious Pin)
+                      {isHindi ? "६. कीलकम् (Auspicious Pin)" : "6. Auspicious Pin (Keelakam)"}
                     </span>
                     <strong className="font-devanagari text-sm font-bold text-[#111111] block mt-1">
-                      {mantra.canonAnga.keelakam?.hi}
+                      {isHindi ? mantra.canonAnga.keelakam?.hi : (mantra.canonAnga.keelakam?.en || mantra.canonAnga.keelakam?.hi)}
                     </strong>
                     <span className="text-[10px] text-[#555555] font-sans">
-                      {mantra.canonAnga.keelakam?.en}
+                      {isHindi ? mantra.canonAnga.keelakam?.en : mantra.canonAnga.keelakam?.hi}
                     </span>
                   </div>
                 </div>
@@ -661,7 +667,7 @@ export default function MantraStotraDetailPage() {
                   <div className="space-y-1.5 bg-stone-50 rounded-xl p-4 border border-[#E5E5E5]">
                     <h4 className="font-devanagari font-bold text-[#111111] text-xs sm:text-sm flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-[#FFD21F]" />
-                      <span>विस्तृत हिन्दी भावार्थ (Hindi Purport):</span>
+                      <span>{isHindi ? "विस्तृत हिन्दी भावार्थ (Hindi Purport):" : "Hindi Purport:"}</span>
                     </h4>
                     <p className="font-devanagari text-xs sm:text-sm text-[#111111] leading-relaxed pt-1">
                       {mantra.keyVerse.meaningHi}
@@ -673,7 +679,7 @@ export default function MantraStotraDetailPage() {
                   <div className="space-y-1.5 bg-stone-50 rounded-xl p-4 border border-[#E5E5E5]">
                     <h4 className="font-sans font-bold text-[#111111] text-xs sm:text-sm flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-[#D9A441]" />
-                      <span>English Philosophical Translation:</span>
+                      <span>{isHindi ? "अंग्रेजी अनुवाद (English Philosophical Translation):" : "English Philosophical Translation:"}</span>
                     </h4>
                     <p className="font-sans text-xs sm:text-sm text-[#555555] leading-relaxed pt-1">
                       {mantra.keyVerse.meaningEn}
@@ -685,7 +691,7 @@ export default function MantraStotraDetailPage() {
                   <div className="space-y-1.5 bg-stone-50 rounded-xl p-4 border border-[#E5E5E5]">
                     <h4 className="font-sans font-bold text-[#111111] text-xs sm:text-sm flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-[#C62828]" />
-                      <span>सरल हिंग्लिश व्याख्या (Youth & Global Learner Guide):</span>
+                      <span>{isHindi ? "सरल हिंग्लिश व्याख्या (Youth & Global Learner Guide):" : "Hinglish Guide (Youth & Global Learners):"}</span>
                     </h4>
                     <p className="font-sans text-xs sm:text-sm text-[#111111] leading-relaxed pt-1 font-medium">
                       {HINGLISH_GUIDES[mantra.slug] || mantra.keyVerse.meaningHi}
@@ -701,11 +707,11 @@ export default function MantraStotraDetailPage() {
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-4 h-4 text-[#D9A441]" />
                   <h3 className="font-serif font-bold text-[#111111] text-base">
-                    स्रोत, संस्करण एवं संदर्भ विवरण (Source & Bibliographic Reference)
+                    {isHindi ? "स्रोत, संस्करण एवं संदर्भ विवरण" : "Source & Bibliographic Reference"}
                   </h3>
                 </div>
                 <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] border border-[#FFD21F]">
-                  प्रामाणिक श्रुति / स्मृति
+                  {isHindi ? "प्रामाणिक श्रुति / स्मृति" : "Authentic Shruti / Smriti"}
                 </span>
               </div>
 
@@ -713,34 +719,50 @@ export default function MantraStotraDetailPage() {
                 <table className="w-full text-xs font-devanagari divide-y divide-[#E5E5E5]">
                   <tbody className="divide-y divide-[#E5E5E5]">
                     <tr className="bg-[#F9F9F9]">
-                      <td className="px-3.5 py-2.5 font-bold text-[#555555] w-1/3 shrink-0">मूल ग्रंथ / संहिता</td>
-                      <td className="px-3.5 py-2.5 text-[#111111] font-bold">{mantra.title?.hi} ({mantra.title?.en})</td>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555] w-1/3 shrink-0">{isHindi ? "मूल ग्रंथ / संहिता" : "Scriptural Source"}</td>
+                      <td className="px-3.5 py-2.5 text-[#111111] font-bold">{isHindi ? mantra.title?.hi : mantra.title?.en}</td>
                     </tr>
                     <tr>
-                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">शाखा / परंपरा</td>
-                      <td className="px-3.5 py-2.5 text-[#111111]">{mantra.categoryLabel?.hi || "सनातन वैदिक परंपरा"}</td>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "शाखा / परंपरा" : "Tradition / Shakha"}</td>
+                      <td className="px-3.5 py-2.5 text-[#111111]">
+                        {isHindi
+                          ? (mantra.categoryLabel?.hi || "सनातन वैदिक परंपरा")
+                          : (mantra.categoryLabel?.en || "Sanatana Vedic Tradition")}
+                      </td>
                     </tr>
                     <tr className="bg-[#F9F9F9]">
-                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">सूक्त / श्लोक संदर्भ</td>
-                      <td className="px-3.5 py-2.5 text-[#111111] font-semibold">{mantra.subtitle?.hi}</td>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "सूक्त / श्लोक संदर्भ" : "Verse Reference"}</td>
+                      <td className="px-3.5 py-2.5 text-[#111111] font-semibold">{isHindi ? mantra.subtitle?.hi : (mantra.subtitle?.en || mantra.subtitle?.hi)}</td>
                     </tr>
                     <tr>
-                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">ऋषि (Seer)</td>
-                      <td className="px-3.5 py-2.5 text-[#111111]">{mantra.canonAnga?.rishi?.hi || "वैदिक ऋषि"}</td>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "ऋषि (Seer)" : "Seer (Rishi)"}</td>
+                      <td className="px-3.5 py-2.5 text-[#111111]">
+                        {isHindi
+                          ? (mantra.canonAnga?.rishi?.hi || "वैदिक ऋषि")
+                          : (mantra.canonAnga?.rishi?.en || "Vedic Seer")}
+                      </td>
                     </tr>
                     <tr className="bg-[#F9F9F9]">
-                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">देवता (Presiding Deity)</td>
-                      <td className="px-3.5 py-2.5 text-[#C62828] font-bold">{mantra.canonAnga?.devata?.hi || mantra.deity?.hi}</td>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "देवता (Presiding Deity)" : "Presiding Deity"}</td>
+                      <td className="px-3.5 py-2.5 text-[#C62828] font-bold">
+                        {isHindi
+                          ? (mantra.canonAnga?.devata?.hi || mantra.deity?.hi)
+                          : (mantra.canonAnga?.devata?.en || mantra.deity?.en || mantra.deity?.hi)}
+                      </td>
                     </tr>
                     <tr>
-                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">छन्द (Vedic Metre)</td>
-                      <td className="px-3.5 py-2.5 text-[#D9A441] font-bold">{mantra.canonAnga?.chhandas?.hi || "अनुष्टुप् / त्रिष्टुप्"}</td>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "छन्द (Vedic Metre)" : "Vedic Metre"}</td>
+                      <td className="px-3.5 py-2.5 text-[#D9A441] font-bold">
+                        {isHindi
+                          ? (mantra.canonAnga?.chhandas?.hi || "अनुष्टुप् / त्रिष्टुप्")
+                          : (mantra.canonAnga?.chhandas?.en || "Anushtubh / Trishtubh")}
+                      </td>
                     </tr>
                     <tr className="bg-[#F9F9F9]">
-                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">समीक्षक एवं संपादन</td>
+                      <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "समीक्षक एवं संपादन" : "Editorial Review"}</td>
                       <td className="px-3.5 py-2.5 text-[#111111] font-semibold flex items-center gap-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Veda Library Editorial Board (विद्वत परिषद द्वारा सत्यापित)</span>
+                        <span>{isHindi ? "Veda Library Editorial Board (विद्वत परिषद द्वारा सत्यापित)" : "Veda Library Editorial Board (Scholarly Verified)"}</span>
                       </td>
                     </tr>
                   </tbody>
@@ -757,10 +779,12 @@ export default function MantraStotraDetailPage() {
                   </div>
                   <div>
                     <h3 className="font-serif font-bold text-base text-[#111111]">
-                      साधना जप काउंटर (Sacred Japa Mala Counter)
+                      {isHindi ? "साधना जप काउंटर" : "Sacred Japa Mala Counter"}
                     </h3>
                     <p className="text-xs text-[#555555] font-sans">
-                      मंत्र का श्रद्धापूर्वक पाठ करते हुए यहाँ क्लिक करके जप संकल्प पूर्ण करें
+                      {isHindi
+                        ? "मंत्र का श्रद्धापूर्वक पाठ करते हुए यहाँ क्लिक करके जप संकल्प पूर्ण करें"
+                        : "Click here while chanting with devotion to complete your Japa resolution"}
                     </p>
                   </div>
                 </div>
@@ -769,7 +793,7 @@ export default function MantraStotraDetailPage() {
                   <button
                     type="button"
                     onClick={() => setJapaSound((p) => !p)}
-                    title={japaSound ? "मंदिर घंटी ध्वनि चालू है" : "ध्वनि म्यूट है"}
+                    title={japaSound ? (isHindi ? "मंदिर घंटी ध्वनि चालू है" : "Chime sound enabled") : (isHindi ? "ध्वनि म्यूट है" : "Sound muted")}
                     className="p-2 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-[#111111] hover:bg-stone-50 transition-colors cursor-pointer"
                   >
                     {japaSound ? <Volume2 className="w-4 h-4 text-[#D9A441]" /> : <VolumeX className="w-4 h-4 text-[#555555]" />}
@@ -778,11 +802,11 @@ export default function MantraStotraDetailPage() {
                     <button
                       type="button"
                       onClick={() => setJapaCount(0)}
-                      title="माला रीसेट करें"
+                      title={isHindi ? "माला रीसेट करें" : "Reset Rosary"}
                       className="px-3 py-1.5 rounded-xl border border-[#E5E5E5] hover:border-[#D9A441] bg-white text-xs font-bold text-[#111111] hover:bg-stone-50 flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
-                      <span>रीसेट</span>
+                      <span>{isHindi ? "रीसेट" : "Reset"}</span>
                     </button>
                   )}
                 </div>
@@ -791,7 +815,7 @@ export default function MantraStotraDetailPage() {
               {/* Target presets */}
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-xs font-bold text-[#555555]">संकल्प लक्ष्य:</span>
+                  <span className="text-xs font-bold text-[#555555]">{isHindi ? "संकल्प लक्ष्य:" : "Target:"}</span>
                   {[11, 21, 54, 108].map((target) => (
                     <button
                       key={target}
@@ -806,7 +830,7 @@ export default function MantraStotraDetailPage() {
                           : "bg-white text-[#555555] border border-[#E5E5E5] hover:border-[#D9A441]"
                       }`}
                     >
-                      {target} जप
+                      {target} {isHindi ? "जप" : "chants"}
                     </button>
                   ))}
                 </div>
@@ -815,11 +839,11 @@ export default function MantraStotraDetailPage() {
                   {malasDone > 0 && (
                     <span className="px-3 py-1 rounded-xl bg-stone-50 border border-[#E5E5E5] text-[#111111] flex items-center gap-1">
                       <Award className="w-3.5 h-3.5 text-[#D9A441]" />
-                      <span>पूर्ण माला: <strong className="text-[#D9A441]">{malasDone}</strong></span>
+                      <span>{isHindi ? "पूर्ण माला: " : "Completed Malas: "}<strong className="text-[#D9A441]">{malasDone}</strong></span>
                     </span>
                   )}
                   <span className="px-3 py-1 rounded-xl bg-stone-50 border border-[#E5E5E5] text-[#111111]">
-                    प्रगति: <strong className="text-[#C62828]">{Math.min(100, Math.round((japaCount / japaTarget) * 100))}%</strong>
+                    {isHindi ? "प्रगति: " : "Progress: "}<strong className="text-[#C62828]">{Math.min(100, Math.round((japaCount / japaTarget) * 100))}%</strong>
                   </span>
                 </div>
               </div>
@@ -864,11 +888,15 @@ export default function MantraStotraDetailPage() {
                     className="px-8 py-3.5 rounded-2xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-serif text-base font-bold shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer border border-[#D9A441]"
                   >
                     <Sparkles className="w-4 h-4 text-[#C62828]" />
-                    <span>॥ ॐ जपें (+1 Chant) ॥</span>
+                    <span>{isHindi ? "॥ ॐ जपें (+१) ॥" : "॥ Chant Om (+1) ॥"}</span>
                   </button>
 
                   <p className="text-xs text-[#555555] font-devanagari">
-                    टैप करें अथवा कीबोर्ड का <strong>Spacebar</strong> दबाएँ
+                    {isHindi ? (
+                      <>टैप करें अथवा कीबोर्ड का <strong>Spacebar</strong> दबाएँ</>
+                    ) : (
+                      <>Tap bead or press <strong>Spacebar</strong></>
+                    )}
                   </p>
                 </div>
               </div>
@@ -887,42 +915,42 @@ export default function MantraStotraDetailPage() {
                 <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
                   <h3 className="font-serif font-bold text-[#111111] text-base flex items-center gap-2">
                     <Flame className="w-4 h-4 text-[#D9A441]" />
-                    <span>शास्त्रीय साधना विधान (Sadhana Vidhi & Rules)</span>
+                    <span>{isHindi ? "शास्त्रीय साधना विधान" : "Prescribed Sadhana Vidhi & Rules"}</span>
                   </h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111]">
-                    शास्त्र सम्मत
+                    {isHindi ? "शास्त्र सम्मत" : "Scripturally Prescribed"}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
                   <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441]">
-                    <strong className="text-[#111111] font-bold block">१. शुभ मुहूर्त (Auspicious Timing):</strong>
-                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.muhurat?.hi}</p>
-                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.muhurat?.en}</p>
+                    <strong className="text-[#111111] font-bold block">{isHindi ? "१. शुभ मुहूर्त (Auspicious Timing):" : "1. Auspicious Timing (Muhurat):"}</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{isHindi ? mantra.vidhi.muhurat?.hi : (mantra.vidhi.muhurat?.en || mantra.vidhi.muhurat?.hi)}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{isHindi ? mantra.vidhi.muhurat?.en : mantra.vidhi.muhurat?.hi}</p>
                   </div>
 
                   <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#FFD21F]">
-                    <strong className="text-[#111111] font-bold block">२. शुभ दिशा (Direction):</strong>
-                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.direction?.hi}</p>
-                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.direction?.en}</p>
+                    <strong className="text-[#111111] font-bold block">{isHindi ? "२. शुभ दिशा (Direction):" : "2. Auspicious Direction (Disha):"}</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{isHindi ? mantra.vidhi.direction?.hi : (mantra.vidhi.direction?.en || mantra.vidhi.direction?.hi)}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{isHindi ? mantra.vidhi.direction?.en : mantra.vidhi.direction?.hi}</p>
                   </div>
 
                   <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441]">
-                    <strong className="text-[#111111] font-bold block">३. पवित्र आसन (Sacred Asana):</strong>
-                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.asana?.hi}</p>
-                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.asana?.en}</p>
+                    <strong className="text-[#111111] font-bold block">{isHindi ? "३. पवित्र आसन (Sacred Asana):" : "3. Sacred Asana (Seat):"}</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{isHindi ? mantra.vidhi.asana?.hi : (mantra.vidhi.asana?.en || mantra.vidhi.asana?.hi)}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{isHindi ? mantra.vidhi.asana?.en : mantra.vidhi.asana?.hi}</p>
                   </div>
 
                   <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#FFD21F]">
-                    <strong className="text-[#111111] font-bold block">४. जप माला (Chanting Beads):</strong>
-                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.mala?.hi}</p>
-                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.mala?.en}</p>
+                    <strong className="text-[#111111] font-bold block">{isHindi ? "४. जप माला (Chanting Beads):" : "4. Rosary (Japa Mala):"}</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{isHindi ? mantra.vidhi.mala?.hi : (mantra.vidhi.mala?.en || mantra.vidhi.mala?.hi)}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{isHindi ? mantra.vidhi.mala?.en : mantra.vidhi.mala?.hi}</p>
                   </div>
 
                   <div className="p-3 rounded-xl bg-white border border-[#E5E5E5] border-t-2 border-t-[#D9A441] sm:col-span-2">
-                    <strong className="text-[#111111] font-bold block">५. अनुष्ठान जप संख्या (Prescribed Japa Count):</strong>
-                    <p className="text-[#111111] font-devanagari mt-0.5">{mantra.vidhi.sankhya?.hi}</p>
-                    <p className="text-[#555555] font-sans text-[11px]">{mantra.vidhi.sankhya?.en}</p>
+                    <strong className="text-[#111111] font-bold block">{isHindi ? "५. अनुष्ठान जप संख्या (Prescribed Japa Count):" : "5. Prescribed Count (Japa Sankhya):"}</strong>
+                    <p className="text-[#111111] font-devanagari mt-0.5">{isHindi ? mantra.vidhi.sankhya?.hi : (mantra.vidhi.sankhya?.en || mantra.vidhi.sankhya?.hi)}</p>
+                    <p className="text-[#555555] font-sans text-[11px]">{isHindi ? mantra.vidhi.sankhya?.en : mantra.vidhi.sankhya?.hi}</p>
                   </div>
                 </div>
               </section>
@@ -934,10 +962,10 @@ export default function MantraStotraDetailPage() {
                 <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
                   <h3 className="font-serif font-bold text-[#111111] text-base flex items-center gap-2">
                     <Award className="w-4 h-4 text-[#D9A441]" />
-                    <span>फलश्रुति एवं आध्यात्मिक लाभ (Spiritual & Karmic Benefits)</span>
+                    <span>{isHindi ? "फलश्रुति एवं आध्यात्मिक लाभ" : "Spiritual & Karmic Benefits (Falashruti)"}</span>
                   </h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111]">
-                    फलश्रुति
+                    {isHindi ? "फलश्रुति" : "Benefits"}
                   </span>
                 </div>
 
@@ -948,13 +976,13 @@ export default function MantraStotraDetailPage() {
                       className="p-3.5 rounded-xl bg-stone-50 border border-[#E5E5E5] space-y-1"
                     >
                       <span className="inline-block text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md bg-[#FFD21F] text-[#111111]">
-                        {b.category?.hi || b.category?.en}
+                        {isHindi ? (b.category?.hi || b.category?.en) : (b.category?.en || b.category?.hi)}
                       </span>
                       <p className="font-devanagari text-xs sm:text-sm text-[#111111] leading-relaxed font-semibold">
-                        {b.text?.hi}
+                        {isHindi ? b.text?.hi : (b.text?.en || b.text?.hi)}
                       </p>
                       <p className="font-sans text-xs text-[#555555] leading-relaxed">
-                        {b.text?.en}
+                        {isHindi ? b.text?.en : b.text?.hi}
                       </p>
                     </div>
                   ))}
@@ -968,13 +996,13 @@ export default function MantraStotraDetailPage() {
                 <div className="flex items-center justify-between">
                   <h3 className="font-serif font-bold text-[#111111] text-base flex items-center gap-1.5">
                     <BookOpen className="w-4 h-4 text-[#D9A441]" />
-                    <span>संबंधित मंत्र एवं स्तोत्र (Related Chants)</span>
+                    <span>{isHindi ? "संबंधित मंत्र एवं स्तोत्र" : "Related Mantras & Stotras"}</span>
                   </h3>
                   <Link
                     to="/library/mantra-stotra"
                     className="text-xs font-bold text-[#111111] hover:text-[#D9A441] flex items-center gap-1 transition-colors"
                   >
-                    <span>सम्पूर्ण संग्रह</span>
+                    <span>{isHindi ? "सम्पूर्ण संग्रह" : "View All"}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -988,18 +1016,18 @@ export default function MantraStotraDetailPage() {
                     >
                       <div className="space-y-2">
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] inline-block">
-                          {rel.deity?.hi}
+                          {isHindi ? (rel.deity?.hi || rel.deity?.en) : (rel.deity?.en || rel.deity?.hi)}
                         </span>
                         <h4 className="font-serif text-sm font-bold text-[#111111] group-hover:text-[#D9A441] line-clamp-2 leading-snug transition-colors">
-                          {rel.title.hi}
+                          {isHindi ? rel.title.hi : (rel.title.en || rel.title.hi)}
                         </h4>
                         <p className="text-[11px] text-[#555555] line-clamp-2">
-                          {rel.subtitle.hi}
+                          {isHindi ? rel.subtitle.hi : (rel.subtitle.en || rel.subtitle.hi)}
                         </p>
                       </div>
 
                       <div className="pt-3 border-t border-[#E5E5E5] flex items-center justify-between text-[11px] text-[#111111] group-hover:text-[#D9A441] font-bold mt-3 transition-colors">
-                        <span>पाठ करें</span>
+                        <span>{isHindi ? "पाठ करें" : "Read Chant"}</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </Link>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 import {
   Brain,
   Layers,
@@ -21,6 +22,7 @@ import {
 import { MUKTIKA_CANON_SUMMARY } from "../../data/upanishadData.js";
 
 export default function DarshanaTaxonomyView({ onSelectReaderText }) {
+  const { isHindi } = useLanguage();
   // Sub-sections: 'astika_pairs', 'vedanta_subschools', 'nastika_systems', 'muktika_tree'
   const [activeSubTab, setActiveSubTab] = useState("astika_pairs");
   const [expandedSchoolId, setExpandedSchoolId] = useState("nyaya");

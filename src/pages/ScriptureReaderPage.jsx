@@ -111,7 +111,7 @@ export default function ScriptureReaderPage({ onOpenSearch }) {
       </div>
 
       {/* 2. Hero Section with banner-veda-hero-clean.jpg */}
-      <section className="relative overflow-hidden bg-[#111111] text-white py-10 sm:py-14 px-4 sm:px-6 lg:px-8 border-b border-[#222222]">
+      <section className="relative overflow-hidden bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b border-[#222222]">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerVedaHero}

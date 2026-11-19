@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useLanguage } from "../../context/LanguageContext.jsx";
 import SEO from "../common/SEO.jsx";
 import {
   Home,
@@ -78,6 +79,7 @@ const THEMATIC_BANNERS = {
 };
 
 export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge }) {
+  const { isHindi, isEnglish } = useLanguage();
   const { category = "puja", subject = "shaiva", article = "rudrabhisheka" } = useParams();
   const navigate = useNavigate();
 
@@ -91,13 +93,17 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
   const [isTocDrawerOpen, setIsTocDrawerOpen] = useState(false);
   const [isWideReadingMode, setIsWideReadingMode] = useState(false);
   const [fontSize, setFontSize] = useState("md"); // "sm", "md", "lg"
-  const [selectedLanguage, setSelectedLanguage] = useState("hindi"); // "hindi", "english", "hinglish"
+  const [selectedLanguage, setSelectedLanguage] = useState(() => (isHindi ? "hindi" : "english"));
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [adhyayaCategory, setAdhyayaCategory] = useState("all");
   const [adhyayaSearch, setAdhyayaSearch] = useState("");
   const [expandedAdhyayaNum, setExpandedAdhyayaNum] = useState(null);
   const [adhyayaViewLayout, setAdhyayaViewLayout] = useState("grid"); // "grid" | "list"
+
+  useEffect(() => {
+    setSelectedLanguage(isHindi ? "hindi" : "english");
+  }, [isHindi]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -538,21 +544,21 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
               className="hover:text-[#111111] transition-colors flex items-center gap-1 cursor-pointer"
             >
               <Home className="w-3.5 h-3.5 text-[#D9A441]" />
-              <span>Home</span>
+              <span>{isHindi ? "होम" : "Home"}</span>
             </Link>
             <span className="text-[#D9A441]">›</span>
             <Link
               to="/library"
               className="hover:text-[#111111] transition-colors cursor-pointer"
             >
-              Veda Library
+              {isHindi ? "वेद लाइब्रेरी" : "Veda Library"}
             </Link>
             <span className="text-[#D9A441]">›</span>
             <Link
               to={`/library/${effectiveCategory}`}
               className="hover:text-[#111111] transition-colors cursor-pointer"
             >
-              {effectiveCatData.name || "Category"}
+              {isHindi ? effectiveCatData.name : (effectiveCatData.enName || effectiveCatData.name)}
             </Link>
             {effectiveSubject && (
               <>

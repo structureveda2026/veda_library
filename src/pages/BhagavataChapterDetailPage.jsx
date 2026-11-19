@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { EKADASH_SKANDHA_CHAPTERS } from "../data/bhagavataEkadashaData.js";
 import bannerTempleGhat from "../assets/images/library/banners/banner-temple-ghat.jpg";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const LABELS = {
   hindi: {
@@ -134,15 +135,33 @@ const DEFAULT_VERSE = {
 export default function BhagavataChapterDetailPage() {
   const { chapter: chapterParam } = useParams();
   const navigate = useNavigate();
-  const [language, setLanguage] = useState("hindi");
+  const { isHindi, setLanguage: setGlobalLang } = useLanguage();
+  const [localLangOverride, setLocalLangOverride] = useState(null);
+
+  useEffect(() => {
+    setLocalLangOverride(null);
+  }, [isHindi]);
+
+  const language = localLangOverride || (isHindi ? "hindi" : "english");
   const [fontSize, setFontSize] = useState("default"); // "small", "default", "large"
   const [copied, setCopied] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   const chapterNumber = Number(chapterParam);
   const chapter = EKADASH_SKANDHA_CHAPTERS[chapterNumber - 1];
-  const labels = LABELS[language];
+  const labels = LABELS[isHindi ? "hindi" : "english"];
   const indexPath = "/library/purana/shrimad-bhagavata/skandha-11";
+
+  const handleLangSelect = (option) => {
+    if (option === "hinglish") {
+      setLocalLangOverride("hinglish");
+    } else {
+      setLocalLangOverride(null);
+      if (setGlobalLang) {
+        setGlobalLang(option === "english" ? "en" : "hi");
+      }
+    }
+  };
 
   const verseData = BHAGAVATA_CANONICAL_VERSES[chapterNumber] || DEFAULT_VERSE;
 
@@ -176,10 +195,10 @@ export default function BhagavataChapterDetailPage() {
 
   if (!chapter || chapter.number !== chapterNumber) {
     return (
-      <main className="min-h-[70vh] mx-auto max-w-4xl px-4 py-12 bg-white text-center space-y-4">
+      <main className="min-h-[70vh] mx-auto max-w-4xl px-4 py-8 bg-white text-center space-y-4">
         <BookOpen className="w-12 h-12 text-[#D9A441] mx-auto opacity-70" />
         <h1 className="font-serif text-2xl font-bold text-[#111111]">
-          अध्याय उपलब्ध नहीं है (Chapter not found)
+          {isHindi ? "अध्याय उपलब्ध नहीं है" : "Chapter Not Found"}
         </h1>
         <Link
           to={indexPath}
@@ -222,10 +241,10 @@ export default function BhagavataChapterDetailPage() {
           </Link>
           <span>›</span>
           <Link to={indexPath} className="hover:text-[#D9A441] transition-colors">
-            स्कन्ध ११
+            {isHindi ? "स्कन्ध ११" : "Canto 11"}
           </Link>
           <span>›</span>
-          <span className="font-semibold text-[#111111]">अध्याय {chapterNumber}</span>
+          <span className="font-semibold text-[#111111]">{isHindi ? `अध्याय ${chapterNumber}` : `Chapter ${chapterNumber}`}</span>
         </div>
       </div>
 
@@ -248,10 +267,10 @@ export default function BhagavataChapterDetailPage() {
               <span>{labels.section}</span>
             </span>
             <span className="px-3 py-1 rounded-full bg-white/15 border border-white/30 text-amber-200 text-xs font-semibold backdrop-blur-xs">
-              एकादश स्कन्ध • मुक्ति लीला
+              {isHindi ? "एकादश स्कन्ध • मुक्ति लीला" : "Canto 11 • Path to Liberation"}
             </span>
             <span className="px-3 py-1 rounded-full bg-[#C62828] text-white text-xs font-bold shadow-xs">
-              अध्याय {chapterNumber} / ३१
+              {isHindi ? `अध्याय ${chapterNumber} / ३१` : `Chapter ${chapterNumber} / 31`}
             </span>
           </div>
 
@@ -281,7 +300,7 @@ export default function BhagavataChapterDetailPage() {
             <div className="inline-flex items-center gap-1 rounded-xl border border-[#E5E5E5] bg-white p-0.5 text-xs font-semibold shadow-2xs">
               <span className="px-2 text-[#555555] font-bold flex items-center gap-1">
                 <Type className="w-3 h-3 text-[#D9A441]" />
-                <span>आकार:</span>
+                <span>{isHindi ? "आकार:" : "Size:"}</span>
               </span>
               {[
                 { id: "small", label: "A-" },
@@ -309,7 +328,7 @@ export default function BhagavataChapterDetailPage() {
                 <button
                   key={option}
                   type="button"
-                  onClick={() => setLanguage(option)}
+                  onClick={() => handleLangSelect(option)}
                   aria-pressed={language === option}
                   className={`rounded-lg px-3 py-1 transition-colors cursor-pointer font-bold ${
                     language === option
@@ -329,7 +348,7 @@ export default function BhagavataChapterDetailPage() {
         </div>
 
         {/* 3.1: Sacred Sanskrit Shloka Sanctuary Card */}
-        <section className="relative p-6 sm:p-10 rounded-3xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] bg-white shadow-xs space-y-6">
+        <section className="relative p-5 sm:p-6 rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] bg-white shadow-xs space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E5E5E5]">
             <div className="flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold text-xs shadow-2xs">
@@ -350,7 +369,7 @@ export default function BhagavataChapterDetailPage() {
               <button
                 type="button"
                 onClick={handleToggleAudio}
-                title="सस्वर पाठ सुनें"
+                title={isHindi ? "सस्वर पाठ सुनें" : "Listen to recitation"}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                   isPlayingAudio
                     ? "bg-[#FFD21F] text-[#111111] shadow-xs animate-pulse"
@@ -360,12 +379,12 @@ export default function BhagavataChapterDetailPage() {
                 {isPlayingAudio ? (
                   <>
                     <VolumeX className="w-3.5 h-3.5" />
-                    <span>ध्वनि तरंग...</span>
+                    <span>{isHindi ? "ध्वनि तरंग..." : "Playing..."}</span>
                   </>
                 ) : (
                   <>
                     <Volume2 className="w-3.5 h-3.5 text-[#D9A441]" />
-                    <span>सस्वर पाठ</span>
+                    <span>{isHindi ? "सस्वर पाठ" : "Recitation"}</span>
                   </>
                 )}
               </button>
@@ -374,18 +393,18 @@ export default function BhagavataChapterDetailPage() {
               <button
                 type="button"
                 onClick={handleCopyVerse}
-                title="श्लोक कॉपी करें"
+                title={isHindi ? "श्लोक कॉपी करें" : "Copy verse"}
                 className="px-3 py-1.5 rounded-xl bg-white hover:bg-stone-50 text-xs font-bold text-[#111111] border border-[#E5E5E5] transition-colors flex items-center gap-1 cursor-pointer"
               >
                 {copied ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-emerald-700">कॉपी हुआ!</span>
+                    <span className="text-emerald-700">{isHindi ? "कॉपी हुआ!" : "Copied!"}</span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5 text-[#D9A441]" />
-                    <span>कॉपी</span>
+                    <span>{isHindi ? "कॉपी" : "Copy"}</span>
                   </>
                 )}
               </button>
@@ -445,11 +464,11 @@ export default function BhagavataChapterDetailPage() {
             <div className="flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-[#D9A441]" />
               <h3 className="font-serif font-bold text-[#111111] text-base sm:text-lg">
-                स्रोत, संस्करण एवं संदर्भ विवरण (Source & Bibliographic Citation)
+                {isHindi ? "स्रोत, संस्करण एवं संदर्भ विवरण" : "Source & Bibliographic Citation"}
               </h3>
             </div>
             <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFD21F] text-[#111111] border border-[#FFD21F]">
-              महापुराण प्रामाण्य
+              {isHindi ? "महापुराण प्रामाण्य" : "Mahapurana Canonical Evidence"}
             </span>
           </div>
 
@@ -457,34 +476,34 @@ export default function BhagavataChapterDetailPage() {
             <table className="w-full text-xs font-devanagari divide-y divide-[#E5E5E5]">
               <tbody className="divide-y divide-[#E5E5E5]">
                 <tr className="bg-[#F9F9F9]">
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555] w-1/3 shrink-0">मूल ग्रंथ</td>
-                  <td className="px-3.5 py-2.5 text-[#111111] font-bold">श्रीमद्भागवत महापुराण</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555] w-1/3 shrink-0">{isHindi ? "मूल ग्रंथ" : "Scriptural Corpus"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111] font-bold">{isHindi ? "श्रीमद्भागवत महापुराण" : "Srimad Bhagavata Mahapurana"}</td>
                 </tr>
                 <tr>
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">स्कन्ध / प्रकरण</td>
-                  <td className="px-3.5 py-2.5 text-[#111111]">एकादश स्कन्ध (मुक्ति लीला) • अध्याय {chapterNumber}</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "स्कन्ध / प्रकरण" : "Canto / Section"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111]">{isHindi ? `एकादश स्कन्ध (मुक्ति लीला) • अध्याय ${chapterNumber}` : `11th Canto (Mukti-Lila) • Chapter ${chapterNumber}`}</td>
                 </tr>
                 <tr className="bg-[#F9F9F9]">
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">अध्याय का नाम</td>
-                  <td className="px-3.5 py-2.5 text-[#111111] font-semibold">{chapter.titleHi} ({chapter.title})</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "अध्याय का नाम" : "Chapter Title"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111] font-semibold">{isHindi ? `${chapter.titleHi} (${chapter.title})` : `${chapter.title} (${chapter.titleHi})`}</td>
                 </tr>
                 <tr>
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">वक्ता (Narrator)</td>
-                  <td className="px-3.5 py-2.5 text-[#111111]">श्रीशुकदेव जी महाराज / भगवान श्रीकृष्ण</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "वक्ता" : "Narrator"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111]">{isHindi ? "श्रीशुकदेव जी महाराज / भगवान श्रीकृष्ण" : "Sri Sukadeva Gosvami / Lord Sri Krishna"}</td>
                 </tr>
                 <tr className="bg-[#F9F9F9]">
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">श्रोता (Listener)</td>
-                  <td className="px-3.5 py-2.5 text-[#111111]">महाराज परीक्षित / उद्धव जी</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "श्रोता" : "Listener"}</td>
+                  <td className="px-3.5 py-2.5 text-[#111111]">{isHindi ? "महाराज परीक्षित / उद्धव जी" : "Maharaja Parikshit / Uddhava"}</td>
                 </tr>
                 <tr>
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">छन्द (Metre)</td>
-                  <td className="px-3.5 py-2.5 text-[#D9A441] font-bold">अनुष्टुप् / त्रिष्टुप्</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "छन्द" : "Metre"}</td>
+                  <td className="px-3.5 py-2.5 text-[#D9A441] font-bold">{isHindi ? "अनुष्टुप् / त्रिष्टुप्" : "Anushtubh / Trishtubh"}</td>
                 </tr>
                 <tr className="bg-[#F9F9F9]">
-                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">समीक्षक एवं संपादन</td>
+                  <td className="px-3.5 py-2.5 font-bold text-[#555555]">{isHindi ? "समीक्षक एवं संपादन" : "Editorial Review"}</td>
                   <td className="px-3.5 py-2.5 text-[#111111] font-semibold flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>Veda Library Editorial Board (विद्वत परिषद द्वारा सत्यापित)</span>
+                    <span>{isHindi ? "वेद पुस्तकालय विद्वत परिषद द्वारा सत्यापित" : "Veda Library Scholarly Verified"}</span>
                   </td>
                 </tr>
               </tbody>
@@ -500,17 +519,17 @@ export default function BhagavataChapterDetailPage() {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-white hover:bg-stone-50 text-[#111111] border border-[#E5E5E5] hover:border-[#D9A441] transition-all"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span>{labels.previous} (अध्याय {chapterNumber - 1})</span>
+              <span>{labels.previous} ({isHindi ? `अध्याय ${chapterNumber - 1}` : `Chapter ${chapterNumber - 1}`})</span>
             </Link>
           ) : (
-            <div className="text-xs opacity-50 italic">प्रथम अध्याय</div>
+            <div className="text-xs opacity-50 italic">{isHindi ? "प्रथम अध्याय" : "First Chapter"}</div>
           )}
 
           <Link
             to={indexPath}
             className="text-xs font-bold text-[#111111] hover:text-[#D9A441] transition-colors"
           >
-            स्कन्ध ११ सूची (31 अध्याय)
+            {isHindi ? "स्कन्ध ११ सूची (31 अध्याय)" : "Canto 11 Index (31 Chapters)"}
           </Link>
 
           {chapterNumber < EKADASH_SKANDHA_CHAPTERS.length ? (
@@ -518,11 +537,11 @@ export default function BhagavataChapterDetailPage() {
               to={`${indexPath}/${chapterNumber + 1}`}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] border border-[#FFD21F] shadow-xs transition-all"
             >
-              <span>{labels.next} (अध्याय {chapterNumber + 1})</span>
+              <span>{labels.next} ({isHindi ? `अध्याय ${chapterNumber + 1}` : `Chapter ${chapterNumber + 1}`})</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           ) : (
-            <div className="text-xs opacity-50 italic">अंतिम अध्याय</div>
+            <div className="text-xs opacity-50 italic">{isHindi ? "अंतिम अध्याय" : "Final Chapter"}</div>
           )}
         </nav>
       </main>

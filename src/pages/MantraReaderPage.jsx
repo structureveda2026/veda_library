@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import SEO from "../components/common/SEO.jsx";
 import {
   Home,
@@ -233,6 +234,7 @@ function playTempleChime(freq = 528, count = 1) {
 }
 
 export default function MantraReaderPage({ onOpenSearch }) {
+  const { isHindi, isEnglish } = useLanguage();
   const { mantraId = "rv-1-1-1", category = "veda", subject = "rigveda" } = useParams();
   const navigate = useNavigate();
 
@@ -249,8 +251,12 @@ export default function MantraReaderPage({ onOpenSearch }) {
   const [fontFamily, setFontFamily] = useState(() => {
     return localStorage.getItem("veda_reader_font_family") || "serif"; // 'serif', 'sans'
   });
-  const [activeTab, setActiveTab] = useState("hindi"); // 'hindi', 'english', 'hinglish', 'anvaya', 'shastric'
+  const [activeTab, setActiveTab] = useState(() => (isHindi ? "hindi" : "english"));
   const [viewAllTranslations, setViewAllTranslations] = useState(false);
+
+  useEffect(() => {
+    setActiveTab(isHindi ? "hindi" : "english");
+  }, [isHindi]);
   const [showPadapatha, setShowPadapatha] = useState(true);
   const [padapathaViewMode, setPadapathaViewMode] = useState("grid"); // 'grid' | 'table'
   const [padapathaFilter, setPadapathaFilter] = useState("");
@@ -821,15 +827,15 @@ ${mantra.hinglishTranslation || ""}
             <div className="flex items-center gap-1.5 flex-wrap font-medium">
               <Link to="/" className="hover:text-amber-700 transition-colors flex items-center gap-1">
                 <Home className="w-3.5 h-3.5" />
-                <span>Home</span>
+                <span>{isHindi ? "होम" : "Home"}</span>
               </Link>
               <span className="opacity-50">›</span>
               <Link to="/library" className="hover:text-amber-700 transition-colors">
-                Library
+                {isHindi ? "लाइब्रेरी" : "Library"}
               </Link>
               <span className="opacity-50">›</span>
               <Link to="/library/veda" className="hover:text-amber-700 transition-colors">
-                वेद
+                {isHindi ? "वेद" : "Vedas"}
               </Link>
               <span className="opacity-50">›</span>
               <Link
@@ -844,7 +850,7 @@ ${mantra.hinglishTranslation || ""}
               <span className="truncate max-w-[160px] font-semibold">{mantra.textName}</span>
               <span className="opacity-50">›</span>
               <span className={`px-2 py-0.5 rounded-full font-bold border ${themeObj.badge}`}>
-                मंत्र {mantra.mantraNumber}
+                {isHindi ? `मंत्र ${mantra.mantraNumber}` : `Mantra ${mantra.mantraNumber}`}
               </span>
             </div>
 
@@ -855,7 +861,7 @@ ${mantra.hinglishTranslation || ""}
               className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-xl transition-colors opacity-85 hover:opacity-100 cursor-pointer"
             >
               <Heart className={`w-3.5 h-3.5 ${favoritesList.length > 0 ? "fill-amber-600 text-amber-600" : ""}`} />
-              <span>पसंदीदा ({favoritesList.length})</span>
+              <span>{isHindi ? `पसंदीदा (${favoritesList.length})` : `Favorites (${favoritesList.length})`}</span>
             </button>
           </div>
         </div>
@@ -879,7 +885,7 @@ ${mantra.hinglishTranslation || ""}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${themeObj.buttonSecondary}`}
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span>सूची (Back)</span>
+                <span>{isHindi ? "सूची" : "Back"}</span>
               </button>
 
               <span className={`text-[11px] font-bold px-2.5 py-1 rounded-lg ${themeObj.accentBg}`}>
@@ -887,7 +893,7 @@ ${mantra.hinglishTranslation || ""}
               </span>
 
               <span className="text-xs font-semibold opacity-90">
-                {mantra.sectionRef} • ऋचा {mantra.mantraNumber}
+                {mantra.sectionRef} • {isHindi ? `ऋचा ${mantra.mantraNumber}` : `Verse ${mantra.mantraNumber}`}
               </span>
             </div>
 
@@ -897,7 +903,7 @@ ${mantra.hinglishTranslation || ""}
                 type="button"
                 disabled={!mantra.previousId}
                 onClick={() => mantra.previousId && navigate(`/library/mantra/${mantra.previousId}`)}
-                title="पिछला मंत्र (कीबोर्ड: ←)"
+                title={isHindi ? "पिछला मंत्र (कीबोर्ड: ←)" : "Previous Mantra (←)"}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                   !mantra.previousId
                     ? "opacity-35 cursor-not-allowed bg-stone-100 text-stone-400 border-stone-200"
@@ -905,21 +911,21 @@ ${mantra.hinglishTranslation || ""}
                 }`}
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
-                <span>पिछला</span>
+                <span>{isHindi ? "पिछला" : "Previous"}</span>
               </button>
 
               <button
                 type="button"
                 disabled={!mantra.nextId}
                 onClick={() => mantra.nextId && navigate(`/library/mantra/${mantra.nextId}`)}
-                title="अगला मंत्र (कीबोर्ड: →)"
+                title={isHindi ? "अगला मंत्र (कीबोर्ड: →)" : "Next Mantra (→)"}
                 className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                   !mantra.nextId
                     ? "opacity-35 cursor-not-allowed bg-stone-100 text-stone-400 border-stone-200"
                     : themeObj.buttonPrimary
                 }`}
               >
-                <span>अगला</span>
+                <span>{isHindi ? "अगला" : "Next"}</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
 
@@ -927,7 +933,7 @@ ${mantra.hinglishTranslation || ""}
               <button
                 type="button"
                 onClick={handleToggleFavorite}
-                title={isBookmarked ? "पसंदीदा से हटाएं" : "पसंदीदा में सहेजें"}
+                title={isBookmarked ? (isHindi ? "पसंदीदा से हटाएं" : "Remove from favorites") : (isHindi ? "पसंदीदा में सहेजें" : "Save to favorites")}
                 className={`p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                   isBookmarked
                     ? "bg-amber-600 text-white border-amber-700 shadow-xs"
@@ -939,14 +945,14 @@ ${mantra.hinglishTranslation || ""}
                 ) : (
                   <Bookmark className="w-4 h-4" />
                 )}
-                <span className="hidden sm:inline">{isBookmarked ? "सहेजा गया" : "सहेजें"}</span>
+                <span className="hidden sm:inline">{isBookmarked ? (isHindi ? "सहेजा गया" : "Saved") : (isHindi ? "सहेजें" : "Save")}</span>
               </button>
 
               {/* Focus Mode Toggle */}
               <button
                 type="button"
                 onClick={() => setFocusMode((p) => !p)}
-                title={focusMode ? "विस्तृत दृश्य में लौटें (F)" : "ध्यान मोड - एकाग्र पठन (F)"}
+                title={focusMode ? (isHindi ? "विस्तृत दृश्य में लौटें (F)" : "Exit Focus Mode (F)") : (isHindi ? "ध्यान मोड - एकाग्र पठन (F)" : "Focus Mode (F)")}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                   focusMode
                     ? "bg-amber-500 text-stone-950 border-amber-400 ring-2 ring-amber-400"
@@ -954,7 +960,7 @@ ${mantra.hinglishTranslation || ""}
                 }`}
               >
                 {focusMode ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
-                <span className="hidden sm:inline">{focusMode ? "सामान्य दृश्य" : "ध्यान मोड"}</span>
+                <span className="hidden sm:inline">{focusMode ? (isHindi ? "सामान्य दृश्य" : "Normal View") : (isHindi ? "ध्यान मोड" : "Focus Mode")}</span>
               </button>
             </div>
           </div>
@@ -965,7 +971,7 @@ ${mantra.hinglishTranslation || ""}
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-[11px] font-bold uppercase tracking-wider opacity-75 flex items-center gap-1">
                 <Palette className="w-3.5 h-3.5 text-amber-600" />
-                <span>थीम:</span>
+                <span>{isHindi ? "थीम:" : "Theme:"}</span>
               </span>
               <div className="flex items-center p-0.5 rounded-xl border border-amber-200/60 bg-black/5 dark:bg-white/5 text-xs font-bold">
                 {Object.values(THEMES).map((th) => {
@@ -995,7 +1001,7 @@ ${mantra.hinglishTranslation || ""}
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-[11px] font-bold uppercase tracking-wider opacity-75 flex items-center gap-1">
                 <Type className="w-3.5 h-3.5 text-amber-600" />
-                <span>आकार:</span>
+                <span>{isHindi ? "आकार:" : "Size:"}</span>
               </span>
               <div className="flex items-center p-0.5 rounded-xl border border-amber-200/60 bg-black/5 dark:bg-white/5 text-xs font-bold">
                 {FONT_SIZES.map((sz, idx) => (
@@ -1022,26 +1028,26 @@ ${mantra.hinglishTranslation || ""}
                 <button
                   type="button"
                   onClick={() => setFontFamily("serif")}
-                  title="शास्त्रीय वैदिक लिपि (Classical Noto Serif)"
+                  title={isHindi ? "शास्त्रीय वैदिक लिपि (Classical Noto Serif)" : "Classical Noto Serif"}
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer font-serif ${
                     fontFamily === "serif"
                       ? "bg-amber-600 text-white font-bold shadow-2xs"
                       : "opacity-75 hover:opacity-100 hover:bg-black/5"
                   }`}
                 >
-                  शास्त्रीय (Serif)
+                  {isHindi ? "शास्त्रीय (Serif)" : "Serif"}
                 </button>
                 <button
                   type="button"
                   onClick={() => setFontFamily("sans")}
-                  title="आधुनिक सुस्पष्ट लिपि (Modern Clean Sans)"
+                  title={isHindi ? "आधुनिक सुस्पष्ट लिपि (Modern Clean Sans)" : "Modern Clean Sans"}
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer font-sans ${
                     fontFamily === "sans"
                       ? "bg-amber-600 text-white font-bold shadow-2xs"
                       : "opacity-75 hover:opacity-100 hover:bg-black/5"
                   }`}
                 >
-                  सुस्पष्ट (Sans)
+                  {isHindi ? "सुस्पष्ट (Sans)" : "Sans"}
                 </button>
               </div>
             </div>
@@ -1052,7 +1058,7 @@ ${mantra.hinglishTranslation || ""}
               <button
                 type="button"
                 onClick={() => setShowJapa((prev) => !prev)}
-                title="जप माला काउंटर (Japa Mala Bead Counter)"
+                title={isHindi ? "जप माला काउंटर (Japa Mala Bead Counter)" : "Japa Mala Bead Counter"}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                   showJapa
                     ? "bg-amber-700 text-white border-amber-800 ring-2 ring-amber-400 shadow-sm"
@@ -1060,7 +1066,7 @@ ${mantra.hinglishTranslation || ""}
                 }`}
               >
                 <Bell className="w-3.5 h-3.5 text-amber-500" />
-                <span>जप माला {japaCount > 0 ? `(${japaCount}/${japaTarget})` : ""}</span>
+                <span>{isHindi ? "जप माला" : "Japa Mala"} {japaCount > 0 ? `(${japaCount}/${japaTarget})` : ""}</span>
               </button>
 
               {/* Copy Button */}
@@ -1070,7 +1076,7 @@ ${mantra.hinglishTranslation || ""}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${themeObj.buttonSecondary}`}
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? "कॉपी हुआ!" : "कॉपी"}</span>
+                <span>{copied ? (isHindi ? "कॉपी हुआ!" : "Copied!") : (isHindi ? "कॉपी" : "Copy")}</span>
               </button>
 
               {/* Share */}
@@ -1078,7 +1084,7 @@ ${mantra.hinglishTranslation || ""}
                 type="button"
                 onClick={handleShare}
                 className={`p-2 rounded-xl border transition-all cursor-pointer ${themeObj.buttonSecondary}`}
-                title="मंत्र साझा करें"
+                title={isHindi ? "मंत्र साझा करें" : "Share Mantra"}
               >
                 <Share2 className="w-3.5 h-3.5" />
               </button>
@@ -1092,7 +1098,7 @@ ${mantra.hinglishTranslation || ""}
                 }`}
               >
                 <Search className="w-3.5 h-3.5" />
-                <span>{showFinder ? "बंद करें" : "मंत्र खोजें"}</span>
+                <span>{showFinder ? (isHindi ? "बंद करें" : "Close") : (isHindi ? "मंत्र खोजें" : "Find Mantra")}</span>
               </button>
             </div>
           </div>
@@ -1108,19 +1114,19 @@ ${mantra.hinglishTranslation || ""}
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-amber-600" />
                   <h3 className="font-serif text-sm font-bold text-amber-900 dark:text-amber-300">
-                    वेदमंत्र त्वरित खोज एवं जम्प (Live Vedic Finder)
+                    {isHindi ? "वेदमंत्र त्वरित खोज एवं जम्प (Live Vedic Finder)" : "Live Vedic Finder & Direct Jump"}
                   </h3>
                 </div>
 
                 {/* Veda Filter Chips */}
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none text-xs">
                   {[
-                    { id: "all", label: "सभी वेद" },
-                    { id: "rigveda", label: "ऋग्वेद" },
-                    { id: "yajurveda", label: "यजुर्वेद" },
-                    { id: "samaveda", label: "सामवेद" },
-                    { id: "atharvaveda", label: "अथर्ववेद" },
-                    { id: "upanishad", label: "उपनिषद" }
+                    { id: "all", label: isHindi ? "सभी वेद" : "All Vedas" },
+                    { id: "rigveda", label: isHindi ? "ऋग्वेद" : "Rigveda" },
+                    { id: "yajurveda", label: isHindi ? "यजुर्वेद" : "Yajurveda" },
+                    { id: "samaveda", label: isHindi ? "सामवेद" : "Samaveda" },
+                    { id: "atharvaveda", label: isHindi ? "अथर्ववेद" : "Atharvaveda" },
+                    { id: "upanishad", label: isHindi ? "उपनिषद" : "Upanishad" }
                   ].map((tab) => (
                     <button
                       key={tab.id}
@@ -1140,14 +1146,16 @@ ${mantra.hinglishTranslation || ""}
 
               {/* Deity Filter Chips */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
-                <span className="text-[11px] font-bold text-[#555555] shrink-0 mr-1">देवता (Deity):</span>
+                <span className="text-[11px] font-bold text-[#555555] shrink-0 mr-1">
+                  {isHindi ? "देवता (Deity):" : "Deity:"}
+                </span>
                 {[
-                  { id: "all", label: "समस्त देव" },
-                  { id: "shiva", label: "भगवान शिव" },
-                  { id: "vishnu", label: "भगवान विष्णु" },
-                  { id: "devi", label: "देवी व सावित्री" },
-                  { id: "surya", label: "सूर्य देव" },
-                  { id: "agni", label: "अग्नि व यज्ञ" }
+                  { id: "all", label: isHindi ? "समस्त देव" : "All Deities" },
+                  { id: "shiva", label: isHindi ? "भगवान शिव" : "Lord Shiva" },
+                  { id: "vishnu", label: isHindi ? "भगवान विष्णु" : "Lord Vishnu" },
+                  { id: "devi", label: isHindi ? "देवी व सावित्री" : "Devi & Savitri" },
+                  { id: "surya", label: isHindi ? "सूर्य देव" : "Surya Deva" },
+                  { id: "agni", label: isHindi ? "अग्नि व यज्ञ" : "Agni & Yajna" }
                 ].map((chip) => (
                   <button
                     key={chip.id}
@@ -1171,7 +1179,7 @@ ${mantra.hinglishTranslation || ""}
                   type="text"
                   value={finderQuery}
                   onChange={(e) => setFinderQuery(e.target.value)}
-                  placeholder="मंत्र संख्या (e.g. 1.1.1), सूक्त (e.g. Purusha), या संस्कृत शब्द (e.g. अग्निमीळे, गायत्री, त्र्यम्बकं)..."
+                  placeholder={isHindi ? "मंत्र संख्या (उदा: 1.1.1), सूक्त (उदा: Purusha), या संस्कृत शब्द..." : "Mantra number (e.g. 1.1.1), Sukta (e.g. Purusha), or Sanskrit word..."}
                   className="w-full pl-9 pr-8 py-2 rounded-xl text-xs border border-amber-300/80 bg-black/5 dark:bg-white/5 focus:outline-none focus:ring-2 focus:ring-amber-500 font-devanagari"
                   autoFocus
                 />
@@ -1190,7 +1198,7 @@ ${mantra.hinglishTranslation || ""}
               <div className="max-h-64 overflow-y-auto space-y-2 pr-1 scrollbar-thin">
                 {matchingMantras.length === 0 ? (
                   <div className="py-6 text-center text-xs text-stone-400">
-                    कोई मंत्र नहीं मिला। कृपया भिन्न कीवर्ड या मंत्र संख्या टाइप करें।
+                    {isHindi ? "कोई मंत्र नहीं मिला। कृपया भिन्न कीवर्ड या मंत्र संख्या टाइप करें।" : "No mantra found. Please try another keyword or mantra number."}
                   </div>
                 ) : (
                   matchingMantras.map((m) => {
@@ -1234,7 +1242,7 @@ ${mantra.hinglishTranslation || ""}
                 <div className="flex items-center gap-2">
                   <Heart className="w-4 h-4 fill-amber-600 text-amber-600" />
                   <h3 className="font-serif text-sm font-bold">
-                    आपके सहेजे गए प्रिय मंत्र ({favoritesList.length})
+                    {isHindi ? `आपके सहेजे गए प्रिय मंत्र (${favoritesList.length})` : `Your Saved Favorite Mantras (${favoritesList.length})`}
                   </h3>
                 </div>
                 <button
@@ -1248,7 +1256,7 @@ ${mantra.hinglishTranslation || ""}
 
               {favoritesList.length === 0 ? (
                 <div className="py-6 text-center text-xs opacity-60">
-                  अभी कोई पसंदीदा मंत्र नहीं सहेजा गया है। मंत्र पढ़ते समय 'सहेजें' बटन दबाएँ।
+                  {isHindi ? "अभी कोई पसंदीदा मंत्र नहीं सहेजा गया है। मंत्र पढ़ते समय 'सहेजें' बटन दबाएँ।" : "No favorite mantras saved yet. Click the 'Save' button while reading."}
                 </div>
               ) : (
                 <div className="max-h-60 overflow-y-auto space-y-2 pr-1 scrollbar-thin">
@@ -1408,7 +1416,7 @@ ${mantra.hinglishTranslation || ""}
             {/* CORE MANTRA SANCTUARY CARD (सर्वोत्कृष्ट पठन मन्दिर)            */}
             {/* ============================================================== */}
             <section
-              className={`relative p-6 sm:p-10 md:p-12 rounded-3xl border border-t-4 border-t-[#D9A441] border-l-4 border-l-[#D9A441] overflow-hidden transition-all duration-300 shadow-sm ${
+              className={`relative p-5 sm:p-7 md:p-8 rounded-3xl border border-t-4 border-t-[#D9A441] border-l-4 border-l-[#D9A441] overflow-hidden transition-all duration-300 shadow-sm ${
                 themeObj.sanctuaryBg
               } ${themeObj.subtleBorder}`}
             >
@@ -1512,13 +1520,13 @@ ${mantra.hinglishTranslation || ""}
                       <strong className="text-xs sm:text-sm font-bold">
                         {isPlayingSpeech
                           ? isPausedSpeech
-                            ? "पाठ स्थगित (Paused)"
-                            : "सस्वर उच्चारण चल रहा है..."
-                          : "सस्वर पाठ एवं शुद्ध उच्चारण (Pronunciation)"}
+                            ? (isHindi ? "पाठ स्थगित (Paused)" : "Recitation Paused")
+                            : (isHindi ? "सस्वर उच्चारण चल रहा है..." : "Chanting in progress...")
+                          : (isHindi ? "सस्वर पाठ एवं शुद्ध उच्चारण" : "Authentic Chanting & Pronunciation")}
                       </strong>
                     </div>
                     <span className="text-[11px] opacity-75">
-                      वेब स्पीच सिंथेसाइज़र द्वारा प्रामाणिक ध्वनि
+                      {isHindi ? "वेब स्पीच सिंथेसाइज़र द्वारा प्रामाणिक ध्वनि" : "Authentic voice via Web Speech Synthesizer"}
                     </span>
                   </div>
                 </div>
@@ -1552,7 +1560,7 @@ ${mantra.hinglishTranslation || ""}
                         speechTarget === "sanskrit" ? "bg-amber-600 text-white font-bold" : "opacity-75"
                       }`}
                     >
-                      संस्कृत
+                      {isHindi ? "संस्कृत" : "Sanskrit"}
                     </button>
                     <button
                       type="button"
@@ -1564,16 +1572,16 @@ ${mantra.hinglishTranslation || ""}
                         speechTarget === "hindi" ? "bg-amber-600 text-white font-bold" : "opacity-75"
                       }`}
                     >
-                      हिंदी भावार्थ
+                      {isHindi ? "हिंदी भावार्थ" : "Hindi Meaning"}
                     </button>
                   </div>
 
                   {/* Speed Controls: 0.75x, 1.0x, 1.25x */}
                   <div className="flex items-center p-0.5 rounded-xl border border-amber-200/60 text-xs font-bold">
                     {[
-                      { rate: 0.75, label: "0.75x (धीमी)" },
-                      { rate: 1.0, label: "1.0x (सामान्य)" },
-                      { rate: 1.25, label: "1.25x (द्रुत)" }
+                      { rate: 0.75, label: `0.75x (${isHindi ? "धीमी" : "Slow"})` },
+                      { rate: 1.0, label: `1.0x (${isHindi ? "सामान्य" : "Normal"})` },
+                      { rate: 1.25, label: `1.25x (${isHindi ? "द्रुत" : "Fast"})` }
                     ].map((sp) => (
                       <button
                         key={sp.rate}
@@ -1607,10 +1615,10 @@ ${mantra.hinglishTranslation || ""}
                     </div>
                     <div>
                       <h3 className="font-serif text-base sm:text-lg font-bold text-[#111111] dark:text-amber-300">
-                        डिजिटल जप माला काउंटर (Sacred Japa Mala Counter)
+                        {isHindi ? "डिजिटल जप माला काउंटर" : "Digital Japa Mala Counter"}
                       </h3>
                       <p className="text-[11px] opacity-75">
-                        मंत्र का श्रद्धापूर्वक अनुष्ठान एवं जप संख्या का व्यवस्थित संकलन
+                        {isHindi ? "मंत्र का श्रद्धापूर्वक अनुष्ठान एवं जप संख्या का व्यवस्थित संकलन" : "Devotional chanting count and systematic tracking"}
                       </p>
                     </div>
                   </div>
@@ -1620,7 +1628,7 @@ ${mantra.hinglishTranslation || ""}
                     <button
                       type="button"
                       onClick={() => setJapaSound((p) => !p)}
-                      title={japaSound ? "मंदिर घंटी ध्वनि चालू है" : "ध्वनि म्यूट है"}
+                      title={japaSound ? (isHindi ? "मंदिर घंटी ध्वनि चालू है" : "Chime sound enabled") : (isHindi ? "ध्वनि म्यूट है" : "Sound muted")}
                       className={`p-2 rounded-xl border transition-colors cursor-pointer ${themeObj.buttonSecondary}`}
                     >
                       {japaSound ? <Volume2 className="w-4 h-4 text-[#D9A441]" /> : <VolumeX className="w-4 h-4" />}
@@ -1628,7 +1636,7 @@ ${mantra.hinglishTranslation || ""}
                     <button
                       type="button"
                       onClick={handleResetJapa}
-                      title="माला रीसेट करें"
+                      title={isHindi ? "माला रीसेट करें" : "Reset Mala"}
                       className={`p-2 rounded-xl border transition-colors cursor-pointer ${themeObj.buttonSecondary}`}
                     >
                       <RotateCcw className="w-4 h-4" />
@@ -1639,14 +1647,14 @@ ${mantra.hinglishTranslation || ""}
                 {/* Target Counter Switcher Chips */}
                 <div className="flex items-center justify-between gap-3 flex-wrap">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-xs font-bold opacity-75">संकल्प लक्ष्य:</span>
+                    <span className="text-xs font-bold opacity-75">{isHindi ? "संकल्प लक्ष्य:" : "Target:"}</span>
                     {[11, 21, 54, 108].map((target) => (
                       <button
                         key={target}
                         type="button"
                         onClick={() => {
                           setJapaTarget(target);
-                          triggerToast(`जप लक्ष्य: ${target} बार निर्धारित किया गया।`);
+                          triggerToast(isHindi ? `जप लक्ष्य: ${target} बार निर्धारित किया गया।` : `Japa target set to ${target} chants.`);
                         }}
                         className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
                           japaTarget === target
@@ -1654,13 +1662,13 @@ ${mantra.hinglishTranslation || ""}
                             : themeObj.chipBg
                         }`}
                       >
-                        {target} बार
+                        {target} {isHindi ? "बार" : "chants"}
                       </button>
                     ))}
                   </div>
 
                   <span className="text-xs font-semibold opacity-75">
-                    आज का कुल जप: <strong className="text-[#C62828] font-mono text-sm">{todayTotalJapa}</strong>
+                    {isHindi ? "आज का कुल जप: " : "Today's Total: "}<strong className="text-[#C62828] font-mono text-sm">{todayTotalJapa}</strong>
                   </span>
                 </div>
 
@@ -1695,10 +1703,10 @@ ${mantra.hinglishTranslation || ""}
                         {japaCount}
                       </span>
                       <span className="text-[10px] font-bold opacity-60 uppercase mt-0.5">
-                        लक्ष्य {japaTarget}
+                        {isHindi ? "लक्ष्य" : "Target"} {japaTarget}
                       </span>
                       <span className="text-[10px] font-semibold text-[#D9A441]">
-                        {malaProgress}% पूर्ण
+                        {malaProgress}% {isHindi ? "पूर्ण" : "done"}
                       </span>
                     </div>
                   </div>
@@ -1711,7 +1719,7 @@ ${mantra.hinglishTranslation || ""}
                       className="group px-8 py-4 rounded-2xl bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-serif text-lg font-bold shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer flex items-center gap-3 border border-[#D9A441]"
                     >
                       <Bell className="w-5 h-5 text-[#C62828] group-hover:rotate-12 transition-transform" />
-                      <span>॥ जप करें (+1) ॥</span>
+                      <span>{isHindi ? "॥ जप करें (+१) ॥" : "॥ Count Japa (+1) ॥"}</span>
                     </button>
 
                     <div className="flex items-center gap-2">
@@ -1724,10 +1732,14 @@ ${mantra.hinglishTranslation || ""}
                         }}
                         className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${themeObj.buttonSecondary}`}
                       >
-                        +10 शीघ्र जोड़ें
+                        {isHindi ? "+10 शीघ्र जोड़ें" : "+10 Quick Add"}
                       </button>
                       <span className="text-[11px] opacity-60">
-                        (कीबोर्ड: <strong>Spacebar</strong> दबाकर भी जप कर सकते हैं)
+                        {isHindi ? (
+                          <>(कीबोर्ड: <strong>Spacebar</strong> दबाकर भी जप कर सकते हैं)</>
+                        ) : (
+                          <>(Press <strong>Spacebar</strong> to count)</>
+                        )}
                       </span>
                     </div>
                   </div>
@@ -1738,18 +1750,20 @@ ${mantra.hinglishTranslation || ""}
                   <div className="p-4 rounded-2xl bg-[#FFD21F]/15 border border-[#FFD21F] text-center space-y-1.5 animate-bounce">
                     <div className="font-serif text-lg font-bold text-[#111111] flex items-center justify-center gap-2">
                       <Sparkles className="w-5 h-5 text-[#D9A441]" />
-                      <span>॥ {japaTarget} जप संकल्प पूर्ण • ॐ तत्सत् ॥</span>
+                      <span>{isHindi ? `॥ ${japaTarget} जप संकल्प पूर्ण • ॐ तत्सत् ॥` : `॥ ${japaTarget} Chants Completed • Om Tat Sat ॥`}</span>
                       <Sparkles className="w-5 h-5 text-[#D9A441]" />
                     </div>
                     <p className="text-xs opacity-80">
-                      आपका पवित्र अनुष्ठान पूर्ण हुआ। प्रभु की कृपा व शांति सदा आपके साथ रहे।
+                      {isHindi
+                        ? "आपका पवित्र अनुष्ठान पूर्ण हुआ। प्रभु की कृपा व शांति सदा आपके साथ रहे।"
+                        : "Your sacred practice is complete. May peace and grace remain with you always."}
                     </p>
                     <button
                       type="button"
                       onClick={handleResetJapa}
                       className="mt-2 px-4 py-1.5 rounded-xl bg-[#C62828] text-white text-xs font-bold shadow-xs cursor-pointer hover:bg-[#B71C1C] transition-colors"
                     >
-                      नई माला प्रारंभ करें
+                      {isHindi ? "नई माला प्रारंभ करें" : "Start New Mala"}
                     </button>
                   </div>
                 )}
@@ -1765,11 +1779,11 @@ ${mantra.hinglishTranslation || ""}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3 border-amber-200/50">
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none text-xs font-bold">
                   {[
-                    { id: "hindi", label: "सरल हिन्दी भावार्थ", icon: BookOpen },
-                    { id: "english", label: "English Translation", icon: Info },
-                    { id: "hinglish", label: "Hinglish व्याख्या", icon: Languages },
-                    { id: "anvaya", label: "अन्वय (Prose Order)", icon: AlignLeft },
-                    { id: "shastric", label: "शास्त्रीय संदर्भ व फल", icon: Flame }
+                    { id: "hindi", label: isHindi ? "सरल हिन्दी भावार्थ" : "Hindi Meaning", icon: BookOpen },
+                    { id: "english", label: isHindi ? "English अनुवाद" : "English Translation", icon: Info },
+                    { id: "hinglish", label: isHindi ? "Hinglish व्याख्या" : "Hinglish Guide", icon: Languages },
+                    { id: "anvaya", label: isHindi ? "अन्वय (Prose Order)" : "Anvaya (Prose Order)", icon: AlignLeft },
+                    { id: "shastric", label: isHindi ? "शास्त्रीय संदर्भ व फल" : "Context & Benefits", icon: Flame }
                   ].map((tab) => {
                     const TabIcon = tab.icon;
                     const isActive = activeTab === tab.id && !viewAllTranslations;
@@ -1805,7 +1819,7 @@ ${mantra.hinglishTranslation || ""}
                   }`}
                 >
                   <Layers className="w-3.5 h-3.5 text-[#D9A441]" />
-                  <span>{viewAllTranslations ? "एकल टैब दृश्य" : "एक साथ सभी भाषाएँ देखें"}</span>
+                  <span>{viewAllTranslations ? (isHindi ? "एकल टैब दृश्य" : "Single Tab Mode") : (isHindi ? "एक साथ सभी भाषाएँ देखें" : "View All Translations")}</span>
                 </button>
               </div>
 

@@ -240,7 +240,7 @@ export default function ScholarsPage() {
       </div>
 
       {/* Hero */}
-      <section className="relative bg-[#111111] text-white py-14 sm:py-16 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
+      <section className="relative bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerSanctum}
@@ -276,7 +276,7 @@ export default function ScholarsPage() {
       </section>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {selectedScholar ? (
           /* Single Scholar Detail View */
           <div className="space-y-8">

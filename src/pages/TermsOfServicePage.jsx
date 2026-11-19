@@ -84,7 +84,7 @@ export default function TermsOfServicePage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#111111] text-[#FFFFFF] py-14 sm:py-18 border-b-4 border-[#D9A441]">
+      <section className="relative overflow-hidden bg-[#111111] text-[#FFFFFF] py-8 sm:py-10 border-b-4 border-[#D9A441]">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
             src={bannerSanctum}
@@ -125,7 +125,7 @@ export default function TermsOfServicePage() {
       </section>
 
       {/* Main Content Area */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="space-y-10">
 
           {/* Section 1: Scope & Acceptance */}
