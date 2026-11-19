@@ -45,11 +45,11 @@ export default function RoadmapSection() {
                   >
                     Phase {item.step}
                   </span>
-                  <h3 className="font-serif text-sm sm:text-base font-bold text-[#111111]">
-                    {item.title}
+                  <h3 className={`font-serif text-sm sm:text-base font-bold text-[#111111] ${isHindi ? "font-devanagari" : ""}`}>
+                    {isHindi ? (item.titleHi || item.title) : (item.titleEn || item.title)}
                   </h3>
-                  <p className="text-[10px] text-[#555555] font-devanagari mt-1 leading-snug">
-                    {item.desc}
+                  <p className={`text-[10px] text-[#555555] mt-1 leading-snug ${isHindi ? "font-devanagari" : ""}`}>
+                    {isHindi ? (item.descHi || item.desc) : (item.descEn || item.desc)}
                   </p>
                 </div>
 
@@ -59,7 +59,7 @@ export default function RoadmapSection() {
                       isActive ? "text-[#D9A441]" : "text-[#555555]"
                     }`}
                   >
-                    {item.status}
+                    {isHindi ? (item.statusHi || item.status) : (item.statusEn || item.status)}
                   </span>
                 </div>
               </div>

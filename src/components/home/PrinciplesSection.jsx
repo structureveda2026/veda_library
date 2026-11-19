@@ -31,11 +31,11 @@ export default function PrinciplesSection() {
               <span className="text-xl font-serif font-bold text-[#D9A441]">
                 {prin.num}
               </span>
-              <h3 className="font-serif text-lg font-bold text-[#111111] mt-1">
-                {prin.title}
+              <h3 className={`font-serif text-lg font-bold text-[#111111] mt-1 ${isHindi ? "font-devanagari" : ""}`}>
+                {isHindi ? prin.title : (prin.enTitle || prin.title)}
               </h3>
-              <p className="text-xs text-[#555555] font-devanagari mt-1.5 leading-relaxed">
-                {prin.desc}
+              <p className={`text-xs text-[#555555] mt-1.5 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+                {isHindi ? prin.desc : (prin.enDesc || prin.desc)}
               </p>
             </div>
           ))}

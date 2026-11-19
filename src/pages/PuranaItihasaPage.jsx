@@ -27,6 +27,7 @@ import {
   MAHAPURANAS_DATA,
   UPAPURANAS_DATA,
 } from "../data/puranaData.js";
+import SEO from "../components/common/SEO.jsx";
 import {
   ITIHASA_EPISTEMOLOGY,
   RAMAYANA_DATA,
@@ -177,6 +178,11 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
 
   return (
     <div className="bg-white min-h-screen text-[#111111] pb-24">
+      <SEO
+        title={isHindi ? "पुराण एवं इतिहास" : "Purana & Itihasa"}
+        description={isHindi ? "पुराण, रामायण, महाभारत और भारतीय ऐतिहासिक ग्रंथों का प्रामाणिक संग्रह।" : "Authentic collection of Puranas, Ramayana, Mahabharata, and Indian historical texts."}
+        canonical="/library/purana-itihasa"
+      />
       {/* 1. Scholarly Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
         {/* Sacred Entity-Matched Purana / Itihasa Banner with 80-85% Opacity and Luminous Overlay */}

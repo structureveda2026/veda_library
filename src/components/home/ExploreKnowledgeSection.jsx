@@ -15,6 +15,7 @@ export const CORE_HUB_BENTO_CARDS = [
     englishTitle: "The Four Vedas",
     subtitle: "ऋग्वेद, यजुर्वेद, सामवेद, अथर्ववेद",
     hindiSubtitle: "ऋग्वेद • यजुर्वेद • सामवेद • अथर्ववेद",
+    enSubtitle: "Rigveda • Yajurveda • Samaveda • Atharvaveda",
     pillCounter: "४ संहिताएँ • २१+ शाखाएँ",
     enPillCounter: "4 Samhitas • 20,000+ Verses",
     desc: "अपौरुषेय श्रुति एवं सनातन ज्ञान का मूल स्रोत। संहिता, ब्राह्मण, आरण्यक एवं प्रामाणिक शाखा परंपरा।",
@@ -233,7 +234,9 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
                       {tags.map((tag, idx) => (
                         <span
                           key={idx}
-                          className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-stone-50 text-[#555555] border border-[#E5E5E5] group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors font-devanagari"
+                          className={`text-[10px] font-medium px-2 py-0.5 rounded-md bg-stone-50 text-[#555555] border border-[#E5E5E5] group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors ${
+                            isHindi ? "font-devanagari" : ""
+                          }`}
                         >
                           {tag}
                         </span>
@@ -244,7 +247,9 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
 
                 {/* Bottom Action Row */}
                 <div className="mt-4 pt-3 border-t border-[#E5E5E5] flex items-center justify-between relative z-10">
-                  <span className="text-xs font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors flex items-center gap-1 font-devanagari">
+                  <span className={`text-xs font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors flex items-center gap-1 ${
+                    isHindi ? "font-devanagari" : ""
+                  }`}>
                     {isHindi ? "अन्वेषण करें" : "Explore Category"}
                   </span>
 

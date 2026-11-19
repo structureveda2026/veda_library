@@ -32,6 +32,12 @@ const VEDA_CARDS_DATA = [
       "ऐतरेय उपनिषद",
       "आश्वलायन श्रौतसूत्र",
     ],
+    enShakhaList: [
+      "Shakala Samhita (1,028 Suktas)",
+      "Aitareya & Kaushitaki Brahmanas",
+      "Aitareya Upanishad",
+      "Ashvalayana Shrautasutra",
+    ],
     image: rigvedaImg,
   },
   {
@@ -55,6 +61,12 @@ const VEDA_CARDS_DATA = [
       "शतपथ ब्राह्मण (१०० अध्याय)",
       "ईश व बृहदारण्यक उपनिषद",
       "कृष्ण: तैत्तिरीय संहिता",
+    ],
+    enShakhaList: [
+      "Shukla: Vajasaneyi Madhyandina",
+      "Shatapatha Brahmana (100 Adhyayas)",
+      "Isha & Brihadaranyaka Upanishads",
+      "Krishna: Taittiriya Samhita",
     ],
     image: yajurvedaImg,
   },
@@ -80,6 +92,12 @@ const VEDA_CARDS_DATA = [
       "ताण्ड्य महाब्राह्मण (पंचविंश)",
       "छान्दोग्य उपनिषद ('तत्त्वमसि')",
     ],
+    enShakhaList: [
+      "Kauthuma Shakha (Purvarchika)",
+      "Ranayaniya & Jaiminiya Shakhas",
+      "Tandya Mahabrahmana (Panchavimsha)",
+      "Chandogya Upanishad",
+    ],
     image: samavedaImg,
   },
   {
@@ -103,6 +121,12 @@ const VEDA_CARDS_DATA = [
       "पैप्पलाद शाखा (ओडिशा परंपरा)",
       "गोपथ ब्राह्मण (पूर्व व उत्तर)",
       "मुण्डक ('सत्यमेव जयते') व माण्डूक्य",
+    ],
+    enShakhaList: [
+      "Shaunaka Samhita (Prithvi Sukta)",
+      "Paippalada Shakha (Odisha Recension)",
+      "Gopatha Brahmana (Purva & Uttara)",
+      "Mundaka & Mandukya Upanishads",
     ],
     image: atharvavedaImg,
   },
@@ -213,7 +237,7 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                     </div>
 
                     {/* Liturgical Role Line */}
-                    <p className="text-xs text-[#D9A441] font-semibold mt-1 flex items-center gap-1 font-devanagari">
+                    <p className={`text-xs text-[#D9A441] font-semibold mt-1 flex items-center gap-1 ${isHindi ? "font-devanagari" : ""}`}>
                       <Sparkles className="w-3 h-3 text-[#D9A441] shrink-0" />
                       <span className="truncate">
                         {isHindi ? veda.priestRole : veda.enPriestRole}
@@ -221,7 +245,7 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
                     </p>
 
                     {/* Bento Compartment: Stats Ribbon */}
-                    <div className="mt-2 px-2.5 py-1 rounded-lg bg-stone-50 border border-[#E5E5E5] text-[10px] sm:text-[11px] font-medium text-[#111111] font-devanagari flex items-center gap-2">
+                    <div className={`mt-2 px-2.5 py-1 rounded-lg bg-stone-50 border border-[#E5E5E5] text-[10px] sm:text-[11px] font-medium text-[#111111] flex items-center gap-2 ${isHindi ? "font-devanagari" : ""}`}>
                       <BookOpen className="w-3.5 h-3.5 text-[#D9A441] shrink-0" />
                       <span className="truncate">{statsText}</span>
                     </div>
@@ -237,14 +261,14 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
 
                     {/* Bento Compartment 3: Canonical Shakhas & Texts */}
                     <div className="mt-2.5">
-                      <span className="text-[10px] font-bold text-[#555555] uppercase tracking-wider block mb-1 font-devanagari">
+                      <span className={`text-[10px] font-bold text-[#555555] uppercase tracking-wider block mb-1 ${isHindi ? "font-devanagari" : ""}`}>
                         {isHindi ? "प्रमुख शाखाएँ व संहिता:" : "Key Shakhas & Texts:"}
                       </span>
                       <div className="flex flex-wrap gap-1">
-                        {veda.shakhaList.slice(0, 3).map((sh, idx) => (
+                        {(isHindi ? veda.shakhaList : (veda.enShakhaList || veda.shakhaList)).slice(0, 3).map((sh, idx) => (
                           <span
                             key={idx}
-                            className="text-[10px] font-medium px-2 py-0.5 rounded bg-white text-[#555555] border border-[#E5E5E5] font-devanagari group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors truncate max-w-full"
+                            className={`text-[10px] font-medium px-2 py-0.5 rounded bg-white text-[#555555] border border-[#E5E5E5] group-hover:border-[#D9A441] group-hover:text-[#111111] transition-colors truncate max-w-full ${isHindi ? "font-devanagari" : ""}`}
                           >
                             {sh}
                           </span>

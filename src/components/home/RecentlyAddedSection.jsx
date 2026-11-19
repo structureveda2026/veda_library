@@ -47,6 +47,13 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {RECENTLY_ADDED.map((item) => {
             const thumb = THUMBNAILS[item.imageKey] || yagyaFireImg;
+            const titleText = isHindi ? item.title : (item.enTitle || item.title);
+            const categoryText = isHindi ? item.category : (item.enCategory || item.category);
+            const statusBadgeText = isHindi ? item.statusBadge : (item.enStatusBadge || item.statusBadge);
+            const timeAgoText = isHindi ? item.timeAgo : (item.enTimeAgo || item.timeAgo);
+            const authorText = isHindi ? item.author : (item.enAuthor || item.author);
+            const descText = isHindi ? item.desc : (item.enDesc || item.desc);
+
             return (
               <div
                 key={item.id}
@@ -57,13 +64,13 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
                 <div className="relative h-40 overflow-hidden bg-[#111111] flex-shrink-0">
                   <img
                     src={thumb}
-                    alt={item.title}
+                    alt={titleText}
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                   {/* Category badge on image */}
-                  <span className="absolute bottom-2 left-3 text-[10px] font-bold text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded shadow-xs">
-                    {item.category}
+                  <span className={`absolute bottom-2 left-3 text-[10px] font-bold text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded shadow-xs ${isHindi ? "font-devanagari" : ""}`}>
+                    {categoryText}
                   </span>
                 </div>
 
@@ -74,45 +81,45 @@ export default function RecentlyAddedSection({ onSelectArticle }) {
                     {item.statusType === "verified" && (
                       <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#FFD21F]/15 text-[#111111] border border-[#FFD21F]/40">
                         <CheckCircle2 className="w-3 h-3 text-[#D9A441]" />
-                        {item.statusBadge}
+                        {statusBadgeText}
                       </span>
                     )}
                     {item.statusType === "approved" && (
                       <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#FFD21F]/15 text-[#111111] border border-[#FFD21F]/40">
                         <CheckCircle2 className="w-3 h-3 text-[#D9A441]" />
-                        {item.statusBadge}
+                        {statusBadgeText}
                       </span>
                     )}
                     {item.statusType === "review" && (
                       <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#FFD21F]/20 text-[#111111] border border-[#FFD21F]">
                         <AlertCircle className="w-3 h-3 text-[#D9A441]" />
-                        {item.statusBadge}
+                        {statusBadgeText}
                       </span>
                     )}
                     <span className="flex items-center gap-1 text-[10px] text-[#555555] font-medium ml-auto">
                       <Clock className="w-3 h-3" />
-                      {item.timeAgo}
+                      {timeAgoText}
                     </span>
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug">
-                    {item.title}
+                  <h3 className={`font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors leading-snug ${isHindi ? "font-devanagari" : ""}`}>
+                    {titleText}
                   </h3>
 
-                  {/* Author & Publication Date — per Document Section 3 item 9 */}
+                  {/* Author & Publication Date */}
                   <div className="flex items-center gap-2 text-[11px] text-[#555555] mt-1 font-medium">
-                    <span>{item.author}</span>
+                    <span className={isHindi ? "font-devanagari" : ""}>{authorText}</span>
                     <span>•</span>
                     <span>{item.publishedDate}</span>
                   </div>
 
-                  {/* 1-2 Line Description — per document requirement */}
-                  <p className="font-devanagari text-xs text-[#555555] mt-1.5 leading-relaxed flex-1 line-clamp-2">
-                    {item.desc}
+                  {/* 1-2 Line Description */}
+                  <p className={`text-xs text-[#555555] mt-1.5 leading-relaxed flex-1 line-clamp-2 ${isHindi ? "font-devanagari" : ""}`}>
+                    {descText}
                   </p>
 
-                  {/* Read More CTA — per document requirement */}
+                  {/* Read More CTA */}
                   <div className="mt-3 pt-2.5 border-t border-[#E5E5E5]">
                     <span className="text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center gap-1 transition-colors">
                       {isHindi ? "अधिक पढ़ें" : "Read More"} <ArrowRight className="w-3 h-3" />

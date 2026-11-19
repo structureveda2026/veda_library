@@ -30,7 +30,7 @@ export const TRUST_STRIP_ITEMS = [
     hindiTitle: "मूल पाठ संग्रह",
     subtitle: "मूल पाठ एवं प्रामाणिक व्याख्या",
     enSubtitle: "Canonical text & authentic commentary",
-    accent: "#b45309"
+    accent: "#FFD21F"
   },
   {
     icon: "Layers",
@@ -38,7 +38,7 @@ export const TRUST_STRIP_ITEMS = [
     hindiTitle: "संरचित ज्ञान",
     subtitle: "विषय व शाखा अनुसार व्यवस्थित",
     enSubtitle: "Organized by discipline & tradition",
-    accent: "#047857"
+    accent: "#D9A441"
   },
   {
     icon: "FileCheck",
@@ -46,7 +46,7 @@ export const TRUST_STRIP_ITEMS = [
     hindiTitle: "प्रामाणिक संदर्भ",
     subtitle: "ग्रंथ, अध्याय व श्लोक आधारित",
     enSubtitle: "Verified by chapter, verse & source",
-    accent: "#4338ca"
+    accent: "#FFD21F"
   },
   {
     icon: "Flame",
@@ -54,7 +54,7 @@ export const TRUST_STRIP_ITEMS = [
     hindiTitle: "जीवंत परंपरा",
     subtitle: "भारतीय ज्ञान परंपरा का जीवंत संग्रह",
     enSubtitle: "Living heritage of classical wisdom",
-    accent: "#c2410c"
+    accent: "#D9A441"
   }
 ];
 
@@ -68,10 +68,10 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     hindiSubtitle: "(४ संहिताएँ)",
     hindiDesc: "ऋग्वेद, यजुर्वेद, सामवेद और अथर्ववेद",
     icon: "BookOpen",
-    iconColor: "text-amber-700",
-    bgColor: "bg-amber-50",
-    borderColor: "border-amber-200/80",
-    badgeBg: "bg-amber-100/70"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "vedanga",
@@ -81,10 +81,10 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     hindiSubtitle: "(६ वेदाङ्ग)",
     hindiDesc: "शिक्षा, कल्प, व्याकरण, निरुक्त, छंद और वेदाङ्ग ज्योतिष",
     icon: "Compass",
-    iconColor: "text-emerald-700",
-    bgColor: "bg-emerald-50/60",
-    borderColor: "border-emerald-200/80",
-    badgeBg: "bg-emerald-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   },
   {
     id: "upanishad",
@@ -94,10 +94,10 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     hindiSubtitle: "(दार्शनिक चिंतन)",
     hindiDesc: "आत्मा, ब्रह्म, ज्ञान, योग, वेदांत और भारतीय दर्शन",
     icon: "Sparkles",
-    iconColor: "text-cyan-700",
-    bgColor: "bg-cyan-50/60",
-    borderColor: "border-cyan-200/80",
-    badgeBg: "bg-cyan-100/70"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "purana-itihasa",
@@ -107,10 +107,10 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     hindiSubtitle: "(महाकाव्य व पुराण)",
     hindiDesc: "पुराण, रामायण, महाभारत और प्रमुख आख्यान",
     icon: "BookOpen",
-    iconColor: "text-indigo-700",
-    bgColor: "bg-indigo-50/60",
-    borderColor: "border-indigo-200/80",
-    badgeBg: "bg-indigo-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   },
   {
     id: "mantra-stotra",
@@ -120,10 +120,10 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     hindiSubtitle: "(स्तोत्र व प्रार्थनाएँ)",
     hindiDesc: "मंत्र, सूक्त, स्तोत्र, कवच, सहस्रनाम और प्रार्थनाएँ",
     icon: "Volume2",
-    iconColor: "text-purple-700",
-    bgColor: "bg-purple-50/60",
-    borderColor: "border-purple-200/80",
-    badgeBg: "bg-purple-100/70"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "jyotisha",
@@ -133,10 +133,10 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     hindiSubtitle: "(वैदिक ज्योतिष)",
     hindiDesc: "ग्रह, राशि, नक्षत्र, कुंडली, दशा, गोचर और मुहूर्त",
     icon: "Sun",
-    iconColor: "text-amber-800",
-    bgColor: "bg-orange-50/70",
-    borderColor: "border-orange-200/80",
-    badgeBg: "bg-orange-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   },
   {
     id: "vastu",
@@ -146,10 +146,10 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     hindiSubtitle: "(वास्तु परंपरा)",
     hindiDesc: "वास्तु पुरुष, दिशा, गृह, मंदिर और वास्तु परंपरा",
     icon: "Compass",
-    iconColor: "text-amber-900",
-    bgColor: "bg-amber-50/70",
-    borderColor: "border-amber-200/80",
-    badgeBg: "bg-amber-100/70"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "shastra",
@@ -159,10 +159,10 @@ export const EXPLORE_KNOWLEDGE_CARDS = [
     hindiSubtitle: "(शास्त्रीय ग्रंथ)",
     hindiDesc: "धर्मशास्त्र, योग, आयुर्वेद, नीति, अर्थशास्त्र, आगम आदि",
     icon: "Layers",
-    iconColor: "text-teal-700",
-    bgColor: "bg-teal-50/60",
-    borderColor: "border-teal-200/80",
-    badgeBg: "bg-teal-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   }
 ];
 
@@ -177,10 +177,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(१६ संस्कार)",
     hindiDesc: "जन्म से मृत्यु तक सोलह वैदिक संस्कार",
     icon: "Flower2",
-    iconColor: "text-teal-700",
-    bgColor: "bg-teal-50/60",
-    borderColor: "border-teal-200/80",
-    badgeBg: "bg-teal-100/70"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "puja",
@@ -190,10 +190,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(पूजन एवं उपासना)",
     hindiDesc: "शास्त्रोक्त पूजन विधि और उपासना पद्धति",
     icon: "Flower",
-    iconColor: "text-rose-700",
-    bgColor: "bg-rose-50/60",
-    borderColor: "border-rose-200/80",
-    badgeBg: "bg-rose-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   },
   {
     id: "yagya",
@@ -203,10 +203,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(हवन व वैदिक यज्ञ)",
     hindiDesc: "वैदिक यज्ञ, अग्निहोत्र और हवन परंपरा",
     icon: "Flame",
-    iconColor: "text-amber-700",
-    bgColor: "bg-amber-50/70",
-    borderColor: "border-amber-200/80",
-    badgeBg: "bg-amber-100/80"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "devata",
@@ -216,10 +216,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(देव उपासना परंपरा)",
     hindiDesc: "वैदिक और पौराणिक देवताओं की उपासना पद्धति",
     icon: "Crown",
-    iconColor: "text-emerald-800",
-    bgColor: "bg-emerald-50/70",
-    borderColor: "border-emerald-200/80",
-    badgeBg: "bg-emerald-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   },
   {
     id: "tirtha",
@@ -229,10 +229,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(पवित्र तीर्थ क्षेत्र)",
     hindiDesc: "काशी, प्रयाग, हरिद्वार और पवित्र तीर्थ परंपरा",
     icon: "MapPin",
-    iconColor: "text-orange-700",
-    bgColor: "bg-orange-50/60",
-    borderColor: "border-orange-200/80",
-    badgeBg: "bg-orange-100/70"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "dharma",
@@ -242,10 +242,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(जीवन मूल्य व सदाचार)",
     hindiDesc: "वैदिक जीवन दर्शन, आचार और धर्मशास्त्र",
     icon: "ShieldCheck",
-    iconColor: "text-orange-700",
-    bgColor: "bg-orange-50/60",
-    borderColor: "border-orange-200/80",
-    badgeBg: "bg-orange-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   },
   {
     id: "sanskrit",
@@ -255,10 +255,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(व्याकरण व भाषा)",
     hindiDesc: "पाणिनि व्याकरण, धातु, संधि और संस्कृत अध्ययन",
     icon: "BookOpen",
-    iconColor: "text-amber-700",
-    bgColor: "bg-amber-50/60",
-    borderColor: "border-amber-200/80",
-    badgeBg: "bg-amber-100/70"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "traditional-knowledge",
@@ -268,10 +268,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(आयुर्वेद व ज्ञान शाखाएँ)",
     hindiDesc: "आयुर्वेद, ज्योतिष, वास्तु और पारंपरिक विज्ञान",
     icon: "Leaf",
-    iconColor: "text-blue-700",
-    bgColor: "bg-blue-50/60",
-    borderColor: "border-blue-200/80",
-    badgeBg: "bg-blue-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   },
   {
     id: "research",
@@ -281,10 +281,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(पाण्डुलिपि व भाष्य)",
     hindiDesc: "पांडुलिपियाँ, भाष्य, टीका और शास्त्रीय शोध सामग्री",
     icon: "Sparkles",
-    iconColor: "text-indigo-800",
-    bgColor: "bg-indigo-50/60",
-    borderColor: "border-indigo-200/80",
-    badgeBg: "bg-indigo-100/70"
+    iconColor: "text-[#FFD21F]",
+    bgColor: "bg-[#FFD21F]/10",
+    borderColor: "border-[#D9A441]/30",
+    badgeBg: "bg-[#FFD21F]/20"
   },
   {
     id: "mantra",
@@ -294,10 +294,10 @@ export const ALL_MASTER_TAXONOMY_CARDS = [
     hindiSubtitle: "(वैदिक मंत्र व जप)",
     hindiDesc: "वैदिक और तांत्रिक मंत्र परंपरा",
     icon: "Volume2",
-    iconColor: "text-purple-700",
-    bgColor: "bg-purple-50/60",
-    borderColor: "border-purple-200/80",
-    badgeBg: "bg-purple-100/70"
+    iconColor: "text-[#D9A441]",
+    bgColor: "bg-[#D9A441]/10",
+    borderColor: "border-[#FFD21F]/30",
+    badgeBg: "bg-[#D9A441]/20"
   }
 ];
 
@@ -398,39 +398,57 @@ export const FOUR_VEDAS = [
 export const RECENTLY_ADDED = [
   {
     id: "agnihotra",
-    title: "Agnihotra (दैनिक अग्निहोत्र विधि)",
-    category: "Yagya • Vedic Practice",
-    statusBadge: "Source Verified",
-    statusType: "verified", // green
-    timeAgo: "2 days ago",
+    title: "दैनिक अग्निहोत्र विधि",
+    enTitle: "Agnihotra — Daily Vedic Fire Ritual",
+    category: "यज्ञ • वैदिक अनुष्ठान",
+    enCategory: "Yagya • Vedic Practice",
+    statusBadge: "प्रमाणित स्रोत",
+    enStatusBadge: "Source Verified",
+    statusType: "verified",
+    timeAgo: "२ दिन पूर्व",
+    enTimeAgo: "2 days ago",
     author: "आचार्य पं. सत्यव्रत",
+    enAuthor: "Acharya Pt. Satyavrata",
     publishedDate: "28 Oct 2026",
     imageKey: "card-yagya-fire.jpg",
-    desc: "दैनिक अग्निहोत्र विधि, पंचभूत शुद्धि और सूर्य-अग्नि उपासना का शास्त्रीय विधान।"
+    desc: "दैनिक अग्निहोत्र विधि, पंचभूत शुद्धि और सूर्य-अग्नि उपासना का शास्त्रीय विधान।",
+    enDesc: "Classical liturgy of daily Agnihotra, purification of five elements, and solar-fire oblations."
   },
   {
     id: "rudrabhisheka",
-    title: "Rudrabhisheka (श्रीरुद्राभिषेक)",
-    category: "Puja • Shaiva Tradition",
-    statusBadge: "Under Review",
-    statusType: "review", // amber
-    timeAgo: "3 days ago",
+    title: "श्रीरुद्राभिषेक विधान",
+    enTitle: "Sri Rudrabhisheka Liturgy",
+    category: "पूजा • शैव परंपरा",
+    enCategory: "Puja • Shaiva Tradition",
+    statusBadge: "समीक्षाधीन",
+    enStatusBadge: "Under Review",
+    statusType: "review",
+    timeAgo: "३ दिन पूर्व",
+    enTimeAgo: "3 days ago",
     author: "डॉ. आचार्य विद्याधर",
+    enAuthor: "Dr. Acharya Vidyadhar",
     publishedDate: "27 Oct 2026",
     imageKey: "card-puja.jpg",
-    desc: "यजुर्वेदीय रुद्राध्याय अनुसार भगवान शिव के एकादश रुद्र महाभिषेक का विधि-विधान।"
+    desc: "यजुर्वेदीय रुद्राध्याय अनुसार भगवान शिव के एकादश रुद्र महाभिषेक का विधि-विधान।",
+    enDesc: "Liturgy for the Ekadasha Rudra Mahabhisheka of Lord Shiva per Yajurveda Rudradhyaya."
   },
   {
     id: "gayatri-mantra",
-    title: "Gayatri Mantra (गायत्री महामंत्र रहस्य)",
-    category: "Mantra • Vedic",
-    statusBadge: "Approved",
-    statusType: "approved", // green
-    timeAgo: "5 days ago",
+    title: "गायत्री महामंत्र रहस्य",
+    enTitle: "Gayatri Mahamantra Essence",
+    category: "मंत्र • वैदिक",
+    enCategory: "Mantra • Vedic",
+    statusBadge: "स्वीकृत",
+    enStatusBadge: "Approved",
+    statusType: "approved",
+    timeAgo: "५ दिन पूर्व",
+    enTimeAgo: "5 days ago",
     author: "महर्षि वेद संस्थान",
+    enAuthor: "Maharishi Veda Research Institute",
     publishedDate: "25 Oct 2026",
     imageKey: "card-rigveda.jpg",
-    desc: "ऋग्वेद ३.६२.१० सवितृ महामंत्र का विशुद्ध पाठ, पदच्छेद, ऋषि-विश्वामित्र व गायत्री छंद।"
+    desc: "ऋग्वेद ३.६२.१० सवितृ महामंत्र का विशुद्ध पाठ, पदच्छेद, ऋषि-विश्वामित्र व गायत्री छंद।",
+    enDesc: "Pure recension of Rigveda 3.62.10 Savitur Mahamantra, Pada-patha, Sage Vishvamitra, and Gayatri Metre."
   }
 ];
 
@@ -454,8 +472,11 @@ export const GRANTHA_ARCHIVE = [
     name: "श्रीमद्भगवद्गीता",
     enName: "Bhagavad Gita",
     author: "महर्षि वेदव्यास",
+    enAuthor: "Maharishi Vedavyasa",
     summary: "१८ अध्याय, ७०० श्लोक — निष्काम कर्म, ज्ञान एवं भक्ति योग का अमर उपदेश।",
+    enSummary: "18 Chapters, 700 Verses — Eternal teachings on Nishkama Karma, Jnana, and Bhakti Yoga.",
     category: "प्रस्थानत्रयी / महाभारत",
+    enCategory: "Prasthanatrayi / Epic",
     imageKey: "card-gita.jpg",
     route: "/read/bhagavad-gita"
   },
@@ -463,8 +484,11 @@ export const GRANTHA_ARCHIVE = [
     name: "वाल्मीकि रामायण",
     enName: "Valmiki Ramayana",
     author: "आदिकवि वाल्मीकि",
+    enAuthor: "Adikavi Valmiki",
     summary: "७ काण्ड, २४,००० श्लोक — मर्यादा पुरुषोत्तम भगवान श्री राम का पावन जीवन चरित्र।",
+    enSummary: "7 Kandas, 24,000 Verses — The sacred life and ideals of Maryada Purushottama Sri Rama.",
     category: "आदिकाव्य",
+    enCategory: "Primeval Epic",
     imageKey: "card-ramayana.jpg",
     route: "/read/valmiki-ramayana"
   },
@@ -472,8 +496,11 @@ export const GRANTHA_ARCHIVE = [
     name: "महाभारत",
     enName: "Mahabharata",
     author: "महर्षि वेदव्यास",
+    enAuthor: "Maharishi Vedavyasa",
     summary: "१८ पर्व, १,००,००० श्लोक — धर्म, अर्थ, काम और मोक्ष का विश्वकोशीय आख्यान।",
+    enSummary: "18 Parvas, 100,000 Verses — The encyclopedic narrative of Dharma, Artha, Kama, and Moksha.",
     category: "इतिहास",
+    enCategory: "Itihasa (Epic)",
     imageKey: "card-mahabharata.jpg",
     route: "/read/mahabharata"
   },
@@ -481,8 +508,11 @@ export const GRANTHA_ARCHIVE = [
     name: "प्रमुख उपनिषद",
     enName: "Principal Upanishads",
     author: "वैदिक महर्षि परंपरा",
+    enAuthor: "Vedic Rishi Lineage",
     summary: "ईश, केन, कठ, मुण्डक, माण्डूक्य — आत्मज्ञान व परम ब्रह्म की प्रत्यक्ष अनुभूति।",
+    enSummary: "Isha, Kena, Katha, Mundaka, Mandukya — Direct experiential realization of Brahman and Atman.",
     category: "वेदांत / श्रुति",
+    enCategory: "Vedanta / Shruti",
     imageKey: "card-upanishad.jpg",
     route: "/upanishads"
   },
@@ -490,8 +520,11 @@ export const GRANTHA_ARCHIVE = [
     name: "१८ महापुराण",
     enName: "18 Mahapuranas",
     author: "महर्षि वेदव्यास",
+    enAuthor: "Maharishi Vedavyasa",
     summary: "विष्णु, भागवत, शिव, स्कन्द — सृष्टि, वंश, मन्वन्तर और तीर्थ महात्म्य।",
+    enSummary: "Vishnu, Bhagavata, Shiva, Skanda — Cosmography, royal lineages, Manvantaras, and Tirtha glories.",
     category: "पुराण",
+    enCategory: "Purana Canon",
     imageKey: "card-purana.jpg",
     route: "/puranas"
   },
@@ -499,8 +532,11 @@ export const GRANTHA_ARCHIVE = [
     name: "बृहत् पाराशर होरा शास्त्र",
     enName: "B.P. Hora Shastra",
     author: "महर्षि पाराशर",
+    enAuthor: "Maharishi Parashara",
     summary: "ग्रह, राशि, नक्षत्र, योग, दशा व भावों का मूलभूत वैज्ञानिक ज्योतिष शास्त्र।",
+    enSummary: "The foundational classical treatise on planets, zodiac signs, nakshatras, yogas, and dashas.",
     category: "फलित ज्योतिष",
+    enCategory: "Vedic Astrology",
     imageKey: "card-astrology.jpg",
     route: "/category/jyotisha"
   },
@@ -508,8 +544,11 @@ export const GRANTHA_ARCHIVE = [
     name: "पतंजलि योगसूत्र",
     enName: "Patanjali Yogasutra",
     author: "महर्षि पतंजलि",
+    enAuthor: "Maharishi Patanjali",
     summary: "४ पाद, १९६ सूत्र — योगश्चित्तवृत्तिनिरोधः, अष्टांग योग व समाधि मार्ग।",
+    enSummary: "4 Padas, 196 Sutras — Classical Ashtanga Yoga, cessation of mental fluctuations, and Samadhi.",
     category: "योग दर्शन",
+    enCategory: "Yoga Darshana",
     imageKey: "card-samskara.jpg",
     route: "/read/yoga"
   },
@@ -517,8 +556,11 @@ export const GRANTHA_ARCHIVE = [
     name: "चरक संहिता",
     enName: "Charaka Samhita",
     author: "महर्षि चरक",
+    enAuthor: "Maharishi Charaka",
     summary: "८ स्थान, १२० अध्याय — त्रिदोष सिद्धांत, स्वास्थ्य संरक्षण एवं प्राकृतिक कायचिकित्सा।",
+    enSummary: "8 Sthanas, 120 Chapters — The Tridosha science, holistic health preservation, and internal medicine.",
     category: "आयुर्वेद",
+    enCategory: "Ayurveda",
     imageKey: "card-vastu.jpg",
     route: "/articles/ayurvedic-dinacharya-daily-rituals-vitality-ojas"
   }
@@ -601,17 +643,17 @@ export const TOPIC_CHIPS = [
   { name: "आत्मा", enName: "Atman", count: 76 },
   { name: "मोक्ष", enName: "Moksha", count: 64 },
   { name: "योग", enName: "Yoga", count: 112 },
-  { name: "ध्यान", enName: "Dhyana (Meditation)", count: 54 },
-  { name: "यज्ञ", enName: "Yagya (Ritual)", count: 88 },
+  { name: "ध्यान", enName: "Meditation", count: 54 },
+  { name: "यज्ञ", enName: "Yagya", count: 88 },
   { name: "संस्कार", enName: "Samskara", count: 48 },
-  { name: "ग्रह", enName: "Graha (Planets)", count: 92 },
+  { name: "ग्रह", enName: "Planets", count: 92 },
   { name: "नक्षत्र", enName: "Nakshatra", count: 56 },
-  { name: "राशि", enName: "Rashi (Zodiac)", count: 42 },
+  { name: "राशि", enName: "Zodiac", count: 42 },
   { name: "वास्तु", enName: "Vastu", count: 65 },
   { name: "मंत्र", enName: "Mantra", count: 180 },
-  { name: "पूजा", enName: "Puja (Worship)", count: 94 },
-  { name: "देवता", enName: "Devata (Deities)", count: 130 },
-  { name: "तीर्थ", enName: "Tirtha (Pilgrimage)", count: 72 },
+  { name: "पूजा", enName: "Worship", count: 94 },
+  { name: "देवता", enName: "Deities", count: 130 },
+  { name: "तीर्थ", enName: "Pilgrimage", count: 72 },
   { name: "गुरु", enName: "Guru", count: 45 },
   { name: "संस्कृत", enName: "Sanskrit", count: 85 }
 ];
@@ -619,20 +661,55 @@ export const TOPIC_CHIPS = [
 // Sacred Upanishad Quote Card (Matching Client Reference Image)
 export const SACRED_QUOTE = {
   sanskrit: "यतो वाचो निवर्तन्ते अप्राप्य मनसा सह",
-  translation: "Where words return, along with the mind, unable to reach.",
+  translation: "Where words return, along with the mind, unable to reach the Supreme Consciousness.",
   hindiTranslation: "जहाँ से वाणी मन सहित, उस परब्रह्म को प्राप्त किए बिना लौट आती है।",
-  hinglishTranslation: "Jahan se vani man sahit, us parabrahma ko prapt kiye bina laut aati hai.",
   source: "Taittiriya Upanishad (तैत्तिरीयोपनिषद् २.९.१)"
 };
 
 // Research & References (Section 13 of doc)
 export const RESEARCH_MODULES = [
-  { title: "Research Articles", desc: "शोध पत्र एवं शास्त्रीय समीक्षा", icon: "FileText" },
-  { title: "Manuscripts", desc: "प्राचीन तालपत्र व भूर्जपत्र पांडुलिपि संदर्भ", icon: "Scroll" },
-  { title: "Rare Texts", desc: "दुर्लभ वैदिक व दार्शनिक अप्रकाशित ग्रंथ", icon: "Archive" },
-  { title: "Commentaries", desc: "सायण, शंकर, रामानुज आदि के प्रामाणिक भाष्य", icon: "BookMarked" },
-  { title: "Translations", desc: "मूलनिष्ठ संस्कृत, हिंदी व अंग्रेजी अनुवाद", icon: "Languages" },
-  { title: "Bibliography", desc: "शोधार्थियों हेतु शास्त्रीय संदर्भ ग्रंथसूची", icon: "Library" }
+  {
+    titleHi: "शोध पत्र एवं समीक्षा",
+    titleEn: "Research Articles",
+    descHi: "शोध पत्र एवं शास्त्रीय समीक्षा",
+    descEn: "Peer-reviewed papers, critical reviews, and Shastric essays.",
+    icon: "FileText"
+  },
+  {
+    titleHi: "पांडुलिपि संदर्भ",
+    titleEn: "Manuscripts",
+    descHi: "प्राचीन तालपत्र व भूर्जपत्र पांडुलिपि संदर्भ",
+    descEn: "Palm-leaf and birch-bark ancient manuscript archives.",
+    icon: "Scroll"
+  },
+  {
+    titleHi: "दुर्लभ ग्रंथ",
+    titleEn: "Rare Texts",
+    descHi: "दुर्लभ वैदिक व दार्शनिक अप्रकाशित ग्रंथ",
+    descEn: "Unpublished rare Vedic manuscripts and philosophical treatises.",
+    icon: "Archive"
+  },
+  {
+    titleHi: "प्रामाणिक भाष्य",
+    titleEn: "Commentaries",
+    descHi: "सायण, शंकर, रामानुज आदि के प्रामाणिक भाष्य",
+    descEn: "Classical commentaries by Sayana, Shankara, Ramanuja, etc.",
+    icon: "BookMarked"
+  },
+  {
+    titleHi: "शास्त्रीय अनुवाद",
+    titleEn: "Translations",
+    descHi: "मूलनिष्ठ संस्कृत, हिंदी व अंग्रेजी अनुवाद",
+    descEn: "Faithful Sanskrit, Hindi, and English verse translations.",
+    icon: "Languages"
+  },
+  {
+    titleHi: "ग्रंथसूची",
+    titleEn: "Bibliography",
+    descHi: "शोधार्थियों हेतु शास्त्रीय संदर्भ ग्रंथसूची",
+    descEn: "Comprehensive scholarly citation catalog and references.",
+    icon: "Library"
+  }
 ];
 
 // Audience Paths (Section 14 of doc)
@@ -641,19 +718,25 @@ export const AUDIENCE_PATHS = [
     role: "विद्यार्थी",
     enRole: "Students & Learners",
     desc: "वैदिक साहित्य, व्याकरण, दर्शन और संस्कृत की मूलभूत संरचना को चरणबद्ध समझें।",
-    cta: "Start Learning"
+    enDesc: "Foundational understanding of Vedic literature, grammar, philosophy, and Sanskrit structure.",
+    cta: "Start Learning",
+    ctaHi: "अध्ययन प्रारंभ करें"
   },
   {
     role: "साधक",
     enRole: "Spiritual Seekers",
-    desc: "मंत्र, स्तोत्र, देवता उपासना, जप विधि और दैनिक आध्यात्मिक अनुष्ठान explore करें।",
-    cta: "Explore Sadhana"
+    desc: "मंत्र, स्तोत्र, देवता उपासना, जप विधि और दैनिक आध्यात्मिक अनुष्ठान करें।",
+    enDesc: "Explore daily mantras, stotras, deity worship, japa meditation, and spiritual practices.",
+    cta: "Explore Sadhana",
+    ctaHi: "साधना देखें"
   },
   {
     role: "शोधकर्ता",
     enRole: "Scholars & Researchers",
     desc: "मूल संस्कृत पाठ, पांडुलिपि विवरण, भाष्य-तुलना और ग्रंथ-संदर्भों का गहन अध्ययन करें।",
-    cta: "Research Archive"
+    enDesc: "In-depth study of root Sanskrit recensions, manuscript archives, comparative commentaries, and citations.",
+    cta: "Research Archive",
+    ctaHi: "अनुसंधान आर्काइव"
   }
 ];
 
@@ -662,33 +745,89 @@ export const PRINCIPLES = [
   {
     num: "01",
     title: "मूल स्रोत",
-    desc: "जहाँ उपलब्ध हो, प्रामाणिक हस्तलिखित प्रतियां और मूल संहिताओं को प्राथमिकता।"
+    enTitle: "Primary Sources",
+    desc: "जहाँ उपलब्ध हो, प्रामाणिक हस्तलिखित प्रतियां और मूल संहिताओं को प्राथमिकता।",
+    enDesc: "Prioritizing authentic root manuscripts and primary Samhita recensions wherever available."
   },
   {
     num: "02",
     title: "संदर्भ",
-    desc: "प्रत्येक मंत्र व श्लोक को ग्रंथ, अध्याय, सूक्त और पद संख्या के साथ लिंक करना।"
+    enTitle: "Rigorous Citation",
+    desc: "प्रत्येक मंत्र व श्लोक को ग्रंथ, अध्याय, सूक्त और पद संख्या के साथ लिंक करना।",
+    enDesc: "Linking every verse and mantra to its exact canonical grantha, chapter, sukta, and pada index."
   },
   {
     num: "03",
     title: "संरचना",
-    desc: "सामग्री को विषय, वेद शाखा और शास्त्रीय परंपरा के अनुसार वर्गीकृत करना।"
+    enTitle: "Taxonomic Structure",
+    desc: "सामग्री को विषय, वेद शाखा और शास्त्रीय परंपरा के अनुसार वर्गीकृत करना।",
+    enDesc: "Systematically organizing knowledge by subject, Shakha recension, and classical traditions."
   },
   {
     num: "04",
     title: "परंपरा का सम्मान",
-    desc: "वैदिक, स्मार्त, आगम और पौराणिक परंपराओं को उनके मूल स्वरूप में प्रस्तुत करना।"
+    enTitle: "Living Lineage",
+    desc: "वैदिक, स्मार्त, आगम और पौराणिक परंपराओं को उनके मूल स्वरूप में प्रस्तुत करना।",
+    enDesc: "Faithfully presenting Vedic, Smarta, Agama, and Puranic traditions in their authentic living forms."
   }
 ];
 
 // Roadmap (Section 16 of doc)
 export const ROADMAP_STAGES = [
-  { step: "01", title: "Text", status: "Active", desc: "विशुद्ध देवनागरी पाठ संकलन" },
-  { step: "02", title: "Structured Knowledge", status: "Active", desc: "शाखा, ऋषि, देवता संबंध" },
-  { step: "03", title: "Audio", status: "Coming Soon", desc: "वैदिक स्वर आधारित शुद्ध पाठ" },
-  { step: "04", title: "Chanting", status: "Coming Soon", desc: "पारंपरिक सामगान व जटापाठ" },
-  { step: "05", title: "Video", status: "Roadmap", desc: "यज्ञ प्रक्रिया व अनुष्ठान चित्रण" },
-  { step: "06", title: "Research Archive", status: "Roadmap", desc: "अंतरराष्ट्रीय पाण्डुलिपि सहयोग" }
+  {
+    step: "01",
+    titleHi: "मूल पाठ",
+    titleEn: "Text",
+    statusHi: "सक्रिय",
+    statusEn: "Active",
+    descHi: "विशुद्ध देवनागरी पाठ संकलन",
+    descEn: "Canonical Devanagari root text compilation"
+  },
+  {
+    step: "02",
+    titleHi: "संरचित ज्ञान",
+    titleEn: "Structured Knowledge",
+    statusHi: "सक्रिय",
+    statusEn: "Active",
+    descHi: "शाखा, ऋषि, देवता संबंध",
+    descEn: "Shakha, Rishi, and Devata relational mapping"
+  },
+  {
+    step: "03",
+    titleHi: "ध्वनि पाठ",
+    titleEn: "Audio",
+    statusHi: "शीघ्र",
+    statusEn: "Coming Soon",
+    descHi: "वैदिक स्वर आधारित शुद्ध पाठ",
+    descEn: "Vedic svara accented authentic audio recitation"
+  },
+  {
+    step: "04",
+    titleHi: "सामगान",
+    titleEn: "Chanting",
+    statusHi: "शीघ्र",
+    statusEn: "Coming Soon",
+    descHi: "पारंपरिक सामगान व जटापाठ",
+    descEn: "Traditional Samavedic musical chanting and Jatapaatha"
+  },
+  {
+    step: "05",
+    titleHi: "अनुष्ठान दृश्य",
+    titleEn: "Video",
+    statusHi: "योजना",
+    statusEn: "Roadmap",
+    descHi: "यज्ञ प्रक्रिया व अनुष्ठान चित्रण",
+    descEn: "Visual documentation of Vedic Yagyas and rituals"
+  },
+  {
+    step: "06",
+    titleHi: "शोध आर्काइव",
+    titleEn: "Research Archive",
+    statusHi: "योजना",
+    statusEn: "Roadmap",
+    descHi: "अंतरराष्ट्रीय पाण्डुलिपि सहयोग",
+    descEn: "International manuscript preservation and scholarly collaboration"
+  }
 ];
 
 // Footer Links (Section 19 / 20 of doc)

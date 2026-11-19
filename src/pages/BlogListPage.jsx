@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import SEO from "../components/common/SEO.jsx";
 import {
   Search,
   BookOpen,
@@ -316,6 +317,11 @@ export default function BlogListPage() {
 
   return (
     <div className="bg-white min-h-screen pb-20">
+      <SEO
+        title={isHindi ? "वैदिक लेख और ब्लॉग" : "Vedic Articles & Blogs"}
+        description={isHindi ? "वैदिक ज्ञान, शास्त्र, पुराण, उपनिषद और भारतीय परंपरा पर लेखों का संग्रह।" : "Collection of articles on Vedic knowledge, shastras, Puranas, Upanishads, and Indian tradition."}
+        canonical="/library/articles"
+      />
       {/* 0. Top Reading Progress Bar (#FFD21F) */}
       <div
         className="fixed top-0 left-0 right-0 h-[3px] bg-[#E5E5E5] z-50 pointer-events-none"

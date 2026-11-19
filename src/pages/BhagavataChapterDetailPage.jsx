@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import SEO from "../components/common/SEO.jsx";
 import {
   ArrowLeft,
   ArrowRight,
@@ -219,6 +220,11 @@ export default function BhagavataChapterDetailPage() {
 
   return (
     <div className="min-h-screen bg-white pb-20">
+      <SEO
+        title={isHindi ? `श्रीमद्भागवत — अध्याय ${chapterNumber}` : `Srimad Bhagavata — Chapter ${chapterNumber}`}
+        description={isHindi ? "श्रीमद्भागवत महापुराण का प्रामाणिक पाठ, भावार्थ और स्रोत संदर्भ।" : "Authentic text, meaning, and source references for Srimad Bhagavata Purana."}
+        canonical={`/library/purana/shrimad-bhagavata/skandha-11/${chapterNumber}`}
+      />
       {/* 1. Breadcrumb Ribbon */}
       <div className="border-b border-[#E5E5E5] bg-white px-4 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-5xl items-center gap-2 text-xs font-medium text-[#555555] flex-wrap">

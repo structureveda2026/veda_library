@@ -100,7 +100,9 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
           {displayedGranthas.map((grantha, idx) => {
             const imgSrc = GRANTHA_IMAGES[grantha.imageKey] || gitaImg;
             const title = isHindi ? grantha.name : grantha.enName;
-            const subtitleTag = isHindi ? grantha.enName : grantha.name;
+            const categoryText = isHindi ? grantha.category : (grantha.enCategory || grantha.category);
+            const authorText = isHindi ? grantha.author : (grantha.enAuthor || grantha.author);
+            const summaryText = isHindi ? grantha.summary : (grantha.enSummary || grantha.summary);
 
             return (
               <div
@@ -119,8 +121,8 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     
                     {/* Refined Category Badge in Brand Yellow #FFD21F with Deep Black #111111 text */}
-                    <span className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs font-devanagari">
-                      {grantha.category}
+                    <span className={`absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#FFD21F] text-[#111111] border border-[#FFD21F] shadow-xs ${isHindi ? "font-devanagari" : ""}`}>
+                      {categoryText}
                     </span>
                   </div>
 
@@ -133,17 +135,14 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
                     >
                       {title}
                     </h3>
-                    <p className="text-xs text-[#D9A441] font-bold tracking-wide mt-0.5">
-                      {subtitleTag}
-                    </p>
-                    <p className="text-[11px] text-[#555555] mt-1.5 font-devanagari">
+                    <p className={`text-[11px] text-[#555555] mt-1.5 ${isHindi ? "font-devanagari" : ""}`}>
                       {isHindi ? "रचयिता / परम्परा:" : "Author / Tradition:"}{" "}
                       <strong className="text-[#111111] font-bold">
-                        {grantha.author}
+                        {authorText}
                       </strong>
                     </p>
-                    <p className="text-xs text-[#555555] font-devanagari mt-2 line-clamp-2 leading-relaxed">
-                      {grantha.summary}
+                    <p className={`text-xs text-[#555555] mt-2 line-clamp-2 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+                      {summaryText}
                     </p>
                   </div>
                 </div>

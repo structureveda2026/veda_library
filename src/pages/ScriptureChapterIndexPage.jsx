@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, BookOpen, Home, Sparkles, Search, CheckCircle2, Type, X } from "lucide-react";
 import { EKADASH_SKANDHA_CHAPTERS } from "../data/bhagavataEkadashaData.js";
 import bannerTempleGhat from "../assets/images/library/banners/banner-temple-ghat.jpg";
+import SEO from "../components/common/SEO.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
 
 const LABELS = {
@@ -84,6 +85,11 @@ export default function ScriptureChapterIndexPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title={isHindi ? "एकादश स्कंध — अध्याय सूची" : "Canto 11 — Chapter Index"}
+        description={isHindi ? "श्रीमद्भागवत महापुराण के एकादश स्कंध के सभी अध्यायों की सूची और त्वरित नेविगेशन।" : "Chapter index and quick navigation for all chapters of Canto 11 of Srimad Bhagavata Purana."}
+        canonical="/library/purana/shrimad-bhagavata/skandha-11"
+      />
       {/* 1. Breadcrumb Ribbon */}
       <div className="border-b border-[#E5E5E5] bg-white px-4 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-6xl items-center gap-2 text-xs font-medium text-[#555555]">

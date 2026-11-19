@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
+import SEO from "../../components/common/SEO.jsx";
 import {
   ArrowRight,
   Home,
@@ -423,6 +424,11 @@ export default function CollectionsPage({ onSelectArticle }) {
   // =========================================================================
   return (
     <div className="bg-[#FFFFFF] min-h-screen text-[#111111]">
+      <SEO
+        title={isHindi ? "संग्रह एवं संकलन" : "Curated Collections"}
+        description={isHindi ? "वेद लाइब्रेरी के क्यूरेटेड ज्ञान संग्रह — ग्रंथ, मंत्र, स्तोत्र और पुराण संकलन।" : "Curated knowledge collections of Veda Library — grantha, mantra, stotra, and Purana compilations."}
+        canonical="/library/collections"
+      />
       {/* Royal Bhaktilok-Grade Hero Banner */}
       <div className="relative bg-[#111111] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] overflow-hidden shadow-sm">
         {/* Background Kashi Ganga Aarti Image with Vivid 85% Visibility */}

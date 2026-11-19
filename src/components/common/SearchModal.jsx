@@ -286,7 +286,9 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                             <p className="text-sm font-bold text-[#111111] group-hover:text-[#D9A441]">
                               {isHindi ? v.name : (v.enName || v.name)}
                             </p>
-                            <p className="text-xs text-[#555555] line-clamp-1">{v.desc}</p>
+                            <p className="text-xs text-[#555555] line-clamp-1">
+                              {isHindi ? v.desc : (v.enDesc || v.desc)}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -311,8 +313,12 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                         >
                           <BookOpen className="w-4 h-4 text-[#D9A441] mt-0.5 flex-shrink-0" />
                           <div>
-                            <p className="text-sm font-bold text-[#111111] group-hover:text-[#D9A441]">{g.name}</p>
-                            <p className="text-xs text-[#555555] line-clamp-1">{g.author} • {g.summary}</p>
+                            <p className="text-sm font-bold text-[#111111] group-hover:text-[#D9A441]">
+                              {isHindi ? g.name : (g.enName || g.name)}
+                            </p>
+                            <p className="text-xs text-[#555555] line-clamp-1">
+                              {isHindi ? `${g.author} • ${g.summary}` : `${g.enAuthor || g.author} • ${g.enSummary || g.summary}`}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -338,9 +344,11 @@ export default function SearchModal({ isOpen, onClose, initialQuery = "" }) {
                           <Layers className="w-4 h-4 text-[#D9A441] mt-0.5 flex-shrink-0" />
                           <div>
                             <p className="text-sm font-bold text-[#111111] group-hover:text-[#D9A441]">
-                              {c.title} <span className="text-xs text-[#555555] font-normal">({c.enTitle})</span>
+                              {isHindi ? c.title : c.enTitle}
                             </p>
-                            <p className="text-xs text-[#555555] line-clamp-1">{c.tagline}</p>
+                            <p className="text-xs text-[#555555] line-clamp-1">
+                              {isHindi ? c.tagline : (c.enTagline || c.tagline)}
+                            </p>
                           </div>
                         </div>
                       ))}

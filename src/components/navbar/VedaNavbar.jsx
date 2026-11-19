@@ -24,7 +24,7 @@ export default function VedaNavbar({
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { language, setLanguage, isHindi, isEnglish, t } = useLanguage();
+  const { language, setLanguage, isHindi, isEnglish, isHinglish, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -183,11 +183,11 @@ export default function VedaNavbar({
             </button>
 
             {/* Interactive Hindi / English Language Switcher */}
-            <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-xl border border-[#E5E5E5]">
+            <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-xl border border-[#E5E5E5] whitespace-nowrap flex-shrink-0">
               <button
                 type="button"
                 onClick={() => setLanguage("hi")}
-                className={`flex items-center justify-center gap-1 min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${
+                className={`flex items-center justify-center gap-1 min-h-[32px] sm:min-h-[36px] px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   isHindi
                     ? "bg-[#111111] text-[#FFD21F] shadow-xs"
                     : "text-[#555555] hover:text-[#111111] hover:bg-[#FFFFFF]"
@@ -199,14 +199,14 @@ export default function VedaNavbar({
               <button
                 type="button"
                 onClick={() => setLanguage("en")}
-                className={`flex items-center justify-center gap-1 min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer ${
+                className={`flex items-center justify-center gap-1 min-h-[32px] sm:min-h-[36px] px-2 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
                   isEnglish
                     ? "bg-[#111111] text-[#FFD21F] shadow-xs"
                     : "text-[#555555] hover:text-[#111111] hover:bg-[#FFFFFF]"
                 }`}
                 title="Switch to English"
               >
-                <span>EN</span>
+                <span>English</span>
               </button>
             </div>
 
@@ -246,11 +246,11 @@ export default function VedaNavbar({
               <Globe className="w-4 h-4 text-[#D9A441]" />
               <span>{isHindi ? "भाषा चयन:" : "Language:"}</span>
             </span>
-            <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-lg border border-[#E5E5E5]">
+            <div className="flex items-center bg-[#FFFFFF] p-0.5 rounded-lg border border-[#E5E5E5] whitespace-nowrap flex-shrink-0">
               <button
                 type="button"
                 onClick={() => setLanguage("hi")}
-                className={`min-h-[40px] px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center ${
+                className={`min-h-[40px] px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center whitespace-nowrap ${
                   isHindi ? "bg-[#111111] text-[#FFD21F] shadow-2xs" : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
@@ -259,7 +259,7 @@ export default function VedaNavbar({
               <button
                 type="button"
                 onClick={() => setLanguage("en")}
-                className={`min-h-[40px] px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center ${
+                className={`min-h-[40px] px-3.5 py-2 rounded-md text-xs font-bold transition cursor-pointer flex items-center justify-center whitespace-nowrap ${
                   isEnglish ? "bg-[#111111] text-[#FFD21F] shadow-2xs" : "text-[#555555] hover:text-[#111111]"
                 }`}
               >

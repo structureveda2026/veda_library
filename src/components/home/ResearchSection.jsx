@@ -48,11 +48,11 @@ export default function ResearchSection({ onNavigateKnowledge }) {
                 <IconHelper name={mod.icon} className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors">
-                  {mod.title}
+                <h3 className={`font-serif text-base font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors ${isHindi ? "font-devanagari" : ""}`}>
+                  {isHindi ? (mod.titleHi || mod.title) : (mod.titleEn || mod.title)}
                 </h3>
-                <p className="text-[11px] text-[#555555] font-devanagari mt-0.5 leading-relaxed">
-                  {mod.desc}
+                <p className={`text-[11px] text-[#555555] mt-0.5 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+                  {isHindi ? (mod.descHi || mod.desc) : (mod.descEn || mod.desc)}
                 </p>
                 <span className="inline-block mt-2 text-[11px] font-semibold text-[#111111] group-hover:text-[#D9A441] transition-colors">
                   {isHindi ? "संग्रह देखें →" : "Browse Archive →"}

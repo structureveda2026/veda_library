@@ -19,19 +19,18 @@ const TRANSLATIONS = {
       SACRED_QUOTE.translation ||
       "Where words return, along with the mind, unable to reach the Supreme Consciousness.",
   },
-  hinglish: {
-    key: "hinglish",
-    label: "सरल हिंग्लिश",
-    text:
-      SACRED_QUOTE.hinglishTranslation ||
-      "Jahan se vani man sahit, us Parabrahma ko prapt kiye bina laut aati hai (Param Satya shabdon aur buddhi se pare hai).",
-  },
 };
 
 export default function SacredQuoteSection() {
   const { isHindi } = useLanguage();
-  const [activeTab, setActiveTab] = useState("hi");
+  const currentLang = isHindi ? "hi" : "en";
+  const [activeTab, setActiveTab] = useState(currentLang);
   const [copied, setCopied] = useState(false);
+
+  // Sync activeTab with global language changes unless manually overridden
+  React.useEffect(() => {
+    setActiveTab(isHindi ? "hi" : "en");
+  }, [isHindi]);
 
   const shloka = SACRED_QUOTE.sanskrit || "यतो वाचो निवर्तन्ते अप्राप्य मनसा सह";
   const source = SACRED_QUOTE.source || "Taittiriya Upanishad (तैत्तिरीयोपनिषद् २.९.१)";
@@ -163,14 +162,12 @@ export default function SacredQuoteSection() {
             </div>
 
             {/* Golden Verse Attribution */}
-            <div className="pt-3 sm:pt-3.5 border-t border-[#E5E5E5] flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-xs">
+            <div className="pt-3 sm:pt-3.5 border-t border-[#E5E5E5] flex items-center justify-center gap-2 text-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-[#D9A441]" />
               <span className="font-serif font-bold text-[#D9A441] tracking-wide text-xs sm:text-sm">
-                तैत्तिरीयोपनिषद् २.९.१ (ब्रह्मानन्दवल्ली)
-              </span>
-              <span className="text-[#555555]">•</span>
-              <span className="text-[#555555] font-semibold">
-                Taittiriya Upanishad 2.9.1
+                {isHindi
+                  ? "तैत्तिरीयोपनिषद् २.९.१ (ब्रह्मानन्दवल्ली)"
+                  : "Taittiriya Upanishad 2.9.1 (Brahmanandavalli)"}
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#D9A441]" />
             </div>

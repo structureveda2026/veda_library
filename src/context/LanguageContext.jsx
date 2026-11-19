@@ -4,45 +4,46 @@ const LanguageContext = createContext();
 
 export const TRANSLATIONS = {
   nav: {
-    home: { en: "Home", hi: "होम" },
-    explore: { en: "Explore", hi: "वेद ज्ञान" },
-    grantha: { en: "Grantha", hi: "ग्रंथ संग्रह" },
-    mantraStotra: { en: "Mantra & Stotra", hi: "मंत्र एवं स्तोत्र" },
-    articles: { en: "Blogs & Articles", hi: "शास्त्रीय आलेख" },
-    topics: { en: "Topics", hi: "प्रमुख विषय" },
-    research: { en: "Research", hi: "अनुसंधान" },
-    searchPrompt: { en: "Search library...", hi: "पुस्तकालय में खोजें..." },
+    home: { en: "Home", hi: "होम", hinglish: "Home" },
+    explore: { en: "Explore", hi: "वेद ज्ञान", hinglish: "Ved Gyan" },
+    grantha: { en: "Grantha", hi: "ग्रंथ संग्रह", hinglish: "Granth Sangrah" },
+    mantraStotra: { en: "Mantra & Stotra", hi: "मंत्र एवं स्तोत्र", hinglish: "Mantra aur Stotra" },
+    articles: { en: "Blogs & Articles", hi: "शास्त्रीय आलेख", hinglish: "Blogs aur Alekh" },
+    topics: { en: "Topics", hi: "प्रमुख विषय", hinglish: "Pramukh Vishay" },
+    research: { en: "Research", hi: "अनुसंधान", hinglish: "Research" },
+    searchPrompt: { en: "Search library...", hi: "पुस्तकालय में खोजें...", hinglish: "Library mein khojen..." }
   },
   actions: {
-    previous: { en: "Previous", hi: "पिछला" },
-    next: { en: "Next", hi: "अगला" },
-    page: { en: "Page", hi: "पृष्ठ" },
-    of: { en: "/", hi: "/" },
-    jumpToVerse: { en: "Jump to verse", hi: "श्लोक या पृष्ठ" },
-    go: { en: "Go", hi: "जाएँ" },
-    back: { en: "Back", hi: "पीछे जाएं" },
-    search: { en: "Search", hi: "खोजें" },
-    clearTag: { en: "Clear Tag", hi: "टैग हटाएं" },
-    showAll: { en: "Show All", hi: "समस्त देखें" },
-    resetFilter: { en: "Reset Filter", hi: "फ़िल्टर रीसेट करें" },
-    save: { en: "Bookmark", hi: "सहेजें" },
-    saved: { en: "Saved", hi: "सहेजा गया" },
-    focusMode: { en: "Focus Mode", hi: "ध्यान मोड" },
-    normalMode: { en: "Normal View", hi: "सामान्य दृश्य" },
+    previous: { en: "Previous", hi: "पिछला", hinglish: "Pichhla" },
+    next: { en: "Next", hi: "अगला", hinglish: "Agla" },
+    page: { en: "Page", hi: "पृष्ठ", hinglish: "Page" },
+    of: { en: "/", hi: "/", hinglish: "/" },
+    jumpToVerse: { en: "Jump to verse", hi: "श्लोक या पृष्ठ", hinglish: "Shloka ya Page" },
+    go: { en: "Go", hi: "जाएँ", hinglish: "Jao" },
+    back: { en: "Back", hi: "पीछे जाएं", hinglish: "Peeche Jao" },
+    search: { en: "Search", hi: "खोजें", hinglish: "Khojen" },
+    clearTag: { en: "Clear Tag", hi: "टैग हटाएं", hinglish: "Tag Hatayen" },
+    showAll: { en: "Show All", hi: "समस्त देखें", hinglish: "Sab Dikhao" },
+    resetFilter: { en: "Reset Filter", hi: "फ़िल्टर रीसेट करें", hinglish: "Filter Reset Karo" },
+    save: { en: "Bookmark", hi: "सहेजें", hinglish: "Save Karo" },
+    saved: { en: "Saved", hi: "सहेजा गया", hinglish: "Save Ho Gaya" },
+    focusMode: { en: "Focus Mode", hi: "ध्यान मोड", hinglish: "Focus Mode" },
+    normalMode: { en: "Normal View", hi: "सामान्य दृश्य", hinglish: "Normal View" }
   },
   footer: {
-    exploreHeading: { en: "Explore", hi: "ज्ञान शाखाएँ" },
-    quickLinks: { en: "Quick Links", hi: "महत्वपूर्ण कड़ियाँ" },
-    categories: { en: "Featured Disciplines", hi: "प्रमुख विषय" },
-    rights: { en: "All rights reserved.", hi: "सर्वाधिकार सुरक्षित।" },
+    exploreHeading: { en: "Explore", hi: "ज्ञान शाखाएँ", hinglish: "Gyan Shakhaen" },
+    quickLinks: { en: "Quick Links", hi: "महत्वपूर्ण कड़ियाँ", hinglish: "Quick Links" },
+    categories: { en: "Featured Disciplines", hi: "प्रमुख विषय", hinglish: "Pramukh Vishay" },
+    rights: { en: "All rights reserved.", hi: "सर्वाधिकार सुरक्षित।", hinglish: "All Rights Reserved" },
     subtitle: {
       en: "Digital preservation and presentation of Vedic & traditional knowledge.",
       hi: "भारतीय वैदिक एवं शास्त्रीय ज्ञान परंपरा का प्रामाणिक डिजिटल संग्रह।",
+      hinglish: "Bhartiya Vedic aur Shastriya Gyan Parampara ka Digital Sangrah."
     },
-    quickSearch: { en: "Quick Search Library", hi: "पुस्तकालय खोजें" },
-    verifiedCorpus: { en: "100% Source-Verified Sanskrit Corpus", hi: "१००% प्रामाणिक संस्कृत एवं वैदिक मूल स्रोत" },
-    canonicalStructure: { en: "Text-First Canonical Structure & Pada-Patha", hi: "पद-पाठ एवं शास्त्रीय संरचना आधारित" },
-    digitalHeritage: { en: "Open Digital Heritage for Practitioners & Scholars", hi: "साधकों व शोधार्थियों हेतु मुक्त डिजिटल धरोहर" },
+    quickSearch: { en: "Quick Search Library", hi: "पुस्तकालय खोजें", hinglish: "Library Khojen" },
+    verifiedCorpus: { en: "100% Source-Verified Sanskrit Corpus", hi: "१००% प्रामाणिक संस्कृत एवं वैदिक मूल स्रोत", hinglish: "Source-Verified Sanskrit Corpus" },
+    canonicalStructure: { en: "Text-First Canonical Structure & Pada-Patha", hi: "पद-पाठ एवं शास्त्रीय संरचना आधारित", hinglish: "Text-First Canonical Structure" },
+    digitalHeritage: { en: "Open Digital Heritage for Practitioners & Scholars", hi: "साधकों व शोधार्थियों हेतु मुक्त डिजिटल धरोहर", hinglish: "Open Digital Heritage" }
   },
 };
 
@@ -108,6 +109,7 @@ export function LanguageProvider({ children }) {
         toggleLanguage,
         isHindi: language === "hi",
         isEnglish: language === "en",
+        isHinglish: language === "hinglish",
         t,
       }}
     >
@@ -126,6 +128,7 @@ export function useLanguage() {
       toggleLanguage: () => {},
       isHindi: true,
       isEnglish: false,
+      isHinglish: false,
       t: (path, fallback = "") => fallback || path,
     };
   }

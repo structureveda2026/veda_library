@@ -29,7 +29,8 @@ export default function AudiencePathsSection({ onNavigateKnowledge }) {
           {AUDIENCE_PATHS.map((path, idx) => {
             const Icon = PATH_ICONS[idx] || BookOpen;
             const title = isHindi ? path.role : path.enRole;
-            const subtitle = isHindi ? path.enRole : path.role;
+            const desc = isHindi ? path.desc : (path.enDesc || path.desc);
+            const ctaText = isHindi ? (path.ctaHi || path.cta) : path.cta;
 
             return (
               <div
@@ -44,16 +45,13 @@ export default function AudiencePathsSection({ onNavigateKnowledge }) {
                   <h3 className={`text-xl font-bold text-[#111111] group-hover:text-[#D9A441] transition-colors ${isHindi ? "font-devanagari" : "font-serif"}`}>
                     {title}
                   </h3>
-                  <span className={`text-[11px] font-medium text-[#D9A441] ${isHindi ? "" : "font-devanagari"}`}>
-                    {subtitle}
-                  </span>
-                  <p className="text-xs text-[#555555] font-devanagari mt-2 leading-relaxed">
-                    {path.desc}
+                  <p className={`text-xs text-[#555555] mt-2 leading-relaxed ${isHindi ? "font-devanagari" : ""}`}>
+                    {desc}
                   </p>
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-[#E5E5E5] text-xs font-bold text-[#111111] group-hover:text-[#D9A441] flex items-center gap-1 transition-colors">
-                  <span>{path.cta}</span>
+                  <span>{ctaText}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>
