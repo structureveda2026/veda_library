@@ -42,7 +42,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#111111] min-h-0 md:min-h-[calc(100vh-70px)] flex items-center justify-center py-6 sm:py-10 md:py-14 px-3 sm:px-6 lg:px-8 border-b border-[#111111]">
+    <section className="relative overflow-hidden bg-[#111111] min-h-[460px] sm:min-h-[520px] md:min-h-[calc(100vh-70px)] flex items-center justify-center py-10 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-[#111111]">
       {/* Background Sacred Vedic Dawn Sanctuary Artwork with Tasteful Cinematic Lighting */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
@@ -57,7 +57,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
 
       <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
         {/* Master Heading: Sleek on mobile, majestic on desktop */}
-        <h1 className="font-serif text-2xl sm:text-3xl lg:text-5xl font-bold text-white tracking-tight mb-1.5 sm:mb-3 text-center leading-tight drop-shadow-md">
+        <h1 className="font-serif text-2xl sm:text-3xl lg:text-5xl font-bold text-white tracking-tight mb-2 sm:mb-3 text-center leading-tight drop-shadow-md">
           {isHindi ? (
             <span className="font-devanagari block">
               सनातन वैदिक ज्ञान परंपरा
@@ -76,7 +76,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
         </h1>
 
         {/* Subtitle - Single crisp line on mobile, complete on desktop */}
-        <p className="text-xs sm:text-sm md:text-base text-[#E5E5E5] font-normal leading-relaxed max-w-xl mx-auto mb-3.5 sm:mb-5 drop-shadow-xs text-center font-devanagari sm:font-sans">
+        <p className="text-xs sm:text-sm md:text-base text-[#E5E5E5] font-normal leading-relaxed max-w-xl mx-auto mb-4 sm:mb-6 drop-shadow-xs text-center font-devanagari sm:font-sans">
           {isHindi ? (
             <>
               <span className="sm:hidden">वेदों, उपनिषदों एवं पावन मंत्रों का डिजिटल गर्भगृह।</span>
@@ -90,13 +90,13 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
           )}
         </p>
 
-        {/* Master Search Engine Bar */}
+        {/* Master Search Engine Bar — Compact & Sleek on Mobile */}
         <form
           onSubmit={handleSearchSubmit}
-          className="w-full max-w-2xl mx-auto mb-3 sm:mb-4 group"
+          className="w-full max-w-[310px] xs:max-w-xs sm:max-w-xl md:max-w-2xl mx-auto mb-4 sm:mb-5 group"
         >
-          <div className="relative flex items-center bg-white rounded-full border-2 border-white/90 shadow-[0_6px_24px_rgb(0,0,0,0.3)] focus-within:border-[#FFD21F] focus-within:ring-4 focus-within:ring-[#FFD21F]/30 hover:border-[#FFD21F]/70 transition-all duration-300 p-1 sm:p-1.5 pl-3.5 sm:pl-6">
-            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#555555] flex-shrink-0 mr-2 sm:mr-3 group-focus-within:text-[#111111] transition-colors" />
+          <div className="relative flex items-center bg-white rounded-full border-2 border-white/90 shadow-[0_6px_24px_rgb(0,0,0,0.3)] focus-within:border-[#FFD21F] focus-within:ring-4 focus-within:ring-[#FFD21F]/30 hover:border-[#FFD21F]/70 transition-all duration-300 p-0.5 sm:p-1.5 pl-3 sm:pl-6">
+            <Search className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-[#555555] flex-shrink-0 mr-1.5 sm:mr-3 group-focus-within:text-[#111111] transition-colors" />
             <input
               ref={searchInputRef}
               type="text"
@@ -105,10 +105,10 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
               onClick={() => onOpenSearch && onOpenSearch(localQuery)}
               placeholder={
                 isHindi
-                  ? "वेद, ग्रंथ, मंत्र, श्लोक खोजें..."
+                  ? "वेद, ग्रंथ, मंत्र खोजें..."
                   : "Search Veda, Grantha, Mantra..."
               }
-              className="w-full min-w-0 bg-transparent text-[#111111] placeholder:text-[#666666] focus:outline-none text-xs sm:text-sm md:text-base font-semibold pr-2"
+              className="w-full min-w-0 bg-transparent text-[#111111] placeholder:text-[#666666] focus:outline-none text-[11px] sm:text-sm md:text-base font-semibold pr-1.5 py-1 sm:py-0"
             />
             {/* Keyboard shortcut indicator: ⌘K / Ctrl+K */}
             <div className="hidden sm:inline-flex items-center gap-1 mr-2 select-none pointer-events-none">
@@ -121,10 +121,10 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
             </div>
             <button
               type="submit"
-              className="min-h-[36px] sm:min-h-[44px] px-4 sm:px-8 py-1.5 sm:py-2 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 flex-shrink-0 cursor-pointer active:scale-[0.98]"
+              className="min-h-[30px] sm:min-h-[44px] px-3 sm:px-8 py-1 sm:py-2 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-[11px] sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-1 sm:gap-2 flex-shrink-0 cursor-pointer active:scale-[0.98]"
             >
               <span>{isHindi ? "खोजें" : "Search"}</span>
-              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 hidden sm:inline" />
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 hidden sm:inline" />
             </button>
           </div>
         </form>
@@ -156,15 +156,15 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
         </div>
 
         {/* Actions: Primary #FFD21F (clean on phone) & Secondary on sm+ */}
-        <div className="w-full flex items-center justify-center gap-2.5 sm:gap-4 max-w-xs sm:max-w-md mx-auto mt-1 sm:mt-0">
+        <div className="w-full flex items-center justify-center gap-2.5 sm:gap-4 max-w-[260px] xs:max-w-xs sm:max-w-md mx-auto mt-1 sm:mt-0">
           <button
             type="button"
             onClick={onNavigateKnowledge}
-            className="w-full sm:flex-1 min-h-[40px] sm:min-h-[44px] px-5 sm:px-7 py-2.5 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] group"
+            className="w-full sm:flex-1 min-h-[38px] sm:min-h-[44px] px-4 sm:px-7 py-2 sm:py-2.5 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] group"
           >
-            <BookOpen className="w-4 h-4 text-[#111111] shrink-0" />
+            <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#111111] shrink-0" />
             <span>{isHindi ? "पुस्तकालय अन्वेषण करें" : "Explore Library"}</span>
-            <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-transform group-hover:translate-x-0.5" />
           </button>
 
           <button
