@@ -38,16 +38,16 @@ export default function TrustStrip() {
 
   return (
     <section className="bg-white border-b border-[#E5E5E5] shadow-xs relative z-10">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-y-0 divide-x sm:divide-x divide-[#E5E5E5]">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#E5E5E5]">
           {PILLARS.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={idx}
-                className="group flex items-center gap-2.5 sm:gap-3.5 p-3 sm:p-5 transition-colors duration-200 hover:bg-[#FFD21F]/10"
+                className="group flex items-center gap-2 sm:gap-3.5 p-2.5 sm:p-4 transition-colors duration-200 hover:bg-[#FFD21F]/10"
               >
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 shadow-xs border border-[#E5E5E5] bg-white group-hover:border-[#FFD21F]">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 shadow-2xs border border-[#E5E5E5] bg-white group-hover:border-[#FFD21F]">
                   <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#D9A441]" />
                 </div>
                 <div className="min-w-0 flex-1">

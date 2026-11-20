@@ -42,7 +42,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#111111] min-h-[calc(100vh-72px)] flex items-center justify-center py-6 sm:py-10 px-4 sm:px-6 lg:px-8 border-b border-[#111111]">
+    <section className="relative overflow-hidden bg-[#111111] min-h-0 md:min-h-[calc(100vh-70px)] flex items-center justify-center py-6 sm:py-10 md:py-14 px-3 sm:px-6 lg:px-8 border-b border-[#111111]">
       {/* Background Sacred Vedic Dawn Sanctuary Artwork with Tasteful Cinematic Lighting */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
@@ -57,18 +57,18 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
 
       <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
         {/* Master Heading: 2 Clean Rows, Never 3 */}
-        <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-2 sm:mb-3 text-center leading-tight drop-shadow-md">
+        <h1 className="font-serif text-xl sm:text-3xl lg:text-5xl font-bold text-white tracking-tight mb-1.5 sm:mb-3 text-center leading-tight drop-shadow-md">
           {isHindi ? (
             <span className="font-devanagari block">
               सनातन वैदिक ज्ञान परंपरा
-              <span className="text-[#FFD21F] block mt-1 sm:mt-2 font-extrabold text-xl sm:text-3xl lg:text-4xl">
+              <span className="text-[#FFD21F] block mt-1 sm:mt-2 font-extrabold text-lg sm:text-2xl lg:text-4xl">
                 पावन डिजिटल गर्भगृह
               </span>
             </span>
           ) : (
             <span className="font-serif block">
               The Sacred Vedic Canon
-              <span className="text-[#FFD21F] block mt-1 sm:mt-2 font-extrabold text-xl sm:text-3xl lg:text-4xl">
+              <span className="text-[#FFD21F] block mt-1 sm:mt-2 font-extrabold text-lg sm:text-2xl lg:text-4xl">
                 Digital Sanctum
               </span>
             </span>
@@ -76,7 +76,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
         </h1>
 
         {/* Subtitle - Crisp, concise, scholarly */}
-        <p className="text-xs sm:text-sm md:text-base text-[#E5E5E5] font-normal leading-relaxed max-w-xl mx-auto mb-4 sm:mb-6 drop-shadow-xs text-center font-devanagari sm:font-sans">
+        <p className="text-xs sm:text-sm md:text-base text-[#E5E5E5] font-normal leading-relaxed max-w-xl mx-auto mb-3 sm:mb-5 drop-shadow-xs text-center font-devanagari sm:font-sans">
           {isHindi
             ? "चारों वेद, उपनिषद, दर्शन एवं पावन मंत्रों का प्रामाणिक डिजिटल संग्रह।"
             : "An authentic, searchable digital archive for the Vedas, Upanishads, and sacred scriptures."}
@@ -85,10 +85,10 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
         {/* Master Search Engine Bar */}
         <form
           onSubmit={handleSearchSubmit}
-          className="w-full max-w-2xl mx-auto mb-3.5 sm:mb-5 group"
+          className="w-full max-w-2xl mx-auto mb-2.5 sm:mb-4 group"
         >
-          <div className="relative flex items-center bg-white rounded-full border-2 border-white/90 shadow-[0_8px_30px_rgb(0,0,0,0.35)] focus-within:border-[#FFD21F] focus-within:ring-4 focus-within:ring-[#FFD21F]/30 hover:border-[#FFD21F]/70 transition-all duration-300 p-1.5 pl-4 sm:pl-6">
-            <Search className="w-5 h-5 text-[#555555] flex-shrink-0 mr-2.5 sm:mr-3 group-focus-within:text-[#111111] transition-colors" />
+          <div className="relative flex items-center bg-white rounded-full border-2 border-white/90 shadow-[0_6px_24px_rgb(0,0,0,0.3)] focus-within:border-[#FFD21F] focus-within:ring-4 focus-within:ring-[#FFD21F]/30 hover:border-[#FFD21F]/70 transition-all duration-300 p-1 sm:p-1.5 pl-3.5 sm:pl-6">
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#555555] flex-shrink-0 mr-2 sm:mr-3 group-focus-within:text-[#111111] transition-colors" />
             <input
               ref={searchInputRef}
               type="text"
@@ -113,19 +113,19 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
             </div>
             <button
               type="submit"
-              className="min-h-[40px] sm:min-h-[44px] px-5 sm:px-8 py-2 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 flex-shrink-0 cursor-pointer active:scale-[0.98]"
+              className="min-h-[36px] sm:min-h-[44px] px-4 sm:px-8 py-1.5 sm:py-2 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-1.5 sm:gap-2 flex-shrink-0 cursor-pointer active:scale-[0.98]"
             >
               <span>{isHindi ? "खोजें" : "Search"}</span>
-              <ArrowRight className="w-4 h-4 hidden sm:inline" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 hidden sm:inline" />
             </button>
           </div>
         </form>
 
         {/* Trending Search Pills - 4 compact, clean pills */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-[#E5E5E5] mb-5 sm:mb-6 max-w-2xl mx-auto">
-          <span className="font-semibold text-white/90 flex items-center gap-1 mr-1 text-[11px] sm:text-xs">
-            <Flame className="w-3.5 h-3.5 text-[#FFD21F]" />
-            {isHindi ? "प्रचलित खोज:" : "Trending:"}
+        <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-[#E5E5E5] mb-3.5 sm:mb-5 max-w-2xl mx-auto">
+          <span className="font-semibold text-white/90 flex items-center gap-1 mr-1 text-[10px] sm:text-xs">
+            <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#FFD21F]" />
+            {isHindi ? "प्रचलित:" : "Trending:"}
           </span>
           {FEATURED_TOPICS.map((tag) => {
             const tagLabel = isHindi ? tag.hi : tag.en;
@@ -135,7 +135,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
                 key={tag.en}
                 type="button"
                 onClick={() => handleTagClick(tagLabel)}
-                className={`min-h-[28px] sm:min-h-[30px] px-2.5 sm:px-3 py-0.5 rounded-full transition-all duration-200 cursor-pointer font-medium text-[11px] sm:text-xs inline-flex items-center ${
+                className={`min-h-[24px] sm:min-h-[28px] px-2 sm:px-3 py-0.5 rounded-full transition-all duration-200 cursor-pointer font-medium text-[10px] sm:text-xs inline-flex items-center ${
                   isActive
                     ? "bg-[#FFD21F] text-[#111111] border border-[#FFD21F] font-bold shadow-xs"
                     : "bg-black/40 text-[#E5E5E5] border border-white/20 hover:bg-[#FFD21F] hover:text-[#111111] hover:border-[#FFD21F] active:scale-[0.97] backdrop-blur-sm"
@@ -148,15 +148,15 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
         </div>
 
         {/* Dual Actions: Primary #FFD21F & Secondary bordered with golden accent */}
-        <div className="w-full flex flex-row items-center justify-center gap-2.5 sm:gap-4 max-w-sm sm:max-w-md mx-auto">
+        <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 max-w-xs sm:max-w-md mx-auto">
           <button
             type="button"
             onClick={onNavigateKnowledge}
-            className="flex-1 min-h-[42px] sm:min-h-[46px] px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] group"
+            className="w-full sm:flex-1 min-h-[38px] sm:min-h-[44px] px-4 sm:px-7 py-2 sm:py-2.5 rounded-full bg-[#FFD21F] hover:bg-[#D9A441] text-[#111111] font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer active:scale-[0.98] group"
           >
-            <BookOpen className="w-4 h-4 text-[#111111] shrink-0" />
+            <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#111111] shrink-0" />
             <span>{isHindi ? "पुस्तकालय देखें" : "Browse Library"}</span>
-            <ArrowRight className="w-4 h-4 shrink-0 hidden sm:inline group-hover:translate-x-0.5 transition-transform" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 hidden sm:inline group-hover:translate-x-0.5 transition-transform" />
           </button>
 
           <button
@@ -165,9 +165,9 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
               onNavigateKnowledge &&
               onNavigateKnowledge("/category/mantra-stotra")
             }
-            className="flex-1 min-h-[42px] sm:min-h-[46px] px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-white/10 hover:bg-white/15 border border-[#D9A441] hover:border-[#FFD21F] text-white font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] backdrop-blur-md"
+            className="w-full sm:flex-1 min-h-[38px] sm:min-h-[44px] px-4 sm:px-7 py-2 sm:py-2.5 rounded-full bg-white/10 hover:bg-white/15 border border-[#D9A441] hover:border-[#FFD21F] text-white font-bold text-xs sm:text-sm shadow-xs hover:shadow-md transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer active:scale-[0.98] backdrop-blur-md"
           >
-            <Volume2 className="w-4 h-4 text-[#FFD21F] shrink-0" />
+            <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#FFD21F] shrink-0" />
             <span>{isHindi ? "पावन मंत्र संग्रह" : "Sacred Mantras"}</span>
           </button>
         </div>

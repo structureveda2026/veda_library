@@ -27,26 +27,26 @@ export default function VedaFooter({ onOpenSearch }) {
   return (
     <footer className="relative bg-[#111111] text-[#FFFFFF] pt-0 pb-6 border-t-2 border-[#D9A441] overflow-hidden">
       {/* 1. Top Sacred Vedic Shanti Mantra Ribbon */}
-      <div className="border-b border-[#222222] bg-[#181818] py-2 px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-[#222222] bg-[#181818] py-2 px-3 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2 text-center md:text-left">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center md:justify-start gap-2">
             <span className="w-2 h-2 rounded-full bg-[#FFD21F] animate-pulse flex-shrink-0" />
-            <p className="font-devanagari text-xs sm:text-sm font-semibold text-[#FFFFFF] tracking-wide">
+            <p className="font-devanagari text-xs sm:text-sm font-semibold text-[#FFFFFF] tracking-wide text-center md:text-left">
               ॐ द्यौः शान्तिरन्तरिक्षं शान्तिः पृथिवी शान्तिरापः शान्तिरोषधयः शान्तिः वनस्पतयः शान्तिः ॥
             </p>
           </div>
-          <span className="font-devanagari text-xs font-bold text-[#FFD21F] px-3 py-0.5 rounded-full bg-[#222222] border border-[#D9A441]/40">
+          <span className="font-devanagari text-xs font-bold text-[#FFD21F] px-3 py-0.5 rounded-full bg-[#222222] border border-[#D9A441]/40 self-center md:self-auto">
             यजुर्वेद ३६.१७ • ॐ शान्तिः शान्तिः शान्तिः
           </span>
         </div>
       </div>
 
       {/* 2. Main 4-Column Responsive Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-5 sm:pb-6">
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-5 lg:gap-8 pb-6 border-b border-[#222222]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-8 pb-5 sm:pb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-5 lg:gap-8 pb-6 border-b border-[#222222]">
 
           {/* Column 1: Brand Heritage & Purpose */}
-          <div className="col-span-2 md:col-span-2 lg:col-span-3 space-y-3">
+          <div className="col-span-2 md:col-span-4 lg:col-span-3 space-y-3 pb-4 lg:pb-0 border-b border-[#222222] lg:border-b-0">
             {/* Logo Emblem */}
             <Link
               to="/library"
@@ -88,7 +88,7 @@ export default function VedaFooter({ onOpenSearch }) {
             </p>
 
             {/* Trust Badges */}
-            <div className="space-y-1 pt-0.5">
+            <div className="space-y-1.5 pt-0.5">
               <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#E5E5E5]">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#D9A441] flex-shrink-0" />
                 <span>{isHindi ? "१००% प्रामाणिक संस्कृत एवं वैदिक मूल स्रोत" : "100% Source-Verified Sanskrit Corpus"}</span>
@@ -104,7 +104,7 @@ export default function VedaFooter({ onOpenSearch }) {
               <button
                 type="button"
                 onClick={onOpenSearch}
-                className="mt-1.5 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#1A1A1A] border border-[#333333] hover:border-[#FFD21F] text-[#E5E5E5] hover:text-[#FFFFFF] transition-all text-xs font-medium cursor-pointer shadow-xs group"
+                className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1A1A1A] border border-[#333333] hover:border-[#FFD21F] text-[#E5E5E5] hover:text-[#FFFFFF] transition-all text-xs font-medium cursor-pointer shadow-xs group"
               >
                 <Search className="w-3.5 h-3.5 text-[#FFD21F] group-hover:scale-110 transition-transform" />
                 <span>{isHindi ? "पुस्तकालय में खोजें" : "Quick Search"}</span>
@@ -116,12 +116,12 @@ export default function VedaFooter({ onOpenSearch }) {
           </div>
 
           {/* Column 2: Explore (col-span-1 lg:col-span-3) */}
-          <div className="col-span-1 lg:col-span-3 space-y-2">
+          <div className="col-span-1 md:col-span-1 lg:col-span-3 space-y-2">
             <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFD21F] border-b border-[#222222] pb-1.5 flex items-center gap-1.5">
               <BookOpen className="w-3.5 h-3.5 text-[#D9A441]" />
               <span>{isHindi ? "ज्ञान शाखाएँ" : "Explore"}</span>
             </h3>
-            <ul className="space-y-0.5 text-xs font-medium">
+            <ul className="space-y-1 text-xs font-medium">
               {[
                 { label: isHindi ? "वेद" : "The Vedas", path: "/library/veda" },
                 { label: isHindi ? "वेदाङ्ग" : "Vedangas", path: "/library/vedanga" },
@@ -136,10 +136,10 @@ export default function VedaFooter({ onOpenSearch }) {
                   <Link
                     to={link.path}
                     onClick={(e) => handleLinkClick(link.path, e)}
-                    className="hover:text-[#FFD21F] hover:translate-x-1 transition-all duration-200 cursor-pointer flex items-center gap-1 text-[#E5E5E5] py-0.5"
+                    className="hover:text-[#FFD21F] hover:translate-x-0.5 transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-[#E5E5E5] py-0.5"
                   >
-                    <span className="text-[#D9A441] text-[10px]">›</span>
-                    <span className="truncate">{link.label}</span>
+                    <span className="text-[#D9A441] text-[10px] flex-shrink-0">›</span>
+                    <span className="leading-snug">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -147,12 +147,12 @@ export default function VedaFooter({ onOpenSearch }) {
           </div>
 
           {/* Column 3: Resources (col-span-1 lg:col-span-3) */}
-          <div className="col-span-1 lg:col-span-3 space-y-2">
+          <div className="col-span-1 md:col-span-1 lg:col-span-3 space-y-2">
             <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFD21F] border-b border-[#222222] pb-1.5 flex items-center gap-1.5">
               <Scroll className="w-3.5 h-3.5 text-[#D9A441]" />
               <span>{isHindi ? "संसाधन" : "Resources"}</span>
             </h3>
-            <ul className="space-y-0.5 text-xs font-medium">
+            <ul className="space-y-1 text-xs font-medium">
               {[
                 { label: isHindi ? "ग्रंथ संग्रह" : "Grantha Archive", path: "/library/collections" },
                 { label: isHindi ? "शास्त्रीय आलेख" : "Articles & Research", path: "/library/articles" },
@@ -167,10 +167,10 @@ export default function VedaFooter({ onOpenSearch }) {
                   <Link
                     to={link.path}
                     onClick={(e) => handleLinkClick(link.path, e)}
-                    className="hover:text-[#FFD21F] hover:translate-x-1 transition-all duration-200 cursor-pointer flex items-center gap-1 text-[#E5E5E5] py-0.5"
+                    className="hover:text-[#FFD21F] hover:translate-x-0.5 transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-[#E5E5E5] py-0.5"
                   >
-                    <span className="text-[#D9A441] text-[10px]">›</span>
-                    <span className="truncate">{link.label}</span>
+                    <span className="text-[#D9A441] text-[10px] flex-shrink-0">›</span>
+                    <span className="leading-snug">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -178,12 +178,12 @@ export default function VedaFooter({ onOpenSearch }) {
           </div>
 
           {/* Column 4: Veda Structure (col-span-2 sm:col-span-1 lg:col-span-3) */}
-          <div className="col-span-2 sm:col-span-1 lg:col-span-3 space-y-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#222222]">
+          <div className="col-span-2 md:col-span-2 lg:col-span-3 space-y-2 pt-4 md:pt-0 border-t md:border-t-0 border-[#222222]">
             <h3 className="text-xs font-bold uppercase tracking-widest text-[#FFD21F] border-b border-[#222222] pb-1.5 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-[#D9A441]" />
               <span>{isHindi ? "वेद संरचना" : "Veda Structure"}</span>
             </h3>
-            <ul className="grid grid-cols-2 sm:grid-cols-1 gap-x-2 gap-y-0.5 text-xs font-medium text-[#999999]">
+            <ul className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-1 gap-x-3 gap-y-1 text-xs font-medium text-[#E5E5E5]">
               {[
                 { label: isHindi ? "पुस्तकालय परिचय" : "About Veda Library", path: "/about" },
                 { label: isHindi ? "संपादकीय नीति" : "Editorial Policy", path: "/editorial-policy" },
@@ -198,10 +198,10 @@ export default function VedaFooter({ onOpenSearch }) {
                   <Link
                     to={link.path}
                     onClick={(e) => handleLinkClick(link.path, e)}
-                    className="hover:text-[#FFD21F] hover:translate-x-1 transition-all duration-200 cursor-pointer flex items-center gap-1 text-[#999999] py-0.5"
+                    className="hover:text-[#FFD21F] hover:translate-x-0.5 transition-all duration-200 cursor-pointer flex items-center gap-1.5 text-[#E5E5E5] py-0.5"
                   >
-                    <span className="text-[#D9A441] text-[10px]">›</span>
-                    <span className="truncate">{link.label}</span>
+                    <span className="text-[#D9A441] text-[10px] flex-shrink-0">›</span>
+                    <span className="leading-snug">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -216,48 +216,48 @@ export default function VedaFooter({ onOpenSearch }) {
         </div>
 
         {/* 3. Scholarly Trust Ribbon Strip */}
-        <div className="py-3.5 border-b border-[#222222] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 text-xs text-[#999999]">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#FFD21F] flex-shrink-0" />
-            <span><strong className="text-[#FFFFFF]">Text-First:</strong> {isHindi ? "शुद्ध मूल पाठ एवं स्वर" : "Authentic root texts & swara accents"}</span>
+        <div className="py-3.5 border-b border-[#222222] grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 text-xs text-[#999999]">
+          <div className="flex items-start sm:items-center gap-1.5 sm:gap-2">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FFD21F] flex-shrink-0 mt-1 sm:mt-0" />
+            <span className="leading-snug"><strong className="text-[#FFFFFF]">Text-First:</strong> {isHindi ? "शुद्ध मूल पाठ" : "Authentic texts"}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#D9A441] flex-shrink-0" />
-            <span><strong className="text-[#FFFFFF]">Source-Based:</strong> {isHindi ? "ग्रंथ व श्लोक प्रमाण" : "Scriptural citations & evidence"}</span>
+          <div className="flex items-start sm:items-center gap-1.5 sm:gap-2">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#D9A441] flex-shrink-0 mt-1 sm:mt-0" />
+            <span className="leading-snug"><strong className="text-[#FFFFFF]">Source-Based:</strong> {isHindi ? "ग्रंथ प्रमाण" : "Citations"}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#10B981] flex-shrink-0" />
-            <span><strong className="text-[#FFFFFF]">Non-Sectarian:</strong> {isHindi ? "सर्वसमावेशी निष्पक्ष शोध" : "Inclusive & impartial scholarship"}</span>
+          <div className="flex items-start sm:items-center gap-1.5 sm:gap-2">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#10B981] flex-shrink-0 mt-1 sm:mt-0" />
+            <span className="leading-snug"><strong className="text-[#FFFFFF]">Non-Sectarian:</strong> {isHindi ? "निष्पक्ष शोध" : "Impartial"}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#FFD21F] flex-shrink-0" />
-            <span><strong className="text-[#FFFFFF]">Living Heritage:</strong> {isHindi ? "सनातन ज्ञान परंपरा" : "Timeless living wisdom"}</span>
+          <div className="flex items-start sm:items-center gap-1.5 sm:gap-2">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FFD21F] flex-shrink-0 mt-1 sm:mt-0" />
+            <span className="leading-snug"><strong className="text-[#FFFFFF]">Living Heritage:</strong> {isHindi ? "सनातन परंपरा" : "Wisdom"}</span>
           </div>
         </div>
 
         {/* 4. Bottom Copyright & Blessing Bar */}
-        <div className="pt-4 flex flex-col md:flex-row items-center justify-between text-xs text-[#777777] gap-3">
-          <div className="text-center md:text-left space-y-0.5">
-            <p className="text-[#999999] font-medium">
+        <div className="pt-4 flex flex-col md:flex-row items-center justify-between text-xs text-[#777777] gap-3 text-center md:text-left">
+          <div className="space-y-0.5">
+            <p className="text-[#999999] font-medium text-[11px] sm:text-xs">
               {isHindi
                 ? "© 2026 वेद लाइब्रेरी • वेद स्ट्रक्चर प्रोजेक्ट। समस्त सर्वाधिकार सुरक्षित।"
                 : "© 2026 Veda Library • Veda Structure Project. All Rights Reserved."}
             </p>
-            <p className="text-[11px] text-[#777777]">
+            <p className="text-[10px] sm:text-[11px] text-[#777777] leading-relaxed">
               {isHindi
                 ? "समस्त मानव समाज, शोधकर्ताओं व साधकों हेतु सनातन ज्ञान परंपरा का डिजिटल संरक्षण।"
                 : "Preserving and digitizing traditional knowledge for practitioners, researchers & humanity worldwide."}
             </p>
           </div>
 
-          <div className="text-center font-devanagari text-xs text-[#D9A441] font-semibold px-3 py-1 rounded-full bg-[#181818] border border-[#2A2A2A]">
+          <div className="text-center font-devanagari text-xs text-[#D9A441] font-semibold px-3 py-1 rounded-full bg-[#181818] border border-[#2A2A2A] my-1 md:my-0">
             सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः • ॐ तत् सत्
           </div>
 
           <button
             type="button"
             onClick={scrollToTop}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1A1A1A] hover:bg-[#FFD21F] text-[#D9A441] hover:text-[#111111] border border-[#333333] hover:border-[#FFD21F] transition-all cursor-pointer shadow-xs group"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1A1A1A] hover:bg-[#FFD21F] text-[#D9A441] hover:text-[#111111] border border-[#333333] hover:border-[#FFD21F] transition-all cursor-pointer shadow-xs group"
           >
             <span className="font-semibold text-xs">
               {isHindi ? "शीर्ष पर जाएं" : "Back to Top"}

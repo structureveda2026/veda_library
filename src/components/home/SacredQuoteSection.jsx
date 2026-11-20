@@ -66,17 +66,17 @@ export default function SacredQuoteSection() {
 
           <div className="relative z-10 max-w-3xl mx-auto">
             {/* Top Bar: Left Insight Badge, Right Lang Toggle & Copy Button */}
-            <div className="flex items-center justify-between gap-2 mb-1.5 sm:mb-2">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white border border-[#FFD21F]/60 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#111111] shadow-2xs">
+            <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+              <div className="inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full bg-white border border-[#FFD21F]/60 text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-[#111111] shadow-2xs shrink-0">
                 <Sparkles className="w-3 h-3 text-[#D9A441]" />
                 <span>
                   {isHindi
-                    ? "दार्शनिक उपनिषद् सूत्र"
-                    : "Sacred Upanishadic Insight"}
+                    ? "उपनिषद् सूत्र"
+                    : "Upanishadic Insight"}
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 {/* Language Pill Switcher */}
                 <div className="inline-flex items-center p-0.5 rounded-full bg-stone-50 border border-[#E5E5E5] shadow-2xs">
                   {Object.entries(TRANSLATIONS).map(([key, item]) => {
@@ -86,7 +86,7 @@ export default function SacredQuoteSection() {
                         key={key}
                         type="button"
                         onClick={() => setActiveTab(key)}
-                        className={`px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold transition-all duration-150 cursor-pointer ${
+                        className={`px-1.5 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[11px] font-bold transition-all duration-150 cursor-pointer ${
                           isActive
                             ? "bg-[#FFD21F] text-[#111111] shadow-2xs"
                             : "text-[#555555] hover:text-[#111111]"
@@ -102,14 +102,14 @@ export default function SacredQuoteSection() {
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 rounded-full bg-white hover:bg-[#FFD21F] border border-[#E5E5E5] hover:border-[#FFD21F] text-[10px] sm:text-[11px] font-semibold text-[#111111] transition-all cursor-pointer shadow-2xs active:scale-95"
+                  className="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-0.5 rounded-full bg-white hover:bg-[#FFD21F] border border-[#E5E5E5] hover:border-[#FFD21F] text-[9px] sm:text-[11px] font-semibold text-[#111111] transition-all cursor-pointer shadow-2xs active:scale-95"
                   title="Copy verse and meaning"
                 >
                   {copied ? (
                     <>
                       <Check className="w-3 h-3 text-[#D9A441]" />
                       <span className="text-[#111111] font-bold">
-                        {isHindi ? "कॉपी हुआ!" : "Copied!"}
+                        {isHindi ? "कॉपी!" : "Copied!"}
                       </span>
                     </>
                   ) : (
