@@ -251,9 +251,9 @@ export default function KnowledgePage({ onNavigateHome }) {
       </div>
 
       {/* 3. Main Content: Flowing Knowledge Sections */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-5 sm:space-y-6">
+      <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-6">
         {filteredBranches.length === 0 ? (
-          <div className="p-6 sm:p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
+          <div className="mx-3.5 sm:mx-0 p-6 sm:p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
             <p className="font-serif text-lg font-bold text-[#111111]">
               {isHindi ? "खोजे गए शब्द के अनुसार कोई ज्ञान शाखा अथवा विषय नहीं मिला।" : "No knowledge branches or topics found matching your search."}
             </p>
@@ -281,10 +281,10 @@ export default function KnowledgePage({ onNavigateHome }) {
               <section
                 key={branch.id}
                 id={branch.id}
-                className="bg-white px-0 py-4 sm:p-5 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-4"
+                className="bg-white px-2.5 sm:px-6 py-4 sm:py-5 rounded-none sm:rounded-2xl border-y sm:border border-[#E5E5E5] shadow-xs space-y-4"
               >
                 {/* Branch Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E5E5E5] gap-2 px-3 sm:px-0">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 sm:pb-4 border-b border-[#E5E5E5] gap-2">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
@@ -318,7 +318,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                 </div>
 
                 {/* Cards Grid: 1 col on mobile, 2 col on tablet, 3 or 4 col on desktop */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 px-1.5 sm:px-0">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5">
                   {branch.cards.map((card) => {
                     const IconComponent = SACRED_ICON_MAP[card.icon];
                     const cardTitle = isHindi ? card.hindiTitle : card.title;
@@ -329,7 +329,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                       <div
                         key={card.id}
                         onClick={() => handleCardClick(card.id)}
-                        className="group p-4 sm:p-5 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 flex items-start gap-3.5 cursor-pointer"
+                        className="group p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300 flex items-start gap-3 sm:gap-3.5 cursor-pointer"
                       >
                         {/* Pastel Circle Icon Badge */}
                         <div
@@ -371,7 +371,7 @@ export default function KnowledgePage({ onNavigateHome }) {
 
                 {/* Related Tags */}
                 {relatedTagList && relatedTagList.length > 0 && (
-                  <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-[#555555] px-3 sm:px-0">
+                  <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-[#555555]">
                     <span className="font-semibold text-[#111111] text-[11px]">
                       {isHindi ? "संबंधित विषय:" : "Related:"}
                     </span>
@@ -392,7 +392,7 @@ export default function KnowledgePage({ onNavigateHome }) {
         )}
 
         {/* Sacred Quote Card */}
-        <div className="relative rounded-2xl overflow-hidden border border-[#D9A441]/50 shadow-xs bg-white p-6 sm:p-8 text-center">
+        <div className="mx-3.5 sm:mx-0 relative rounded-2xl overflow-hidden border border-[#D9A441]/50 shadow-xs bg-white p-5 sm:p-8 text-center">
           <div className="relative z-10 max-w-xl mx-auto space-y-2">
             <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full shadow-xs">
               तैत्तिरीयोपनिषद्
