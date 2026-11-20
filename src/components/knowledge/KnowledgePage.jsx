@@ -281,7 +281,7 @@ export default function KnowledgePage({ onNavigateHome }) {
               <section
                 key={branch.id}
                 id={branch.id}
-                className="bg-white px-2.5 sm:px-6 py-4 sm:py-5 rounded-none sm:rounded-2xl border-y sm:border border-[#E5E5E5] shadow-xs space-y-4"
+                className="bg-white px-2 sm:px-6 py-4 sm:py-5 rounded-none sm:rounded-2xl border-y sm:border border-[#E5E5E5] shadow-xs space-y-4"
               >
                 {/* Branch Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 sm:pb-4 border-b border-[#E5E5E5] gap-2">
