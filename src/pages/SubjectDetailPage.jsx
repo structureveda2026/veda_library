@@ -1605,7 +1605,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
       </div>
 
       {/* Subject Hero (Matching Page 3 Section 3) */}
-      <section className="relative overflow-hidden bg-[#111111] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] shadow-sm">
+      <section className="relative overflow-hidden bg-[#111111] text-white py-5 sm:py-8 md:py-10 px-3.5 sm:px-6 lg:px-8 border-b border-[#E5E5E5] shadow-sm">
         <div className="absolute inset-0 z-0">
           <img
             src={resolveSubjectBanner(subject, category, subjectData)}
@@ -1786,11 +1786,11 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-10">
         {/* 6. Overview (Section 6) */}
         <section
           id="overview"
-          className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
+          className="bg-white px-3.5 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
         >
           <h2 className="font-serif text-2xl font-bold text-[#111111] mb-3">
             {isHindi ? `${subjectData.name} के बारे में` : `About ${subjectData.enName || subjectData.name}`}
@@ -2380,7 +2380,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
             {subjectData.rishis && subjectData.rishis.length > 0 && (
-              <div className="bg-white p-6 rounded-2xl border border-[#E5E5E5] shadow-xs">
+              <div className="bg-white px-3.5 sm:px-6 py-5 sm:py-6 rounded-2xl border border-[#E5E5E5] shadow-xs">
                 <h3 className="font-serif text-xl font-bold text-[#111111] mb-3 flex items-center gap-2">
                   <User className="w-5 h-5 text-emerald-700" />
                   <span>{isHindi ? "प्रमुख ऋषि" : "Vedic Rishis"}</span>
@@ -2482,7 +2482,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         {allRelatedGranthas.length > 0 && (
           <section
             id="related-grantha"
-            className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
+            className="bg-white px-3 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
           >
             <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
               <div>

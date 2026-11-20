@@ -323,7 +323,7 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
         canonical="/library/upanishad-darshana"
       />
       {/* 1. Scholarly Royal Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#170e06] via-[#221308] to-[#120a04] text-white py-5 sm:py-8 md:py-10 px-3.5 sm:px-6 lg:px-8 border-b border-amber-900/60 shadow-xl">
         {/* Sacred Kashi Ganga Ghat Authentic Real Banner with 80-85% Opacity and Luminous Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -582,14 +582,14 @@ export default function UpanishadDarshanaPage({ onOpenSearch }) {
       </div>
 
       {/* 3. Main Content Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
         {/* ========================================================================= */}
         {/* TAB 0A: SCRIPTURE & SUTRA PAGINATED READER */}
         {/* ========================================================================= */}
         {activeTab === "reader" && (
           <div className="space-y-6 animate-fadeIn">
             {/* Reader Header Banner */}
-            <div className="bg-white rounded-3xl border border-amber-200/70 p-6 sm:p-7 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="bg-white rounded-3xl border border-amber-200/70 px-3.5 sm:px-7 py-5 sm:py-7 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-[#78350F] border border-amber-200/80 mb-2 shadow-2xs">
                   <BookOpen className="w-3.5 h-3.5 text-amber-700" />

@@ -255,7 +255,7 @@ export default function BhagavataChapterDetailPage() {
       </div>
 
       {/* 2. Sacred Luminous Hero Banner */}
-      <section className="relative overflow-hidden bg-[#170e07] text-white border-b border-amber-900/60 pt-10 pb-12 px-4 sm:px-6 lg:px-8 shadow-xl">
+      <section className="relative overflow-hidden bg-[#170e07] text-white border-b border-amber-900/60 py-6 sm:py-8 lg:py-10 px-3.5 sm:px-6 lg:px-8 shadow-xl">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerTempleGhat}
@@ -291,7 +291,7 @@ export default function BhagavataChapterDetailPage() {
       </section>
 
       {/* 3. Main Reading Content Container */}
-      <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 space-y-8">
+      <main className="mx-auto max-w-5xl px-3.5 py-6 sm:px-6 sm:py-10 lg:px-8 space-y-6 sm:space-y-8">
         {/* Controls Toolbar: Back + Font Scaler + 3 Language Switcher */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E5E5E5]">
           <Link
@@ -354,7 +354,7 @@ export default function BhagavataChapterDetailPage() {
         </div>
 
         {/* 3.1: Sacred Sanskrit Shloka Sanctuary Card */}
-        <section className="relative p-5 sm:p-6 rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] bg-white shadow-xs space-y-6">
+        <section className="relative px-3.5 sm:px-6 py-5 sm:py-6 rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] bg-white shadow-xs space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E5E5E5]">
             <div className="flex items-center gap-2">
               <span className="w-7 h-7 rounded-full bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold text-xs shadow-2xs">

@@ -84,7 +84,7 @@ export default function TermsOfServicePage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#111111] text-[#FFFFFF] py-8 sm:py-10 border-b-4 border-[#D9A441]">
+      <section className="relative overflow-hidden bg-[#111111] text-[#FFFFFF] py-5 sm:py-8 border-b-4 border-[#D9A441]">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
             src={bannerSanctum}
@@ -95,7 +95,7 @@ export default function TermsOfServicePage() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-black/40" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+        <div className="relative z-10 max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center sm:text-left">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F1F1F] border border-[#D9A441]/40 text-[#FFD21F] text-xs font-semibold uppercase tracking-wider mb-4">
             <Scale className="w-4 h-4 text-[#FFD21F]" />
             <span>{isHindi ? "सेवा नियम एवं उद्धरण संहिता" : "Terms & Citation Code"}</span>
@@ -125,11 +125,11 @@ export default function TermsOfServicePage() {
       </section>
 
       {/* Main Content Area */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="space-y-10">
+      <main className="max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8">
+        <div className="space-y-6 sm:space-y-10">
 
           {/* Section 1: Scope & Acceptance */}
-          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
+          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs space-y-4">
             <div className="flex items-center gap-3 border-b border-[#F0EBE1] pb-4">
               <BookOpen className="w-5 h-5 text-[#991B1B]" />
               <h2 className="text-lg sm:text-xl font-serif font-bold text-[#111111]">
@@ -146,7 +146,7 @@ export default function TermsOfServicePage() {
           </section>
 
           {/* Section 2: Intellectual Property & Public Domain */}
-          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
+          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs space-y-4">
             <div className="flex items-center gap-3 border-b border-[#F0EBE1] pb-4">
               <Award className="w-5 h-5 text-[#B45309]" />
               <h2 className="text-lg sm:text-xl font-serif font-bold text-[#111111]">
@@ -179,7 +179,7 @@ export default function TermsOfServicePage() {
           </section>
 
           {/* Section 3: Citation Guidelines */}
-          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
+          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs space-y-4">
             <div className="flex items-center gap-3 border-b border-[#F0EBE1] pb-4">
               <FileText className="w-5 h-5 text-[#10B981]" />
               <h2 className="text-lg sm:text-xl font-serif font-bold text-[#111111]">
@@ -206,7 +206,7 @@ export default function TermsOfServicePage() {
           </section>
 
           {/* Section 4: Prohibited Uses */}
-          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
+          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs space-y-4">
             <div className="flex items-center gap-3 border-b border-[#F0EBE1] pb-4">
               <ShieldAlert className="w-5 h-5 text-[#991B1B]" />
               <h2 className="text-lg sm:text-xl font-serif font-bold text-[#111111]">
@@ -235,7 +235,7 @@ export default function TermsOfServicePage() {
           </section>
 
           {/* Section 5: Spiritual and Astrological Disclaimer */}
-          <section className="bg-[#FFFDF5] border-2 border-[#D9A441]/50 rounded-2xl p-6 sm:p-8 shadow-xs space-y-4">
+          <section className="bg-[#FFFDF5] border-2 border-[#D9A441]/50 rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs space-y-4">
             <div className="flex items-center gap-3 border-b border-[#EAD5A0] pb-4">
               <AlertTriangle className="w-5 h-5 text-[#B45309]" />
               <h2 className="text-lg sm:text-xl font-serif font-bold text-[#111111]">
@@ -252,7 +252,7 @@ export default function TermsOfServicePage() {
           </section>
 
           {/* Section 6: Inquiries and Grievance */}
-          <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 flex items-center justify-between flex-wrap gap-4">
+          <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 flex items-center justify-between flex-wrap gap-4">
             <div>
               <h3 className="font-serif font-bold text-base text-[#111111]">
                 {isHindi ? "नियमों से संबंधित प्रश्न अथवा कॉपीराइट अनुमति" : "Questions Concerning Terms or Copyright Permissions"}

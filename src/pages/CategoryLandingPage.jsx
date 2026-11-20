@@ -890,7 +890,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
       </div>
 
       {/* 2. Category Hero Section — Luminous Banner Art with Radiant Overlays */}
-      <section className="relative overflow-hidden bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b border-[#E5E5E5] shadow-sm">
+      <section className="relative overflow-hidden bg-[#111111] text-white py-5 sm:py-8 px-3.5 sm:px-6 lg:px-8 border-b border-[#E5E5E5] shadow-sm">
         <div className="absolute inset-0 z-0">
           <img
             src={CATEGORY_BANNERS[category] || bannerVedasHeritage}
@@ -955,9 +955,9 @@ export default function CategoryLandingPage({ onOpenSearch }) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* 4. Introduction — वेद क्या हैं? */}
-        <section className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm transition-all">
+        <section className="bg-white px-3.5 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs hover:shadow-sm transition-all">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-2.5 py-0.5 rounded-full">
               {isHindi ? "परिचय" : "Introduction"}
@@ -1470,7 +1470,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
 
         {/* 6. Category Structure */}
         {catData.structureHierarchy && (
-          <section className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E5E5] shadow-xs">
+          <section className="bg-white px-3 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs">
             <div className="text-center max-w-2xl mx-auto mb-8">
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full">
                 HIERARCHY & STRUCTURE
@@ -1586,14 +1586,14 @@ export default function CategoryLandingPage({ onOpenSearch }) {
 
         {/* 9. Category FAQ */}
         {catData.faqs && (
-          <section className="bg-white p-6 sm:p-8 rounded-2xl border border-[#E5E5E5] shadow-xs">
+          <section className="bg-white px-3 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs">
             <h2 className="font-serif text-2xl font-bold text-[#111111] mb-6 flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-[#D9A441]" />
               <span>{isHindi ? "प्रायः पूछे जाने वाले प्रश्न" : "Frequently Asked Questions"}</span>
             </h2>
             <div className="space-y-4">
               {catData.faqs.map((faq, idx) => (
-                <div key={idx} className="p-4 sm:p-5 rounded-xl bg-stone-50/60 border border-[#E5E5E5] shadow-xs">
+                <div key={idx} className="p-3.5 sm:p-5 rounded-xl bg-stone-50/60 border border-[#E5E5E5] shadow-xs">
                   <h3 className="text-sm font-bold text-[#111111] mb-1.5 flex items-start gap-2">
                     <span className="w-5 h-5 rounded-full bg-[#FFD21F] text-[#111111] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                       Q
@@ -1610,7 +1610,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
         )}
 
         {/* 10. Dedicated Related Categories & Relevant Scriptures Grid (Document Section 4 Requirement) */}
-        <section className="bg-white p-6 sm:p-10 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-8">
+        <section className="bg-white px-3 sm:px-10 py-5 sm:py-10 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
             <div>
               <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full shadow-xs mb-2">

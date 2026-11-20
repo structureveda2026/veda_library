@@ -140,7 +140,7 @@ export default function ContactPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#111111] text-[#FFFFFF] py-8 sm:py-10 border-b-2 border-[#D9A441]">
+      <section className="relative overflow-hidden bg-[#111111] text-[#FFFFFF] py-5 sm:py-8 border-b-2 border-[#D9A441]">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
             src={bannerKashiGhat}
@@ -151,7 +151,7 @@ export default function ContactPage() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-black/40" />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
+        <div className="relative z-10 max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center sm:text-left">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1F1F1F] border border-[#D9A441]/40 text-[#FFD21F] text-xs font-semibold uppercase tracking-wider mb-4">
             <MessageSquare className="w-4 h-4 text-[#FFD21F]" />
             <span>{isHindi ? "विद्वत संवाद एवं सहायता" : "Scholarly Dialogue & Support"}</span>
@@ -170,12 +170,12 @@ export default function ContactPage() {
       </section>
 
       {/* Main Grid: Form + Contact Cards */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main className="max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
 
           {/* Left Column: Interactive Contact Form (lg:col-span-7) */}
           <div className="lg:col-span-7">
-            <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 shadow-xs">
+            <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs">
               <h2 className="text-xl font-serif font-bold text-[#111111] mb-2">
                 {isHindi ? "संदेश भेजें" : "Send an Inquiry"}
               </h2>

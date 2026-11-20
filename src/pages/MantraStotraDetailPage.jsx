@@ -373,7 +373,7 @@ export default function MantraStotraDetailPage() {
       </div>
 
       {/* 2. Hero Title Section */}
-      <section className="relative overflow-hidden bg-[#170e07] text-white border-b border-amber-900/60 pt-10 pb-12 px-4 sm:px-6 lg:px-8 shadow-xl">
+      <section className="relative overflow-hidden bg-[#170e07] text-white border-b border-amber-900/60 py-6 sm:py-8 lg:py-10 px-3.5 sm:px-6 lg:px-8 shadow-xl">
         {/* Real Deity / Sacred Altar Banner Image with 80-85% Opacity and Luminous Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -516,13 +516,13 @@ export default function MantraStotraDetailPage() {
       </section>
 
       {/* 3. Main 70/30 Content Layout */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Main Content: 8 Columns */}
           <main className="lg:col-span-8 space-y-8">
             {/* 3.1: 6-Fold Vedic Canon (मन्त्र षडङ्ग विधान) Visual Table */}
             {mantra.canonAnga && (
-              <section className="bg-white rounded-2xl border border-[#E5E5E5] p-5 sm:p-6 shadow-xs space-y-4">
+              <section className="bg-white rounded-2xl border border-[#E5E5E5] px-3 sm:px-6 py-4 sm:p-6 shadow-xs space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
                   <div className="flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold text-xs">
@@ -621,7 +621,7 @@ export default function MantraStotraDetailPage() {
             )}
 
             {/* 3.2: Resonant Devanagari Altar Box (मूल श्लोक एवं पाठ) */}
-            <section className="bg-white rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] border-l-4 border-l-[#D9A441] p-6 sm:p-8 shadow-xs relative overflow-hidden">
+            <section className="bg-white rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] border-l-4 border-l-[#D9A441] px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs relative overflow-hidden">
               <div className="absolute top-2 right-3 text-7xl font-devanagari text-black/5 select-none pointer-events-none">
                 ॐ
               </div>
@@ -702,7 +702,7 @@ export default function MantraStotraDetailPage() {
             </section>
 
             {/* 3.25: Comprehensive Source & Bibliographic Reference Card */}
-            <section className="bg-white rounded-2xl border border-[#E5E5E5] p-5 sm:p-6 shadow-xs space-y-4">
+            <section className="bg-white rounded-2xl border border-[#E5E5E5] px-3 sm:px-6 py-4 sm:py-6 shadow-xs space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-[#E5E5E5]">
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-4 h-4 text-[#D9A441]" />
@@ -771,7 +771,7 @@ export default function MantraStotraDetailPage() {
             </section>
 
             {/* 3.3: Interactive 108 Digital Japa Counter on Reading Page */}
-            <section className="bg-white rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] p-6 shadow-xs relative overflow-hidden space-y-5">
+            <section className="bg-white rounded-2xl border border-[#E5E5E5] border-t-4 border-t-[#D9A441] px-3.5 sm:px-6 py-5 sm:py-6 shadow-xs relative overflow-hidden space-y-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E5E5E5]">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-xl bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold text-sm shadow-2xs">

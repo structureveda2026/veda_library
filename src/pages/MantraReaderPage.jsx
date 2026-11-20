@@ -1293,7 +1293,7 @@ ${mantra.hinglishTranslation || ""}
       {/* 2.5 SACRED VEDIC HERO BANNER (Veda, Shakha, Rishi & Devata)          */}
       {/* ==================================================================== */}
       {!focusMode && (
-        <section className="relative overflow-hidden bg-[#170e07] text-white border-b border-amber-900/60 pt-9 pb-11 px-4 sm:px-6 lg:px-8 shadow-xl">
+        <section className="relative overflow-hidden bg-[#170e07] text-white border-b border-amber-900/60 py-5 sm:py-8 lg:py-10 px-3.5 sm:px-6 lg:px-8 shadow-xl">
           {/* Authentic Real Banner with opacity 80-85% and subtle luminous overlay */}
           <div className="absolute inset-0 z-0">
             <img
@@ -1338,7 +1338,7 @@ ${mantra.hinglishTranslation || ""}
       {/* ==================================================================== */}
       {/* 3. MAIN SACRED SANCTUARY CONTAINER                                   */}
       {/* ==================================================================== */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 pb-24 sm:pb-28 lg:pb-8 space-y-6 sm:space-y-8">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 pb-24 sm:pb-28 lg:pb-8 space-y-6 sm:space-y-8">
         
         {/* Mobile Horizontal Quick Numbers Strip (< lg) */}
         {!focusMode && siblingMantras.length > 1 && (
@@ -1416,7 +1416,7 @@ ${mantra.hinglishTranslation || ""}
             {/* CORE MANTRA SANCTUARY CARD (सर्वोत्कृष्ट पठन मन्दिर)            */}
             {/* ============================================================== */}
             <section
-              className={`relative p-5 sm:p-7 md:p-8 rounded-3xl border border-t-4 border-t-[#D9A441] border-l-4 border-l-[#D9A441] overflow-hidden transition-all duration-300 shadow-sm ${
+              className={`relative px-3.5 sm:px-7 md:px-8 py-5 sm:py-7 md:py-8 rounded-3xl border border-t-4 border-t-[#D9A441] border-l-4 border-l-[#D9A441] overflow-hidden transition-all duration-300 shadow-sm ${
                 themeObj.sanctuaryBg
               } ${themeObj.subtleBorder}`}
             >

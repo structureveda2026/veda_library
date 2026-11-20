@@ -539,7 +539,7 @@ export default function BlogDetailPage() {
       </div>
 
       {/* 1. Sticky Navigation & Breadcrumbs Bar */}
-      <div className="bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] sticky top-16 z-30 py-3 px-4 sm:px-6 lg:px-8 shadow-2xs">
+      <div className="bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] sticky top-16 z-30 py-3 px-3.5 sm:px-6 lg:px-8 shadow-2xs">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
           {/* Breadcrumb path */}
           <nav className="flex items-center gap-1.5 text-[#555555] font-medium overflow-hidden">
@@ -616,7 +616,7 @@ export default function BlogDetailPage() {
       </div>
 
       {/* 2. Main 70/30 Astromantra Reading Layout */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: 68-70% (8 Cols on LG) */}
           <article className="lg:col-span-8 space-y-8 bg-white">
@@ -856,7 +856,7 @@ export default function BlogDetailPage() {
             </div>
 
             {/* Verified Shastric Citation & Archive Box */}
-            <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs space-y-4 transition-all">
+            <div className="px-3.5 sm:px-7 py-5 sm:py-7 rounded-2xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] shadow-xs space-y-4 transition-all">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E5E5E5]">
                 <div className="flex items-center gap-2 text-[#111111] font-bold text-sm">
                   <BookOpen className="w-4 h-4 text-[#D9A441]" />
@@ -958,7 +958,7 @@ export default function BlogDetailPage() {
             )}
 
             {/* Author Profile Card with Scholar Credentials */}
-            <div className="p-6 sm:p-7 rounded-3xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] transition-all shadow-sm space-y-4">
+            <div className="px-3.5 sm:px-7 py-5 sm:py-7 rounded-3xl bg-white border border-[#E5E5E5] hover:border-[#D9A441] transition-all shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
                 {blog.authorAvatar ? (
                   <img

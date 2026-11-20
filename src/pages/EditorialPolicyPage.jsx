@@ -85,7 +85,7 @@ export default function EditorialPolicyPage() {
       </div>
 
       {/* Header Banner */}
-      <section className="relative bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
+      <section className="relative bg-[#111111] text-white py-5 sm:py-8 px-3.5 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerSanctum}
@@ -115,7 +115,7 @@ export default function EditorialPolicyPage() {
       </section>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+      <div className="max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-8">
         {/* 1. Five Stage Publishing Workflow (Document Section 7) */}
         <section className="space-y-4">
           <div className="border-b border-[#E5E5E5] pb-3">
@@ -192,7 +192,7 @@ export default function EditorialPolicyPage() {
             </h2>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-4">
+          <div className="px-3.5 sm:px-6 py-5 sm:py-6 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-4">
             <p className="text-sm font-devanagari text-[#555555] leading-relaxed">
               {isHindi
                 ? "बिना प्रमाणित स्रोत संदर्भ के किसी भी पाठ को 'Source Verified' बैज नहीं दिया जाता। प्रत्येक प्रविष्टि में निम्न विवरण दर्ज होना अनिवार्य है:"
@@ -259,7 +259,7 @@ export default function EditorialPolicyPage() {
         </section>
 
         {/* 4. Role Based Permissions (Document Section 7) */}
-        <section className="p-6 rounded-2xl bg-[#FFFFFF] border border-[#E5E5E5] space-y-4 shadow-xs">
+        <section className="px-3.5 sm:px-6 py-5 sm:py-6 rounded-2xl bg-[#FFFFFF] border border-[#E5E5E5] space-y-4 shadow-xs">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#111111]">
             <Lock className="w-4 h-4 text-[#D9A441]" />
             <span>{isHindi ? "भूमिका एवं अधिकार (Role-Based Permissions)" : "Role-Based Content Governance"}</span>

@@ -111,7 +111,7 @@ export default function ScriptureReaderPage({ onOpenSearch }) {
       </div>
 
       {/* 2. Hero Section with banner-veda-hero-clean.jpg */}
-      <section className="relative overflow-hidden bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b border-[#222222]">
+      <section className="relative overflow-hidden bg-[#111111] text-white py-5 sm:py-8 px-3.5 sm:px-6 lg:px-8 border-b border-[#222222]">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerVedaHero}
@@ -144,7 +144,7 @@ export default function ScriptureReaderPage({ onOpenSearch }) {
       </section>
 
       {/* 3. 5-Pillar Canonical Metadata Strip */}
-      <div className="bg-[#FFFFFF] border-b border-[#E5E5E5] py-4 px-4 sm:px-6 lg:px-8 shadow-xs">
+      <div className="bg-[#FFFFFF] border-b border-[#E5E5E5] py-3.5 px-3.5 sm:px-6 lg:px-8 shadow-xs">
         <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 text-xs">
           <div className="p-3 rounded-xl bg-stone-50 border border-[#E5E5E5] shadow-2xs">
             <span className="block text-[10px] font-bold uppercase tracking-wider text-[#555555] mb-0.5">
@@ -194,7 +194,7 @@ export default function ScriptureReaderPage({ onOpenSearch }) {
       </div>
 
       {/* 4. Main Scripture Reader Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <main className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
         <ScriptureReaderView scripture={scriptureData} />
       </main>
     </div>

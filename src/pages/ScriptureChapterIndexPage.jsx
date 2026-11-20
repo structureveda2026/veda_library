@@ -118,7 +118,7 @@ export default function ScriptureChapterIndexPage() {
       </div>
 
       {/* 2. Sacred Luminous Hero Banner */}
-      <section className="relative overflow-hidden bg-[#111111] text-white border-b border-[#E5E5E5] pt-10 pb-12 px-4 sm:px-6 lg:px-8 shadow-sm">
+      <section className="relative overflow-hidden bg-[#111111] text-white border-b border-[#E5E5E5] py-6 sm:py-8 lg:py-10 px-3.5 sm:px-6 lg:px-8 shadow-sm">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerTempleGhat}
@@ -154,7 +154,7 @@ export default function ScriptureChapterIndexPage() {
       </section>
 
       {/* 3. Main Chapter Navigation Area */}
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 space-y-8">
+      <main className="mx-auto max-w-6xl px-3.5 py-6 sm:px-6 sm:py-10 lg:px-8 space-y-6 sm:space-y-8">
         {/* Controls Toolbar: Back + Font Scaler + 3 Language Switcher */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E5E5E5]">
           <button
@@ -253,7 +253,7 @@ export default function ScriptureChapterIndexPage() {
             <li key={chapter.number}>
               <Link
                 to={`${chapterPath}/${chapter.number}`}
-                className="group flex min-h-16 items-center justify-between gap-4 px-4 sm:px-6 py-4 transition-colors hover:bg-stone-50 border-l-4 border-l-transparent hover:border-l-[#D9A441]"
+                className="group flex min-h-16 items-center justify-between gap-3 sm:gap-4 px-3 sm:px-6 py-3.5 sm:py-4 transition-colors hover:bg-stone-50 border-l-4 border-l-transparent hover:border-l-[#D9A441]"
               >
                 <span className="flex items-center gap-3.5">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#FFD21F] text-xs font-black text-[#111111] shadow-2xs group-hover:scale-105 transition-transform">

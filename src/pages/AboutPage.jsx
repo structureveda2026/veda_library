@@ -84,7 +84,7 @@ export default function AboutPage({ onOpenSearch }) {
       </div>
 
       {/* 1. Scholarly Hero Banner — Luminous Sanctum Artwork with Balanced Light Overlay */}
-      <section className="relative bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
+      <section className="relative bg-[#111111] text-white py-5 sm:py-8 px-3.5 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerSanctum}
@@ -134,7 +134,7 @@ export default function AboutPage({ onOpenSearch }) {
       </section>
 
       {/* 2. Core Mission & Vision */}
-      <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+      <section className="py-6 sm:py-10 px-3.5 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6 sm:space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-3">
             <div className="w-10 h-10 rounded-xl bg-[#FFD21F]/20 border border-[#FFD21F] flex items-center justify-center text-[#111111]">
@@ -180,7 +180,7 @@ export default function AboutPage({ onOpenSearch }) {
         </div>
 
         {/* 3. Archival Architecture Overview — 4 Layers of Vedic Canon */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-stone-50 border border-[#E5E5E5] space-y-6">
+        <div className="px-3 sm:px-8 py-5 sm:py-8 rounded-2xl bg-stone-50 border border-[#E5E5E5] space-y-6">
           <div className="max-w-3xl space-y-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] px-3 py-1 rounded-full border border-[#FFD21F]">
               {isHindi ? "चतुर्विध वाङ्मय संरचना" : "The 4 Canonical Strata"}
@@ -269,7 +269,7 @@ export default function AboutPage({ onOpenSearch }) {
         </div>
 
         {/* 3.5 The Six Vedangas (षडंग वेदाङ्ग) */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-5">
+        <div className="px-3 sm:px-8 py-5 sm:py-8 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-5">
           <div className="max-w-3xl space-y-1.5">
             <span className="text-xs font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] px-3 py-1 rounded-full border border-[#FFD21F]">
               {isHindi ? "षडंग वेदाङ्ग — वेदों के ६ सहायक अंग" : "The Six Vedangas (Limbs of the Veda)"}

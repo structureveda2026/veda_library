@@ -94,7 +94,7 @@ export default function ContributePage() {
       </div>
 
       {/* Hero */}
-      <section className="relative bg-[#111111] text-white py-8 sm:py-10 px-4 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
+      <section className="relative bg-[#111111] text-white py-5 sm:py-8 px-3.5 sm:px-6 lg:px-8 border-b-2 border-[#D9A441] overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerFireRitual}
@@ -124,7 +124,7 @@ export default function ContributePage() {
       </section>
 
       {/* Main Container */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+      <div className="max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-8">
         {/* Guidelines Grid */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-2">
@@ -165,7 +165,7 @@ export default function ContributePage() {
         </section>
 
         {/* Submission Form */}
-        <section className="bg-white border border-[#E5E5E5] p-6 sm:p-8 rounded-2xl space-y-6 shadow-xs">
+        <section className="bg-white border border-[#E5E5E5] px-3.5 sm:px-8 py-5 sm:py-8 rounded-2xl space-y-6 shadow-xs">
           <div className="space-y-1">
             <span className="text-xs font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded border border-[#FFD21F]">
               {isHindi ? "प्रस्ताव प्रपत्र" : "Proposal Form"}

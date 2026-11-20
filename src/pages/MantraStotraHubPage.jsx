@@ -364,7 +364,7 @@ export default function MantraStotraHubPage() {
       </div>
 
       {/* 2. Astromantra-Grade Hero Header */}
-      <section className="relative overflow-hidden bg-[#111111] text-white border-b border-[#E5E5E5] pt-12 pb-14 px-4 sm:px-6 lg:px-8 shadow-sm">
+      <section className="relative overflow-hidden bg-[#111111] text-white border-b border-[#E5E5E5] py-6 sm:py-10 lg:py-12 px-3.5 sm:px-6 lg:px-8 shadow-sm">
         <div className="absolute inset-0 z-0">
           <img
             src={bannerAltar}
@@ -448,8 +448,8 @@ export default function MantraStotraHubPage() {
 
       {/* 2.5 INTERACTIVE DIGITAL JAPA MALA COUNTER (108 CHANTS) */}
       {showJapaMala && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 animate-fade-in">
-          <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[#E5E5E5] border-t-4 border-t-[#D9A441] shadow-md space-y-6">
+        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 animate-fade-in">
+          <div className="px-3.5 sm:px-8 py-5 sm:py-8 rounded-3xl bg-white border border-[#E5E5E5] border-t-4 border-t-[#D9A441] shadow-md space-y-6">
             <div className="flex items-center justify-between border-b pb-4 border-[#E5E5E5]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-[#FFD21F] text-[#111111] border border-[#FFD21F] flex items-center justify-center font-bold text-lg shadow-2xs">
@@ -584,7 +584,7 @@ export default function MantraStotraHubPage() {
       )}
 
       {/* 3. Main 70/30 Astromantra Layout */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: 68-70% (8 Cols on LG) */}
           <main className="lg:col-span-8 space-y-6">
