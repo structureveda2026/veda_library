@@ -42,7 +42,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#111111] min-h-[460px] sm:min-h-[520px] md:min-h-[calc(100vh-70px)] flex items-center justify-center py-10 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-[#111111]">
+    <section className="relative overflow-hidden bg-[#111111] min-h-[350px] sm:min-h-[440px] md:min-h-[calc(100vh-70px)] flex items-center justify-center py-7 sm:py-10 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-[#111111]">
       {/* Background Sacred Vedic Dawn Sanctuary Artwork with Tasteful Cinematic Lighting */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
@@ -57,7 +57,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
 
       <div className="relative z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center">
         {/* Master Heading: Sleek on mobile, majestic on desktop */}
-        <h1 className="font-serif text-2xl sm:text-3xl lg:text-5xl font-bold text-white tracking-tight mb-2 sm:mb-3 text-center leading-tight drop-shadow-md">
+        <h1 className="font-serif text-2xl sm:text-3xl lg:text-5xl font-bold text-white tracking-tight mb-1.5 sm:mb-3 text-center leading-tight drop-shadow-md">
           {isHindi ? (
             <span className="font-devanagari block">
               सनातन वैदिक ज्ञान परंपरा
@@ -76,7 +76,7 @@ export default function HeroSection({ onOpenSearch, onNavigateKnowledge }) {
         </h1>
 
         {/* Subtitle - Single crisp line on mobile, complete on desktop */}
-        <p className="text-xs sm:text-sm md:text-base text-[#E5E5E5] font-normal leading-relaxed max-w-xl mx-auto mb-4 sm:mb-6 drop-shadow-xs text-center font-devanagari sm:font-sans">
+        <p className="text-xs sm:text-sm md:text-base text-[#E5E5E5] font-normal leading-relaxed max-w-xl mx-auto mb-3 sm:mb-5 drop-shadow-xs text-center font-devanagari sm:font-sans">
           {isHindi ? (
             <>
               <span className="sm:hidden">वेदों, उपनिषदों एवं पावन मंत्रों का डिजिटल गर्भगृह।</span>
