@@ -281,10 +281,10 @@ export default function KnowledgePage({ onNavigateHome }) {
               <section
                 key={branch.id}
                 id={branch.id}
-                className="bg-white p-4 sm:p-5 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-4"
+                className="bg-white px-0 py-4 sm:p-5 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-4"
               >
                 {/* Branch Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E5E5E5] gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E5E5E5] gap-2 px-3 sm:px-0">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-bold uppercase tracking-wider text-[#D9A441] font-devanagari">
@@ -318,7 +318,7 @@ export default function KnowledgePage({ onNavigateHome }) {
                 </div>
 
                 {/* Cards Grid: 1 col on mobile, 2 col on tablet, 3 or 4 col on desktop */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 px-1.5 sm:px-0">
                   {branch.cards.map((card) => {
                     const IconComponent = SACRED_ICON_MAP[card.icon];
                     const cardTitle = isHindi ? card.hindiTitle : card.title;
@@ -371,7 +371,7 @@ export default function KnowledgePage({ onNavigateHome }) {
 
                 {/* Related Tags */}
                 {relatedTagList && relatedTagList.length > 0 && (
-                  <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-[#555555]">
+                  <div className="pt-2 flex flex-wrap items-center gap-1.5 text-xs text-[#555555] px-3 sm:px-0">
                     <span className="font-semibold text-[#111111] text-[11px]">
                       {isHindi ? "संबंधित विषय:" : "Related:"}
                     </span>

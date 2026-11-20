@@ -2482,9 +2482,9 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         {allRelatedGranthas.length > 0 && (
           <section
             id="related-grantha"
-            className="bg-white px-3 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
+            className="bg-white px-0 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
           >
-            <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
+            <div className="flex items-center justify-between flex-wrap gap-2 mb-4 px-3 sm:px-0">
               <div>
                 <h2 className="font-serif text-2xl font-bold text-[#111111]">
                   {isHindi ? "सम्बद्ध ग्रंथ एवं भाष्य" : "Related Grantha & Commentaries"}

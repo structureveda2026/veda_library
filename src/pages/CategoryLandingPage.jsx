@@ -1470,8 +1470,8 @@ export default function CategoryLandingPage({ onOpenSearch }) {
 
         {/* 6. Category Structure */}
         {catData.structureHierarchy && (
-          <section className="bg-white px-3 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs">
-            <div className="text-center max-w-2xl mx-auto mb-8">
+          <section className="bg-white px-0 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs">
+            <div className="text-center max-w-2xl mx-auto mb-8 px-3 sm:px-0">
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full">
                 HIERARCHY & STRUCTURE
               </span>
@@ -1485,7 +1485,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3 px-1.5 sm:px-0">
               {catData.structureHierarchy.map((item, idx) => (
                 <div
                   key={idx}
@@ -1610,8 +1610,8 @@ export default function CategoryLandingPage({ onOpenSearch }) {
         )}
 
         {/* 10. Dedicated Related Categories & Relevant Scriptures Grid (Document Section 4 Requirement) */}
-        <section className="bg-white px-3 sm:px-10 py-5 sm:py-10 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
+        <section className="bg-white px-0 sm:px-10 py-5 sm:py-10 rounded-2xl border border-[#E5E5E5] shadow-xs space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 px-3 sm:px-0">
             <div>
               <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full shadow-xs mb-2">
                 <Sparkles className="w-3 h-3 text-[#111111]" />
@@ -1638,7 +1638,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
           </div>
 
           {/* 5 Linked Major Tradition Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4 px-1.5 sm:px-0">
             {RELATED_TRADITIONS.map((trad) => (
               <Link
                 key={trad.id}
@@ -1680,7 +1680,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
 
           {/* Canonical Scripture Highlights */}
           <div className="pt-6 border-t border-[#E5E5E5]">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 px-3 sm:px-0">
               <h3 className="font-serif text-base sm:text-lg font-bold text-[#111111] flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-[#D9A441]" />
                 <span>
@@ -1690,7 +1690,7 @@ export default function CategoryLandingPage({ onOpenSearch }) {
                 </span>
               </h3>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 px-1.5 sm:px-0">
               {CANONICAL_SCRIPTURES.map((grantha) => (
                 <Link
                   key={grantha.id}
