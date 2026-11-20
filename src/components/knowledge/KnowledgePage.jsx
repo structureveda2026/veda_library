@@ -251,9 +251,9 @@ export default function KnowledgePage({ onNavigateHome }) {
       </div>
 
       {/* 3. Main Content: Flowing Knowledge Sections */}
-      <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-6">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-6">
         {filteredBranches.length === 0 ? (
-          <div className="mx-3.5 sm:mx-0 p-6 sm:p-8 text-center bg-white rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
+          <div className="p-6 sm:p-8 text-center bg-white rounded-xl sm:rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
             <p className="font-serif text-lg font-bold text-[#111111]">
               {isHindi ? "खोजे गए शब्द के अनुसार कोई ज्ञान शाखा अथवा विषय नहीं मिला।" : "No knowledge branches or topics found matching your search."}
             </p>
@@ -281,7 +281,7 @@ export default function KnowledgePage({ onNavigateHome }) {
               <section
                 key={branch.id}
                 id={branch.id}
-                className="bg-white px-2 sm:px-6 py-4 sm:py-5 rounded-none sm:rounded-2xl border-y sm:border border-[#E5E5E5] shadow-xs space-y-4"
+                className="bg-white px-2.5 sm:px-6 py-4 sm:py-5 rounded-xl sm:rounded-2xl border border-[#E5E5E5] shadow-xs space-y-4"
               >
                 {/* Branch Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 sm:pb-4 border-b border-[#E5E5E5] gap-2">
@@ -392,7 +392,7 @@ export default function KnowledgePage({ onNavigateHome }) {
         )}
 
         {/* Sacred Quote Card */}
-        <div className="mx-3.5 sm:mx-0 relative rounded-2xl overflow-hidden border border-[#D9A441]/50 shadow-xs bg-white p-5 sm:p-8 text-center">
+        <div className="relative rounded-xl sm:rounded-2xl overflow-hidden border border-[#D9A441]/50 shadow-xs bg-white p-5 sm:p-8 text-center">
           <div className="relative z-10 max-w-xl mx-auto space-y-2">
             <span className="text-[10px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] border border-[#FFD21F] px-3 py-1 rounded-full shadow-xs">
               तैत्तिरीयोपनिषद्
