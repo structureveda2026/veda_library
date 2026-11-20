@@ -1786,11 +1786,11 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-10">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-10">
         {/* 6. Overview (Section 6) */}
         <section
           id="overview"
-          className="bg-white px-3.5 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
+          className="bg-white px-3.5 sm:px-8 py-5 sm:py-8 rounded-xl sm:rounded-2xl border border-[#E5E5E5] shadow-xs"
         >
           <h2 className="font-serif text-2xl font-bold text-[#111111] mb-3">
             {isHindi ? `${subjectData.name} के बारे में` : `About ${subjectData.enName || subjectData.name}`}
@@ -2482,7 +2482,7 @@ export default function SubjectDetailPage({ onOpenSearch }) {
         {allRelatedGranthas.length > 0 && (
           <section
             id="related-grantha"
-            className="bg-white px-0 sm:px-8 py-5 sm:py-8 rounded-2xl border border-[#E5E5E5] shadow-xs"
+            className="bg-white px-3 sm:px-8 py-5 sm:py-8 rounded-xl sm:rounded-2xl border border-[#E5E5E5] shadow-xs"
           >
             <div className="flex items-center justify-between flex-wrap gap-2 mb-4 px-3 sm:px-0">
               <div>

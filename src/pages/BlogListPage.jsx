@@ -396,7 +396,7 @@ export default function BlogListPage() {
       </div>
 
       {/* Table of Contents / Thematic Directory with Active Anchor Tracking */}
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      <nav className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 pt-4">
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-semibold">
           {[
             { id: "thematic-categories", label: "विषय श्रेणियाँ", en: "Topic Categories" },
@@ -533,8 +533,8 @@ export default function BlogListPage() {
       </section>
 
       {/* 3. Prominent Categories Header & Grid at the TOP (8 Topics Strictly Preserved) */}
-      <section id="thematic-categories" className="scroll-mt-28 max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
-        <div className="bg-white rounded-3xl border border-[#E5E5E5] px-3 sm:px-6 py-4 sm:p-6 shadow-xs space-y-4">
+      <section id="thematic-categories" className="scroll-mt-28 max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 pt-6 sm:pt-8">
+        <div className="bg-white rounded-xl sm:rounded-3xl border border-[#E5E5E5] px-3 sm:px-6 py-4 sm:p-6 shadow-xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#E5E5E5]">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-[#FFD21F] text-[#111111] flex items-center justify-center font-bold shadow-xs">
@@ -642,7 +642,7 @@ export default function BlogListPage() {
       </section>
 
       {/* 4. Main Body Content (70/30 Reading Layout) */}
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-5 sm:pt-6">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 pt-5 sm:pt-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: 70% (8 Cols on LG) */}
           <main className="lg:col-span-8 space-y-6">

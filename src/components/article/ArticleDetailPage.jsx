@@ -826,7 +826,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
       </div>
 
       {/* Main Spacious Content Layout (Spacious Central Canvas + Right Contextual Rail) */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 pb-24 lg:pb-10">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-6 pb-24 lg:pb-10">
         <div
           className={`grid grid-cols-1 ${
             isWideReadingMode || viewMode === "hymns" ? "lg:grid-cols-1" : "lg:grid-cols-12"
@@ -838,7 +838,7 @@ export default function ArticleDetailPage({ onNavigateHome, onNavigateKnowledge 
               isWideReadingMode || viewMode === "hymns"
                 ? "max-w-5xl mx-auto w-full"
                 : "lg:col-span-8 xl:col-span-9"
-            } bg-white p-4 sm:p-7 lg:p-9 rounded-2xl sm:rounded-3xl border border-stone-200/90 shadow-2xs space-y-6 sm:space-y-8 w-full overflow-hidden`}
+            } bg-white p-4 sm:p-7 lg:p-9 rounded-xl sm:rounded-3xl border border-stone-200/90 shadow-2xs space-y-6 sm:space-y-8 w-full overflow-hidden`}
           >
             {/* Hero Image in Article - Clearly visible (0.80 - 0.85 opacity with subtle luminous overlay) */}
             <div className="relative aspect-16/9 rounded-xl sm:rounded-2xl overflow-hidden shadow-xs bg-stone-900 border border-[#E5E5E5]">

@@ -154,7 +154,7 @@ export default function ScriptureChapterIndexPage() {
       </section>
 
       {/* 3. Main Chapter Navigation Area */}
-      <main className="mx-auto max-w-6xl px-3.5 py-6 sm:px-6 sm:py-10 lg:px-8 space-y-6 sm:space-y-8">
+      <main className="mx-auto max-w-6xl px-[0.3rem] py-6 sm:px-6 sm:py-10 lg:px-8 space-y-6 sm:space-y-8">
         {/* Controls Toolbar: Back + Font Scaler + 3 Language Switcher */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E5E5E5]">
           <button

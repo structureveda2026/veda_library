@@ -178,11 +178,11 @@ export default function SourceAttributionPage() {
       </section>
 
       {/* Main Content Area */}
-      <main className="max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8">
+      <main className="max-w-5xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-5 sm:py-8">
         <div className="space-y-6 sm:space-y-10">
 
           {/* Principle Callout */}
-          <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs">
+          <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl sm:rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs">
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-[#FFD21F]/20 border border-[#FFD21F] flex items-center justify-center text-[#111111] flex-shrink-0">
                 <ShieldCheck className="w-6 h-6 text-[#D9A441]" />

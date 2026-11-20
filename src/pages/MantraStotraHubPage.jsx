@@ -448,8 +448,8 @@ export default function MantraStotraHubPage() {
 
       {/* 2.5 INTERACTIVE DIGITAL JAPA MALA COUNTER (108 CHANTS) */}
       {showJapaMala && (
-        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 animate-fade-in">
-          <div className="px-3.5 sm:px-8 py-5 sm:py-8 rounded-3xl bg-white border border-[#E5E5E5] border-t-4 border-t-[#D9A441] shadow-md space-y-6">
+        <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 pt-6 animate-fade-in">
+          <div className="px-3.5 sm:px-8 py-5 sm:py-8 rounded-xl sm:rounded-3xl bg-white border border-[#E5E5E5] border-t-4 border-t-[#D9A441] shadow-md space-y-6">
             <div className="flex items-center justify-between border-b pb-4 border-[#E5E5E5]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-2xl bg-[#FFD21F] text-[#111111] border border-[#FFD21F] flex items-center justify-center font-bold text-lg shadow-2xs">
@@ -584,7 +584,7 @@ export default function MantraStotraHubPage() {
       )}
 
       {/* 3. Main 70/30 Astromantra Layout */}
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 pt-6 sm:pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: 68-70% (8 Cols on LG) */}
           <main className="lg:col-span-8 space-y-6">

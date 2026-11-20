@@ -251,7 +251,7 @@ export default function KnowledgePage({ onNavigateHome }) {
       </div>
 
       {/* 3. Main Content: Flowing Knowledge Sections */}
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-6">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-6">
         {filteredBranches.length === 0 ? (
           <div className="p-6 sm:p-8 text-center bg-white rounded-xl sm:rounded-2xl border border-[#E5E5E5] shadow-xs space-y-3">
             <p className="font-serif text-lg font-bold text-[#111111]">

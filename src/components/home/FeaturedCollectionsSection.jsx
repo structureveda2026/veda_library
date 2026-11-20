@@ -21,7 +21,7 @@ export default function FeaturedCollectionsSection({ onNavigateCollections }) {
 
   return (
     <section id="featured-collections" className="py-5 sm:py-7 bg-white border-y border-[#E5E5E5]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-2">
           <div>

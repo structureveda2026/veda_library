@@ -36,7 +36,7 @@ export default function GranthaArchiveSection({ onNavigateCollections }) {
       id="granthas"
       className="py-5 sm:py-7 bg-white border-b border-[#E5E5E5] relative"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 gap-3">
           <div>

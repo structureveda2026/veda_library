@@ -616,7 +616,7 @@ export default function BlogDetailPage() {
       </div>
 
       {/* 2. Main 70/30 Astromantra Reading Layout */}
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 pt-6 sm:pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: 68-70% (8 Cols on LG) */}
           <article className="lg:col-span-8 space-y-8 bg-white">

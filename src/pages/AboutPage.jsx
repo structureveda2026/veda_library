@@ -134,7 +134,7 @@ export default function AboutPage({ onOpenSearch }) {
       </section>
 
       {/* 2. Core Mission & Vision */}
-      <section className="py-6 sm:py-10 px-3.5 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6 sm:space-y-8">
+      <section className="py-6 sm:py-10 px-[0.3rem] sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6 sm:space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-2xl bg-white border border-[#E5E5E5] shadow-xs space-y-3">
             <div className="w-10 h-10 rounded-xl bg-[#FFD21F]/20 border border-[#FFD21F] flex items-center justify-center text-[#111111]">

@@ -439,14 +439,14 @@ export default function PuranaItihasaPage({ onOpenSearch }) {
       </div>
 
       {/* 3. Main Content Container */}
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 pt-6 sm:pt-8">
         {/* ========================================================================= */}
         {/* TAB: SCRIPTURE READER VIEW */}
         {/* ========================================================================= */}
         {activeTab === "reader" && (
           <div className="space-y-6 animate-fadeIn">
             {/* Header / Selector Controls */}
-            <div className="bg-white rounded-3xl border border-amber-200/70 px-3.5 sm:px-6 py-5 sm:py-6 shadow-xs">
+            <div className="bg-white rounded-xl sm:rounded-3xl border border-amber-200/70 px-3.5 sm:px-6 py-5 sm:py-6 shadow-xs">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-amber-200/70">
                 <div>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-[#78350F] border border-amber-200/80 mb-2 shadow-2xs">

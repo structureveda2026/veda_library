@@ -125,11 +125,11 @@ export default function TermsOfServicePage() {
       </section>
 
       {/* Main Content Area */}
-      <main className="max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8">
+      <main className="max-w-5xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-5 sm:py-8">
         <div className="space-y-6 sm:space-y-10">
 
           {/* Section 1: Scope & Acceptance */}
-          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs space-y-4">
+          <section className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl sm:rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs space-y-4">
             <div className="flex items-center gap-3 border-b border-[#F0EBE1] pb-4">
               <BookOpen className="w-5 h-5 text-[#991B1B]" />
               <h2 className="text-lg sm:text-xl font-serif font-bold text-[#111111]">

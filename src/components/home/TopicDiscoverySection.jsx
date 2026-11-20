@@ -8,7 +8,7 @@ export default function TopicDiscoverySection({ onNavigateKnowledge }) {
 
   return (
     <section id="topics" className="py-6 sm:py-7 bg-white border-b border-[#E5E5E5]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 text-center">
         {/* Header */}
         <span className="inline-block text-[11px] font-bold uppercase tracking-widest text-[#555555] bg-white px-2.5 py-0.5 rounded-full border border-[#E5E5E5] shadow-xs mb-1.5">
           {isHindi ? "सहज विषय अन्वेषण" : "INTUITIVE DISCOVERY"}

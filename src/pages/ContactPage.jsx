@@ -170,12 +170,12 @@ export default function ContactPage() {
       </section>
 
       {/* Main Grid: Form + Contact Cards */}
-      <main className="max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8">
+      <main className="max-w-6xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-5 sm:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
 
           {/* Left Column: Interactive Contact Form (lg:col-span-7) */}
           <div className="lg:col-span-7">
-            <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs">
+            <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl sm:rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs">
               <h2 className="text-xl font-serif font-bold text-[#111111] mb-2">
                 {isHindi ? "संदेश भेजें" : "Send an Inquiry"}
               </h2>

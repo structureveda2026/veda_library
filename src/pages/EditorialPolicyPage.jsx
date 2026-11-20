@@ -115,7 +115,7 @@ export default function EditorialPolicyPage() {
       </section>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-8">
+      <div className="max-w-5xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-5 sm:py-8 space-y-6 sm:space-y-8">
         {/* 1. Five Stage Publishing Workflow (Document Section 7) */}
         <section className="space-y-4">
           <div className="border-b border-[#E5E5E5] pb-3">

@@ -126,11 +126,11 @@ export default function PrivacyPolicyPage() {
       </section>
 
       {/* Main Content Area */}
-      <main className="max-w-5xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8">
+      <main className="max-w-5xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-5 sm:py-8">
         <div className="space-y-6 sm:space-y-10">
 
           {/* Core Principle Callout */}
-          <div className="bg-[#FFFFFF] border-2 border-[#D9A441]/40 rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs">
+          <div className="bg-[#FFFFFF] border-2 border-[#D9A441]/40 rounded-xl sm:rounded-2xl px-3.5 sm:px-8 py-5 sm:py-8 shadow-xs">
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-[#991B1B]/10 border border-[#991B1B]/20 flex items-center justify-center text-[#991B1B] flex-shrink-0">
                 <Lock className="w-6 h-6" />

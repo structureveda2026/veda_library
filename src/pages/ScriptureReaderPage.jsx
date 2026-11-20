@@ -194,7 +194,7 @@ export default function ScriptureReaderPage({ onOpenSearch }) {
       </div>
 
       {/* 4. Main Scripture Reader Area */}
-      <main className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-6 sm:pt-8">
+      <main className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 pt-6 sm:pt-8">
         <ScriptureReaderView scripture={scriptureData} />
       </main>
     </div>

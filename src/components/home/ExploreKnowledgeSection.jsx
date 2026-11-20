@@ -136,7 +136,7 @@ export default function ExploreKnowledgeSection({ onSelectCategory, onNavigateKn
 
   return (
     <section id="categories" className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5] relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-5 sm:mb-6 gap-3">
           <div>

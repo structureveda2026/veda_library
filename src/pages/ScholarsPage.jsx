@@ -276,7 +276,7 @@ export default function ScholarsPage() {
       </section>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8">
+      <div className="max-w-6xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-5 sm:py-8">
         {selectedScholar ? (
           /* Single Scholar Detail View */
           <div className="space-y-8">
@@ -288,7 +288,7 @@ export default function ScholarsPage() {
               <span>समस्त विद्वान मंडल सूची पर लौटें</span>
             </Link>
 
-            <div className="px-3.5 sm:px-8 py-5 sm:py-8 rounded-3xl bg-white border border-[#E5E5E5] shadow-xs grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="px-3.5 sm:px-8 py-5 sm:py-8 rounded-xl sm:rounded-3xl bg-white border border-[#E5E5E5] shadow-xs grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Scholar Side Column */}
               <div className="space-y-5">
                 <div className="relative">

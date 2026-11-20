@@ -9,7 +9,7 @@ export default function ResearchSection({ onNavigateKnowledge }) {
 
   return (
     <section id="research" className="py-6 sm:py-8 bg-white border-y border-[#E5E5E5]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-4 sm:mb-5 gap-2">
           <div>

@@ -425,7 +425,7 @@ export default function MantraStotraSection({ onNavigateKnowledge }) {
 
   return (
     <section id="mantras" className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-5 gap-3.5 pb-4 border-b border-[#E5E5E5]">
           <div>

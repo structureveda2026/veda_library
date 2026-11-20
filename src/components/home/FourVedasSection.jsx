@@ -151,7 +151,7 @@ export default function FourVedasSection({ onNavigateKnowledge, onSelectVeda }) 
       id="four-vedas"
       className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5] relative"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#FFD21F]/40 text-[#111111] mb-2.5 shadow-xs">

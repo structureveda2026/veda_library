@@ -1338,11 +1338,11 @@ ${mantra.hinglishTranslation || ""}
       {/* ==================================================================== */}
       {/* 3. MAIN SACRED SANCTUARY CONTAINER                                   */}
       {/* ==================================================================== */}
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8 pb-24 sm:pb-28 lg:pb-8 space-y-6 sm:space-y-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8 py-5 sm:py-8 pb-24 sm:pb-28 lg:pb-8 space-y-6 sm:space-y-8">
         
         {/* Mobile Horizontal Quick Numbers Strip (< lg) */}
         {!focusMode && siblingMantras.length > 1 && (
-          <div className={`lg:hidden p-3 rounded-2xl border shadow-2xs transition-all ${themeObj.cardBg}`}>
+          <div className={`lg:hidden p-3 rounded-xl sm:rounded-2xl border shadow-2xs transition-all ${themeObj.cardBg}`}>
             <div className="flex items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-1.5 text-xs font-bold">
                 <Sparkles className="w-3.5 h-3.5 text-amber-600" />

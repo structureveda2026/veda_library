@@ -10,7 +10,7 @@ export default function AudiencePathsSection({ onNavigateKnowledge }) {
 
   return (
     <section className="py-6 sm:py-8 bg-white border-b border-[#E5E5E5]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-[0.3rem] sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-4 sm:mb-5">
           <span className="text-[11px] font-bold uppercase tracking-widest text-[#111111] bg-[#FFD21F] px-2.5 py-0.5 rounded-full border border-[#FFD21F]">
             {isHindi ? "अध्ययन मार्ग" : "AUDIENCE-DRIVEN NAVIGATION"}
